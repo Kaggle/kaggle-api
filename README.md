@@ -2,7 +2,7 @@
 
 ## API credentials
 
-To use the Kaggle API go to https://www.kaggle.com/<username>/account and select 'Create API Token'. This will trigger the download of kaggle.json, a file containing your API credentials. Place this folder in the folder **<your user home directory>/.kaggle**.
+To use the Kaggle API go to `https://www.kaggle.com/<username>/account` and select 'Create API Token'. This will trigger the download of kaggle.json, a file containing your API credentials. Place this file in the folder `<your user home directory>/.kaggle` (e.g. `C:\Users\<username>\.kaggle`).
 
 ## Installation
 

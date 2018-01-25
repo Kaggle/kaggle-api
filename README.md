@@ -6,9 +6,9 @@ To use the Kaggle API go to `https://www.kaggle.com/<username>/account` and sele
 
 ## Installation
 
-Run `python setup.py install`. Then navigate to the location where your Python package manager stores scripts (e.g. C:\Anaconda\Scripts) and find `kaggle.exe`.
+Run `python setup.py install`. Then navigate to the location where your Python package manager stores scripts (e.g. `C:\Anaconda\Scripts`) and find `kaggle.exe`.
 
-Within that folder (or adding that folder to your path), run `kaggle` followed by the desired command as shown in the examples below.
+Within that folder (or adding that folder to your system path), run `kaggle` followed by the desired command as shown in the examples below.
 
 ## Requirements
 
@@ -104,7 +104,7 @@ optional arguments:
                         (use "kaggle competitions list" to show options)
   --file FILE, -f FILE  file name
                         (use "kaggle competitions list-files -c <competition>" to show options)
-  --path PATH, -p PATH  folder where file(s) will be downloaded, defaults to C:\Users\dpmcna\.kaggle
+  --path PATH, -p PATH  folder where file(s) will be downloaded, defaults to <your user home directory>.kaggle
   --force, -o           skip check whether local version of file is up to date, force file download
   --verbose, -v         print information about download progress
  ```
@@ -124,7 +124,7 @@ optional arguments:
   --competition COMPETITION, -c COMPETITION
                         competition URL suffix
                         (use "kaggle competitions list" to show options)
-  --path PATH, -p PATH  folder where file(s) will be downloaded, defaults to C:\Users\dpmcna\.kaggle
+  --path PATH, -p PATH  folder where file(s) will be downloaded, defaults to <your user home directory>.kaggle
   --force, -o           skip check whether local version of file is up to date, force file download
   --verbose, -v         print information about download progress
 ```
@@ -184,7 +184,7 @@ optional arguments:
                         (use "kaggle datasets list" to show options)
   --file FILE, -f FILE  file name
                         (use "kaggle datasets list-files -d <dataset>" to show options)
-  --path PATH, -p PATH  folder where file(s) will be downloaded, defaults to C:\Users\dpmcna\.kaggle
+  --path PATH, -p PATH  folder where file(s) will be downloaded, defaults to <your user home directory>/.kaggle
   --force, -o           skip check whether local version of file is up to date, force file download
   --verbose, -v         print information about download progress
 ```
@@ -204,7 +204,7 @@ optional arguments:
   --dataset DATASET, -d DATASET
                         dataset URL suffix in format <owner>/<dataset-name>
                         (use "kaggle datasets list" to show options)
-  --path PATH, -p PATH  folder where file(s) will be downloaded, defaults to C:\Users\dpmcna\.kaggle
+  --path PATH, -p PATH  folder where file(s) will be downloaded, defaults to <your user home directory>/.kaggle
   --force, -o           skip check whether local version of file is up to date, force file download
   --verbose, -v         print information about download progress
 ```
@@ -212,4 +212,20 @@ optional arguments:
 Example:
 
 `kaggle datasets download-files -d zynicide/wine-reviews`
+
+## Config
+
+### Set or check path where files are downloaded
+
+```
+usage: kaggle config download-path [-h] [--path PATH]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --path PATH, -p PATH  folder where file(s) will be downloaded, defaults to <your user home directory>/.kaggle
+```
+
+Example:
+
+`kaggle config download-path -p C:\`
 

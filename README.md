@@ -1,18 +1,18 @@
 # Kaggle API
 
-## API credentials
-
-To use the Kaggle API go to `https://www.kaggle.com/<username>/account` and select 'Create API Token'. This will trigger the download of kaggle.json, a file containing your API credentials. Place this file in the folder `<your user home directory>/.kaggle` (e.g. `C:\Users\<username>\.kaggle`).
-
 ## Installation
+
+Ensure you have Python 3 installed.
+
+Clone this repo by running `git clone https://github.com/Kaggle/kaggle-api.git`.
 
 Run `python setup.py install`. Then navigate to the location where your Python package manager stores scripts (e.g. `C:\Anaconda\Scripts`) and find `kaggle.exe`.
 
 Within that folder (or adding that folder to your system path), run `kaggle` followed by the desired command as shown in the examples below.
 
-## Requirements
+## API credentials
 
-Python 3
+To use the Kaggle API go to `https://www.kaggle.com/<username>/account` and select 'Create API Token'. This will trigger the download of kaggle.json, a file containing your API credentials. Place this file in the folder `<your user home directory>/.kaggle` (e.g. `C:\Users\<username>\.kaggle`).
 
 ## Competitions
 

@@ -16,6 +16,12 @@ class KaggleApi(KaggleApi):
         configuration = Configuration()
         with open(self.config, 'r') as f:
           configData = json.load(f)
+        
+        if os.name != 'nt': # Only check permissions on windows/mac
+            perms = os.stat(self.config).st_mode
+            if perms & 4 or perms & 32: # Check that group/other cannot read the file.
+                print('Warning: Your kaggle API key is readable by other users on this system! To fix this, you can run `chmod 600 {}`'.format(self.config))
+            
         configuration.username = configData['username']
         configuration.password = configData['key']
         self.api_client.configuration = configuration

@@ -19,52 +19,55 @@ To use the Kaggle API go to `https://www.kaggle.com/<username>/account` and sele
 ### List competitions
 
 ```
-usage: kaggle competitions list [-h] [--page PAGE] [--csv] [--search SEARCH]
+usage: kaggle competitions list [-h] [-p PAGE] [-s SEARCH] [-v]
 
 optional arguments:
   -h, --help            show this help message and exit
-  --page PAGE, -p PAGE  page number
-  --csv, -s             print in CSV format
-                        (if not set print in table format)
-  --search SEARCH, -e SEARCH
+  -p PAGE, --page PAGE  page number
+  -s SEARCH, --search SEARCH
                         term(s) to search for
+  -v, --csv             print in CSV format
+                        (if not set print in table format)
 ```
 
 Example: 
 
-`kaggle competitions list -e music`
+`kaggle competitions list -s music`
 
 ### Submit to a competition
 
 ```
-usage: kaggle competitions submit [-h] --competition COMPETITION --file FILE
-                                  --description DESCRIPTION
+usage: kaggle competitions submit [-h] -c COMPETITION -f FILE -m MESSAGE
+
+required arguments:
+  -c COMPETITION, --competition COMPETITION
+                        competition URL suffix
+                        (use "kaggle competitions list" to show options)
+  -f FILE, --file FILE  file for upload, including path
+  -m MESSAGE, --message MESSAGE
+                        message describing this submission
 
 optional arguments:
   -h, --help            show this help message and exit
-  --competition COMPETITION, -c COMPETITION
-                        competition URL suffix
-                        (use "kaggle competitions list" to show options)
-  --file FILE, -f FILE  file for upload, including path
-  --description DESCRIPTION, -d DESCRIPTION
-                        description message for this submission
 ```
 
 Example: 
 
-`kaggle competitions submit -c favorita-grocery-sales-forecasting -f sample_submission_favorita.csv.7z -d "My submission message"`
+`kaggle competitions submit -c favorita-grocery-sales-forecasting -f sample_submission_favorita.csv.7z -m "My submission message"`
 
 ### List competition submissions
 
 ```
-usage: kaggle competitions submissions [-h] --competition COMPETITION [--csv]
+usage: kaggle competitions submissions [-h] -c COMPETITION [-v]
+
+required arguments:
+  -c COMPETITION, --competition COMPETITION
+                        competition URL suffix
+                        (use "kaggle competitions list" to show options)
 
 optional arguments:
   -h, --help            show this help message and exit
-  --competition COMPETITION, -c COMPETITION
-                        competition URL suffix
-                        (use "kaggle competitions list" to show options)
-  --csv, -s             print in CSV format
+  -v, --csv             print in CSV format
                         (if not set print in table format)
  ```
  
@@ -75,157 +78,135 @@ Example:
 ### List competition files
 
 ```
-usage: kaggle competitions list-files [-h] --competition COMPETITION [--csv]
+usage: kaggle competitions files [-h] -c COMPETITION [-v]
+
+required arguments:
+  -c COMPETITION, --competition COMPETITION
+                        competition URL suffix
+                        (use "kaggle competitions list" to show options)
 
 optional arguments:
   -h, --help            show this help message and exit
-  --competition COMPETITION, -c COMPETITION
-                        competition URL suffix
-                        (use "kaggle competitions list" to show options)
-  --csv, -s             print in CSV format
+  -v, --csv             print in CSV format
                         (if not set print in table format)
 ```
 
 Example:
 
-`kaggle competitions list-files -c favorita-grocery-sales-forecasting`
+`kaggle competitions files -c favorita-grocery-sales-forecasting`
 
-### Download a competition file
+### Download competition files
 
 ```
-usage: kaggle competitions download-file [-h] --competition COMPETITION --file
-                                         FILE [--path PATH] [--force]
-                                         [--verbose]
+usage: kaggle competitions download [-h] -c COMPETITION [-f FILE] [-p PATH]
+                                    [-w] [-o] [-q]
+
+required arguments:
+  -c COMPETITION, --competition COMPETITION
+                        competition URL suffix
+                        (use "kaggle competitions list" to show options)
 
 optional arguments:
   -h, --help            show this help message and exit
-  --competition COMPETITION, -c COMPETITION
-                        competition URL suffix
-                        (use "kaggle competitions list" to show options)
-  --file FILE, -f FILE  file name
-                        (use "kaggle competitions list-files -c <competition>" to show options)
-  --path PATH, -p PATH  folder where file(s) will be downloaded, defaults to <your user home directory>.kaggle
-  --force, -o           skip check whether local version of file is up to date, force file download
-  --verbose, -v         print information about download progress
+  -f FILE, --file FILE  file name, all files downloaded if not provided
+                        (use "kaggle competitions files -c <competition>" to show options)
+  -p PATH, --path PATH  folder where file(s) will be downloaded, defaults to <your user home directory>/.kaggle
+  -w, --wp              download to current working path
+  -o, --force           skip check whether local version of file is up to date, force file download
+  -q, --quiet           suppress printing information about download progress
  ```
 
-Example:
+Examples:
 
-`kaggle competitions download-file -c favorita-grocery-sales-forecasting -f test.csv.7z`
+`kaggle competitions download -c favorita-grocery-sales-forecasting`
 
-### Download all competition files
+`kaggle competitions download -c favorita-grocery-sales-forecasting -f test.csv.7z`
 
-```
-usage: kaggle competitions download-files [-h] --competition COMPETITION
-                                          [--path PATH] [--force] [--verbose]
 
-optional arguments:
-  -h, --help            show this help message and exit
-  --competition COMPETITION, -c COMPETITION
-                        competition URL suffix
-                        (use "kaggle competitions list" to show options)
-  --path PATH, -p PATH  folder where file(s) will be downloaded, defaults to <your user home directory>.kaggle
-  --force, -o           skip check whether local version of file is up to date, force file download
-  --verbose, -v         print information about download progress
-```
 
-Example:
 
-`kaggle competitions download-files -c favorita-grocery-sales-forecasting`
 
 ## Datasets
 
 ### List datasets
 
 ```
-usage: kaggle datasets list [-h] [--page PAGE] [--csv] [--search SEARCH]
+usage: kaggle datasets list [-h] [-p PAGE] [-s SEARCH] [-v]
 
 optional arguments:
   -h, --help            show this help message and exit
-  --page PAGE, -p PAGE  page number
-  --csv, -s             print in CSV format
-                        (if not set print in table format)
-  --search SEARCH, -e SEARCH
+  -p PAGE, --page PAGE  page number
+  -s SEARCH, --search SEARCH
                         term(s) to search for
+  -v, --csv             print in CSV format
+                        (if not set print in table format)
 ```
 
 Example:
 
-`kaggle datasets list -e wine`
+`kaggle datasets list -s wine`
 
 ### List files for a dataset
 
 ```
-usage: kaggle datasets list-files [-h] --dataset DATASET [--csv]
+usage: kaggle datasets files [-h] -d DATASET [-v]
+
+required arguments:
+  -d DATASET, --dataset DATASET
+                        dataset URL suffix in format <owner>/<dataset-name>
+                        (use "kaggle datasets list" to show options)
 
 optional arguments:
   -h, --help            show this help message and exit
-  --dataset DATASET, -d DATASET
-                        dataset URL suffix in format <owner>/<dataset-name>
-                        (use "kaggle datasets list" to show options)
-  --csv, -s             print in CSV format
+  -v, --csv             print in CSV format
                         (if not set print in table format)
  ```
 
 Example:
 
-`kaggle datasets list-files -d zynicide/wine-reviews`
+`kaggle datasets files -d zynicide/wine-reviews`
 
-### Download a dataset file
+### Download dataset files
 
 ```
-usage: kaggle datasets download-file [-h] --dataset DATASET --file FILE
-                                     [--path PATH] [--force] [--verbose]
+usage: kaggle datasets download [-h] -d DATASET [-f FILE] [-p PATH] [-w] [-o]
+                                [-q]
+
+required arguments:
+  -d DATASET, --dataset DATASET
+                        dataset URL suffix in format <owner>/<dataset-name>
+                        (use "kaggle datasets list" to show options)
 
 optional arguments:
   -h, --help            show this help message and exit
-  --dataset DATASET, -d DATASET
-                        dataset URL suffix in format <owner>/<dataset-name>
-                        (use "kaggle datasets list" to show options)
-  --file FILE, -f FILE  file name
-                        (use "kaggle datasets list-files -d <dataset>" to show options)
-  --path PATH, -p PATH  folder where file(s) will be downloaded, defaults to <your user home directory>/.kaggle
-  --force, -o           skip check whether local version of file is up to date, force file download
-  --verbose, -v         print information about download progress
+  -f FILE, --file FILE  file name, all files downloaded if not provided
+                        (use "kaggle datasets files -d <dataset>" to show options)
+  -p PATH, --path PATH  folder where file(s) will be downloaded, defaults to <your user home directory>/.kaggle
+  -w, --wp              download to current working path
+  -o, --force           skip check whether local version of file is up to date, force file download
+  -q, --quiet           suppress printing information about download progress
 ```
 
-Example:
+Examples:
 
-`kaggle datasets download-file -d zynicide/wine-reviews -f winemag-data-130k-v2.csv`
+`kaggle datasets download -d zynicide/wine-reviews`
 
-### Download all files for a dataset
+`kaggle datasets download -d zynicide/wine-reviews -f winemag-data-130k-v2.csv`
 
-```
-usage: kaggle datasets download-files [-h] --dataset DATASET [--path PATH]
-                                      [--force] [--verbose]
-
-optional arguments:
-  -h, --help            show this help message and exit
-  --dataset DATASET, -d DATASET
-                        dataset URL suffix in format <owner>/<dataset-name>
-                        (use "kaggle datasets list" to show options)
-  --path PATH, -p PATH  folder where file(s) will be downloaded, defaults to <your user home directory>/.kaggle
-  --force, -o           skip check whether local version of file is up to date, force file download
-  --verbose, -v         print information about download progress
-```
-
-Example:
-
-`kaggle datasets download-files -d zynicide/wine-reviews`
 
 ## Config
 
 ### Set or check path where files are downloaded
 
 ```
-usage: kaggle config download-path [-h] [--path PATH]
+usage: kaggle config path [-h] [-p PATH]
 
 optional arguments:
   -h, --help            show this help message and exit
-  --path PATH, -p PATH  folder where file(s) will be downloaded, defaults to <your user home directory>/.kaggle
+  -p PATH, --path PATH  folder where file(s) will be downloaded, defaults to <your user home directory>/.kaggle
 ```
 
 Example:
 
-`kaggle config download-path -p C:\`
+`kaggle config path -p C:\`
 

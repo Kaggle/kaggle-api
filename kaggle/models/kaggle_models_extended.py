@@ -56,10 +56,10 @@ class Tag:
       return self.ref
 
 def parse(string):
-  timeFormats = ["%Y-%m-%dT%H:%M:%SZ","%Y-%m-%dT%H:%M:%S.%fZ"]
+  timeFormats = ["%Y-%m-%dT%H:%M:%S", "%Y-%m-%dT%H:%M:%SZ", "%Y-%m-%dT%H:%M:%S.%f", "%Y-%m-%dT%H:%M:%S.%fZ"]
   for t in timeFormats:
     try:
-      result = datetime.strptime(string, t).replace(microsecond=0)
+      result = datetime.strptime(string[:26], t).replace(microsecond=0)
       return result
     except: 
       pass

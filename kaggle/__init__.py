@@ -4,4 +4,4 @@ from kaggle.api_client import ApiClient
 
 api = KaggleApi(ApiClient())
 api.authenticate()
-api.downloadPath(verbose = False)
+api.downloadPath(quiet = True)

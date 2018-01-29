@@ -1,7 +1,7 @@
 from .kaggle_api import KaggleApi
 from ..models.kaggle_models_extended import Competition, SubmitResult, Submission, Dataset, File
 from kaggle.configuration import Configuration
-import os, json, sys, csv
+import os, json, sys, csv, zipfile
 from os.path import expanduser, isfile
 from datetime import datetime
 
@@ -14,21 +14,19 @@ class KaggleApi(KaggleApi):
     def authenticate(self):
       try:
         configuration = Configuration()
+        if os.name != 'nt':
+          permissions = os.stat(self.config).st_mode
+          if (permissions & 4) or (permissions & 32):
+            print("Warning: Your Kaggle API key is readable by other users on this system! To fix this, you can run 'chmod 600 {}'".format(self.config))
         with open(self.config, 'r') as f:
           configData = json.load(f)
-        
-        if os.name != 'nt': # Only check permissions on windows/mac
-            perms = os.stat(self.config).st_mode
-            if perms & 4 or perms & 32: # Check that group/other cannot read the file.
-                print('Warning: Your kaggle API key is readable by other users on this system! To fix this, you can run `chmod 600 {}`'.format(self.config))
-            
         configuration.username = configData['username']
         configuration.password = configData['key']
         self.api_client.configuration = configuration
       except: 
         sys.exit('Unauthorized: you must download an API key from https://www.kaggle.com/<username>/account\nThen put ' + self.configFile + ' in the folder ' + self.configPath)
 
-    def downloadPath(self, path = None, verbose = True):
+    def downloadPath(self, path = None, quiet = False):
       try: 
         os.makedirs(os.path.dirname(self.configPath), exist_ok = True)
         with open(self.config, 'r') as f:
@@ -41,7 +39,7 @@ class KaggleApi(KaggleApi):
           self.path = configData['path']
       except:
         pass
-      if verbose:
+      if not quiet:
         print('Your files will be downloaded to ' + self.path)
    
     def competitionsList(self, page = 1, search = ''):
@@ -59,14 +57,14 @@ class KaggleApi(KaggleApi):
         else:
            self.printTable(competitions, fields)
       else:
-        print("No competitions found")
+        print('No competitions found')
 
-    def competitionSubmit(self, file, description, competition):
+    def competitionSubmit(self, file, message, competition):
       urlResult = self.competitions_submissions_url(file_name = os.path.basename(file), content_length = os.path.getsize(file), last_modified_date_utc = int(os.path.getmtime(file) * 1000))
       urlResultList = urlResult['createUrl'].split('/')
       uploadResult = self.competitions_submissions_upload(file = file, guid = urlResultList[-3], content_length = urlResultList[-2], last_modified_date_utc = urlResultList[-1])
       uploadResultToken = uploadResult['token']
-      submitResult = self.competitions_submissions_submit(id = competition, blob_file_tokens = uploadResultToken, submission_description = description)
+      submitResult = self.competitions_submissions_submit(id = competition, blob_file_tokens = uploadResultToken, submission_description = message)
       return SubmitResult(submitResult)
 
     def competitionSubmissions(self, competition):
@@ -83,7 +81,7 @@ class KaggleApi(KaggleApi):
         else:
           self.printTable(submissions, fields)
       else:
-        print("No submissions found")
+        print('No submissions found')
 
     def competitionListFiles(self, competition):
       competitionListFilesResult = self.competitions_data_list_files(id = competition)
@@ -98,21 +96,27 @@ class KaggleApi(KaggleApi):
         else:
           self.printTable(files, fields)
       else:
-        print("No files found")
+        print('No files found')
 
-    def competitionDownloadFile(self, competition, file, path = None, force = False, verbose = False):
+    def competitionDownloadFile(self, competition, file, path = None, force = False, quiet = True):
       if path is None:
-        path = self.path
+        path = os.path.join(self.path, 'competitions')
       response = self.competitions_data_download_file(id = competition, file_name = file, _preload_content = False)
       url = response.retries.history[0].redirect_location.split('?')[0]
-      outfile = os.path.join(path, 'competitions', competition, url.split('/')[-1])
-      if force or self.downloadNeeded(response, outfile, verbose):
-        self.downloadFile(response, outfile, verbose)
+      outfile = os.path.join(path, competition, url.split('/')[-1])
+      if force or self.downloadNeeded(response, outfile, quiet):
+        self.downloadFile(response, outfile, quiet)
 
-    def competitionDownloadFiles(self, competition, path = None, force = False, verbose = False):
+    def competitionDownloadFiles(self, competition, path = None, force = False, quiet = True):
       files = self.competitionListFiles(competition)
       for file in files:
-        self.competitionDownloadFile(competition, file.ref, path, force, verbose)
+        self.competitionDownloadFile(competition, file.ref, path, force, quiet)
+
+    def competitionDownloadCli(self, competition, file = None, path = None, force = False, quiet = False):
+      if file is None:
+        self.competitionDownloadFiles(competition, path, force, quiet)
+      else:
+        self.competitionDownloadFile(competition, file, path, force, quiet)
 
     def datasetsList(self, page = 1, search = ''):
       if search is None:
@@ -129,13 +133,13 @@ class KaggleApi(KaggleApi):
         else:
           self.printTable(datasets, fields)
       else:
-        print("No datasets found")
+        print('No datasets found')
 
     def datasetListFiles(self, dataset):
       datasetUrlList = dataset.split('/')
-      owner = datasetUrlList[0]
-      dataset = datasetUrlList[1]
-      datasetListFilesResult = self.datasets_list_files(owner_slug = owner, dataset_slug = dataset)
+      ownerSlug = datasetUrlList[0]
+      datasetSlug = datasetUrlList[1]
+      datasetListFilesResult = self.datasets_list_files(owner_slug = ownerSlug, dataset_slug = datasetSlug)
       return [File(f) for f in datasetListFilesResult]
 
     def datasetListFilesCli(self, dataset, csv = False):
@@ -147,26 +151,39 @@ class KaggleApi(KaggleApi):
         else:
           self.printTable(files, fields)
       else:
-        print("No files found")
+        print('No files found')
 
-    def datasetDownloadFile(self, dataset, file, path = None, force = False, verbose = False):
+    def datasetDownloadFile(self, dataset, file, path = None, force = False, quiet = True):
       if path is None:
-        path = self.path
+        path = os.path.join(self.path, 'datasets')
       datasetUrlList = dataset.split('/')
-      owner = datasetUrlList[0]
-      dataset = datasetUrlList[1]
-      response = self.datasets_download_file(owner_slug = owner, dataset_slug = dataset, file_name = file, _preload_content = False)
+      ownerSlug = datasetUrlList[0]
+      datasetSlug = datasetUrlList[1]
+      response = self.datasets_download_file(owner_slug = ownerSlug, dataset_slug = datasetSlug, file_name = file, _preload_content = False)
       url = response.retries.history[0].redirect_location.split('?')[0]
-      outfile = os.path.join(path, 'datasets', owner, dataset, url.split('/')[-1])
-      if force or self.downloadNeeded(response, outfile, verbose):
-        self.downloadFile(response, outfile, verbose)
+      outfile = os.path.join(path, ownerSlug, datasetSlug, url.split('/')[-1])
+      if force or self.downloadNeeded(response, outfile, quiet):
+        self.downloadFile(response, outfile, quiet)
 
-    def datasetDownloadFiles(self, dataset, path = None, force = False, verbose = False):
-      files = self.datasetListFiles(dataset)
-      for file in files:
-        self.datasetDownloadFile(dataset, file.ref, path, force, verbose)
+    def datasetDownloadFiles(self, dataset, path = None, force = False, quiet = True):
+      if path is None:
+        path = os.path.join(self.path, 'datasets')
+      datasetUrlList = dataset.split('/')
+      ownerSlug = datasetUrlList[0]
+      datasetSlug = datasetUrlList[1]
+      self.datasetDownloadFile(dataset, datasetSlug + '.zip', path, force, quiet)
+      outpath = os.path.join(path, ownerSlug, datasetSlug)
+      outfile = os.path.join(outpath, datasetSlug + '.zip')
+      with zipfile.ZipFile(outfile, 'r') as z:
+        z.extractall(outpath)
 
-    def downloadFile(self, response, outfile, verbose = False, chunkSize = 1048576):
+    def datasetDownloadCli(self, dataset, file = None, path = None, force = False, quiet = False):
+      if file is None:
+        self.datasetDownloadFiles(dataset, path, force, quiet)
+      else:
+        self.datasetDownloadFile(dataset, file, path, force, quiet)
+
+    def downloadFile(self, response, outfile, quiet = True, chunkSize = 1048576):
       os.makedirs(os.path.dirname(outfile), exist_ok = True)
       size = int(response.headers['Content-Length'])
       sizeRead = 0
@@ -177,18 +194,18 @@ class KaggleApi(KaggleApi):
             break
           out.write(data)
           sizeRead = min(size, sizeRead + chunkSize) 
-          if verbose:
+          if not quiet:
             print(os.path.basename(outfile) + ': Downloaded ' + File.getSize(sizeRead) + ' of ' + File.getSize(size), end = '\r')
-      if verbose:
+      if not quiet:
         print('\n', end = '')
 
-    def downloadNeeded(self, response, outfile, verbose = False):
+    def downloadNeeded(self, response, outfile, quiet = True):
       try:
         remoteDate = datetime.strptime(response.headers['Last-Modified'], "%a, %d %b %Y %X %Z")
         if isfile(outfile):
           localDate = datetime.fromtimestamp(os.path.getmtime(outfile))
           if remoteDate <= localDate:
-            if verbose:
+            if not quiet:
               print(os.path.basename(outfile) + ': Skipping, found more recently modified local copy (use --force to force download)')
             return False
       except:

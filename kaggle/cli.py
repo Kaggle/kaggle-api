@@ -1,5 +1,4 @@
 import argparse
-import inspect
 from kaggle import api
 
 def main():

@@ -1,20 +1,32 @@
 # Kaggle API
 
+Official API for https://www.kaggle.com, accessible using a command line tool implemented in Python.
+
 ## Installation
 
-Ensure you have Python 3 installed.
+Ensure you have Python 3 installed and the package manager `pip` installed.
 
-Clone this repo by running `git clone https://github.com/Kaggle/kaggle-api.git`.
+Run the following command to access the Kaggle API using the command line:
 
-Run `python setup.py install`. Then navigate to the location where your Python package manager stores scripts (e.g. `C:\Anaconda\Scripts`) and find `kaggle.exe`.
+`pip install kaggle`
 
-Within that folder (or adding that folder to your system path), run `kaggle` followed by the desired command as shown in the examples below.
+You can now use the `kaggle` command as shown in the examples below.
 
 ## API credentials
 
-To use the Kaggle API go to `https://www.kaggle.com/<username>/account` and select 'Create API Token'. This will trigger the download of kaggle.json, a file containing your API credentials. Place this file in the folder `<your user home directory>/.kaggle` (e.g. `C:\Users\<username>\.kaggle`).
+To use the Kaggle API, sign up for a Kaggle account at https://www.kaggle.com. Then go to `https://www.kaggle.com/<username>/account` and select 'Create API Token'. This will trigger the download of `kaggle.json`, a file containing your API credentials. Place this file in the folder `<your user home directory>/.kaggle` (e.g. `C:\Users\<username>\.kaggle`).
+
+For your security, ensure that other users of your computer do not have read access to your credentials. On Unix-based systems you can do this with the following command: 
+
+`chmod 600 <your user home directory>/.kaggle/kaggle.json`
+
+## License
+
+The Kaggle API is released under the Apache 2.0 license.
 
 ## Competitions
+
+The API supports the following commands for Kaggle Competitions.
 
 ### List competitions
 
@@ -55,6 +67,8 @@ Example:
 
 `kaggle competitions submit -c favorita-grocery-sales-forecasting -f sample_submission_favorita.csv.7z -m "My submission message"`
 
+Note: you will need to accept competition rules at https://www.kaggle.com.
+
 ### List competition submissions
 
 ```
@@ -74,6 +88,8 @@ optional arguments:
 Example:
 
 `kaggle competitions submissions -c favorita-grocery-sales-forecasting`
+
+Note: you will need to accept competition rules at https://www.kaggle.com.
 
 ### List competition files
 
@@ -122,11 +138,13 @@ Examples:
 
 `kaggle competitions download -c favorita-grocery-sales-forecasting -f test.csv.7z`
 
-
+Note: you will need to accept competition rules at https://www.kaggle.com.
 
 
 
 ## Datasets
+
+The API supports the following commands for Kaggle Datasets.
 
 ### List datasets
 

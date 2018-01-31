@@ -248,5 +248,7 @@ class KaggleApi(KaggleApi):
       try:
         if isinstance(item, unicode):
           return item
+        else:
+          return str(item)
       except:
         return str(item)

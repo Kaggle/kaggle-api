@@ -14,7 +14,7 @@ You can now use the `kaggle` command as shown in the examples below.
 
 ## API credentials
 
-To use the Kaggle API, sign up for a Kaggle account at https://www.kaggle.com. Then go to `https://www.kaggle.com/<username>/account` and select 'Create API Token'. This will trigger the download of `kaggle.json`, a file containing your API credentials. Place this file in the folder `<your user home directory>/.kaggle` (e.g. `C:\Users\<username>\.kaggle`).
+To use the Kaggle API, sign up for a Kaggle account at https://www.kaggle.com. Then go to the 'Account' tab of your user profile (`https://www.kaggle.com/<username>/account`) and select 'Create API Token'. This will trigger the download of `kaggle.json`, a file containing your API credentials. Place this file in the folder `<your user home directory>/.kaggle` (e.g. `C:\Users\<username>\.kaggle`).
 
 For your security, ensure that other users of your computer do not have read access to your credentials. On Unix-based systems you can do this with the following command: 
 
@@ -52,7 +52,7 @@ optional arguments:
 
 Example: 
 
-`kaggle competitions list -s music`
+`kaggle competitions list -s health`
 
 ##### Submit to a competition
 
@@ -75,7 +75,7 @@ Example:
 
 `kaggle competitions submit -c favorita-grocery-sales-forecasting -f sample_submission_favorita.csv.7z -m "My submission message"`
 
-Note: you will need to accept competition rules at https://www.kaggle.com.
+Note: you will need to accept competition rules at `https://www.kaggle.com/c/<competition-name>/rules`.
 
 ##### List competition submissions
 
@@ -97,7 +97,7 @@ Example:
 
 `kaggle competitions submissions -c favorita-grocery-sales-forecasting`
 
-Note: you will need to accept competition rules at https://www.kaggle.com.
+Note: you will need to accept competition rules at `https://www.kaggle.com/c/<competition-name>/rules`.
 
 ##### List competition files
 
@@ -146,7 +146,7 @@ Examples:
 
 `kaggle competitions download -c favorita-grocery-sales-forecasting -f test.csv.7z`
 
-Note: you will need to accept competition rules at https://www.kaggle.com.
+Note: you will need to accept competition rules at `https://www.kaggle.com/c/<competition-name>/rules`.
 
 
 
@@ -170,7 +170,7 @@ optional arguments:
 
 Example:
 
-`kaggle datasets list -s wine`
+`kaggle datasets list -s demographics`
 
 ##### List files for a dataset
 
@@ -190,7 +190,7 @@ optional arguments:
 
 Example:
 
-`kaggle datasets files -d zynicide/wine-reviews`
+`kaggle datasets files -d zillow/zecon`
 
 ##### Download dataset files
 
@@ -215,9 +215,9 @@ optional arguments:
 
 Examples:
 
-`kaggle datasets download -d zynicide/wine-reviews`
+`kaggle datasets download -d zillow/zecon`
 
-`kaggle datasets download -d zynicide/wine-reviews -f winemag-data-130k-v2.csv`
+`kaggle datasets download -d zillow/zecon -f State_time_series.csv`
 
 
 ### Config

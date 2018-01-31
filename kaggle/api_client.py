@@ -75,10 +75,6 @@ class ApiClient(object):
         # Set default User-Agent.
         self.user_agent = 'Swagger-Codegen/1/python'
 
-    def __del__(self):
-        self.pool.close()
-        self.pool.join()
-
     @property
     def user_agent(self):
         """User agent for this API client"""

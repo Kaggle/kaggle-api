@@ -1,3 +1,4 @@
+from __future__ import print_function
 from .kaggle_api import KaggleApi
 from ..models.kaggle_models_extended import Competition, SubmitResult, Submission, Dataset, File
 from kaggle.configuration import Configuration
@@ -5,11 +6,14 @@ import os, json, sys, csv, zipfile
 from os.path import expanduser, isfile
 from datetime import datetime
 
+
 class KaggleApi(KaggleApi):
     configPath = os.path.join(expanduser("~"),".kaggle")
+    if not os.path.exists(configPath):
+      os.makedirs(configPath)
     configFile = 'kaggle.json'
     config = os.path.join(configPath, configFile)
-    path = os.path.join(expanduser("~"),".kaggle")
+    path = configPath
 
     def authenticate(self):
       try:
@@ -28,7 +32,6 @@ class KaggleApi(KaggleApi):
 
     def downloadPath(self, path = None, quiet = False):
       try: 
-        os.makedirs(os.path.dirname(self.configPath), exist_ok = True)
         with open(self.config, 'r') as f:
           configData = json.load(f)
         if path is not None:
@@ -164,6 +167,9 @@ class KaggleApi(KaggleApi):
       outfile = os.path.join(path, ownerSlug, datasetSlug, url.split('/')[-1])
       if force or self.downloadNeeded(response, outfile, quiet):
         self.downloadFile(response, outfile, quiet)
+        return True
+      else:
+        return False
 
     def datasetDownloadFiles(self, dataset, path = None, force = False, quiet = True):
       if path is None:
@@ -171,11 +177,12 @@ class KaggleApi(KaggleApi):
       datasetUrlList = dataset.split('/')
       ownerSlug = datasetUrlList[0]
       datasetSlug = datasetUrlList[1]
-      self.datasetDownloadFile(dataset, datasetSlug + '.zip', path, force, quiet)
-      outpath = os.path.join(path, ownerSlug, datasetSlug)
-      outfile = os.path.join(outpath, datasetSlug + '.zip')
-      with zipfile.ZipFile(outfile, 'r') as z:
-        z.extractall(outpath)
+      downloaded = self.datasetDownloadFile(dataset, datasetSlug + '.zip', path, force, quiet)
+      if downloaded:
+        outpath = os.path.join(path, ownerSlug, datasetSlug)
+        outfile = os.path.join(outpath, datasetSlug + '.zip')
+        with zipfile.ZipFile(outfile, 'r') as z:
+          z.extractall(outpath)
 
     def datasetDownloadCli(self, dataset, file = None, path = None, force = False, quiet = False):
       if file is None:
@@ -184,7 +191,9 @@ class KaggleApi(KaggleApi):
         self.datasetDownloadFile(dataset, file, path, force, quiet)
 
     def downloadFile(self, response, outfile, quiet = True, chunkSize = 1048576):
-      os.makedirs(os.path.dirname(outfile), exist_ok = True)
+      outpath = os.path.dirname(outfile)
+      if not os.path.exists(outpath):
+        os.makedirs(outpath)
       size = int(response.headers['Content-Length'])
       sizeRead = 0
       with open(outfile, 'wb') as out:

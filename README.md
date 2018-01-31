@@ -4,7 +4,7 @@ Official API for https://www.kaggle.com, accessible using a command line tool im
 
 ## Installation
 
-Ensure you have Python 3 installed and the package manager `pip` installed.
+Ensure you have Python and the package manager `pip` installed.
 
 Run the following command to access the Kaggle API using the command line:
 
@@ -20,15 +20,23 @@ For your security, ensure that other users of your computer do not have read acc
 
 `chmod 600 <your user home directory>/.kaggle/kaggle.json`
 
-## License
+## Commands
 
-The Kaggle API is released under the Apache 2.0 license.
+The command line tool supports the following commands:
 
-## Competitions
+``` 
+kaggle competitions {list, submit, submissions, files, download}
+kaggle datasets {list, files, download}
+kaggle config {path}
+```
+
+See more details below for using each of these commands.
+
+### Competitions
 
 The API supports the following commands for Kaggle Competitions.
 
-### List competitions
+##### List competitions
 
 ```
 usage: kaggle competitions list [-h] [-p PAGE] [-s SEARCH] [-v]
@@ -46,7 +54,7 @@ Example:
 
 `kaggle competitions list -s music`
 
-### Submit to a competition
+##### Submit to a competition
 
 ```
 usage: kaggle competitions submit [-h] -c COMPETITION -f FILE -m MESSAGE
@@ -69,7 +77,7 @@ Example:
 
 Note: you will need to accept competition rules at https://www.kaggle.com.
 
-### List competition submissions
+##### List competition submissions
 
 ```
 usage: kaggle competitions submissions [-h] -c COMPETITION [-v]
@@ -91,7 +99,7 @@ Example:
 
 Note: you will need to accept competition rules at https://www.kaggle.com.
 
-### List competition files
+##### List competition files
 
 ```
 usage: kaggle competitions files [-h] -c COMPETITION [-v]
@@ -111,7 +119,7 @@ Example:
 
 `kaggle competitions files -c favorita-grocery-sales-forecasting`
 
-### Download competition files
+##### Download competition files
 
 ```
 usage: kaggle competitions download [-h] -c COMPETITION [-f FILE] [-p PATH]
@@ -142,11 +150,11 @@ Note: you will need to accept competition rules at https://www.kaggle.com.
 
 
 
-## Datasets
+### Datasets
 
 The API supports the following commands for Kaggle Datasets.
 
-### List datasets
+##### List datasets
 
 ```
 usage: kaggle datasets list [-h] [-p PAGE] [-s SEARCH] [-v]
@@ -164,7 +172,7 @@ Example:
 
 `kaggle datasets list -s wine`
 
-### List files for a dataset
+##### List files for a dataset
 
 ```
 usage: kaggle datasets files [-h] -d DATASET [-v]
@@ -184,7 +192,7 @@ Example:
 
 `kaggle datasets files -d zynicide/wine-reviews`
 
-### Download dataset files
+##### Download dataset files
 
 ```
 usage: kaggle datasets download [-h] -d DATASET [-f FILE] [-p PATH] [-w] [-o]
@@ -212,9 +220,9 @@ Examples:
 `kaggle datasets download -d zynicide/wine-reviews -f winemag-data-130k-v2.csv`
 
 
-## Config
+### Config
 
-### Set or check path where files are downloaded
+##### Set or check path where files are downloaded
 
 ```
 usage: kaggle config path [-h] [-p PATH]
@@ -228,3 +236,6 @@ Example:
 
 `kaggle config path -p C:\`
 
+## License
+
+The Kaggle API is released under the Apache 2.0 license.

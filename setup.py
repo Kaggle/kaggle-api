@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name = 'kaggle',
-    version = '1.0.1',
+    version = '1.0.2',
     description = 'Kaggle API',
     long_description = 'Official API for https://www.kaggle.com, accessible using a command line tool implemented in Python.',
     author = 'Kaggle',

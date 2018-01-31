@@ -33,23 +33,6 @@ def parse_competitions(subparsers):
   parser_competitions_list._action_groups.append(parser_competitions_list_optional)
   parser_competitions_list.set_defaults(func = api.competitionsListCli)
 
-  parser_competitions_submit = subparsers_competitions.add_parser('submit', formatter_class = argparse.RawTextHelpFormatter)
-  parser_competitions_submit_optional = parser_competitions_submit._action_groups.pop()
-  parser_competitions_submit_required = parser_competitions_submit.add_argument_group('required arguments')
-  parser_competitions_submit_required.add_argument('-c', '--competition', dest = 'competition', required = True, help = Help.competition)
-  parser_competitions_submit_required.add_argument('-f', '--file', dest = 'file', required = True, help = Help.upfile)
-  parser_competitions_submit_required.add_argument('-m', '--message', dest = 'message', required = True, help = Help.message)
-  parser_competitions_submit._action_groups.append(parser_competitions_submit_optional)
-  parser_competitions_submit.set_defaults(func = api.competitionSubmit)
-
-  parser_competitions_submissions = subparsers_competitions.add_parser('submissions', formatter_class = argparse.RawTextHelpFormatter)
-  parser_competitions_submissions_optional =  parser_competitions_submissions._action_groups.pop()
-  parser_competitions_submissions_required = parser_competitions_submissions.add_argument_group('required arguments')
-  parser_competitions_submissions_required.add_argument('-c', '--competition', dest = 'competition', required = True, help = Help.competition)
-  parser_competitions_submissions_optional.add_argument('-v', '--csv', dest = 'csv', action = 'store_true', help = Help.csv)
-  parser_competitions_submissions._action_groups.append(parser_competitions_submissions_optional)
-  parser_competitions_submissions.set_defaults(func = api.competitionSubmissionsCli)  
-
   parser_competitions_files = subparsers_competitions.add_parser('files', formatter_class = argparse.RawTextHelpFormatter)
   parser_competitions_files_optional =  parser_competitions_files._action_groups.pop()
   parser_competitions_files_required = parser_competitions_files.add_argument_group('required arguments')
@@ -69,6 +52,24 @@ def parse_competitions(subparsers):
   parser_competitions_download_optional.add_argument('-q', '--quiet', dest = 'quiet', action = 'store_true', help = Help.quiet)
   parser_competitions_download._action_groups.append(parser_competitions_download_optional)
   parser_competitions_download.set_defaults(func = api.competitionDownloadCli)  
+
+  parser_competitions_submit = subparsers_competitions.add_parser('submit', formatter_class = argparse.RawTextHelpFormatter)
+  parser_competitions_submit_optional = parser_competitions_submit._action_groups.pop()
+  parser_competitions_submit_required = parser_competitions_submit.add_argument_group('required arguments')
+  parser_competitions_submit_required.add_argument('-c', '--competition', dest = 'competition', required = True, help = Help.competition)
+  parser_competitions_submit_required.add_argument('-f', '--file', dest = 'file', required = True, help = Help.upfile)
+  parser_competitions_submit_required.add_argument('-m', '--message', dest = 'message', required = True, help = Help.message)
+  parser_competitions_submit._action_groups.append(parser_competitions_submit_optional)
+  parser_competitions_submit.set_defaults(func = api.competitionSubmit)
+
+  parser_competitions_submissions = subparsers_competitions.add_parser('submissions', formatter_class = argparse.RawTextHelpFormatter)
+  parser_competitions_submissions_optional =  parser_competitions_submissions._action_groups.pop()
+  parser_competitions_submissions_required = parser_competitions_submissions.add_argument_group('required arguments')
+  parser_competitions_submissions_required.add_argument('-c', '--competition', dest = 'competition', required = True, help = Help.competition)
+  parser_competitions_submissions_optional.add_argument('-v', '--csv', dest = 'csv', action = 'store_true', help = Help.csv)
+  parser_competitions_submissions._action_groups.append(parser_competitions_submissions_optional)
+  parser_competitions_submissions.set_defaults(func = api.competitionSubmissionsCli)  
+
 
 def parse_datasets(subparsers):
   parser_datasets = subparsers.add_parser('datasets', formatter_class = argparse.RawTextHelpFormatter)
@@ -118,7 +119,7 @@ def parse_config(subparsers):
 
 class Help:  
   kaggle_choices = ['competitions', 'datasets', 'config']
-  competitions_choices = ['list', 'submit', 'submissions', 'files', 'download']
+  competitions_choices = ['list', 'files', 'download', 'submit', 'submissions']
   datasets_choices = ['list', 'files', 'download']
   config_choices = ['path']
 

@@ -225,21 +225,28 @@ class KaggleApi(KaggleApi):
       formats = []
       borders = []
       for f in fields:
-        length = max(len(f),max([len(str(getattr(i,f))) for i in items]))
+        length = max(len(f),max([len(self.string(getattr(i,f))) for i in items]))
         justify = '>' if isinstance(getattr(items[0],f), int) or f == 'size' or f == 'reward' else '<'
-        formats.append('{:' + justify + str(length + 2) + '}')
+        formats.append('{:' + justify + self.string(length + 2) + '}')
         borders.append('-' * length + '  ')
-      row_format = ''.join(formats)
+      row_format = u''.join(formats)
       headers = [f + '  ' for f in fields]
       print(row_format.format(*headers))
       print(row_format.format(*borders))
       for i in items:
-        i_fields = [str(getattr(i,f)) + '  ' for f in fields]
+        i_fields = [self.string(getattr(i,f)) + '  ' for f in fields]
         print(row_format.format(*i_fields))
 
     def printCsv(self, items, fields):
       writer = csv.writer(sys.stdout)
       writer.writerow(fields)
       for i in items:
-        i_fields = [str(getattr(i,f)) for f in fields]
+        i_fields = [self.string(getattr(i,f)) for f in fields]
         writer.writerow(i_fields)
+
+    def string(self, item):
+      try:
+        if isinstance(item, unicode):
+          return item
+      except:
+        return str(item)

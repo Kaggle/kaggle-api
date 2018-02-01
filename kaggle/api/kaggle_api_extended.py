@@ -250,4 +250,4 @@ class KaggleApi(KaggleApi):
         writer.writerow(i_fields)
 
     def string(self, item):
-      return unicode(item):
+      return item if isinstance(item, unicode) else str(item)

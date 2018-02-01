@@ -95,7 +95,7 @@ class KaggleApi(KaggleApi):
       fields = ['name', 'size', 'creationDate']
       if files:
         if csv:
-          self.printCsv(fiels, fields)
+          self.printCsv(files, fields)
         else:
           self.printTable(files, fields)
       else:

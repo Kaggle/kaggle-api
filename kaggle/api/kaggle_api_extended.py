@@ -6,6 +6,11 @@ import os, json, sys, csv, zipfile
 from os.path import expanduser, isfile
 from datetime import datetime
 
+try:
+    unicode        # Python 2
+except NameError:
+    unicode = str  # Python 3
+
 
 class KaggleApi(KaggleApi):
     configPath = os.path.join(expanduser("~"),".kaggle")
@@ -245,10 +250,4 @@ class KaggleApi(KaggleApi):
         writer.writerow(i_fields)
 
     def string(self, item):
-      try:
-        if isinstance(item, unicode):
-          return item
-        else:
-          return str(item)
-      except:
-        return str(item)
+      return unicode(item):

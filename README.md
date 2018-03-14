@@ -12,6 +12,10 @@ Run the following command to access the Kaggle API using the command line:
 
 `pip install kaggle`
 
+or if you are using Python3 run the following command to access the Kaggle API using the command line: 
+
+`pip3 install kaggle`
+
 You can now use the `kaggle` command as shown in the examples below.
 
 ## API credentials

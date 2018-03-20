@@ -55,6 +55,27 @@ class Tag:
     def __repr__(self):
       return self.ref
 
+class FileUploadInfo:
+    def __init__(self, initDict):
+      parsedDict = {k: parse(v) for k, v in initDict.items()}
+      self.__dict__.update(parsedDict)
+    def __repr__(self):
+      return self.token
+
+class DatasetNewVersionResponse:
+    def __init__(self, initDict):
+      parsedDict = {k: parse(v) for k, v in initDict.items()}
+      self.__dict__.update(parsedDict)
+    def __repr__(self):
+      return self.url
+
+class DatasetNewResponse:
+    def __init__(self, initDict):
+      parsedDict = {k: parse(v) for k, v in initDict.items()}
+      self.__dict__.update(parsedDict)
+    def __repr__(self):
+      return self.url
+
 def parse(string):
   timeFormats = ["%Y-%m-%dT%H:%M:%S", "%Y-%m-%dT%H:%M:%SZ", "%Y-%m-%dT%H:%M:%S.%f", "%Y-%m-%dT%H:%M:%S.%fZ"]
   for t in timeFormats:

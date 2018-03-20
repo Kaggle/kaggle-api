@@ -756,6 +756,216 @@ class KaggleApi(object):
             _request_timeout=params.get('_request_timeout'),
             collection_formats=collection_formats)
 
+    def datasets_create_new(self, dataset_new_request, **kwargs):  # noqa: E501
+        """Create a new dataset  # noqa: E501
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async=True
+        >>> thread = api.datasets_create_new(dataset_new_request, async=True)
+        >>> result = thread.get()
+
+        :param async bool
+        :param DatasetNewRequest dataset_new_request: Information for creating a new dataset (required)
+        :return: Result
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+        kwargs['_return_http_data_only'] = True
+        if kwargs.get('async'):
+            return self.datasets_create_new_with_http_info(dataset_new_request, **kwargs)  # noqa: E501
+        else:
+            (data) = self.datasets_create_new_with_http_info(dataset_new_request, **kwargs)  # noqa: E501
+            return data
+
+    def datasets_create_new_with_http_info(self, dataset_new_request, **kwargs):  # noqa: E501
+        """Create a new dataset  # noqa: E501
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async=True
+        >>> thread = api.datasets_create_new_with_http_info(dataset_new_request, async=True)
+        >>> result = thread.get()
+
+        :param async bool
+        :param DatasetNewRequest dataset_new_request: Information for creating a new dataset (required)
+        :return: Result
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+
+        all_params = ['dataset_new_request']  # noqa: E501
+        all_params.append('async')
+        all_params.append('_return_http_data_only')
+        all_params.append('_preload_content')
+        all_params.append('_request_timeout')
+
+        params = locals()
+        for key, val in six.iteritems(params['kwargs']):
+            if key not in all_params:
+                raise TypeError(
+                    "Got an unexpected keyword argument '%s'"
+                    " to method datasets_create_new" % key
+                )
+            params[key] = val
+        del params['kwargs']
+        # verify the required parameter 'dataset_new_request' is set
+        if ('dataset_new_request' not in params or
+                params['dataset_new_request'] is None):
+            raise ValueError("Missing the required parameter `dataset_new_request` when calling `datasets_create_new`")  # noqa: E501
+
+        collection_formats = {}
+
+        path_params = {}
+
+        query_params = []
+
+        header_params = {}
+
+        form_params = []
+        local_var_files = {}
+
+        body_params = None
+        if 'dataset_new_request' in params:
+            body_params = params['dataset_new_request']
+        # HTTP header `Accept`
+        header_params['Accept'] = self.api_client.select_header_accept(
+            ['application/json'])  # noqa: E501
+
+        # HTTP header `Content-Type`
+        header_params['Content-Type'] = self.api_client.select_header_content_type(  # noqa: E501
+            ['application/json'])  # noqa: E501
+
+        # Authentication setting
+        auth_settings = ['basicAuth']  # noqa: E501
+
+        return self.api_client.call_api(
+            '/datasets/create/new', 'POST',
+            path_params,
+            query_params,
+            header_params,
+            body=body_params,
+            post_params=form_params,
+            files=local_var_files,
+            response_type='Result',  # noqa: E501
+            auth_settings=auth_settings,
+            async=params.get('async'),
+            _return_http_data_only=params.get('_return_http_data_only'),
+            _preload_content=params.get('_preload_content', True),
+            _request_timeout=params.get('_request_timeout'),
+            collection_formats=collection_formats)
+
+    def datasets_create_version(self, owner_slug, dataset_slug, dataset_new_version_request, **kwargs):  # noqa: E501
+        """Create a new dataset version  # noqa: E501
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async=True
+        >>> thread = api.datasets_create_version(owner_slug, dataset_slug, dataset_new_version_request, async=True)
+        >>> result = thread.get()
+
+        :param async bool
+        :param str owner_slug: Dataset owner (required)
+        :param str dataset_slug: Dataset name (required)
+        :param DatasetNewVersionRequest dataset_new_version_request: Information for creating a new dataset version (required)
+        :return: Result
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+        kwargs['_return_http_data_only'] = True
+        if kwargs.get('async'):
+            return self.datasets_create_version_with_http_info(owner_slug, dataset_slug, dataset_new_version_request, **kwargs)  # noqa: E501
+        else:
+            (data) = self.datasets_create_version_with_http_info(owner_slug, dataset_slug, dataset_new_version_request, **kwargs)  # noqa: E501
+            return data
+
+    def datasets_create_version_with_http_info(self, owner_slug, dataset_slug, dataset_new_version_request, **kwargs):  # noqa: E501
+        """Create a new dataset version  # noqa: E501
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async=True
+        >>> thread = api.datasets_create_version_with_http_info(owner_slug, dataset_slug, dataset_new_version_request, async=True)
+        >>> result = thread.get()
+
+        :param async bool
+        :param str owner_slug: Dataset owner (required)
+        :param str dataset_slug: Dataset name (required)
+        :param DatasetNewVersionRequest dataset_new_version_request: Information for creating a new dataset version (required)
+        :return: Result
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+
+        all_params = ['owner_slug', 'dataset_slug', 'dataset_new_version_request']  # noqa: E501
+        all_params.append('async')
+        all_params.append('_return_http_data_only')
+        all_params.append('_preload_content')
+        all_params.append('_request_timeout')
+
+        params = locals()
+        for key, val in six.iteritems(params['kwargs']):
+            if key not in all_params:
+                raise TypeError(
+                    "Got an unexpected keyword argument '%s'"
+                    " to method datasets_create_version" % key
+                )
+            params[key] = val
+        del params['kwargs']
+        # verify the required parameter 'owner_slug' is set
+        if ('owner_slug' not in params or
+                params['owner_slug'] is None):
+            raise ValueError("Missing the required parameter `owner_slug` when calling `datasets_create_version`")  # noqa: E501
+        # verify the required parameter 'dataset_slug' is set
+        if ('dataset_slug' not in params or
+                params['dataset_slug'] is None):
+            raise ValueError("Missing the required parameter `dataset_slug` when calling `datasets_create_version`")  # noqa: E501
+        # verify the required parameter 'dataset_new_version_request' is set
+        if ('dataset_new_version_request' not in params or
+                params['dataset_new_version_request'] is None):
+            raise ValueError("Missing the required parameter `dataset_new_version_request` when calling `datasets_create_version`")  # noqa: E501
+
+        collection_formats = {}
+
+        path_params = {}
+        if 'owner_slug' in params:
+            path_params['ownerSlug'] = params['owner_slug']  # noqa: E501
+        if 'dataset_slug' in params:
+            path_params['datasetSlug'] = params['dataset_slug']  # noqa: E501
+
+        query_params = []
+
+        header_params = {}
+
+        form_params = []
+        local_var_files = {}
+
+        body_params = None
+        if 'dataset_new_version_request' in params:
+            body_params = params['dataset_new_version_request']
+        # HTTP header `Accept`
+        header_params['Accept'] = self.api_client.select_header_accept(
+            ['application/json'])  # noqa: E501
+
+        # HTTP header `Content-Type`
+        header_params['Content-Type'] = self.api_client.select_header_content_type(  # noqa: E501
+            ['application/json'])  # noqa: E501
+
+        # Authentication setting
+        auth_settings = ['basicAuth']  # noqa: E501
+
+        return self.api_client.call_api(
+            '/datasets/create/version/{ownerSlug}/{datasetSlug}', 'POST',
+            path_params,
+            query_params,
+            header_params,
+            body=body_params,
+            post_params=form_params,
+            files=local_var_files,
+            response_type='Result',  # noqa: E501
+            auth_settings=auth_settings,
+            async=params.get('async'),
+            _return_http_data_only=params.get('_return_http_data_only'),
+            _preload_content=params.get('_preload_content', True),
+            _request_timeout=params.get('_request_timeout'),
+            collection_formats=collection_formats)
+
     def datasets_download_file(self, owner_slug, dataset_slug, file_name, **kwargs):  # noqa: E501
         """Download dataset file  # noqa: E501
 
@@ -1049,6 +1259,119 @@ class KaggleApi(object):
 
         return self.api_client.call_api(
             '/datasets/list/{ownerSlug}/{datasetSlug}', 'GET',
+            path_params,
+            query_params,
+            header_params,
+            body=body_params,
+            post_params=form_params,
+            files=local_var_files,
+            response_type='Result',  # noqa: E501
+            auth_settings=auth_settings,
+            async=params.get('async'),
+            _return_http_data_only=params.get('_return_http_data_only'),
+            _preload_content=params.get('_preload_content', True),
+            _request_timeout=params.get('_request_timeout'),
+            collection_formats=collection_formats)
+
+    def datasets_upload_file(self, file_name, content_length, last_modified_date_utc, **kwargs):  # noqa: E501
+        """Get URL and token to start uploading a data file  # noqa: E501
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async=True
+        >>> thread = api.datasets_upload_file(file_name, content_length, last_modified_date_utc, async=True)
+        >>> result = thread.get()
+
+        :param async bool
+        :param str file_name: Dataset file name (required)
+        :param int content_length: Content length of file in bytes (required)
+        :param int last_modified_date_utc: Last modified date of file in milliseconds since epoch in UTC (required)
+        :return: Result
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+        kwargs['_return_http_data_only'] = True
+        if kwargs.get('async'):
+            return self.datasets_upload_file_with_http_info(file_name, content_length, last_modified_date_utc, **kwargs)  # noqa: E501
+        else:
+            (data) = self.datasets_upload_file_with_http_info(file_name, content_length, last_modified_date_utc, **kwargs)  # noqa: E501
+            return data
+
+    def datasets_upload_file_with_http_info(self, file_name, content_length, last_modified_date_utc, **kwargs):  # noqa: E501
+        """Get URL and token to start uploading a data file  # noqa: E501
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async=True
+        >>> thread = api.datasets_upload_file_with_http_info(file_name, content_length, last_modified_date_utc, async=True)
+        >>> result = thread.get()
+
+        :param async bool
+        :param str file_name: Dataset file name (required)
+        :param int content_length: Content length of file in bytes (required)
+        :param int last_modified_date_utc: Last modified date of file in milliseconds since epoch in UTC (required)
+        :return: Result
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+
+        all_params = ['file_name', 'content_length', 'last_modified_date_utc']  # noqa: E501
+        all_params.append('async')
+        all_params.append('_return_http_data_only')
+        all_params.append('_preload_content')
+        all_params.append('_request_timeout')
+
+        params = locals()
+        for key, val in six.iteritems(params['kwargs']):
+            if key not in all_params:
+                raise TypeError(
+                    "Got an unexpected keyword argument '%s'"
+                    " to method datasets_upload_file" % key
+                )
+            params[key] = val
+        del params['kwargs']
+        # verify the required parameter 'file_name' is set
+        if ('file_name' not in params or
+                params['file_name'] is None):
+            raise ValueError("Missing the required parameter `file_name` when calling `datasets_upload_file`")  # noqa: E501
+        # verify the required parameter 'content_length' is set
+        if ('content_length' not in params or
+                params['content_length'] is None):
+            raise ValueError("Missing the required parameter `content_length` when calling `datasets_upload_file`")  # noqa: E501
+        # verify the required parameter 'last_modified_date_utc' is set
+        if ('last_modified_date_utc' not in params or
+                params['last_modified_date_utc'] is None):
+            raise ValueError("Missing the required parameter `last_modified_date_utc` when calling `datasets_upload_file`")  # noqa: E501
+
+        collection_formats = {}
+
+        path_params = {}
+        if 'content_length' in params:
+            path_params['contentLength'] = params['content_length']  # noqa: E501
+        if 'last_modified_date_utc' in params:
+            path_params['lastModifiedDateUtc'] = params['last_modified_date_utc']  # noqa: E501
+
+        query_params = []
+
+        header_params = {}
+
+        form_params = []
+        local_var_files = {}
+        if 'file_name' in params:
+            form_params.append(('fileName', params['file_name']))  # noqa: E501
+
+        body_params = None
+        # HTTP header `Accept`
+        header_params['Accept'] = self.api_client.select_header_accept(
+            ['application/json'])  # noqa: E501
+
+        # HTTP header `Content-Type`
+        header_params['Content-Type'] = self.api_client.select_header_content_type(  # noqa: E501
+            ['multipart/form-data'])  # noqa: E501
+
+        # Authentication setting
+        auth_settings = ['basicAuth']  # noqa: E501
+
+        return self.api_client.call_api(
+            '/datasets/upload/file/{contentLength}/{lastModifiedDateUtc}', 'POST',
             path_params,
             query_params,
             header_params,

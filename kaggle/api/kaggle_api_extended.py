@@ -183,7 +183,7 @@ class KaggleApi(KaggleApi):
           self.competitions_submissions_submit_with_http_info(
               id=competition,
               blob_file_tokens=upload_result_token,
-              submission_descriptio=message))
+              submission_description=message))
       return SubmitResult(submit_result)
 
   def competition_submissions(self, competition):

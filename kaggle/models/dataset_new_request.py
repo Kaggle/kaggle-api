@@ -37,6 +37,7 @@ class DatasetNewRequest(object):
         'slug': 'str',
         'owner_slug': 'str',
         'license_name': 'str',
+        'description': 'str',
         'files': 'list[DatasetUploadFile]',
         'is_private': 'bool'
     }
@@ -46,17 +47,19 @@ class DatasetNewRequest(object):
         'slug': 'slug',
         'owner_slug': 'ownerSlug',
         'license_name': 'licenseName',
+        'description': 'description',
         'files': 'files',
         'is_private': 'isPrivate'
     }
 
-    def __init__(self, title=None, slug=None, owner_slug=None, license_name='unknown', files=None, is_private=True):  # noqa: E501
+    def __init__(self, title=None, slug=None, owner_slug=None, license_name='unknown', description='', files=None, is_private=True):  # noqa: E501
         """DatasetNewRequest - a model defined in Swagger"""  # noqa: E501
 
         self._title = None
         self._slug = None
         self._owner_slug = None
         self._license_name = None
+        self._description = None
         self._files = None
         self._is_private = None
         self.discriminator = None
@@ -68,6 +71,8 @@ class DatasetNewRequest(object):
             self.owner_slug = owner_slug
         if license_name is not None:
             self.license_name = license_name
+        if description is not None:
+            self.description = description
         self.files = files
         if is_private is not None:
             self.is_private = is_private
@@ -163,6 +168,27 @@ class DatasetNewRequest(object):
             )
 
         self._license_name = license_name
+
+    @property
+    def description(self):
+        """Gets the description of this DatasetNewRequest.  # noqa: E501
+
+
+        :return: The description of this DatasetNewRequest.  # noqa: E501
+        :rtype: str
+        """
+        return self._description
+
+    @description.setter
+    def description(self, description):
+        """Sets the description of this DatasetNewRequest.
+
+
+        :param description: The description of this DatasetNewRequest.  # noqa: E501
+        :type: str
+        """
+
+        self._description = description
 
     @property
     def files(self):

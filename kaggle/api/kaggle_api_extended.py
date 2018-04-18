@@ -30,7 +30,7 @@ except NameError:
 
 
 class KaggleApi(KaggleApi):
-  __version__ = '1.2.0'
+  __version__ = '1.3.0'
 
   CONFIG_NAME_PROXY = 'proxy'
   CONFIG_NAME_COMPETITION = 'competition'
@@ -183,7 +183,7 @@ class KaggleApi(KaggleApi):
           self.competitions_submissions_submit_with_http_info(
               id=competition,
               blob_file_tokens=upload_result_token,
-              submission_descriptio=message))
+              submission_description=message))
       return SubmitResult(submit_result)
 
   def competition_submissions(self, competition):
@@ -522,9 +522,10 @@ class KaggleApi(KaggleApi):
       sys.exit('Please specify exactly one license')
 
     license_name = self.get_or_exit(licenses[0], 'name')
+    description = meta_data.get("description")
 
     request = DatasetNewRequest(title, dataset_slug, owner_slug, license_name,
-                                [], not public)
+                                description, [], not public)
 
     for file in os.listdir(folder):
       if file == self.METADATA_FILE:

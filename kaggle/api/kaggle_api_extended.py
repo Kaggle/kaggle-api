@@ -30,7 +30,7 @@ except NameError:
 
 
 class KaggleApi(KaggleApi):
-  __version__ = '1.3.0'
+  __version__ = '1.3.1'
 
   CONFIG_NAME_PROXY = 'proxy'
   CONFIG_NAME_COMPETITION = 'competition'
@@ -410,7 +410,7 @@ class KaggleApi(KaggleApi):
       return result.token
     return None
 
-  def dataset_create_version(self, folder, version_notes, quiet=False):
+  def dataset_create_version(self, folder, version_notes, quiet=False, convert_to_csv=True):
     if not os.path.isdir(folder):
       sys.exit('Invalid folder: ' + folder)
 
@@ -431,40 +431,17 @@ class KaggleApi(KaggleApi):
     if ref == self.config_values[self.CONFIG_NAME_USER] + '/INSERT_SLUG_HERE':
       sys.exit('Default slug detected, please change values before uploading')
 
-    request = DatasetNewVersionRequest(version_notes, [])
-
-    for file in os.listdir(folder):
-      full_path = os.path.join(folder, file)
-
-      if file == self.METADATA_FILE:
-        continue
-
-      if os.path.isfile(full_path):
-        content_length = os.path.getsize(full_path)
-        token = self.dataset_upload_file(full_path)
-        if token is None:
-          print('Upload unsuccessful: ' + file)
-          return
-
-        if not quiet:
-          print('Upload successful: ' + file + ' (' +
-                File.get_size(content_length) + ')')
-
-        upload_file = DatasetUploadFile()
-        upload_file.token = token
-        request.files.append(upload_file)
-      else:
-        if not quiet:
-          print('Skipping: ' + file)
-
+    request = DatasetNewVersionRequest(version_notes, [], convert_to_csv)
+    resources = meta_data.get('resources')
+    self.upload_files(request, resources, folder, quiet)
     result = DatasetNewVersionResponse(
         self.process_response(
             self.datasets_create_version_with_http_info(owner_slug,
                                                         dataset_slug, request)))
     return result
 
-  def dataset_create_version_cli(self, folder, version_notes, quiet=False):
-    result = self.dataset_create_version(folder, version_notes, quiet)
+  def dataset_create_version_cli(self, folder, version_notes, quiet=False, convert_to_csv=True):
+    result = self.dataset_create_version(folder, version_notes, quiet, convert_to_csv)
 
     if result is None:
       print('Dataset version creation error: See previous output')
@@ -494,7 +471,7 @@ class KaggleApi(KaggleApi):
 
     print('Data package template written to: ' + meta_file)
 
-  def dataset_create_new(self, folder, public=False, quiet=False):
+  def dataset_create_new(self, folder, public=False, quiet=False, convert_to_csv=True):
     if not os.path.isdir(folder):
       sys.exit('Invalid folder: ' + folder)
 
@@ -525,37 +502,15 @@ class KaggleApi(KaggleApi):
     description = meta_data.get("description")
 
     request = DatasetNewRequest(title, dataset_slug, owner_slug, license_name,
-                                description, [], not public)
-
-    for file in os.listdir(folder):
-      if file == self.METADATA_FILE:
-        continue
-      full_path = os.path.join(folder, file)
-
-      if os.path.isfile(full_path):
-        content_length = os.path.getsize(full_path)
-        token = self.dataset_upload_file(full_path)
-        if token is None:
-          print('Upload unsuccessful: ' + file)
-          return
-
-        if not quiet:
-          print('Upload successful: ' + file + ' (' +
-                File.get_size(content_length) + ')')
-
-        upload_file = DatasetUploadFile()
-        upload_file.token = token
-        request.files.append(upload_file)
-      else:
-        if not quiet:
-          print('Skipping: ' + file)
-
+                                description, [], not public, convert_to_csv)
+    resources = meta_data.get('resources')
+    self.upload_files(request, resources, folder, quiet)
     result = DatasetNewResponse(
         self.process_response(self.datasets_create_new_with_http_info(request)))
     return result
 
-  def dataset_create_new_cli(self, folder, public=False, quiet=False):
-    result = self.dataset_create_new(folder, public, quiet)
+  def dataset_create_new_cli(self, folder, public=False, quiet=False, convert_to_csv=True):
+    result = self.dataset_create_new(folder, public, quiet, convert_to_csv)
     if result.status == 'ok':
       if public:
         print('Your public Dataset is being created. Please check progress at '
@@ -636,6 +591,11 @@ class KaggleApi(KaggleApi):
       return data[key]
     sys.exit('Key ' + key + ' not found in data')
 
+  def get_or_default(self, data, key, default):
+    if key in data:
+      return data[key]
+    return default
+
   def process_response(self, result):
     if len(result) == 3:
       data = result[0]
@@ -650,6 +610,34 @@ class KaggleApi(KaggleApi):
           self.already_printed_version_warning = True
       return data
     return result
+
+  def upload_files(self, request, resources, folder, quiet):
+    for file in os.listdir(folder):
+      if file == self.METADATA_FILE:
+        continue
+      full_path = os.path.join(folder, file)
+
+      if os.path.isfile(full_path):
+        content_length = os.path.getsize(full_path)
+        token = self.dataset_upload_file(full_path)
+        if token is None:
+          print('Upload unsuccessful: ' + file)
+          return
+
+        if not quiet:
+          print('Upload successful: ' + file + ' (' +
+                File.get_size(content_length) + ')')
+
+        upload_file = DatasetUploadFile()
+        upload_file.token = token
+        if resources:
+          for item in resources:
+            if file == item.get('path'):
+              upload_file.description = item.get('description')
+        request.files.append(upload_file)
+      else:
+        if not quiet:
+          print('Skipping: ' + file)
 
   def upload_complete(self, file, url):
     urllib3.disable_warnings()

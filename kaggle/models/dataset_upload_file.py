@@ -31,21 +31,26 @@ class DatasetUploadFile(object):
                             and the value is json key in definition.
     """
     swagger_types = {
-        'token': 'str'
+        'token': 'str',
+        'description': 'str'
     }
 
     attribute_map = {
-        'token': 'token'
+        'token': 'token',
+        'description': 'description'
     }
 
-    def __init__(self, token=None):  # noqa: E501
+    def __init__(self, token=None, description=None):  # noqa: E501
         """DatasetUploadFile - a model defined in Swagger"""  # noqa: E501
 
         self._token = None
+        self._description = None
         self.discriminator = None
 
         if token is not None:
             self.token = token
+        if description is not None:
+            self.description = description
 
     @property
     def token(self):
@@ -67,6 +72,27 @@ class DatasetUploadFile(object):
         """
 
         self._token = token
+
+    @property
+    def description(self):
+        """Gets the description of this DatasetUploadFile.  # noqa: E501
+
+
+        :return: The description of this DatasetUploadFile.  # noqa: E501
+        :rtype: str
+        """
+        return self._description
+
+    @description.setter
+    def description(self, description):
+        """Sets the description of this DatasetUploadFile.
+
+
+        :param description: The description of this DatasetUploadFile.  # noqa: E501
+        :type: str
+        """
+
+        self._description = description
 
     def to_dict(self):
         """Returns the model properties as a dict"""

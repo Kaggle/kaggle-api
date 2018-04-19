@@ -1,8 +1,13 @@
 Changelog
 ====
 
+#### 1.3.1
+Release date: 4/19/18
+* Give the option to set dataset file descriptions
+* Give the option to not convert tabular datasets to csv
+
 #### 1.3.0
-Release date: TBD
+Release date: 4/18/18
 
 * Give the option to set the dataset description during creation
 

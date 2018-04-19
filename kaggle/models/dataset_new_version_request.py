@@ -34,23 +34,28 @@ class DatasetNewVersionRequest(object):
     """
     swagger_types = {
         'version_notes': 'str',
-        'files': 'list[DatasetUploadFile]'
+        'files': 'list[DatasetUploadFile]',
+        'convert_to_csv': 'bool'
     }
 
     attribute_map = {
         'version_notes': 'versionNotes',
-        'files': 'files'
+        'files': 'files',
+        'convert_to_csv': 'convertToCsv'
     }
 
-    def __init__(self, version_notes=None, files=None):  # noqa: E501
+    def __init__(self, version_notes=None, files=None, convert_to_csv=True):  # noqa: E501
         """DatasetNewVersionRequest - a model defined in Swagger"""  # noqa: E501
 
         self._version_notes = None
         self._files = None
+        self._convert_to_csv = None
         self.discriminator = None
 
         self.version_notes = version_notes
         self.files = files
+        if convert_to_csv is not None:
+            self.convert_to_csv = convert_to_csv
 
     @property
     def version_notes(self):
@@ -97,6 +102,27 @@ class DatasetNewVersionRequest(object):
             raise ValueError("Invalid value for `files`, must not be `None`")  # noqa: E501
 
         self._files = files
+
+    @property
+    def convert_to_csv(self):
+        """Gets the convert_to_csv of this DatasetNewVersionRequest.  # noqa: E501
+
+
+        :return: The convert_to_csv of this DatasetNewVersionRequest.  # noqa: E501
+        :rtype: bool
+        """
+        return self._convert_to_csv
+
+    @convert_to_csv.setter
+    def convert_to_csv(self, convert_to_csv):
+        """Sets the convert_to_csv of this DatasetNewVersionRequest.
+
+
+        :param convert_to_csv: The convert_to_csv of this DatasetNewVersionRequest.  # noqa: E501
+        :type: bool
+        """
+
+        self._convert_to_csv = convert_to_csv
 
     def to_dict(self):
         """Returns the model properties as a dict"""

@@ -39,7 +39,8 @@ class DatasetNewRequest(object):
         'license_name': 'str',
         'description': 'str',
         'files': 'list[DatasetUploadFile]',
-        'is_private': 'bool'
+        'is_private': 'bool',
+        'convert_to_csv': 'bool'
     }
 
     attribute_map = {
@@ -49,10 +50,11 @@ class DatasetNewRequest(object):
         'license_name': 'licenseName',
         'description': 'description',
         'files': 'files',
-        'is_private': 'isPrivate'
+        'is_private': 'isPrivate',
+        'convert_to_csv': 'convertToCsv'
     }
 
-    def __init__(self, title=None, slug=None, owner_slug=None, license_name='unknown', description='', files=None, is_private=True):  # noqa: E501
+    def __init__(self, title=None, slug=None, owner_slug=None, license_name='unknown', description='', files=None, is_private=True, convert_to_csv=True):  # noqa: E501
         """DatasetNewRequest - a model defined in Swagger"""  # noqa: E501
 
         self._title = None
@@ -62,6 +64,7 @@ class DatasetNewRequest(object):
         self._description = None
         self._files = None
         self._is_private = None
+        self._convert_to_csv = None
         self.discriminator = None
 
         self.title = title
@@ -76,6 +79,8 @@ class DatasetNewRequest(object):
         self.files = files
         if is_private is not None:
             self.is_private = is_private
+        if convert_to_csv is not None:
+            self.convert_to_csv = convert_to_csv
 
     @property
     def title(self):
@@ -233,6 +238,27 @@ class DatasetNewRequest(object):
         """
 
         self._is_private = is_private
+
+    @property
+    def convert_to_csv(self):
+        """Gets the convert_to_csv of this DatasetNewRequest.  # noqa: E501
+
+
+        :return: The convert_to_csv of this DatasetNewRequest.  # noqa: E501
+        :rtype: bool
+        """
+        return self._convert_to_csv
+
+    @convert_to_csv.setter
+    def convert_to_csv(self, convert_to_csv):
+        """Sets the convert_to_csv of this DatasetNewRequest.
+
+
+        :param convert_to_csv: The convert_to_csv of this DatasetNewRequest.  # noqa: E501
+        :type: bool
+        """
+
+        self._convert_to_csv = convert_to_csv
 
     def to_dict(self):
         """Returns the model properties as a dict"""

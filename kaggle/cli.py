@@ -252,6 +252,12 @@ def parse_datasets(subparsers):
       help=Help.param_public)
   parser_datasets_create_optional.add_argument(
       '-q', '--quiet', dest='quiet', action='store_true', help=Help.param_quiet)
+  parser_datasets_create_optional.add_argument(
+      '-t',
+      '--keep-tabular',
+      dest="convert_to_csv",
+      action="store_false",
+      help=Help.param_keep_tabular)
   parser_datasets_create._action_groups.append(parser_datasets_create_optional)
   parser_datasets_create.set_defaults(func=api.dataset_create_new_cli)
 
@@ -273,6 +279,12 @@ def parse_datasets(subparsers):
       '-p', '--path', dest='folder', required=True, help=Help.param_upfolder)
   parser_datasets_version_optional.add_argument(
       '-q', '--quiet', dest='quiet', action='store_true', help=Help.param_quiet)
+  parser_datasets_version_optional.add_argument(
+      '-t',
+      '--keep-tabular',
+      dest="convert_to_csv",
+      action="store_false",
+      help=Help.param_keep_tabular)
   parser_datasets_version._action_groups.append(
       parser_datasets_version_optional)
   parser_datasets_version.set_defaults(func=api.dataset_create_version_cli)
@@ -378,6 +390,7 @@ class Help:
   param_proxy = 'Proxy for HTTP requests'
   param_quiet = 'Suppress printing information about download progress'
   param_public = 'Create the Dataset publicly (default is private)'
+  param_keep_tabular = 'Do not convert tabular files to CSV (default is to convert)'
   param_force = ('Skip check whether local version of file is up to date, force'
                  ' file download')
   param_dataset = ('Dataset URL suffix in format <owner>/<dataset-name> (use '

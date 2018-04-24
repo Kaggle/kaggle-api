@@ -10,9 +10,11 @@ Ensure you have Python and the package manager `pip` installed.
 
 Run the following command to access the Kaggle API using the command line:
 
-`pip install kaggle`
+`pip install kaggle` (You may need to do `pip install --user kaggle` on Mac/Linux.  This is recommended if problems come up during the installation process.)
 
 You can now use the `kaggle` command as shown in the examples below.
+
+If you run into a `kaggle: command not found` error, ensure that your python binaries are on your path.  You can see where `kaggle` is installed by doing `pip uninstall kaggle` and seeing where the binary is.  For a local user install on Linux, the default location is `~/.local/bin`.  On Windows, the default location is `$PYTHON_HOME/Scripts`.
 
 ## API credentials
 

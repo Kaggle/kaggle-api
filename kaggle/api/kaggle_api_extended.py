@@ -47,7 +47,7 @@ except NameError:
 
 
 class KaggleApi(KaggleApi):
-  __version__ = '1.3.2'
+  __version__ = '1.3.2.1'
 
   CONFIG_NAME_PROXY = 'proxy'
   CONFIG_NAME_COMPETITION = 'competition'
@@ -690,21 +690,21 @@ class KaggleApi(KaggleApi):
         description=self.get_or_default(column, 'description', ''))
     if 'type' in column:
       original_type = column['type']
-      processed_column.original_type(original_type)
+      processed_column.original_type = original_type
       if (original_type == 'string' or original_type == 'date' or
           original_type == 'time' or original_type == 'yearmonth' or
           original_type == 'duration' or original_type == 'geopoint' or
           original_type == 'geojson'):
-        processed_column.type('string')
+        processed_column.type ='string'
       elif (original_type == 'numeric' or original_type == 'number' or
             original_type == 'integer' or original_type == 'year'):
-        processed_column.type('numeric')
+        processed_column.type = 'numeric'
       elif original_type == 'boolean':
-        processed_column.type('boolean')
+        processed_column.type = 'boolean'
       elif original_type == 'datetime':
-        processed_column.type('datetime')
+        processed_column.type = 'datetime'
       else:
-        processed_column.type('unknown')
+        processed_column.type = 'unknown'
     return processed_column
 
   def upload_complete(self, file, url):

@@ -50,25 +50,30 @@ class DatasetNewVersionRequest(object):
     """
     swagger_types = {
         'version_notes': 'str',
+        'description': 'str',
         'files': 'list[DatasetUploadFile]',
         'convert_to_csv': 'bool'
     }
 
     attribute_map = {
         'version_notes': 'versionNotes',
+        'description': 'description',
         'files': 'files',
         'convert_to_csv': 'convertToCsv'
     }
 
-    def __init__(self, version_notes=None, files=None, convert_to_csv=True):  # noqa: E501
+    def __init__(self, version_notes=None, description=None, files=None, convert_to_csv=True):  # noqa: E501
         """DatasetNewVersionRequest - a model defined in Swagger"""  # noqa: E501
 
         self._version_notes = None
+        self._description = None
         self._files = None
         self._convert_to_csv = None
         self.discriminator = None
 
         self.version_notes = version_notes
+        if description is not None:
+            self.description = description
         self.files = files
         if convert_to_csv is not None:
             self.convert_to_csv = convert_to_csv
@@ -95,6 +100,27 @@ class DatasetNewVersionRequest(object):
             raise ValueError("Invalid value for `version_notes`, must not be `None`")  # noqa: E501
 
         self._version_notes = version_notes
+
+    @property
+    def description(self):
+        """Gets the description of this DatasetNewVersionRequest.  # noqa: E501
+
+
+        :return: The description of this DatasetNewVersionRequest.  # noqa: E501
+        :rtype: str
+        """
+        return self._description
+
+    @description.setter
+    def description(self, description):
+        """Sets the description of this DatasetNewVersionRequest.
+
+
+        :param description: The description of this DatasetNewVersionRequest.  # noqa: E501
+        :type: str
+        """
+
+        self._description = description
 
     @property
     def files(self):

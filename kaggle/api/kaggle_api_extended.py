@@ -26,6 +26,7 @@ import zipfile
 from ..api_client import ApiClient
 from kaggle.configuration import Configuration
 from .kaggle_api import KaggleApi
+from ..models.dataset_column import DatasetColumn
 from ..models.dataset_new_request import DatasetNewRequest
 from ..models.dataset_new_version_request import DatasetNewVersionRequest
 from ..models.dataset_upload_file import DatasetUploadFile
@@ -46,7 +47,7 @@ except NameError:
 
 
 class KaggleApi(KaggleApi):
-  __version__ = '1.3.1'
+  __version__ = '1.3.2'
 
   CONFIG_NAME_PROXY = 'proxy'
   CONFIG_NAME_COMPETITION = 'competition'
@@ -426,7 +427,11 @@ class KaggleApi(KaggleApi):
       return result.token
     return None
 
-  def dataset_create_version(self, folder, version_notes, quiet=False, convert_to_csv=True):
+  def dataset_create_version(self,
+                             folder,
+                             version_notes,
+                             quiet=False,
+                             convert_to_csv=True):
     if not os.path.isdir(folder):
       sys.exit('Invalid folder: ' + folder)
 
@@ -447,7 +452,10 @@ class KaggleApi(KaggleApi):
     if ref == self.config_values[self.CONFIG_NAME_USER] + '/INSERT_SLUG_HERE':
       sys.exit('Default slug detected, please change values before uploading')
 
-    request = DatasetNewVersionRequest(version_notes, [], convert_to_csv)
+    description = meta_data.get('description')
+
+    request = DatasetNewVersionRequest(version_notes, description, [],
+                                       convert_to_csv)
     resources = meta_data.get('resources')
     self.upload_files(request, resources, folder, quiet)
     result = DatasetNewVersionResponse(
@@ -456,8 +464,13 @@ class KaggleApi(KaggleApi):
                                                         dataset_slug, request)))
     return result
 
-  def dataset_create_version_cli(self, folder, version_notes, quiet=False, convert_to_csv=True):
-    result = self.dataset_create_version(folder, version_notes, quiet, convert_to_csv)
+  def dataset_create_version_cli(self,
+                                 folder,
+                                 version_notes,
+                                 quiet=False,
+                                 convert_to_csv=True):
+    result = self.dataset_create_version(folder, version_notes, quiet,
+                                         convert_to_csv)
 
     if result is None:
       print('Dataset version creation error: See previous output')
@@ -487,7 +500,11 @@ class KaggleApi(KaggleApi):
 
     print('Data package template written to: ' + meta_file)
 
-  def dataset_create_new(self, folder, public=False, quiet=False, convert_to_csv=True):
+  def dataset_create_new(self,
+                         folder,
+                         public=False,
+                         quiet=False,
+                         convert_to_csv=True):
     if not os.path.isdir(folder):
       sys.exit('Invalid folder: ' + folder)
 
@@ -515,7 +532,7 @@ class KaggleApi(KaggleApi):
       sys.exit('Please specify exactly one license')
 
     license_name = self.get_or_exit(licenses[0], 'name')
-    description = meta_data.get("description")
+    description = meta_data.get('description')
 
     request = DatasetNewRequest(title, dataset_slug, owner_slug, license_name,
                                 description, [], not public, convert_to_csv)
@@ -525,7 +542,11 @@ class KaggleApi(KaggleApi):
         self.process_response(self.datasets_create_new_with_http_info(request)))
     return result
 
-  def dataset_create_new_cli(self, folder, public=False, quiet=False, convert_to_csv=True):
+  def dataset_create_new_cli(self,
+                             folder,
+                             public=False,
+                             quiet=False,
+                             convert_to_csv=True):
     result = self.dataset_create_new(folder, public, quiet, convert_to_csv)
     if result.status == 'ok':
       if public:
@@ -650,10 +671,41 @@ class KaggleApi(KaggleApi):
           for item in resources:
             if file == item.get('path'):
               upload_file.description = item.get('description')
+              columns = self.get_or_default(item, 'columns', [])
+              processed = []
+              count = 0
+              for column in columns:
+                processed.append(self.process_column(column))
+                processed[count].order = count
+                count += 1
+              upload_file.columns = processed
         request.files.append(upload_file)
       else:
         if not quiet:
           print('Skipping: ' + file)
+
+  def process_column(self, column):
+    processed_column = DatasetColumn(
+        name=self.get_or_exit(column, 'name'),
+        description=self.get_or_default(column, 'description', ''))
+    if 'type' in column:
+      original_type = column['type']
+      processed_column.original_type(original_type)
+      if (original_type == 'string' or original_type == 'date' or
+          original_type == 'time' or original_type == 'yearmonth' or
+          original_type == 'duration' or original_type == 'geopoint' or
+          original_type == 'geojson'):
+        processed_column.type('string')
+      elif (original_type == 'numeric' or original_type == 'number' or
+            original_type == 'integer' or original_type == 'year'):
+        processed_column.type('numeric')
+      elif original_type == 'boolean':
+        processed_column.type('boolean')
+      elif original_type == 'datetime':
+        processed_column.type('datetime')
+      else:
+        processed_column.type('unknown')
+    return processed_column
 
   def upload_complete(self, file, url):
     urllib3.disable_warnings()

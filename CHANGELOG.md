@@ -1,6 +1,11 @@
 Changelog
 ====
 
+#### 1.3.2
+Release date: TBD
+* Give the option to specify a schema for uploaded datasets
+* Give the option to set the dataset description during updates
+
 #### 1.3.1
 Release date: 4/19/18
 * Give the option to set dataset file descriptions

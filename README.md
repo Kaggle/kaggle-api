@@ -203,7 +203,7 @@ optional arguments:
   -h, --help            show this help message and exit
   -f FILE, --file FILE  File name, all files downloaded if not provided
                         (use "kaggle datasets files -d <dataset>" to show options)
-  -p PATH, --path PATH  Folder where file(s) will be downloaded, defaults to C:\Users\timoboz\.kaggle
+  -p PATH, --path PATH  Folder where file(s) will be downloaded, defaults to ~/.kaggle
   -w, --wp              Download files to current working path
   -o, --force           Skip check whether local version of file is up to date, force file download
   -q, --quiet           Suppress printing information about download progress

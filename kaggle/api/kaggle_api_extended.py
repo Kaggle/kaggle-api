@@ -21,6 +21,7 @@ import json
 import os
 from os.path import expanduser
 from os.path import isfile
+import six
 import sys
 import zipfile
 from ..api_client import ApiClient
@@ -47,7 +48,7 @@ except NameError:
 
 
 class KaggleApi(KaggleApi):
-  __version__ = '1.3.2.1'
+  __version__ = '1.3.3'
 
   CONFIG_NAME_PROXY = 'proxy'
   CONFIG_NAME_COMPETITION = 'competition'
@@ -65,6 +66,11 @@ class KaggleApi(KaggleApi):
   config = os.path.join(config_path, config_file)
   config_values = {}
   already_printed_version_warning = False
+
+  # Hack for https://github.com/Kaggle/kaggle-api/issues/22 / b/78194015
+  if six.PY2:
+    reload(sys)
+    sys.setdefaultencoding('latin1')
 
   def authenticate(self):
     try:

@@ -1,8 +1,17 @@
 Changelog
 ====
 
+#### 1.3.3
+Release date: 4/26/18
+* Fix UnicodeEncodeError for certain datasets
+* Include Swagger yaml and config files
+
+#### 1.3.2.1
+Release date: 4/24/18
+* Fix bug with column metadata
+
 #### 1.3.2
-Release date: TBD
+Release date: 4/24/18
 * Give the option to specify a schema for uploaded datasets
 * Give the option to set the dataset description during updates
 

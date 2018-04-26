@@ -1,0 +1,586 @@
+# Copyright 2018 Kaggle Inc
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+swagger: "2.0"
+info:
+  description: API for kaggle.com
+  version: "1"
+  title: Kaggle API
+  termsOfService: https://www.kaggle.com/terms
+  contact:
+    name: Contact Kaggle
+    url: https://www.kaggle.com/contact
+host: www.kaggle.com
+basePath: /api/v1
+schemes:
+   - https
+securityDefinitions:
+  basicAuth:
+    type: basic
+security:
+  - basicAuth: []
+externalDocs:
+  description: Further Kaggle documentation
+  url: https://www.kaggle.com
+tags:
+  - name: kaggle
+definitions:
+  Result:
+    type: object
+  Error:
+    type: object
+    properties:
+      code:
+        type: integer
+        example: 404
+      message:
+        type: string
+        example: NotFound
+  DatasetColumn:
+    type: object
+    properties:
+      order:
+        type: number
+      name:
+        type: string
+      type:
+        type: string
+        default: unknown
+        enum:
+        - string
+        - boolean
+        - numeric
+        - datetime
+        - unknown
+      originalType:
+        type: string
+      description:
+        type: string
+  DatasetUploadFile:
+    type: object
+    properties:
+      token:
+        type: string
+      description:
+        type: string
+      columns:
+        type: array
+        items:
+          $ref: '#/definitions/DatasetColumn'
+  DatasetNewVersionRequest:
+    type: object
+    required:
+    - versionNotes
+    - files
+    properties:
+      versionNotes:
+        type: string
+      description:
+        type: string
+      files:
+        type: array
+        items:
+          $ref: '#/definitions/DatasetUploadFile'
+      convertToCsv:
+        type: boolean
+        default: true
+  DatasetNewRequest:
+    type: object
+    required:
+    - title
+    - licenseShortName
+    - files
+    properties:
+      title:
+        type: string
+      slug:
+        type: string
+      ownerSlug:
+        type: string
+      licenseName:
+        type: string
+        default: unknown
+        enum:
+        - CC0-1.0
+        - CC-BY-SA-4.0
+        - GPL-2.0
+        - ODbL-1.0
+        - CC-BY-NC-SA-4.0
+        - unknown
+        - DbCL-1.0
+        - CC-BY-SA-3.0
+        - copyright-authors
+        - other
+        - reddit-api
+        - world-bank
+      description:
+        type: string
+        default: ''
+      files:
+        type: array
+        items:
+          $ref: '#/definitions/DatasetUploadFile'
+      isPrivate:
+        type: boolean
+        default: true
+      convertToCsv:
+        type: boolean
+        default: true
+parameters:
+  guidParam:
+    in: path
+    name: guid
+    required: true
+    type: string
+    minimum: 0
+    description: guid specifies location where submission should be uploaded
+paths:
+  /competitions/list:
+    get:
+      tags:
+      - kaggle
+      summary: List competitions
+      operationId: CompetitionsList
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: page
+          required: false
+          type: integer
+          default: 1
+          description: Page number
+        - in: query
+          name: search
+          required: false
+          type: string
+          default: ''
+          description: Search terms
+      responses:
+        200:
+          description: Result
+          schema:
+            $ref: '#/definitions/Result'
+        default: 
+          description: Error
+          schema:
+            $ref: '#/definitions/Error'
+  /competitions/submissions/list/{id}:
+    get:
+      tags:
+      - kaggle
+      summary: List competition submissions
+      operationId: CompetitionsSubmissionsList
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: string
+          description: Competition name
+        - in: query
+          name: page
+          required: false
+          type: integer
+          default: 1
+          description: Page number
+      responses:
+        200:
+          description: Result
+          schema:
+            $ref: '#/definitions/Result'
+        default: 
+          description: Error
+          schema:
+            $ref: '#/definitions/Error'
+  /competitions/submissions/url/{contentLength}/{lastModifiedDateUtc}:
+    post:
+      tags:
+        - kaggle
+      summary: Generate competition submission URL
+      operationId: CompetitionsSubmissionsUrl
+      produces:
+        - application/json
+      consumes:
+        - multipart/form-data
+      parameters:
+        - in: formData
+          name: fileName
+          required: false
+          type: string
+          description: Competition submission file name    
+        - in: path
+          name: contentLength
+          required: true
+          type: integer
+          description: Content length of file in bytes
+        - in: path
+          name: lastModifiedDateUtc
+          required: true
+          type: integer
+          description: Last modified date of file in milliseconds since epoch in UTC
+      responses:
+        200:
+          description: Result
+          schema:
+            $ref: '#/definitions/Result'
+        default: 
+          description: Error
+          schema:
+            $ref: '#/definitions/Error'
+  /competitions/submissions/upload/{guid}/{contentLength}/{lastModifiedDateUtc}:
+    post:
+      tags:
+        - kaggle
+      summary: Upload competition submission file
+      operationId: CompetitionsSubmissionsUpload
+      produces:
+        - application/json
+      consumes:
+        - multipart/form-data
+      parameters:
+        - in: formData
+          name: file
+          required: true
+          type: file
+          description: Competition submission file
+        - in: path
+          name: guid
+          required: true
+          type: string
+          description: Location where submission should be uploaded
+        - in: path
+          name: contentLength
+          required: true
+          type: integer
+          description: Content length of file in bytes
+        - in: path
+          name: lastModifiedDateUtc
+          required: true
+          type: integer
+          description: Last modified date of file in milliseconds since epoch in UTC
+      responses:
+        200:
+          description: Result
+          schema:
+            $ref: '#/definitions/Result'
+        default: 
+          description: Error
+          schema:
+            $ref: '#/definitions/Error'
+  /competitions/submissions/submit/{id}:
+    post:
+      tags:
+      - kaggle
+      summary: Submit to competition
+      operationId: CompetitionsSubmissionsSubmit
+      produces:
+        - application/json
+      consumes:
+        - multipart/form-data
+      parameters:
+        - in: formData
+          name: blobFileTokens
+          required: true
+          type: string
+          description: Token identifying location of uploaded submission file
+        - in: formData
+          name: submissionDescription
+          required: true
+          type: string
+          description: Description of competition submission
+        - in: path
+          name: id
+          required: true
+          type: string
+          description: Competition name
+      responses:
+        200:
+          description: Result
+          schema:
+            $ref: '#/definitions/Result'
+        default: 
+          description: Error
+          schema:
+            $ref: '#/definitions/Error'
+  /competitions/data/list/{id}:
+    get:
+      tags:
+      - kaggle
+      summary: List competition data files
+      operationId: CompetitionsDataListFiles
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: string
+          description: Competition name
+      responses:
+        200:
+          description: Result
+          schema:
+            $ref: '#/definitions/Result'
+        default: 
+          description: Error
+          schema:
+            $ref: '#/definitions/Error'
+  /competitions/data/download/{id}/{fileName}:
+    get:
+      tags:
+      - kaggle
+      summary: Download competition data file
+      operationId: CompetitionsDataDownloadFile
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: string
+          description: Competition name
+        - in: path
+          name: fileName
+          required: true
+          type: string
+          description: Competition name
+      responses:
+        200:
+          description: Result
+          schema:
+            $ref: '#/definitions/Result'
+        default: 
+          description: Error
+          schema:
+            $ref: '#/definitions/Error'
+  /datasets/list:
+    get:
+      tags:
+      - kaggle
+      summary: List datasets
+      operationId: DatasetsList
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: page
+          required: false
+          type: integer
+          default: 1
+          description: Page number
+        - in: query
+          name: search
+          required: false
+          default: ''
+          type: string
+          description: Search terms
+      responses:
+        200:
+          description: Result
+          schema:
+            $ref: '#/definitions/Result'
+        default: 
+          description: Error
+          schema:
+            $ref: '#/definitions/Error'
+  /datasets/list/{ownerSlug}/{datasetSlug}:
+    get:
+      tags:
+      - kaggle
+      summary: List dataset files
+      operationId: DatasetsListFiles
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: ownerSlug
+          required: true
+          type: string
+          description: Dataset owner
+        - in: path
+          name: datasetSlug
+          required: true
+          type: string
+          description: Dataset name
+      responses:
+        200:
+          description: Result
+          schema:
+            $ref: '#/definitions/Result'
+        default: 
+          description: Error
+          schema:
+            $ref: '#/definitions/Error'
+  /datasets/view/{ownerSlug}/{datasetSlug}:
+    get:
+      tags:
+      - kaggle
+      summary: Show details about a dataset
+      operationId: DatasetsView
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: ownerSlug
+          required: true
+          type: string
+          description: Dataset owner
+        - in: path
+          name: datasetSlug
+          required: true
+          type: string
+          description: Dataset name
+      responses:
+        200:
+          description: Result
+          schema:
+            $ref: '#/definitions/Result'
+        default: 
+          description: Error
+          schema:
+            $ref: '#/definitions/Error'
+  /datasets/download/{ownerSlug}/{datasetSlug}/{fileName}:
+    get:
+      tags:
+      - kaggle
+      summary: Download dataset file
+      operationId: DatasetsDownloadFile
+      produces:
+        - file
+      parameters:
+        - in: path
+          name: ownerSlug
+          required: true
+          type: string
+          description: Dataset owner
+        - in: path
+          name: datasetSlug
+          required: true
+          type: string
+          description: Dataset name
+        - in: path
+          name: fileName
+          required: true
+          type: string
+          description: File name
+        - in: query
+          name: datasetVersionNumber
+          required: false
+          type: string
+          description: Dataset version number
+      responses:
+        200:
+          description: Result
+          schema:
+            $ref: '#/definitions/Result'
+        default: 
+          description: Error
+          schema:
+            $ref: '#/definitions/Error'
+  /datasets/upload/file/{contentLength}/{lastModifiedDateUtc}:
+    post:
+      tags:
+      - kaggle
+      summary: Get URL and token to start uploading a data file
+      operationId: DatasetsUploadFile
+      produces:
+        - application/json
+      consumes:
+        - multipart/form-data
+      parameters:
+        - in: formData
+          name: fileName
+          required: true
+          type: string
+          description: Dataset file name
+        - in: path
+          name: contentLength
+          required: true
+          type: integer
+          description: Content length of file in bytes
+        - in: path
+          name: lastModifiedDateUtc
+          required: true
+          type: integer
+          description: Last modified date of file in milliseconds since epoch in UTC
+      responses:
+        200:
+          description: Result
+          schema:
+            $ref: '#/definitions/Result'
+        default: 
+          description: Error
+          schema:
+            $ref: '#/definitions/Error'
+  /datasets/create/version/{ownerSlug}/{datasetSlug}:
+    post:
+      tags:
+      - kaggle
+      summary: Create a new dataset version
+      operationId: DatasetsCreateVersion
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - in: path
+          name: ownerSlug
+          required: true
+          type: string
+          description: Dataset owner
+        - in: path
+          name: datasetSlug
+          required: true
+          type: string
+          description: Dataset name
+        - in: body
+          name: datasetNewVersionRequest
+          required: true
+          schema:
+            $ref: '#/definitions/DatasetNewVersionRequest'
+          description: Information for creating a new dataset version
+      responses:
+        200:
+          description: Result
+          schema:
+            $ref: '#/definitions/Result'
+        default: 
+          description: Error
+          schema:
+            $ref: '#/definitions/Error'
+  /datasets/create/new:
+    post:
+      tags:
+      - kaggle
+      summary: Create a new dataset 
+      operationId: DatasetsCreateNew
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: datasetNewRequest
+          required: true
+          schema:
+            $ref: '#/definitions/DatasetNewRequest'
+          description: Information for creating a new dataset
+      responses:
+        200:
+          description: Result
+          schema:
+            $ref: '#/definitions/Result'
+        default: 
+          description: Error
+          schema:
+            $ref: '#/definitions/Error'

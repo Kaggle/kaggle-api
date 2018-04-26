@@ -340,6 +340,10 @@ Example:
 `kaggle config unset -n competition`
 
 
+## Limitations
+The biggest limitation at the moment is that kernels are not supported in any way at this point.  We do intend to implement support in the near future, though there's no ETA.  Additionally, working with large datasets (>= 2GB) is currently not possible.
+
+
 ## License
 
 The Kaggle API is released under the [Apache 2.0 license](LICENSE).

@@ -1,6 +1,10 @@
 Changelog
 ====
 
+#### 1.3.4
+Release date: 4/30/18
+* Rename `columns` to `fields`
+
 #### 1.3.3
 Release date: 4/26/18
 * Fix UnicodeEncodeError for certain datasets

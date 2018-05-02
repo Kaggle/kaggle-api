@@ -233,7 +233,7 @@ optional arguments:
 
 Example:
 
-`kaggle datasets create -r -p /path/to/dataset`
+`kaggle datasets create -p /path/to/dataset`
 
 
 ##### Create a new dataset version

@@ -48,7 +48,7 @@ except NameError:
 
 
 class KaggleApi(KaggleApi):
-  __version__ = '1.3.4'
+  __version__ = '1.3.5'
 
   CONFIG_NAME_PROXY = 'proxy'
   CONFIG_NAME_COMPETITION = 'competition'
@@ -677,14 +677,16 @@ class KaggleApi(KaggleApi):
           for item in resources:
             if file == item.get('path'):
               upload_file.description = item.get('description')
-              fields = self.get_or_default(item, 'fields', [])
-              processed = []
-              count = 0
-              for field in fields:
-                processed.append(self.process_column(field))
-                processed[count].order = count
-                count += 1
-              upload_file.columns = processed
+              if 'schema' in item:
+                fields = self.get_or_default(item['schema'], 'fields', [])
+                processed = []
+                count = 0
+                for field in fields:
+                  processed.append(self.process_column(field))
+                  processed[count].order = count
+                  count += 1
+                upload_file.columns = processed
+
         request.files.append(upload_file)
       else:
         if not quiet:

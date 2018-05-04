@@ -1,6 +1,10 @@
 Changelog
 ====
 
+#### 1.3.5
+Release date: 5/4/18
+* Fix schema declaration in dataset resources
+
 #### 1.3.4
 Release date: 4/30/18
 * Rename `columns` to `fields`

@@ -48,7 +48,7 @@ except NameError:
 
 
 class KaggleApi(KaggleApi):
-  __version__ = '1.3.5'
+  __version__ = '1.3.6'
 
   CONFIG_NAME_PROXY = 'proxy'
   CONFIG_NAME_COMPETITION = 'competition'
@@ -459,9 +459,10 @@ class KaggleApi(KaggleApi):
       sys.exit('Default slug detected, please change values before uploading')
 
     description = meta_data.get('description')
+    keywords = self.get_or_default(meta_data, 'keywords', [])
 
     request = DatasetNewVersionRequest(version_notes, description, [],
-                                       convert_to_csv)
+                                       convert_to_csv, keywords)
     resources = meta_data.get('resources')
     self.upload_files(request, resources, folder, quiet)
     result = DatasetNewVersionResponse(
@@ -539,9 +540,11 @@ class KaggleApi(KaggleApi):
 
     license_name = self.get_or_exit(licenses[0], 'name')
     description = meta_data.get('description')
+    keywords = self.get_or_default(meta_data, 'keywords', [])
 
     request = DatasetNewRequest(title, dataset_slug, owner_slug, license_name,
-                                description, [], not public, convert_to_csv)
+                                description, [], not public, convert_to_csv,
+                                keywords)
     resources = meta_data.get('resources')
     self.upload_files(request, resources, folder, quiet)
     result = DatasetNewResponse(
@@ -703,7 +706,7 @@ class KaggleApi(KaggleApi):
           original_type == 'time' or original_type == 'yearmonth' or
           original_type == 'duration' or original_type == 'geopoint' or
           original_type == 'geojson'):
-        processed_column.type ='string'
+        processed_column.type = 'string'
       elif (original_type == 'numeric' or original_type == 'number' or
             original_type == 'integer' or original_type == 'year'):
         processed_column.type = 'numeric'

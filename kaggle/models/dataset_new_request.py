@@ -56,7 +56,8 @@ class DatasetNewRequest(object):
         'description': 'str',
         'files': 'list[DatasetUploadFile]',
         'is_private': 'bool',
-        'convert_to_csv': 'bool'
+        'convert_to_csv': 'bool',
+        'category_ids': 'list[str]'
     }
 
     attribute_map = {
@@ -67,10 +68,11 @@ class DatasetNewRequest(object):
         'description': 'description',
         'files': 'files',
         'is_private': 'isPrivate',
-        'convert_to_csv': 'convertToCsv'
+        'convert_to_csv': 'convertToCsv',
+        'category_ids': 'categoryIds'
     }
 
-    def __init__(self, title=None, slug=None, owner_slug=None, license_name='unknown', description='', files=None, is_private=True, convert_to_csv=True):  # noqa: E501
+    def __init__(self, title=None, slug=None, owner_slug=None, license_name='unknown', description='', files=None, is_private=True, convert_to_csv=True, category_ids=None):  # noqa: E501
         """DatasetNewRequest - a model defined in Swagger"""  # noqa: E501
 
         self._title = None
@@ -81,6 +83,7 @@ class DatasetNewRequest(object):
         self._files = None
         self._is_private = None
         self._convert_to_csv = None
+        self._category_ids = None
         self.discriminator = None
 
         self.title = title
@@ -97,6 +100,8 @@ class DatasetNewRequest(object):
             self.is_private = is_private
         if convert_to_csv is not None:
             self.convert_to_csv = convert_to_csv
+        if category_ids is not None:
+            self.category_ids = category_ids
 
     @property
     def title(self):
@@ -275,6 +280,27 @@ class DatasetNewRequest(object):
         """
 
         self._convert_to_csv = convert_to_csv
+
+    @property
+    def category_ids(self):
+        """Gets the category_ids of this DatasetNewRequest.  # noqa: E501
+
+
+        :return: The category_ids of this DatasetNewRequest.  # noqa: E501
+        :rtype: list[str]
+        """
+        return self._category_ids
+
+    @category_ids.setter
+    def category_ids(self, category_ids):
+        """Sets the category_ids of this DatasetNewRequest.
+
+
+        :param category_ids: The category_ids of this DatasetNewRequest.  # noqa: E501
+        :type: list[str]
+        """
+
+        self._category_ids = category_ids
 
     def to_dict(self):
         """Returns the model properties as a dict"""

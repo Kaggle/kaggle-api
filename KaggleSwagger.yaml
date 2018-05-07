@@ -94,6 +94,10 @@ definitions:
       convertToCsv:
         type: boolean
         default: true
+      categoryIds:
+        type: array
+        items:
+          type: string
   DatasetNewRequest:
     type: object
     required:
@@ -136,6 +140,10 @@ definitions:
       convertToCsv:
         type: boolean
         default: true
+      categoryIds:
+        type: array
+        items:
+          type: string
 parameters:
   guidParam:
     in: path

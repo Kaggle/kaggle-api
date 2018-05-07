@@ -52,23 +52,26 @@ class DatasetNewVersionRequest(object):
         'version_notes': 'str',
         'description': 'str',
         'files': 'list[DatasetUploadFile]',
-        'convert_to_csv': 'bool'
+        'convert_to_csv': 'bool',
+        'category_ids': 'list[str]'
     }
 
     attribute_map = {
         'version_notes': 'versionNotes',
         'description': 'description',
         'files': 'files',
-        'convert_to_csv': 'convertToCsv'
+        'convert_to_csv': 'convertToCsv',
+        'category_ids': 'categoryIds'
     }
 
-    def __init__(self, version_notes=None, description=None, files=None, convert_to_csv=True):  # noqa: E501
+    def __init__(self, version_notes=None, description=None, files=None, convert_to_csv=True, category_ids=None):  # noqa: E501
         """DatasetNewVersionRequest - a model defined in Swagger"""  # noqa: E501
 
         self._version_notes = None
         self._description = None
         self._files = None
         self._convert_to_csv = None
+        self._category_ids = None
         self.discriminator = None
 
         self.version_notes = version_notes
@@ -77,6 +80,8 @@ class DatasetNewVersionRequest(object):
         self.files = files
         if convert_to_csv is not None:
             self.convert_to_csv = convert_to_csv
+        if category_ids is not None:
+            self.category_ids = category_ids
 
     @property
     def version_notes(self):
@@ -165,6 +170,27 @@ class DatasetNewVersionRequest(object):
         """
 
         self._convert_to_csv = convert_to_csv
+
+    @property
+    def category_ids(self):
+        """Gets the category_ids of this DatasetNewVersionRequest.  # noqa: E501
+
+
+        :return: The category_ids of this DatasetNewVersionRequest.  # noqa: E501
+        :rtype: list[str]
+        """
+        return self._category_ids
+
+    @category_ids.setter
+    def category_ids(self, category_ids):
+        """Sets the category_ids of this DatasetNewVersionRequest.
+
+
+        :param category_ids: The category_ids of this DatasetNewVersionRequest.  # noqa: E501
+        :type: list[str]
+        """
+
+        self._category_ids = category_ids
 
     def to_dict(self):
         """Returns the model properties as a dict"""

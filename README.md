@@ -89,7 +89,7 @@ optional arguments:
                         If empty, the default competition will be used (use "kaggle config set competition")"
   -f FILE, --file FILE  File name, all files downloaded if not provided
                         (use "kaggle competitions files -c <competition>" to show options)
-  -p PATH, --path PATH  Folder where file(s) will be downloaded, defaults to  ~./kaggle
+  -p PATH, --path PATH  Folder where file(s) will be downloaded, defaults to  ~/.kaggle
   -w, --wp              Download files to current working path
   -o, --force           Skip check whether local version of file is up to date, force file download
   -q, --quiet           Suppress printing information about download progress

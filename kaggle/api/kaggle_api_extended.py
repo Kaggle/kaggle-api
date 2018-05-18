@@ -21,8 +21,11 @@ import json
 import os
 from os.path import expanduser
 from os.path import isfile
+import random
+import requests
 import six
 import sys
+import time
 import zipfile
 from ..api_client import ApiClient
 from kaggle.configuration import Configuration
@@ -37,6 +40,7 @@ from ..models.kaggle_models_extended import DatasetNewResponse
 from ..models.kaggle_models_extended import DatasetNewVersionResponse
 from ..models.kaggle_models_extended import File
 from ..models.kaggle_models_extended import FileUploadInfo
+from ..models.kaggle_models_extended import ListFilesResult
 from ..models.kaggle_models_extended import Submission
 from ..models.kaggle_models_extended import SubmitResult
 import urllib3
@@ -48,7 +52,7 @@ except NameError:
 
 
 class KaggleApi(KaggleApi):
-  __version__ = '1.3.6'
+  __version__ = '1.3.7'
 
   CONFIG_NAME_PROXY = 'proxy'
   CONFIG_NAME_COMPETITION = 'competition'
@@ -346,16 +350,19 @@ class KaggleApi(KaggleApi):
     dataset_list_files_result = self.process_response(
         self.datasets_list_files_with_http_info(
             owner_slug=owner_slug, dataset_slug=dataset_slug))
-    return [File(f) for f in dataset_list_files_result]
+    return ListFilesResult(dataset_list_files_result)
 
   def dataset_list_files_cli(self, dataset, csv=False):
-    files = self.dataset_list_files(dataset)
-    fields = ['name', 'size', 'creationDate']
-    if files:
-      if csv:
-        self.print_csv(files, fields)
+    result = self.dataset_list_files(dataset)
+    if result:
+      if result.error_message:
+        print(result.error_message)
       else:
-        self.print_table(files, fields)
+        fields = ['name', 'size', 'creationDate']
+        if csv:
+          self.print_csv(result.files, fields)
+        else:
+          self.print_table(result.files, fields)
     else:
       print('No files found')
 
@@ -583,7 +590,8 @@ class KaggleApi(KaggleApi):
         if not quiet:
           print(
               os.path.basename(outfile) + ': Downloaded ' +
-              File.get_size(size_read) + ' of ' + File.get_size(size),
+              File.get_size(size_read) + ' of ' + File.get_size(size) + ' to ' +
+              outpath,
               end='\r')
     if not quiet:
       print('\n', end='')
@@ -663,6 +671,7 @@ class KaggleApi(KaggleApi):
         continue
       full_path = os.path.join(folder, file)
 
+      print('Starting upload for file ' + file)
       if os.path.isfile(full_path):
         content_length = os.path.getsize(full_path)
         token = self.dataset_upload_file(full_path)
@@ -719,22 +728,30 @@ class KaggleApi(KaggleApi):
     return processed_column
 
   def upload_complete(self, file, url):
-    urllib3.disable_warnings()
-    proxy_url = self.get_config_value(self.CONFIG_NAME_PROXY)
-    if proxy_url is None:
-      http = urllib3.PoolManager()
-    else:
-      http = urllib3.ProxyManager(proxy_url)
-
-    content_length = os.path.getsize(file)
-    with open(file, 'rb') as fp:
-      data = fp.read()
-      try:
-        response = http.request('PUT', url, body=data)
-      except Exception as error:
-        print(error)
-        return False
-    return True
+    file_name = os.path.basename(file)
+    try:
+      with open(file, 'rb') as fp:
+        status_code = -1
+        max_tries = 5
+        num_attempts = 0
+        headers = {}
+        while status_code == -1 or (status_code >= 500 and status_code < 600):
+          # If there are problems with this retry strategy, look at
+          # https://cloud.google.com/storage/docs/exponential-backoff
+          if num_attempts >= 1:
+            if num_attempts < max_tries:
+              print('Upload failed with status code ' + str(status_code) + ', retrying')
+            else:
+              print('Ran out of retries, upload failed with status code ' + str(status_code))
+          # TODO:  This needs proper resume support, but doing it with streams
+          # seems a bit more complicated
+          response = requests.put(url, data=fp, headers=headers)
+          status_code = response.status_code
+          num_attempts += 1
+    except Exception as error:
+      print(error)
+      return False
+    return response.status_code == 200 or response.status_code == 201
 
   def dataset_data(self, dataset, file_path=None, force=False, quiet=True):
     dataset_url_list = dataset.split('/')
@@ -797,40 +814,3 @@ class KaggleApi(KaggleApi):
         competition, file_path, path=None, force=force, quiet=quiet)
     return effective_path
 
-  def upload_in_chunks(self, file, url, chunk_size=1048576):
-    urllib3.disable_warnings()
-    proxy_url = self.get_config_value(self.CONFIG_NAME_PROXY)
-    if proxy_url is None:
-      http = urllib3.PoolManager()
-    else:
-      http = urllib3.ProxyManager(proxy_url)
-
-    file_name = os.path.basename(file)
-    content_length = os.path.getsize(file)
-    index = 0
-    offset = 0
-    headers = {}
-    with open(file, 'rb') as fp:
-      for chunk in self.read_in_chunks(fp, chunk_size=chunk_size):
-
-        offset = index + len(chunk)
-        headers['Content-Length'] = content_length
-        headers['Content-Range'] = 'bytes %s-%s/%s' % (index, offset,
-                                                       content_length)
-        index = offset
-        try:
-          response = http.request('PUT', url, body=chunk, headers=headers)
-          print(file_name + ': Uploaded ' + File.get_size(index) + ' of ' +
-                File.get_size(content_length))
-
-        except Exception as error:
-          print(error)
-          return False
-    return True
-
-  def read_in_chunks(self, file_object, chunk_size):
-    while True:
-      data = file_object.read(chunk_size)
-      if not data:
-        break
-      yield data

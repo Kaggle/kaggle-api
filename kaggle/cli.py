@@ -17,11 +17,20 @@
 from __future__ import print_function
 import argparse
 from kaggle import api
+from kaggle import KaggleApi
+import six
 
 
 def main():
   parser = argparse.ArgumentParser(
       formatter_class=argparse.RawTextHelpFormatter)
+
+  parser.add_argument(
+      '-v',
+      '--version',
+      action='version',
+      version='Kaggle API ' + KaggleApi.__version__)
+
   subparsers = parser.add_subparsers(
       title='commands', help=Help.kaggle, dest='command')
   subparsers.required = True
@@ -40,10 +49,17 @@ def main():
 
 
 def parse_competitions(subparsers):
-  parser_competitions = subparsers.add_parser(
+  if six.PY2:
+    parser_competitions = subparsers.add_parser(
       'competitions',
       formatter_class=argparse.RawTextHelpFormatter,
       help=Help.group_competitions)
+  else:
+    parser_competitions = subparsers.add_parser(
+      'competitions',
+      formatter_class=argparse.RawTextHelpFormatter,
+      help=Help.group_competitions,
+      aliases=['c'])
   subparsers_competitions = parser_competitions.add_subparsers(
       title='commands', dest='command')
   subparsers_competitions.required = True
@@ -179,10 +195,17 @@ def parse_competitions(subparsers):
 
 
 def parse_datasets(subparsers):
-  parser_datasets = subparsers.add_parser(
+  if six.PY2:
+    parser_datasets = subparsers.add_parser(
       'datasets',
       formatter_class=argparse.RawTextHelpFormatter,
       help=Help.group_datasets)
+  else:
+    parser_datasets = subparsers.add_parser(
+      'datasets',
+      formatter_class=argparse.RawTextHelpFormatter,
+      help=Help.group_datasets,
+      aliases=['d'])
   subparsers_datasets = parser_datasets.add_subparsers(
       title='commands', dest='command')
   subparsers_datasets.required = True
@@ -271,8 +294,8 @@ def parse_datasets(subparsers):
   parser_datasets_create_optional.add_argument(
       '-t',
       '--keep-tabular',
-      dest="convert_to_csv",
-      action="store_false",
+      dest='convert_to_csv',
+      action='store_false',
       help=Help.param_keep_tabular)
   parser_datasets_create._action_groups.append(parser_datasets_create_optional)
   parser_datasets_create.set_defaults(func=api.dataset_create_new_cli)
@@ -298,8 +321,8 @@ def parse_datasets(subparsers):
   parser_datasets_version_optional.add_argument(
       '-t',
       '--keep-tabular',
-      dest="convert_to_csv",
-      action="store_false",
+      dest='convert_to_csv',
+      action='store_false',
       help=Help.param_keep_tabular)
   parser_datasets_version._action_groups.append(
       parser_datasets_version_optional)
@@ -364,7 +387,7 @@ def parse_config(subparsers):
 
 
 class Help:
-  kaggle_choices = ['competitions', 'datasets', 'config']
+  kaggle_choices = ['competitions', 'c', 'datasets', 'd', 'config']
   competitions_choices = ['list', 'files', 'download', 'submit', 'submissions']
   datasets_choices = ['list', 'files', 'download', 'create', 'version', 'init']
   config_choices = ['view', 'set', 'unset']
@@ -406,7 +429,8 @@ class Help:
   param_proxy = 'Proxy for HTTP requests'
   param_quiet = 'Suppress printing information about download progress'
   param_public = 'Create the Dataset publicly (default is private)'
-  param_keep_tabular = 'Do not convert tabular files to CSV (default is to convert)'
+  param_keep_tabular = ('Do not convert tabular files to CSV (default is to '
+                        'convert)')
   param_force = ('Skip check whether local version of file is up to date, force'
                  ' file download')
   param_dataset = ('Dataset URL suffix in format <owner>/<dataset-name> (use '

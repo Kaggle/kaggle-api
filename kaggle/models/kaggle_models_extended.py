@@ -133,6 +133,20 @@ class DatasetNewResponse:
     return self.url
 
 
+class ListFilesResult:
+
+  def __init__(self, init_dict):
+    self.error_message = init_dict['errorMessage']
+    files = init_dict['datasetFiles']
+    if files:
+      self.files = [File(f) for f in files]
+    else:
+      self.files = {}
+
+  def __repr__(self):
+    return self.error_message
+
+
 def parse(string):
   time_formats = [
       '%Y-%m-%dT%H:%M:%S', '%Y-%m-%dT%H:%M:%SZ', '%Y-%m-%dT%H:%M:%S.%f',

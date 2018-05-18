@@ -18,7 +18,7 @@ from setuptools import setup, find_packages
 
 setup(
     name = 'kaggle',
-    version = '1.3.6',
+    version = '1.3.7',
     description = 'Kaggle API',
     long_description = 'Official API for https://www.kaggle.com, accessible using a command line tool implemented in Python. Beta release - Kaggle reserves the right to modify the API functionality currently offered.',
     author = 'Kaggle',
@@ -30,7 +30,7 @@ setup(
           'kaggle = kaggle.cli:main'
         ]
     },
-    install_requires = ['urllib3 >= 1.15', 'six >= 1.10', 'certifi', 'python-dateutil'],
+    install_requires = ['urllib3 >= 1.15', 'six >= 1.10', 'certifi', 'python-dateutil', 'requests'],
     packages = find_packages(),
     license = 'Apache 2.0'
 )

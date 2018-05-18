@@ -1,6 +1,14 @@
 Changelog
 ====
 
+#### 1.3.7
+Release date: 5/18/18
+* Add aliases for subcommands (ex. `kaggle c` is the same thing as `kaggle competitions`)
+* Add version command
+* Show full download path for files
+* Remove file size limitation from ploads
+* Add limited retry support on uploads
+
 #### 1.3.6
 Release date: 5/7/18
 * Give the option to add tags to datasets.

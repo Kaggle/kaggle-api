@@ -51,15 +51,15 @@ def main():
 def parse_competitions(subparsers):
   if six.PY2:
     parser_competitions = subparsers.add_parser(
-      'competitions',
-      formatter_class=argparse.RawTextHelpFormatter,
-      help=Help.group_competitions)
+        'competitions',
+        formatter_class=argparse.RawTextHelpFormatter,
+        help=Help.group_competitions)
   else:
     parser_competitions = subparsers.add_parser(
-      'competitions',
-      formatter_class=argparse.RawTextHelpFormatter,
-      help=Help.group_competitions,
-      aliases=['c'])
+        'competitions',
+        formatter_class=argparse.RawTextHelpFormatter,
+        help=Help.group_competitions,
+        aliases=['c'])
   subparsers_competitions = parser_competitions.add_subparsers(
       title='commands', dest='command')
   subparsers_competitions.required = True
@@ -197,15 +197,15 @@ def parse_competitions(subparsers):
 def parse_datasets(subparsers):
   if six.PY2:
     parser_datasets = subparsers.add_parser(
-      'datasets',
-      formatter_class=argparse.RawTextHelpFormatter,
-      help=Help.group_datasets)
+        'datasets',
+        formatter_class=argparse.RawTextHelpFormatter,
+        help=Help.group_datasets)
   else:
     parser_datasets = subparsers.add_parser(
-      'datasets',
-      formatter_class=argparse.RawTextHelpFormatter,
-      help=Help.group_datasets,
-      aliases=['d'])
+        'datasets',
+        formatter_class=argparse.RawTextHelpFormatter,
+        help=Help.group_datasets,
+        aliases=['d'])
   subparsers_datasets = parser_datasets.add_subparsers(
       title='commands', dest='command')
   subparsers_datasets.required = True
@@ -324,6 +324,12 @@ def parse_datasets(subparsers):
       dest='convert_to_csv',
       action='store_false',
       help=Help.param_keep_tabular)
+  parser_datasets_version_optional.add_argument(
+      '-d',
+      '--delete-old-versions',
+      dest='delete_old_versions',
+      action='store_true',
+      help=Help.param_delete_old_version)
   parser_datasets_version._action_groups.append(
       parser_datasets_version_optional)
   parser_datasets_version.set_defaults(func=api.dataset_create_version_cli)
@@ -431,6 +437,7 @@ class Help:
   param_public = 'Create the Dataset publicly (default is private)'
   param_keep_tabular = ('Do not convert tabular files to CSV (default is to '
                         'convert)')
+  param_delete_old_version = ('Delete old versions of this dataset')
   param_force = ('Skip check whether local version of file is up to date, force'
                  ' file download')
   param_dataset = ('Dataset URL suffix in format <owner>/<dataset-name> (use '

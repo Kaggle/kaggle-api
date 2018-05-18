@@ -21,11 +21,7 @@ import json
 import os
 from os.path import expanduser
 from os.path import isfile
-import random
-import requests
-import six
 import sys
-import time
 import zipfile
 from ..api_client import ApiClient
 from kaggle.configuration import Configuration
@@ -43,6 +39,8 @@ from ..models.kaggle_models_extended import FileUploadInfo
 from ..models.kaggle_models_extended import ListFilesResult
 from ..models.kaggle_models_extended import Submission
 from ..models.kaggle_models_extended import SubmitResult
+import requests
+import six
 import urllib3
 
 try:
@@ -52,7 +50,7 @@ except NameError:
 
 
 class KaggleApi(KaggleApi):
-  __version__ = '1.3.7'
+  __version__ = '1.3.8'
 
   CONFIG_NAME_PROXY = 'proxy'
   CONFIG_NAME_COMPETITION = 'competition'
@@ -444,7 +442,8 @@ class KaggleApi(KaggleApi):
                              folder,
                              version_notes,
                              quiet=False,
-                             convert_to_csv=True):
+                             convert_to_csv=True,
+                             delete_old_versions=False):
     if not os.path.isdir(folder):
       sys.exit('Invalid folder: ' + folder)
 
@@ -468,8 +467,13 @@ class KaggleApi(KaggleApi):
     description = meta_data.get('description')
     keywords = self.get_or_default(meta_data, 'keywords', [])
 
-    request = DatasetNewVersionRequest(version_notes, description, [],
-                                       convert_to_csv, keywords)
+    request = DatasetNewVersionRequest(
+        version_notes=version_notes,
+        description=description,
+        files=[],
+        convert_to_csv=convert_to_csv,
+        category_ids=keywords,
+        delete_old_versions=delete_old_versions)
     resources = meta_data.get('resources')
     self.upload_files(request, resources, folder, quiet)
     result = DatasetNewVersionResponse(
@@ -482,9 +486,14 @@ class KaggleApi(KaggleApi):
                                  folder,
                                  version_notes,
                                  quiet=False,
-                                 convert_to_csv=True):
-    result = self.dataset_create_version(folder, version_notes, quiet,
-                                         convert_to_csv)
+                                 convert_to_csv=True,
+                                 delete_old_versions=False):
+    result = self.dataset_create_version(
+        folder,
+        version_notes,
+        quiet=quiet,
+        convert_to_csv=convert_to_csv,
+        delete_old_versions=delete_old_versions)
 
     if result is None:
       print('Dataset version creation error: See previous output')
@@ -731,23 +740,7 @@ class KaggleApi(KaggleApi):
     file_name = os.path.basename(file)
     try:
       with open(file, 'rb') as fp:
-        status_code = -1
-        max_tries = 5
-        num_attempts = 0
-        headers = {}
-        while status_code == -1 or (status_code >= 500 and status_code < 600):
-          # If there are problems with this retry strategy, look at
-          # https://cloud.google.com/storage/docs/exponential-backoff
-          if num_attempts >= 1:
-            if num_attempts < max_tries:
-              print('Upload failed with status code ' + str(status_code) + ', retrying')
-            else:
-              print('Ran out of retries, upload failed with status code ' + str(status_code))
-          # TODO:  This needs proper resume support, but doing it with streams
-          # seems a bit more complicated
-          response = requests.put(url, data=fp, headers=headers)
-          status_code = response.status_code
-          num_attempts += 1
+        response = requests.put(url, data=fp)
     except Exception as error:
       print(error)
       return False
@@ -813,4 +806,3 @@ class KaggleApi(KaggleApi):
     self.competition_download_file(
         competition, file_path, path=None, force=force, quiet=quiet)
     return effective_path
-

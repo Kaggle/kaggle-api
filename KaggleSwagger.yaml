@@ -98,6 +98,9 @@ definitions:
         type: array
         items:
           type: string
+      deleteOldVersions:
+        type: boolean
+        default: false
   DatasetNewRequest:
     type: object
     required:

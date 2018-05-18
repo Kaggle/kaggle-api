@@ -53,7 +53,8 @@ class DatasetNewVersionRequest(object):
         'description': 'str',
         'files': 'list[DatasetUploadFile]',
         'convert_to_csv': 'bool',
-        'category_ids': 'list[str]'
+        'category_ids': 'list[str]',
+        'delete_old_versions': 'bool'
     }
 
     attribute_map = {
@@ -61,10 +62,11 @@ class DatasetNewVersionRequest(object):
         'description': 'description',
         'files': 'files',
         'convert_to_csv': 'convertToCsv',
-        'category_ids': 'categoryIds'
+        'category_ids': 'categoryIds',
+        'delete_old_versions': 'deleteOldVersions'
     }
 
-    def __init__(self, version_notes=None, description=None, files=None, convert_to_csv=True, category_ids=None):  # noqa: E501
+    def __init__(self, version_notes=None, description=None, files=None, convert_to_csv=True, category_ids=None, delete_old_versions=False):  # noqa: E501
         """DatasetNewVersionRequest - a model defined in Swagger"""  # noqa: E501
 
         self._version_notes = None
@@ -72,6 +74,7 @@ class DatasetNewVersionRequest(object):
         self._files = None
         self._convert_to_csv = None
         self._category_ids = None
+        self._delete_old_versions = None
         self.discriminator = None
 
         self.version_notes = version_notes
@@ -82,6 +85,8 @@ class DatasetNewVersionRequest(object):
             self.convert_to_csv = convert_to_csv
         if category_ids is not None:
             self.category_ids = category_ids
+        if delete_old_versions is not None:
+            self.delete_old_versions = delete_old_versions
 
     @property
     def version_notes(self):
@@ -191,6 +196,27 @@ class DatasetNewVersionRequest(object):
         """
 
         self._category_ids = category_ids
+
+    @property
+    def delete_old_versions(self):
+        """Gets the delete_old_versions of this DatasetNewVersionRequest.  # noqa: E501
+
+
+        :return: The delete_old_versions of this DatasetNewVersionRequest.  # noqa: E501
+        :rtype: bool
+        """
+        return self._delete_old_versions
+
+    @delete_old_versions.setter
+    def delete_old_versions(self, delete_old_versions):
+        """Sets the delete_old_versions of this DatasetNewVersionRequest.
+
+
+        :param delete_old_versions: The delete_old_versions of this DatasetNewVersionRequest.  # noqa: E501
+        :type: bool
+        """
+
+        self._delete_old_versions = delete_old_versions
 
     def to_dict(self):
         """Returns the model properties as a dict"""

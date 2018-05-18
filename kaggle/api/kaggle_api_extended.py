@@ -292,6 +292,8 @@ class KaggleApi(KaggleApi):
                                  force=False,
                                  quiet=True):
     files = self.competition_list_files(competition)
+    if not files:
+      print('This competition does not have any available data files')
     for file in files:
       self.competition_download_file(competition, file.ref, path, force, quiet)
 

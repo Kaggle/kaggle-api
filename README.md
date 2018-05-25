@@ -16,6 +16,14 @@ You can now use the `kaggle` command as shown in the examples below.
 
 If you run into a `kaggle: command not found` error, ensure that your python binaries are on your path.  You can see where `kaggle` is installed by doing `pip uninstall kaggle` and seeing where the binary is.  For a local user install on Linux, the default location is `~/.local/bin`.  On Windows, the default location is `$PYTHON_HOME/Scripts`.
 
+You can find the location of your kaggle binaries by typing `which kaggle` in your terminal. If you are using Miniconda or Anaconda as a package manager, chances are your file will be saved at `/Users/username/miniconda3/bin/python`. This means you would to create a folder called `.kaggle` in your home user folder since that's where the API command looks for Kaggle and store the API credentials to that folder. 
+
+To do this, for mac users- go to your terminal and use cd to go to user home directory. Once in your user directory, type `mkdir .kaggle`. This will create a hidden file `.kaggle` in your user directory. Now change the directory once again to where you have stored the API credentials and change path of that file to your `.kaggle` file. This will cause the credentials text file to be replicated under the `.kaggle` file. Run a test by typing 
+
+`usage: kaggle competitions list [-h] [-p PAGE] [-s SEARCH] [-v]`
+
+to see if you have successfully changed the binaries. 
+
 ## API credentials
 
 To use the Kaggle API, sign up for a Kaggle account at https://www.kaggle.com. Then go to the 'Account' tab of your user profile (`https://www.kaggle.com/<username>/account`) and select 'Create API Token'. This will trigger the download of `kaggle.json`, a file containing your API credentials. Place this file in the location `~/.kaggle/kaggle.json` (on Windows in the location `C:\Users\<Windows-username>\.kaggle\kaggle.json`).

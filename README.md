@@ -20,7 +20,7 @@ You can find the location of your kaggle binaries by typing `which kaggle` in yo
 
 To do this, for mac users- go to your terminal and use cd to go to user home directory. Once in your user directory, type `mkdir .kaggle`. This will create a hidden file `.kaggle` in your user directory. Now change the directory once again to where you have stored the API credentials and change path of that file to your `.kaggle` file. This will cause the credentials text file to be replicated under the `.kaggle` file. Run a test by typing 
 
-`usage: kaggle competitions list [-h] [-p PAGE] [-s SEARCH] [-v]`
+`usage: kaggle competitions list`
 
 to see if you have successfully changed the binaries. 
 

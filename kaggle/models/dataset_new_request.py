@@ -53,6 +53,7 @@ class DatasetNewRequest(object):
         'slug': 'str',
         'owner_slug': 'str',
         'license_name': 'str',
+        'subtitle': 'str',
         'description': 'str',
         'files': 'list[DatasetUploadFile]',
         'is_private': 'bool',
@@ -65,6 +66,7 @@ class DatasetNewRequest(object):
         'slug': 'slug',
         'owner_slug': 'ownerSlug',
         'license_name': 'licenseName',
+        'subtitle': 'subtitle',
         'description': 'description',
         'files': 'files',
         'is_private': 'isPrivate',
@@ -72,13 +74,14 @@ class DatasetNewRequest(object):
         'category_ids': 'categoryIds'
     }
 
-    def __init__(self, title=None, slug=None, owner_slug=None, license_name='unknown', description='', files=None, is_private=True, convert_to_csv=True, category_ids=None):  # noqa: E501
+    def __init__(self, title=None, slug=None, owner_slug=None, license_name='unknown', subtitle=None, description='', files=None, is_private=True, convert_to_csv=True, category_ids=None):  # noqa: E501
         """DatasetNewRequest - a model defined in Swagger"""  # noqa: E501
 
         self._title = None
         self._slug = None
         self._owner_slug = None
         self._license_name = None
+        self._subtitle = None
         self._description = None
         self._files = None
         self._is_private = None
@@ -93,6 +96,8 @@ class DatasetNewRequest(object):
             self.owner_slug = owner_slug
         if license_name is not None:
             self.license_name = license_name
+        if subtitle is not None:
+            self.subtitle = subtitle
         if description is not None:
             self.description = description
         self.files = files
@@ -194,6 +199,27 @@ class DatasetNewRequest(object):
             )
 
         self._license_name = license_name
+
+    @property
+    def subtitle(self):
+        """Gets the subtitle of this DatasetNewRequest.  # noqa: E501
+
+
+        :return: The subtitle of this DatasetNewRequest.  # noqa: E501
+        :rtype: str
+        """
+        return self._subtitle
+
+    @subtitle.setter
+    def subtitle(self, subtitle):
+        """Sets the subtitle of this DatasetNewRequest.
+
+
+        :param subtitle: The subtitle of this DatasetNewRequest.  # noqa: E501
+        :type: str
+        """
+
+        self._subtitle = subtitle
 
     @property
     def description(self):

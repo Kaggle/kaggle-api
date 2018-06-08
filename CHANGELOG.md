@@ -1,6 +1,18 @@
 Changelog
 ====
 
+#### 1.3.9
+Release date: TBD
+* Improve error message for closed competitions
+* Remove stacktrace on errors
+* Print any invalid tags
+* Warn if there are no competition files to download
+* Implement resumable uploads
+* Add subtitle metadata to dataset uploads
+* Add progress bars for uploads and downloads
+* Add command for downloading competitions leaderboard
+* Add command for viewing the top of the leaderboard
+
 #### 1.3.8
 Release date: 5/18/18
 * Add option to delete all previous dataset versions

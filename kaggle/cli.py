@@ -18,6 +18,7 @@ from __future__ import print_function
 import argparse
 from kaggle import api
 from kaggle import KaggleApi
+from .rest import ApiException
 import six
 
 
@@ -43,7 +44,12 @@ def main():
   command_args.update(vars(args))
   del command_args['func']
   del command_args['command']
-  out = args.func(**command_args)
+  try:
+    out = args.func(**command_args)
+  except (ApiException, ValueError) as e:
+    # Skipping stacktrace but still show error
+    print(e)
+    out = None
   if out is not None:
     print(out, end='')
 
@@ -81,7 +87,11 @@ def parse_competitions(subparsers):
   parser_competitions_list_optional.add_argument(
       '-s', '--search', dest='search', required=False, help=Help.param_search)
   parser_competitions_list_optional.add_argument(
-      '-v', '--csv', dest='csv', action='store_true', help=Help.param_csv)
+      '-v',
+      '--csv',
+      dest='csv_display',
+      action='store_true',
+      help=Help.param_csv)
   parser_competitions_list._action_groups.append(
       parser_competitions_list_optional)
   parser_competitions_list.set_defaults(func=api.competitions_list_cli)
@@ -92,8 +102,6 @@ def parse_competitions(subparsers):
       help=Help.command_competitions_files)
   parser_competitions_files_optional = parser_competitions_files._action_groups.pop(
   )
-  parser_competitions_files_required = parser_competitions_files.add_argument_group(
-      'required arguments')
   parser_competitions_files_optional.add_argument(
       '-c',
       '--competition',
@@ -101,7 +109,11 @@ def parse_competitions(subparsers):
       required=False,
       help=Help.param_competition)
   parser_competitions_files_optional.add_argument(
-      '-v', '--csv', dest='csv', action='store_true', help=Help.param_csv)
+      '-v',
+      '--csv',
+      dest='csv_display',
+      action='store_true',
+      help=Help.param_csv)
   parser_competitions_files_optional.add_argument(
       '-q', '--quiet', dest='quiet', action='store_true', help=Help.param_quiet)
   parser_competitions_files._action_groups.append(
@@ -114,8 +126,6 @@ def parse_competitions(subparsers):
       help=Help.command_competitions_download)
   parser_competitions_download_optional = parser_competitions_download._action_groups.pop(
   )
-  parser_competitions_download_required = parser_competitions_download.add_argument_group(
-      'required arguments')
   parser_competitions_download_optional.add_argument(
       '-c',
       '--competition',
@@ -125,7 +135,7 @@ def parse_competitions(subparsers):
   parser_competitions_download_optional.add_argument(
       '-f',
       '--file',
-      dest='file',
+      dest='file_name',
       required=False,
       help=Help.param_competition_file)
   parser_competitions_download_optional.add_argument(
@@ -161,14 +171,14 @@ def parse_competitions(subparsers):
       required=False,
       help=Help.param_competition)
   parser_competitions_submit_required.add_argument(
-      '-f', '--file', dest='file', required=True, help=Help.param_upfile)
+      '-f', '--file', dest='file_name', required=True, help=Help.param_upfile)
   parser_competitions_submit_required.add_argument(
       '-m', '--message', dest='message', required=True, help=Help.param_message)
   parser_competitions_submit_optional.add_argument(
       '-q', '--quiet', dest='quiet', action='store_true', help=Help.param_quiet)
   parser_competitions_submit._action_groups.append(
       parser_competitions_submit_optional)
-  parser_competitions_submit.set_defaults(func=api.competition_submit)
+  parser_competitions_submit.set_defaults(func=api.competition_submit_cli)
 
   parser_competitions_submissions = subparsers_competitions.add_parser(
       'submissions',
@@ -176,8 +186,6 @@ def parse_competitions(subparsers):
       help=Help.command_competitions_submissions)
   parser_competitions_submissions_optional = parser_competitions_submissions._action_groups.pop(
   )
-  parser_competitions_submissions_required = parser_competitions_submissions.add_argument_group(
-      'required arguments')
   parser_competitions_submissions_optional.add_argument(
       '-c',
       '--competition',
@@ -185,13 +193,56 @@ def parse_competitions(subparsers):
       required=False,
       help=Help.param_competition)
   parser_competitions_submissions_optional.add_argument(
-      '-v', '--csv', dest='csv', action='store_true', help=Help.param_csv)
+      '-v',
+      '--csv',
+      dest='csv_display',
+      action='store_true',
+      help=Help.param_csv)
   parser_competitions_submissions_optional.add_argument(
       '-q', '--quiet', dest='quiet', action='store_true', help=Help.param_quiet)
   parser_competitions_submissions._action_groups.append(
       parser_competitions_submissions_optional)
   parser_competitions_submissions.set_defaults(
       func=api.competition_submissions_cli)
+
+  parser_competitions_leaderboard = subparsers_competitions.add_parser(
+      'leaderboard',
+      formatter_class=argparse.RawTextHelpFormatter,
+      help=Help.command_competitions_leaderboard)
+  parser_competitions_leaderboard_optional = parser_competitions_leaderboard._action_groups.pop(
+  )
+  parser_competitions_leaderboard_optional.add_argument(
+      '-c',
+      '--competition',
+      dest='competition',
+      required=False,
+      help=Help.param_competition)
+  parser_competitions_leaderboard_optional.add_argument(
+      '-s',
+      '--show',
+      dest='view',
+      action='store_true',
+      help=Help.param_competition_leaderboard_view)
+  parser_competitions_leaderboard_optional.add_argument(
+      '-d',
+      '--download',
+      dest='download',
+      action='store_true',
+      help=Help.param_competition_leaderboard_download)
+  parser_competitions_leaderboard_optional.add_argument(
+      '-p', '--path', dest='path', help=Help.param_path)
+  parser_competitions_leaderboard_optional.add_argument(
+      '-v',
+      '--csv',
+      dest='csv_display',
+      action='store_true',
+      help=Help.param_csv)
+  parser_competitions_leaderboard_optional.add_argument(
+      '-q', '--quiet', dest='quiet', action='store_true', help=Help.param_quiet)
+  parser_competitions_leaderboard._action_groups.append(
+      parser_competitions_leaderboard_optional)
+  parser_competitions_leaderboard.set_defaults(
+      func=api.competition_leaderboard_cli)
 
 
 def parse_datasets(subparsers):
@@ -226,7 +277,11 @@ def parse_datasets(subparsers):
   parser_datasets_list.add_argument(
       '-s', '--search', dest='search', required=False, help=Help.param_search)
   parser_datasets_list.add_argument(
-      '-v', '--csv', dest='csv', action='store_true', help=Help.param_csv)
+      '-v',
+      '--csv',
+      dest='csv_display',
+      action='store_true',
+      help=Help.param_csv)
   parser_datasets_list._action_groups.append(parser_datasets_list_optional)
   parser_datasets_list.set_defaults(func=api.datasets_list_cli)
 
@@ -240,7 +295,11 @@ def parse_datasets(subparsers):
   parser_datasets_files_required.add_argument(
       '-d', '--dataset', dest='dataset', required=True, help=Help.param_dataset)
   parser_datasets_files_optional.add_argument(
-      '-v', '--csv', dest='csv', action='store_true', help=Help.param_csv)
+      '-v',
+      '--csv',
+      dest='csv_display',
+      action='store_true',
+      help=Help.param_csv)
   parser_datasets_files._action_groups.append(parser_datasets_files_optional)
   parser_datasets_files.set_defaults(func=api.dataset_list_files_cli)
 
@@ -255,7 +314,11 @@ def parse_datasets(subparsers):
   parser_datasets_download_required.add_argument(
       '-d', '--dataset', dest='dataset', required=True, help=Help.param_dataset)
   parser_datasets_download_optional.add_argument(
-      '-f', '--file', dest='file', required=False, help=Help.param_dataset_file)
+      '-f',
+      '--file',
+      dest='file_name',
+      required=False,
+      help=Help.param_dataset_file)
   parser_datasets_download_optional.add_argument(
       '-p', '--path', dest='path', required=False, help=Help.param_path)
   parser_datasets_download_optional.add_argument(
@@ -367,7 +430,7 @@ def parse_config(subparsers):
       'set',
       formatter_class=argparse.RawTextHelpFormatter,
       help=Help.command_config_set)
-  parser_config_set_optional = parser_config_set._action_groups.pop()
+  parser_config_set._action_groups.pop()
   parser_config_set_required = parser_config_set.add_argument_group(
       'required arguments')
   parser_config_set_required.add_argument(
@@ -384,7 +447,7 @@ def parse_config(subparsers):
       'unset',
       formatter_class=argparse.RawTextHelpFormatter,
       help=Help.command_config_unset)
-  parser_config_unset_optional = parser_config_unset._action_groups.pop()
+  parser_config_unset._action_groups.pop()
   parser_config_unset_required = parser_config_unset.add_argument_group(
       'required arguments')
   parser_config_unset_required.add_argument(
@@ -392,9 +455,11 @@ def parse_config(subparsers):
   parser_config_unset.set_defaults(func=api.unset_config_value)
 
 
-class Help:
+class Help(object):
   kaggle_choices = ['competitions', 'c', 'datasets', 'd', 'config']
-  competitions_choices = ['list', 'files', 'download', 'submit', 'submissions']
+  competitions_choices = [
+      'list', 'files', 'download', 'submit', 'submissions', 'leaderboard'
+  ]
   datasets_choices = ['list', 'files', 'download', 'create', 'version', 'init']
   config_choices = ['view', 'set', 'unset']
 
@@ -411,6 +476,7 @@ class Help:
   command_competitions_download = 'Download competition files'
   command_competitions_submit = 'Make a new competition submission'
   command_competitions_submissions = 'Show your competition submissions'
+  command_competitions_leaderboard = 'Get competition leaderboard information'
   command_datasets_list = 'List available datasets'
   command_datasets_files = 'List dataset files'
   command_datasets_download = 'Download dataset files'
@@ -430,6 +496,8 @@ class Help:
                        'will be used (use "kaggle config set competition")"')
   param_competition_nonempty = ('Competition URL suffix (use "kaggle '
                                 'competitions list" to show options)')
+  param_competition_leaderboard_view = 'Show the top of the leaderboard'
+  param_competition_leaderboard_download = 'Download entire leaderboard'
   param_path = 'Folder where file(s) will be downloaded, defaults to ' + api.config_path
   param_wp = 'Download files to current working path'
   param_proxy = 'Proxy for HTTP requests'
@@ -437,7 +505,7 @@ class Help:
   param_public = 'Create the Dataset publicly (default is private)'
   param_keep_tabular = ('Do not convert tabular files to CSV (default is to '
                         'convert)')
-  param_delete_old_version = ('Delete old versions of this dataset')
+  param_delete_old_version = 'Delete old versions of this dataset'
   param_force = ('Skip check whether local version of file is up to date, force'
                  ' file download')
   param_dataset = ('Dataset URL suffix in format <owner>/<dataset-name> (use '

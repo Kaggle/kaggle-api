@@ -17,7 +17,7 @@
 from datetime import datetime
 
 
-class Competition:
+class Competition(object):
 
   def __init__(self, init_dict):
     parsed_dict = {k: parse(v) for k, v in init_dict.items()}
@@ -28,7 +28,7 @@ class Competition:
     return self.ref
 
 
-class SubmitResult:
+class SubmitResult(object):
 
   def __init__(self, init_dict):
     parsed_dict = {k: parse(v) for k, v in init_dict.items()}
@@ -38,7 +38,7 @@ class SubmitResult:
     return self.message
 
 
-class Submission:
+class Submission(object):
 
   def __init__(self, init_dict):
     parsed_dict = {k: parse(v) for k, v in init_dict.items()}
@@ -49,7 +49,17 @@ class Submission:
     return str(self.ref)
 
 
-class Dataset:
+class LeaderboardEntry(object):
+
+  def __init__(self, init_dict):
+    parsed_dict = {k: parse(v) for k, v in init_dict.items()}
+    self.__dict__.update(parsed_dict)
+
+  def __repr__(self):
+    return self.teamId
+
+
+class Dataset(object):
 
   def __init__(self, init_dict):
     parsed_dict = {k: parse(v) for k, v in init_dict.items()}
@@ -63,7 +73,7 @@ class Dataset:
     return self.ref
 
 
-class DatasetVersion:
+class DatasetVersion(object):
 
   def __init__(self, init_dict):
     parsed_dict = {k: parse(v) for k, v in init_dict.items()}
@@ -73,7 +83,7 @@ class DatasetVersion:
     return str(self.version_number)
 
 
-class File:
+class File(object):
 
   def __init__(self, init_dict):
     parsed_dict = {k: parse(v) for k, v in init_dict.items()}
@@ -93,7 +103,7 @@ class File:
     return '%.*f%s' % (precision, size, suffixes[suffix_index])
 
 
-class Tag:
+class Tag(object):
 
   def __init__(self, init_dict):
     parsed_dict = {k: parse(v) for k, v in init_dict.items()}
@@ -103,7 +113,7 @@ class Tag:
     return self.ref
 
 
-class FileUploadInfo:
+class FileUploadInfo(object):
 
   def __init__(self, init_dict):
     parsed_dict = {k: parse(v) for k, v in init_dict.items()}
@@ -113,7 +123,7 @@ class FileUploadInfo:
     return self.token
 
 
-class DatasetNewVersionResponse:
+class DatasetNewVersionResponse(object):
 
   def __init__(self, init_dict):
     parsed_dict = {k: parse(v) for k, v in init_dict.items()}
@@ -123,7 +133,7 @@ class DatasetNewVersionResponse:
     return self.url
 
 
-class DatasetNewResponse:
+class DatasetNewResponse(object):
 
   def __init__(self, init_dict):
     parsed_dict = {k: parse(v) for k, v in init_dict.items()}
@@ -133,7 +143,7 @@ class DatasetNewResponse:
     return self.url
 
 
-class ListFilesResult:
+class ListFilesResult(object):
 
   def __init__(self, init_dict):
     self.error_message = init_dict['errorMessage']

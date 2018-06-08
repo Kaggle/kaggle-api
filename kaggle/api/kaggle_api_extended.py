@@ -17,6 +17,7 @@
 from __future__ import print_function
 import csv
 from datetime import datetime
+import io
 import json
 import os
 from os.path import expanduser
@@ -36,12 +37,16 @@ from ..models.kaggle_models_extended import DatasetNewResponse
 from ..models.kaggle_models_extended import DatasetNewVersionResponse
 from ..models.kaggle_models_extended import File
 from ..models.kaggle_models_extended import FileUploadInfo
+from ..models.kaggle_models_extended import LeaderboardEntry
 from ..models.kaggle_models_extended import ListFilesResult
 from ..models.kaggle_models_extended import Submission
 from ..models.kaggle_models_extended import SubmitResult
 import requests
+from requests.adapters import HTTPAdapter
+from requests.packages.urllib3.util.retry import Retry
+from ..rest import ApiException
 import six
-import urllib3
+from tqdm import tqdm
 
 try:
   unicode  # Python 2
@@ -50,7 +55,7 @@ except NameError:
 
 
 class KaggleApi(KaggleApi):
-  __version__ = '1.3.8'
+  __version__ = '1.3.9'
 
   CONFIG_NAME_PROXY = 'proxy'
   CONFIG_NAME_COMPETITION = 'competition'
@@ -102,9 +107,9 @@ class KaggleApi(KaggleApi):
         sys.exit('The specified proxy ' + config_data[self.CONFIG_NAME_PROXY] +
                  ' is not valid, please check your proxy settings')
       else:
-        sys.exit('Unauthorized: you must download an API key from ' +
-                 'https://www.kaggle.com/<username>/account\nThen put ' +
-                 self.config_file + ' in the folder ' + self.config_path)
+        sys.exit(
+            'Unauthorized: you must download an API key from https://www.kaggle.com/<username>/account\nThen put '
+            + self.config_file + ' in the folder ' + self.config_path)
 
   def set_config_value(self, name, value, quiet=False):
     try:
@@ -169,20 +174,20 @@ class KaggleApi(KaggleApi):
         self.competitions_list_with_http_info(page=page, search=search))
     return [Competition(c) for c in competitions_list_result]
 
-  def competitions_list_cli(self, page=1, search='', csv=False):
+  def competitions_list_cli(self, page=1, search='', csv_display=False):
     competitions = self.competitions_list(page, search)
     fields = [
         'ref', 'deadline', 'category', 'reward', 'teamCount', 'userHasEntered'
     ]
     if competitions:
-      if csv:
+      if csv_display:
         self.print_csv(competitions, fields)
       else:
         self.print_table(competitions, fields)
     else:
       print('No competitions found')
 
-  def competition_submit(self, file, message, competition, quiet=False):
+  def competition_submit(self, path, message, competition, quiet=False):
     if competition is None:
       competition = self.get_config_value(self.CONFIG_NAME_COMPETITION)
       if competition is not None and not quiet:
@@ -193,13 +198,13 @@ class KaggleApi(KaggleApi):
     else:
       url_result = self.process_response(
           self.competitions_submissions_url_with_http_info(
-              file_name=os.path.basename(file),
-              content_length=os.path.getsize(file),
-              last_modified_date_utc=int(os.path.getmtime(file) * 1000)))
+              file_name=os.path.basename(path),
+              content_length=os.path.getsize(path),
+              last_modified_date_utc=int(os.path.getmtime(path) * 1000)))
       url_result_list = url_result['createUrl'].split('/')
       upload_result = self.process_response(
           self.competitions_submissions_upload_with_http_info(
-              file=file,
+              file=path,
               guid=url_result_list[-3],
               content_length=url_result_list[-2],
               last_modified_date_utc=url_result_list[-1]))
@@ -211,6 +216,19 @@ class KaggleApi(KaggleApi):
               submission_description=message))
       return SubmitResult(submit_result)
 
+  def competition_submit_cli(self, path, message, competition, quiet=False):
+    try:
+      submit_result = self.competition_submit(path, message, competition, quiet)
+    except ApiException as e:
+      if e.status == 404:
+        print(
+            'Could not find competition - please verify that you entered the correct competition ID and that the competition is still accepting submissions.'
+        )
+        return None
+      else:
+        raise e
+    return submit_result
+
   def competition_submissions(self, competition):
     submissions_result = self.process_response(
         self.competitions_submissions_list_with_http_info(id=competition))
@@ -218,7 +236,7 @@ class KaggleApi(KaggleApi):
 
   def competition_submissions_cli(self,
                                   competition=None,
-                                  csv=False,
+                                  csv_display=False,
                                   quiet=False):
     if competition is None:
       competition = self.get_config_value(self.CONFIG_NAME_COMPETITION)
@@ -234,7 +252,7 @@ class KaggleApi(KaggleApi):
           'privateScore'
       ]
       if submissions:
-        if csv:
+        if csv_display:
           self.print_csv(submissions, fields)
         else:
           self.print_table(submissions, fields)
@@ -246,7 +264,10 @@ class KaggleApi(KaggleApi):
         self.competitions_data_list_files_with_http_info(id=competition))
     return [File(f) for f in competition_list_files_result]
 
-  def competition_list_files_cli(self, competition, csv=False, quiet=False):
+  def competition_list_files_cli(self,
+                                 competition,
+                                 csv_display=False,
+                                 quiet=False):
     if competition is None:
       competition = self.get_config_value(self.CONFIG_NAME_COMPETITION)
       if competition is not None and not quiet:
@@ -258,7 +279,7 @@ class KaggleApi(KaggleApi):
       files = self.competition_list_files(competition)
       fields = ['name', 'size', 'creationDate']
       if files:
-        if csv:
+        if csv_display:
           self.print_csv(files, fields)
         else:
           self.print_table(files, fields)
@@ -267,7 +288,7 @@ class KaggleApi(KaggleApi):
 
   def competition_download_file(self,
                                 competition,
-                                file,
+                                file_name,
                                 path=None,
                                 force=False,
                                 quiet=False):
@@ -279,7 +300,7 @@ class KaggleApi(KaggleApi):
 
     response = self.process_response(
         self.competitions_data_download_file_with_http_info(
-            id=competition, file_name=file, _preload_content=False))
+            id=competition, file_name=file_name, _preload_content=False))
     url = response.retries.history[0].redirect_location.split('?')[0]
     outfile = os.path.join(effective_path, url.split('/')[-1])
 
@@ -292,12 +313,15 @@ class KaggleApi(KaggleApi):
                                  force=False,
                                  quiet=True):
     files = self.competition_list_files(competition)
-    for file in files:
-      self.competition_download_file(competition, file.ref, path, force, quiet)
+    if not files:
+      print('This competitoin does not have any available data files')
+    for file_name in files:
+      self.competition_download_file(competition, file_name.ref, path, force,
+                                     quiet)
 
   def competition_download_cli(self,
                                competition,
-                               file=None,
+                               file_name=None,
                                path=None,
                                force=False,
                                quiet=False):
@@ -309,10 +333,63 @@ class KaggleApi(KaggleApi):
     if competition is None:
       sys.exit('No competition specified')
     else:
-      if file is None:
+      if file_name is None:
         self.competition_download_files(competition, path, force, quiet)
       else:
-        self.competition_download_file(competition, file, path, force, quiet)
+        self.competition_download_file(competition, file_name, path, force,
+                                       quiet)
+
+  def competition_leaderboard_download(self, competition, path, quiet=True):
+    response = self.process_response(
+        self.competition_download_leaderboard_with_http_info(
+            competition, _preload_content=False))
+
+    if path is None:
+      effective_path = os.path.join(self.get_config_path(), 'competitions',
+                                    competition)
+    else:
+      effective_path = path
+
+    file_name = competition + '.zip'
+    outfile = os.path.join(effective_path, file_name)
+    self.download_file(response, outfile, quiet)
+
+  def competition_leaderboard_view(self, competition):
+    result = self.process_response(
+        self.competition_view_leaderboard_with_http_info(competition))
+    return [LeaderboardEntry(e) for e in result['submissions']]
+
+  def competition_leaderboard_cli(self,
+                                  competition,
+                                  path=None,
+                                  view=False,
+                                  download=False,
+                                  csv_display=False,
+                                  quiet=False):
+    if not view and not download:
+      sys.exit('Either --top or --download must be specified')
+
+    if competition is None:
+      competition = self.get_config_value(self.CONFIG_NAME_COMPETITION)
+      if competition is not None and not quiet:
+        print('Using competition: ' + competition)
+
+    if competition is None:
+      sys.exit('No competition specified')
+
+    if download:
+      self.competition_leaderboard_download(competition, path, quiet)
+
+    if view:
+      results = self.competition_leaderboard_view(competition)
+      fields = ['teamId', 'teamName', 'submissionDate', 'score']
+      if results:
+        if csv_display:
+          self.print_csv(results, fields)
+        else:
+          self.print_table(results, fields)
+      else:
+        print('No results found')
 
   def datasets_list(self, page=1, search=''):
     if search is None:
@@ -330,11 +407,11 @@ class KaggleApi(KaggleApi):
         self.datasets_view_with_http_info(owner_slug, dataset_slug))
     return Dataset(result)
 
-  def datasets_list_cli(self, page=1, search='', csv=False):
+  def datasets_list_cli(self, page=1, search='', csv_display=False):
     datasets = self.datasets_list(page, search)
     fields = ['ref', 'title', 'size', 'lastUpdated', 'downloadCount']
     if datasets:
-      if csv:
+      if csv_display:
         self.print_csv(datasets, fields)
       else:
         self.print_table(datasets, fields)
@@ -350,14 +427,14 @@ class KaggleApi(KaggleApi):
             owner_slug=owner_slug, dataset_slug=dataset_slug))
     return ListFilesResult(dataset_list_files_result)
 
-  def dataset_list_files_cli(self, dataset, csv=False):
+  def dataset_list_files_cli(self, dataset, csv_display=False):
     result = self.dataset_list_files(dataset)
     if result:
       if result.error_message:
         print(result.error_message)
       else:
         fields = ['name', 'size', 'creationDate']
-        if csv:
+        if csv_display:
           self.print_csv(result.files, fields)
         else:
           self.print_table(result.files, fields)
@@ -366,7 +443,7 @@ class KaggleApi(KaggleApi):
 
   def dataset_download_file(self,
                             dataset,
-                            file,
+                            file_name,
                             path=None,
                             force=False,
                             quiet=True):
@@ -384,7 +461,7 @@ class KaggleApi(KaggleApi):
         self.datasets_download_file_with_http_info(
             owner_slug=owner_slug,
             dataset_slug=dataset_slug,
-            file_name=file,
+            file_name=file_name,
             _preload_content=False))
     url = response.retries.history[0].redirect_location.split('?')[0]
     outfile = os.path.join(effective_path, url.split('/')[-1])
@@ -409,30 +486,30 @@ class KaggleApi(KaggleApi):
                                             path, force, quiet)
     if downloaded:
       outfile = os.path.join(effective_path, dataset_slug + '.zip')
-      with zipfile.ZipFile(outfile, 'r') as z:
+      with zipfile.ZipFile(outfile) as z:
         z.extractall(effective_path)
 
   def dataset_download_cli(self,
                            dataset,
-                           file=None,
+                           file_name=None,
                            path=None,
                            force=False,
                            quiet=False):
-    if file is None:
+    if file_name is None:
       self.dataset_download_files(dataset, path, force, quiet)
     else:
-      self.dataset_download_file(dataset, file, path, force, quiet)
+      self.dataset_download_file(dataset, file_name, path, force, quiet)
 
-  def dataset_upload_file(self, file):
-    file_name = os.path.basename(file)
-    content_length = os.path.getsize(file)
-    last_modified_date_utc = int(os.path.getmtime(file))
+  def dataset_upload_file(self, path, quiet):
+    file_name = os.path.basename(path)
+    content_length = os.path.getsize(path)
+    last_modified_date_utc = int(os.path.getmtime(path))
     result = FileUploadInfo(
         self.process_response(
             self.datasets_upload_file_with_http_info(file_name, content_length,
                                                      last_modified_date_utc)))
 
-    success = self.upload_complete(file, result.createUrl)
+    success = self.upload_complete(path, result.createUrl, quiet)
 
     if success:
       return result.token
@@ -450,7 +527,6 @@ class KaggleApi(KaggleApi):
     meta_file = os.path.join(folder, self.METADATA_FILE)
     if not os.path.isfile(meta_file):
       sys.exit('Metadata file not found: ' + self.METADATA_FILE)
-      return
 
     # read json
     with open(meta_file, 'r') as f:
@@ -464,11 +540,16 @@ class KaggleApi(KaggleApi):
     if ref == self.config_values[self.CONFIG_NAME_USER] + '/INSERT_SLUG_HERE':
       sys.exit('Default slug detected, please change values before uploading')
 
+    subtitle = meta_data.get('subtitle')
+    if subtitle and (len(subtitle) < 20 or len(subtitle) > 80):
+      raise ValueError('Subtitle length must be between 20 and 80 characters')
+
     description = meta_data.get('description')
     keywords = self.get_or_default(meta_data, 'keywords', [])
 
     request = DatasetNewVersionRequest(
         version_notes=version_notes,
+        subtitle=subtitle,
         description=description,
         files=[],
         convert_to_csv=convert_to_csv,
@@ -495,6 +576,10 @@ class KaggleApi(KaggleApi):
         convert_to_csv=convert_to_csv,
         delete_old_versions=delete_old_versions)
 
+    if result.invalidTags is not None:
+      print(
+          'The following are not valid tags and could not be added to the dataset: '
+          + str(result.invalidTags))
     if result is None:
       print('Dataset version creation error: See previous output')
     elif result.status == 'ok':
@@ -509,14 +594,10 @@ class KaggleApi(KaggleApi):
 
     ref = self.config_values[self.CONFIG_NAME_USER] + '/INSERT_SLUG_HERE'
     licenses = []
-    license = {}
-    license['name'] = 'CC0-1.0'
+    license = {'name': 'CC0-1.0'}
     licenses.append(license)
 
-    meta_data = {}
-    meta_data['title'] = 'INSERT_TITLE_HERE'
-    meta_data['id'] = ref
-    meta_data['licenses'] = licenses
+    meta_data = {'title': 'INSERT_TITLE_HERE', 'id': ref, 'licenses': licenses}
     meta_file = os.path.join(folder, self.METADATA_FILE)
     with open(meta_file, 'w') as f:
       json.dump(meta_data, f)
@@ -534,7 +615,6 @@ class KaggleApi(KaggleApi):
     meta_file = os.path.join(folder, self.METADATA_FILE)
     if not os.path.isfile(meta_file):
       sys.exit('Metadata file not found: ' + self.METADATA_FILE)
-      return
 
     # read json
     with open(meta_file, 'r') as f:
@@ -558,9 +638,21 @@ class KaggleApi(KaggleApi):
     description = meta_data.get('description')
     keywords = self.get_or_default(meta_data, 'keywords', [])
 
-    request = DatasetNewRequest(title, dataset_slug, owner_slug, license_name,
-                                description, [], not public, convert_to_csv,
-                                keywords)
+    subtitle = meta_data.get('subtitle')
+    if subtitle and (len(subtitle) < 20 or len(subtitle) > 80):
+      raise ValueError('Subtitle length must be between 20 and 80 characters')
+
+    request = DatasetNewRequest(
+        title=title,
+        slug=dataset_slug,
+        owner_slug=owner_slug,
+        license_name=license_name,
+        subtitle=subtitle,
+        description=description,
+        files=[],
+        is_private=not public,
+        convert_to_csv=convert_to_csv,
+        category_ids=keywords)
     resources = meta_data.get('resources')
     self.upload_files(request, resources, folder, quiet)
     result = DatasetNewResponse(
@@ -573,6 +665,10 @@ class KaggleApi(KaggleApi):
                              quiet=False,
                              convert_to_csv=True):
     result = self.dataset_create_new(folder, public, quiet, convert_to_csv)
+    if result.invalidTags is not None:
+      print(
+          'The following are not valid tags and could not be added to the dataset: '
+          + str(result.invalidTags))
     if result.status == 'ok':
       if public:
         print('Your public Dataset is being created. Please check progress at '
@@ -589,21 +685,21 @@ class KaggleApi(KaggleApi):
       os.makedirs(outpath)
     size = int(response.headers['Content-Length'])
     size_read = 0
-    with open(outfile, 'wb') as out:
-      while True:
-        data = response.read(chunk_size)
-        if not data:
-          break
-        out.write(data)
-        size_read = min(size, size_read + chunk_size)
-        if not quiet:
-          print(
-              os.path.basename(outfile) + ': Downloaded ' +
-              File.get_size(size_read) + ' of ' + File.get_size(size) + ' to ' +
-              outpath,
-              end='\r')
     if not quiet:
-      print('\n', end='')
+      print('Downloading ' + os.path.basename(outfile) + ' to ' + outpath)
+    with tqdm(
+        total=size, unit='B', unit_scale=True, unit_divisor=1024,
+        disable=quiet) as pbar:
+      with open(outfile, 'wb') as out:
+        while True:
+          data = response.read(chunk_size)
+          if not data:
+            break
+          out.write(data)
+          size_read = min(size, size_read + chunk_size)
+          pbar.update(len(data))
+      if not quiet:
+        print('\n', end='')
 
   def download_needed(self, response, outfile, quiet=True):
     try:
@@ -662,41 +758,42 @@ class KaggleApi(KaggleApi):
   def process_response(self, result):
     if len(result) == 3:
       data = result[0]
-      code = result[1]
       headers = result[2]
       if self.HEADER_API_VERSION in headers:
         api_version = headers[self.HEADER_API_VERSION]
         if not self.already_printed_version_warning and self.__version__ < api_version:
-          print('Warning: Looks like you\'re using an outdated API Version, ' +
-                'please consider updating (server ' + api_version +
-                ' / client ' + self.__version__ + ')')
+          print(
+              'Warning: Looks like you\'re using an outdated API Version, please consider updating (server '
+              + api_version + ' / client ' + self.__version__ + ')')
           self.already_printed_version_warning = True
       return data
     return result
 
   def upload_files(self, request, resources, folder, quiet):
-    for file in os.listdir(folder):
-      if file == self.METADATA_FILE:
+    for file_name in os.listdir(folder):
+      if file_name == self.METADATA_FILE:
         continue
-      full_path = os.path.join(folder, file)
+      full_path = os.path.join(folder, file_name)
 
-      print('Starting upload for file ' + file)
+      if not quiet:
+        print('Starting upload for file ' + file_name)
       if os.path.isfile(full_path):
         content_length = os.path.getsize(full_path)
-        token = self.dataset_upload_file(full_path)
+        token = self.dataset_upload_file(full_path, quiet)
         if token is None:
-          print('Upload unsuccessful: ' + file)
+          if not quiet:
+            print('Upload unsuccessful: ' + file_name)
           return
 
         if not quiet:
-          print('Upload successful: ' + file + ' (' +
+          print('Upload successful: ' + file_name + ' (' +
                 File.get_size(content_length) + ')')
 
         upload_file = DatasetUploadFile()
         upload_file.token = token
         if resources:
           for item in resources:
-            if file == item.get('path'):
+            if file_name == item.get('path'):
               upload_file.description = item.get('description')
               if 'schema' in item:
                 fields = self.get_or_default(item['schema'], 'fields', [])
@@ -711,7 +808,7 @@ class KaggleApi(KaggleApi):
         request.files.append(upload_file)
       else:
         if not quiet:
-          print('Skipping: ' + file)
+          print('Skipping: ' + file_name)
 
   def process_column(self, column):
     processed_column = DatasetColumn(
@@ -736,73 +833,39 @@ class KaggleApi(KaggleApi):
         processed_column.type = 'unknown'
     return processed_column
 
-  def upload_complete(self, file, url):
-    file_name = os.path.basename(file)
+  def upload_complete(self, path, url, quiet):
+    file_size = os.path.getsize(path)
     try:
-      with open(file, 'rb') as fp:
-        response = requests.put(url, data=fp)
+      with tqdm(
+          total=file_size,
+          unit='B',
+          unit_scale=True,
+          unit_divisor=1024,
+          disable=quiet) as progress_bar:
+        with open(path, 'rb', buffering=0) as fp:
+          reader = TqdmBufferedReader(fp, progress_bar)
+          session = requests.Session()
+          retries = Retry(total=10, backoff_factor=0.5)
+          adapter = HTTPAdapter(max_retries=retries)
+          session.mount('http://', adapter)
+          session.mount('https://', adapter)
+          response = session.put(url, data=reader)
     except Exception as error:
       print(error)
       return False
     return response.status_code == 200 or response.status_code == 201
 
-  def dataset_data(self, dataset, file_path=None, force=False, quiet=True):
-    dataset_url_list = dataset.split('/')
-    owner_slug = dataset_url_list[0]
-    dataset_slug = dataset_url_list[1]
-    effective_path = os.path.join(self.get_config_path(), 'datasets',
-                                  owner_slug, dataset_slug)
 
-    # complete folders
-    if file_path is None:
-      if os.path.exists(effective_path) and not force:
-        return effective_path
+class TqdmBufferedReader(io.BufferedReader):
 
-      if not quiet:
-        print('Downloading Dataset ' + dataset + '...')
-      self.dataset_download_files(dataset, path=None, force=force, quiet=quiet)
-      return effective_path
+  def __init__(self, raw, progress_bar):
+    io.BufferedReader.__init__(self, raw)
+    self.progress_bar = progress_bar
 
-    # individual files
-    effective_path = os.path.join(effective_path, file_path)
-    if os.path.exists(effective_path) and not force:
-      return effective_path
+  def read(self, *args, **kwargs):
+    buf = io.BufferedReader.read(self, *args, **kwargs)
+    self.increment(len(buf))
+    return buf
 
-    if not quiet:
-      print('Downloading file ' + file_path + ' from Dataset ' + dataset)
-
-    self.dataset_download_file(
-        dataset, file_path, path=None, force=force, quiet=quiet)
-    return effective_path
-
-  def competition_data(self,
-                       competition,
-                       file_path=None,
-                       force=False,
-                       quiet=True):
-    effective_path = os.path.join(self.get_config_path(), 'competitions',
-                                  competition)
-
-    # complete folders
-    if file_path is None:
-      if os.path.exists(effective_path) and not force:
-        return effective_path
-
-      if not quiet:
-        print('Downloading Competition ' + competition + '...')
-      self.competitionDownloadFiles(
-          competition, path=None, force=force, quiet=quiet)
-      return effective_path
-
-    # individual files
-    effective_path = os.path.join(effective_path, file_path)
-    if os.path.exists(effective_path) and not force:
-      return effective_path
-
-    if not quiet:
-      print('Downloading file ' + file_path + ' from Competition ' +
-            competition)
-
-    self.competition_download_file(
-        competition, file_path, path=None, force=force, quiet=quiet)
-    return effective_path
+  def increment(self, length):
+    self.progress_bar.update(length)

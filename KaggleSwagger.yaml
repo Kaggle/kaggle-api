@@ -85,6 +85,8 @@ definitions:
     properties:
       versionNotes:
         type: string
+      subtitle:
+        type: string
       description:
         type: string
       files:
@@ -130,6 +132,8 @@ definitions:
         - other
         - reddit-api
         - world-bank
+      subtitle:
+        type: string
       description:
         type: string
         default: ''
@@ -371,6 +375,48 @@ paths:
           schema:
             $ref: '#/definitions/Result'
         default: 
+          description: Error
+          schema:
+            $ref: '#/definitions/Error'
+  /competitions/{id}/leaderboard/download:
+    get:
+      tags:
+      - kaggle
+      summary: Download competition leaderboard
+      operationId: CompetitionDownloadLeaderboard
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: string
+          description: Competition name
+      responses:
+        200:
+          description: Result
+          schema:
+            $ref: '#/definitions/Result'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/Error'
+  /competitions/{id}/leaderboard/view:
+    get:
+      tags:
+      - kaggle
+      summary: VIew competition leaderboard
+      operationId: CompetitionViewLeaderboard
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: string
+          description: Competition name
+      responses:
+        200:
+          description: Result
+          schema:
+            $ref: '#/definitions/Result'
+        default:
           description: Error
           schema:
             $ref: '#/definitions/Error'

@@ -148,6 +148,26 @@ Example:
 
 Note: you will need to accept competition rules at `https://www.kaggle.com/c/<competition-name>/rules`.
 
+##### Get competition leaderboard
+
+```
+usage: kaggle competitions leaderboard [-h] [-c COMPETITION] [-s] [-d]
+                                       [-p PATH] [-q]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -c COMPETITION, --competition COMPETITION
+                        Competition URL suffix (use "kaggle competitions list" to show options)
+                        If empty, the default competition will be used (use "kaggle config set competition")"
+  -s, --show            Show the top of the leaderboard
+  -d, --download        Download entire leaderboard
+  -p PATH, --path PATH  Folder where file(s) will be downloaded, defaults to ~/.kaggle
+  -q, --quiet           Suppress printing information about download progress
+```
+
+Example:
+
+`kaggle competitions leaderboard -c favorita-grocery-sales-forecasting -s`
 
 
 ### Datasets

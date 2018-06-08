@@ -50,6 +50,7 @@ class DatasetNewVersionRequest(object):
     """
     swagger_types = {
         'version_notes': 'str',
+        'subtitle': 'str',
         'description': 'str',
         'files': 'list[DatasetUploadFile]',
         'convert_to_csv': 'bool',
@@ -59,6 +60,7 @@ class DatasetNewVersionRequest(object):
 
     attribute_map = {
         'version_notes': 'versionNotes',
+        'subtitle': 'subtitle',
         'description': 'description',
         'files': 'files',
         'convert_to_csv': 'convertToCsv',
@@ -66,10 +68,11 @@ class DatasetNewVersionRequest(object):
         'delete_old_versions': 'deleteOldVersions'
     }
 
-    def __init__(self, version_notes=None, description=None, files=None, convert_to_csv=True, category_ids=None, delete_old_versions=False):  # noqa: E501
+    def __init__(self, version_notes=None, subtitle=None, description=None, files=None, convert_to_csv=True, category_ids=None, delete_old_versions=False):  # noqa: E501
         """DatasetNewVersionRequest - a model defined in Swagger"""  # noqa: E501
 
         self._version_notes = None
+        self._subtitle = None
         self._description = None
         self._files = None
         self._convert_to_csv = None
@@ -78,6 +81,8 @@ class DatasetNewVersionRequest(object):
         self.discriminator = None
 
         self.version_notes = version_notes
+        if subtitle is not None:
+            self.subtitle = subtitle
         if description is not None:
             self.description = description
         self.files = files
@@ -110,6 +115,27 @@ class DatasetNewVersionRequest(object):
             raise ValueError("Invalid value for `version_notes`, must not be `None`")  # noqa: E501
 
         self._version_notes = version_notes
+
+    @property
+    def subtitle(self):
+        """Gets the subtitle of this DatasetNewVersionRequest.  # noqa: E501
+
+
+        :return: The subtitle of this DatasetNewVersionRequest.  # noqa: E501
+        :rtype: str
+        """
+        return self._subtitle
+
+    @subtitle.setter
+    def subtitle(self, subtitle):
+        """Sets the subtitle of this DatasetNewVersionRequest.
+
+
+        :param subtitle: The subtitle of this DatasetNewVersionRequest.  # noqa: E501
+        :type: str
+        """
+
+        self._subtitle = subtitle
 
     @property
     def description(self):

@@ -314,10 +314,16 @@ class KaggleApi(KaggleApi):
                                  quiet=True):
     files = self.competition_list_files(competition)
     if not files:
+<<<<<<< HEAD
       print('This competitoin does not have any available data files')
     for file_name in files:
       self.competition_download_file(competition, file_name.ref, path, force,
                                      quiet)
+=======
+      print('This competition does not have any available data files')
+    for file in files:
+      self.competition_download_file(competition, file.ref, path, force, quiet)
+>>>>>>> b5f4400dae4996f6b9b89344b7ccff70273f398f
 
   def competition_download_cli(self,
                                competition,

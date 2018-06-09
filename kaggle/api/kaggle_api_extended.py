@@ -55,7 +55,7 @@ except NameError:
 
 
 class KaggleApi(KaggleApi):
-  __version__ = '1.3.9'
+  __version__ = '1.3.9.1'
 
   CONFIG_NAME_PROXY = 'proxy'
   CONFIG_NAME_COMPETITION = 'competition'
@@ -187,7 +187,7 @@ class KaggleApi(KaggleApi):
     else:
       print('No competitions found')
 
-  def competition_submit(self, path, message, competition, quiet=False):
+  def competition_submit(self, file_name, message, competition, quiet=False):
     if competition is None:
       competition = self.get_config_value(self.CONFIG_NAME_COMPETITION)
       if competition is not None and not quiet:
@@ -198,13 +198,13 @@ class KaggleApi(KaggleApi):
     else:
       url_result = self.process_response(
           self.competitions_submissions_url_with_http_info(
-              file_name=os.path.basename(path),
-              content_length=os.path.getsize(path),
-              last_modified_date_utc=int(os.path.getmtime(path) * 1000)))
+              file_name=os.path.basename(file_name),
+              content_length=os.path.getsize(file_name),
+              last_modified_date_utc=int(os.path.getmtime(file_name) * 1000)))
       url_result_list = url_result['createUrl'].split('/')
       upload_result = self.process_response(
           self.competitions_submissions_upload_with_http_info(
-              file=path,
+              file=file_name,
               guid=url_result_list[-3],
               content_length=url_result_list[-2],
               last_modified_date_utc=url_result_list[-1]))
@@ -216,9 +216,9 @@ class KaggleApi(KaggleApi):
               submission_description=message))
       return SubmitResult(submit_result)
 
-  def competition_submit_cli(self, path, message, competition, quiet=False):
+  def competition_submit_cli(self, file_name, message, competition, quiet=False):
     try:
-      submit_result = self.competition_submit(path, message, competition, quiet)
+      submit_result = self.competition_submit(file_name, message, competition, quiet)
     except ApiException as e:
       if e.status == 404:
         print(
@@ -314,16 +314,10 @@ class KaggleApi(KaggleApi):
                                  quiet=True):
     files = self.competition_list_files(competition)
     if not files:
-<<<<<<< HEAD
       print('This competitoin does not have any available data files')
     for file_name in files:
       self.competition_download_file(competition, file_name.ref, path, force,
                                      quiet)
-=======
-      print('This competition does not have any available data files')
-    for file in files:
-      self.competition_download_file(competition, file.ref, path, force, quiet)
->>>>>>> b5f4400dae4996f6b9b89344b7ccff70273f398f
 
   def competition_download_cli(self,
                                competition,
@@ -373,7 +367,7 @@ class KaggleApi(KaggleApi):
                                   csv_display=False,
                                   quiet=False):
     if not view and not download:
-      sys.exit('Either --top or --download must be specified')
+      sys.exit('Either --show or --download must be specified')
 
     if competition is None:
       competition = self.get_config_value(self.CONFIG_NAME_COMPETITION)

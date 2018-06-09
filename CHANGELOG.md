@@ -2,7 +2,11 @@ Changelog
 ====
 
 #### 1.3.9
-Release date: TBD
+Release date: 6/9/18
+* Fix bug with competitions submissions.
+
+#### 1.3.9
+Release date: 6/8/18
 * Improve error message for closed competitions
 * Remove stacktrace on errors
 * Print any invalid tags

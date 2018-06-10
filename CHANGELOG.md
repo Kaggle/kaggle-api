@@ -1,7 +1,11 @@
 Changelog
 ====
 
-#### 1.3.9
+#### 1.3.10
+Release date: 6/10/18
+* Restrict urllib3's version due to requests dependency problem
+
+#### 1.3.9.1
 Release date: 6/9/18
 * Fix bug with competitions submissions.
 

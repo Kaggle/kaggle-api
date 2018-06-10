@@ -28,6 +28,9 @@ setup(
     keywords=['Kaggle', 'API'],
     entry_points={'console_scripts': ['kaggle = kaggle.cli:main']},
     install_requires=[
+        # Restriction that urllib3's version is less than 1.23.0 needed to avoid requests dependency problem.
+        # This restriction will be removed after request release later than 2.18.4.
+        # ref: https://github.com/Kaggle/kaggle-api/pull/49
         'urllib3 >= 1.15, < 1.23.0',
         'six >= 1.10',
         'certifi',

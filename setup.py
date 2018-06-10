@@ -28,8 +28,12 @@ setup(
     keywords=['Kaggle', 'API'],
     entry_points={'console_scripts': ['kaggle = kaggle.cli:main']},
     install_requires=[
-        'urllib3 >= 1.15', 'six >= 1.10', 'certifi', 'python-dateutil',
-        'requests', 'tqdm'
+        'urllib3 >= 1.15, < 1.23.0',
+        'six >= 1.10',
+        'certifi',
+        'python-dateutil',
+        'requests',
+        'tqdm'
     ],
     packages=find_packages(),
     license='Apache 2.0')

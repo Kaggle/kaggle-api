@@ -29,7 +29,7 @@ For your security, ensure that other users of your computer do not have read acc
 The command line tool supports the following commands:
 
 ``` 
-kaggle competitions {list, files, download, submit, submissions}
+kaggle competitions {list,files,download,submit,submissions,leaderboard}
 kaggle datasets {list, files, download, create, version, init}
 kaggle config {view, set, unset}
 ```
@@ -249,6 +249,7 @@ optional arguments:
   -h, --help            show this help message and exit
   -u, --public          Create the Dataset publicly (default is private)
   -q, --quiet           Suppress printing information about download progress
+  -t, --keep-tabular    Do not convert tabular files to CSV (default is to convert)
 ```
 
 Example:
@@ -270,6 +271,9 @@ required arguments:
 optional arguments:
   -h, --help            show this help message and exit
   -q, --quiet           Suppress printing information about download progress
+  -t, --keep-tabular    Do not convert tabular files to CSV (default is to convert)
+  -d, --delete-old-versions
+                        Delete old versions of this dataset
 ```
 
 Example:

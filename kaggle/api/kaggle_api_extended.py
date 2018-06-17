@@ -603,6 +603,7 @@ class KaggleApi(KaggleApi):
       json.dump(meta_data, f)
 
     print('Data package template written to: ' + meta_file)
+    return meta_file
 
   def dataset_create_new(self,
                          folder,

@@ -229,11 +229,31 @@ optional arguments:
   -q, --quiet           Suppress printing information about download progress
 ```
 
+
 Examples:
 
 `kaggle datasets download -d zillow/zecon`
 
 `kaggle datasets download -d zillow/zecon -f State_time_series.csv`
+
+
+##### Initialize metadata file for dataset creation
+
+```
+usage: kaggle datasets init [-h] -p FOLDER
+
+required arguments:
+  -p FOLDER, --path FOLDER
+                        Folder for upload, containing data files and a special metadata.json file (https://github.com/Kaggle/kaggle-api/wiki/Metadata)
+
+optional arguments:
+  -h, --help            show this help message and exit
+```
+
+Example:
+
+`kaggle datasets init -p /path/to/dataset`
+
 
 
 ##### Create a new dataset
@@ -280,23 +300,6 @@ Example:
 
 `kaggle datasets version -p /path/to/dataset -m "Updated data"`
 
-
-##### Initialize metadata file for dataset creation
-
-```
-usage: kaggle datasets init [-h] -p FOLDER
-
-required arguments:
-  -p FOLDER, --path FOLDER
-                        Folder for upload, containing data files and a special metadata.json file (https://github.com/Kaggle/kaggle-api/wiki/Metadata)
-
-optional arguments:
-  -h, --help            show this help message and exit
-```
-
-Example:
-
-`kaggle datasets init -p /path/to/dataset`
 
 
 ### Config

@@ -561,6 +561,12 @@ class KaggleApi(KaggleApi):
         self.process_response(
             self.datasets_create_version_with_http_info(owner_slug,
                                                         dataset_slug, request)))
+
+    # Alert the user that dataset creation takes time beyond command
+    if not quiet:
+        print('Your Dataset is being created. Please allow time for processing.')
+        print(result)
+
     return result
 
   def dataset_create_version_cli(self,

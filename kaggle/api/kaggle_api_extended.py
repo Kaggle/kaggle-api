@@ -565,7 +565,6 @@ class KaggleApi(KaggleApi):
     # Alert the user that dataset creation takes time beyond command
     if not quiet:
         print('Your Dataset is being created. Please allow time for processing.')
-        print(result)
 
     return result
 

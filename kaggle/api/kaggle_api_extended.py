@@ -79,10 +79,26 @@ class KaggleApi(KaggleApi):
     reload(sys)
     sys.setdefaultencoding('latin1')
 
+  def _authenticate_environment(self):
+      '''autheticate environment is the first effort to get a username
+         and key to authenticate to the Kaggle API.
+      '''
+      username = os.environ.get('KAGGLE_USERNAME')
+      key = os.environ.get('KAGGLE_KEY')
+      if None not in [key, username]:
+
+
   def authenticate(self):
     try:
       configuration = Configuration()
-      if os.name != 'nt':
+
+      # Option 1:, get configuration values from environment
+      # STOPPED HERE - break into functions...
+      
+
+      # Option 2: read in configuration file
+
+      elif os.name != 'nt':
         permissions = os.stat(self.config).st_mode
         if (permissions & 4) or (permissions & 32):
           print('Warning: Your Kaggle API key is readable by other users on ' +

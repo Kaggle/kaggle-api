@@ -66,7 +66,7 @@ class KaggleApi(KaggleApi):
   HEADER_API_VERSION = 'X-Kaggle-ApiVersion'
   METADATA_FILE = 'datapackage.json'
 
-  config_path = os.path.join(expanduser('~'), '.kaggle')
+  config_path = os.environ.get('KAGGLE_CONFIG_DIR') or os.path.join(expanduser('~'), '.kaggle')
   if not os.path.exists(config_path):
     os.makedirs(config_path)
   config_file = 'kaggle.json'

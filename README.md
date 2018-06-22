@@ -24,6 +24,13 @@ For your security, ensure that other users of your computer do not have read acc
 
 `chmod 600 ~/.kaggle/kaggle.json`
 
+You can also choose to export your Kaggle username and token to the environment:
+
+```bash
+export KAGGLE_USERNAME=datadinosaur
+export KAGGLE_TOKEN=xxxxxxxxxxxxxx
+```
+
 ## Commands
 
 The command line tool supports the following commands:

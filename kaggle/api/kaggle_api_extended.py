@@ -376,7 +376,7 @@ class KaggleApi(KaggleApi):
         self.print_result(competitions, fields, 'competitions', csv_display)
 
 
-    def _competition_get_or_exit(self, competition):
+    def _competition_get_or_exit(self, competition, quiet=False):
         '''if a competition is None, look for the name in the config values.
            If it's still None, exit.
 
@@ -492,7 +492,7 @@ class KaggleApi(KaggleApi):
            
         '''
  
-        competition = self._competition_get_or_exit(competition)
+        competition = self._competition_get_or_exit(competition, quiet=quiet)
 
         submissions = self.competition_submissions(competition)
         fields = [ 'fileName', 
@@ -533,7 +533,7 @@ class KaggleApi(KaggleApi):
            csv_display: if True, print comma separated values
         '''
 
-        competition = self._competition_get_or_exit(competition)
+        competition = self._competition_get_or_exit(competition, quiet=quiet)
 
         files = self.competition_list_files(competition)
         fields = ['name', 'size', 'creationDate']
@@ -585,7 +585,7 @@ class KaggleApi(KaggleApi):
            path: a path to download the file to
 
         '''
-        competition = self._competition_get_or_exit(competition)
+        competition = self._competition_get_or_exit(competition, quiet=quiet)
 
         if file_name is None:
             self.competition_download_files(competition, path, force, quiet)
@@ -716,7 +716,7 @@ class KaggleApi(KaggleApi):
         if not view and not download:
             sys.exit('Either --show or --download must be specified')
 
-        competition = self._competition_get_or_exit(competition)
+        competition = self._competition_get_or_exit(competition, quiet=quiet)
 
         if download is True:
             self.competition_leaderboard_download(competition, path, quiet)
@@ -863,7 +863,8 @@ class KaggleApi(KaggleApi):
      
         '''
 
-        owner_slug, dataset_slug = self._dataset_get_or_exit(dataset)
+        owner_slug, dataset_slug = self._dataset_get_or_exit(dataset, 
+                                                             quiet=quiet)
 
         # Get the effective path for the dataset
 
@@ -903,7 +904,8 @@ class KaggleApi(KaggleApi):
          
         '''
 
-        owner_slug, dataset_slug = self._dataset_get_or_exit(dataset)
+        owner_slug, dataset_slug = self._dataset_get_or_exit(dataset,
+                                                             quiet=quiet)
 
         subfolders = ['datasets', owner_slug, dataset_slug]
         effective_path = self._get_download_path(path, subfolders)
@@ -1484,13 +1486,11 @@ class KaggleApi(KaggleApi):
         for f in fields:
             length = max(
                 len(f), max([len(self.string(getattr(i, f))) for i in items]))
-
-            justify = '<'
-            if isinstance(getattr(items[0], f)) or f == 'size' or f == 'reward':
-                justify = '>'
-
+            justify = '>' if isinstance(getattr(items[0], f),
+                                  int) or f == 'size' or f == 'reward' else '<'
             formats.append('{:' + justify + self.string(length + 2) + '}')
             borders.append('-' * length + '  ')
+
 
         row_format = u''.join(formats)
         headers = [f + '  ' for f in fields]

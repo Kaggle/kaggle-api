@@ -1,6 +1,21 @@
 Changelog
 ====
 
+#### 1.3.12
+Release date: 6/25/18
+* Allow setting a `'KAGGLE_CONFIG_DIR'` environmental token
+* Return metadata file after creating
+* Alert users that dataset creation takes time
+
+#### 1.3.11.1
+Release date: 6/12/18
+* Fix other invalid tags check
+
+#### 1.3.11
+Release date: 6/12/18
+* Improve version check
+* Fix invalid tags check
+
 #### 1.3.10
 Release date: 6/10/18
 * Restrict urllib3's version due to requests dependency problem

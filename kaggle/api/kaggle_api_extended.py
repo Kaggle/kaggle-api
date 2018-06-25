@@ -55,7 +55,7 @@ except NameError:
 
 
 class KaggleApi(KaggleApi):
-  __version__ = '1.3.10'
+  __version__ = '1.3.12'
 
   CONFIG_NAME_PROXY = 'proxy'
   CONFIG_NAME_COMPETITION = 'competition'
@@ -314,7 +314,7 @@ class KaggleApi(KaggleApi):
                                  quiet=True):
     files = self.competition_list_files(competition)
     if not files:
-      print('This competitoin does not have any available data files')
+      print('This competition does not have any available data files')
     for file_name in files:
       self.competition_download_file(competition, file_name.ref, path, force,
                                      quiet)
@@ -564,7 +564,7 @@ class KaggleApi(KaggleApi):
 
     # Alert the user that dataset creation takes time beyond command
     if not quiet:
-        print('Your Dataset is being created. Please allow time for processing.')
+      print('Your Dataset is being created. Please allow time for processing.')
 
     return result
 
@@ -580,8 +580,7 @@ class KaggleApi(KaggleApi):
         quiet=quiet,
         convert_to_csv=convert_to_csv,
         delete_old_versions=delete_old_versions)
-
-    if result.invalidTags is not None:
+    if result.invalidTags is not None and len(result.invalidTags) > 0:
       print(
           'The following are not valid tags and could not be added to the dataset: '
           + str(result.invalidTags))
@@ -666,7 +665,7 @@ class KaggleApi(KaggleApi):
 
     # Alert the user that dataset creation takes time beyond command
     if not quiet:
-        print('Your Dataset is being created. Please allow time for processing.')
+      print('Your Dataset is being created. Please allow time for processing.')
 
     return result
 
@@ -676,7 +675,7 @@ class KaggleApi(KaggleApi):
                              quiet=False,
                              convert_to_csv=True):
     result = self.dataset_create_new(folder, public, quiet, convert_to_csv)
-    if result.invalidTags is not None:
+    if result.invalidTags is not None and len(result.invalidTags) > 0:
       print(
           'The following are not valid tags and could not be added to the dataset: '
           + str(result.invalidTags))
@@ -772,13 +771,33 @@ class KaggleApi(KaggleApi):
       headers = result[2]
       if self.HEADER_API_VERSION in headers:
         api_version = headers[self.HEADER_API_VERSION]
-        if not self.already_printed_version_warning and self.__version__ < api_version:
+        if not self.already_printed_version_warning and not self.is_up_to_date(api_version):
           print(
               'Warning: Looks like you\'re using an outdated API Version, please consider updating (server '
               + api_version + ' / client ' + self.__version__ + ')')
           self.already_printed_version_warning = True
       return data
     return result
+
+  def is_up_to_date(self, server_version):
+    client_split = self.__version__.split('.')
+    client_len = len(client_split)
+    server_split = server_version.split('.')
+    server_len = len(server_split)
+
+    # Make both lists the same length
+    for i in range(client_len, server_len):
+      client_split.append('0')
+    for i in range(server_len, client_len):
+      server_split.append('0')
+
+    for i in range(0, client_len):
+      client = int(client_split[i])
+      server = int(server_split[i])
+      if client < server:
+        return False
+
+    return True
 
   def upload_files(self, request, resources, folder, quiet):
     for file_name in os.listdir(folder):

@@ -306,7 +306,7 @@ class ApiClient(object):
         :param response: Response data type.
         :param files dict: key -> filename, value -> filepath,
             for `multipart/form-data`.
-        :param _async bool: execute request _asynchronously
+        :param _async bool: execute request asynchronously
         :param _return_http_data_only: response data without head status code
                                        and headers
         :param collection_formats: dict of collection formats for path, query,
@@ -320,7 +320,7 @@ class ApiClient(object):
                                  (connection, read) timeouts.
         :return:
             If _async parameter is True,
-            the request will be called _asynchronously.
+            the request will be called asynchronously.
             The method will return the request thread.
             If parameter _async is False or missing,
             then the method will return the response directly.

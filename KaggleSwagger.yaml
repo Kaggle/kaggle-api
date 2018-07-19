@@ -151,6 +151,53 @@ definitions:
         type: array
         items:
           type: string
+  KernelPushRequest:
+    type: object
+    required:
+    - slug
+    - text
+    - language
+    - kernelType
+    properties:
+      slug:
+        type: string
+      newTitle:
+        type: string
+      text:
+        type: string
+      language:
+        type: string
+        enum:
+        - python
+        - r
+        - rmarkdown
+      kernelType:
+        type: string
+        enum:
+        - script
+        - notebook
+      isPrivate:
+        type: boolean
+      enableGpu:
+        type: boolean
+      enableInternet:
+        type: boolean
+      datasetDataSources:
+        type: array
+        items:
+          type: string
+      competitionDataSources:
+        type: array
+        items:
+          type: string
+      kernelDataSources:
+        type: array
+        items:
+          type: string
+      categoryIds:
+        type: array
+        items:
+          type: string
 parameters:
   guidParam:
     in: path
@@ -641,3 +688,193 @@ paths:
           description: Error
           schema:
             $ref: '#/definitions/Error'
+  /kernels/list:
+    get:
+      tags:
+      - kaggle
+      summary: List kernels
+      operationId: KernelsList
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: page
+          type: integer
+          default: 1
+          description: Page number
+        - in: query
+          name: pageSize
+          type: integer
+          default: 20
+          description: Page size
+        - in: query
+          name: search
+          default: ''
+          type: string
+          description: Search terms
+        - in: query
+          name: group
+          type: string
+          enum: [everyone, profile, upvoted]
+          default: everyone
+          description: Display only your kernels
+        - in: query
+          name: user
+          type: string
+          description: Display kernels by a specific user
+        - in: query
+          name: language
+          type: string
+          enum: [all, python, r, sqlite, julia]
+          default: all
+          description: Display kernels in a specific language
+        - in: query
+          name: kernelType
+          type: string
+          enum: [all, script, notebook]
+          default: all
+          description: Display kernels of a specific type
+        - in: query
+          name: outputType
+          type: string
+          enum: [all, visualization, data]
+          default: all
+          description: Display kernels with a specific output type
+        - in: query
+          name: sortBy
+          type: string
+          enum: [hotness, commentCount, dateCreated, dateRun, scoreAscending, scoreDescending, viewCount, voteCount, relevance]
+          default: hotness
+          description: Sort the results. 'relevance' only works if there is a search query
+        - in: query
+          name: dataset
+          type: string
+          description: Display kernels using the specified dataset
+        - in: query
+          name: competition
+          type: string
+          description: Display kernels using the specified competition
+        - in: query
+          name: parentKernel
+          type: string
+          description: Display kernels that have forked the specified kernel
+      responses:
+        200:
+          description: Result
+          schema:
+            $ref: '#/definitions/Result'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/Error'
+  /kernels/push:
+    post:
+      tags:
+        - kaggle
+      summary: Push a new kernel version.  Can be used to create a new kernel and update an existing one.
+      operationId: KernelPush
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: kernelPushRequest
+          required: true
+          schema:
+            $ref: '#/definitions/KernelPushRequest'
+          description: Information for pushing a new kernel version
+      responses:
+        200:
+          description: Result
+          schema:
+            $ref: '#/definitions/Result'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/Error'
+  /kernels/pull:
+    get:
+      tags:
+        - kaggle
+      summary: Pull the latest code from a kernel
+      operationId: KernelPull
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: userName
+          required: true
+          type: string
+          description: Kernel owner
+        - in: query
+          name: kernelSlug
+          required: true
+          type: string
+          description: Kernel name
+      responses:
+        200:
+          description: Result
+          schema:
+            $ref: '#/definitions/Result'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/Error'
+  /kernels/output:
+    get:
+      tags:
+        - kaggle
+      summary: Download the latest output from a kernel
+      operationId: KernelOutput
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: userName
+          required: true
+          type: string
+          description: Kernel owner
+        - in: query
+          name: kernelSlug
+          required: true
+          type: string
+          description: Kernel name
+      responses:
+        200:
+          description: Result
+          schema:
+            $ref: '#/definitions/Result'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/Error'
+  /kernels/status:
+    get:
+      tags:
+        - kaggle
+      summary: Get the status of the latest kernel version
+      operationId: KernelStatus
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: userName
+          required: true
+          type: string
+          description: Kernel owner
+        - in: query
+          name: kernelSlug
+          required: true
+          type: string
+          description: Kernel name
+      responses:
+        200:
+          description: Result
+          schema:
+            $ref: '#/definitions/Result'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/Error'
+

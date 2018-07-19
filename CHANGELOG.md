@@ -1,6 +1,15 @@
 Changelog
 ====
 
+#### 1.4.0
+Release date: TBD
+* Add kernels support
+** List and search kernels
+** Push kernels code
+** Pull kernels code
+** Download kernel output
+** Get latest kernel run status
+
 #### 1.3.12
 Release date: 6/25/18
 * Allow setting a `'KAGGLE_CONFIG_DIR'` environmental token
@@ -8,7 +17,7 @@ Release date: 6/25/18
 * Alert users that dataset creation takes time
 
 #### 1.3.11.1
-Release date: 6/12/18
+=======
 * Fix other invalid tags check
 
 #### 1.3.11

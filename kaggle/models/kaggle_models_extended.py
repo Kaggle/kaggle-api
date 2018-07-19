@@ -14,6 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# coding=utf-8
 from datetime import datetime
 
 
@@ -155,6 +156,26 @@ class ListFilesResult(object):
 
   def __repr__(self):
     return self.error_message
+
+
+class Kernel:
+
+  def __init__(self, init_dict):
+    parsed_dict = {k: parse(v) for k, v in init_dict.items()}
+    self.__dict__.update(parsed_dict)
+
+  def __repr__(self):
+    return self.title
+
+
+class KernelPushResponse(object):
+
+  def __init__(self, init_dict):
+    parsed_dict = {k: parse(v) for k, v in init_dict.items()}
+    self.__dict__.update(parsed_dict)
+
+  def __repr__(self):
+    return self.newUrl
 
 
 def parse(string):

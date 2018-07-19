@@ -14,6 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# coding=utf-8
 from __future__ import print_function
 import csv
 from datetime import datetime
@@ -37,10 +38,13 @@ from ..models.kaggle_models_extended import DatasetNewResponse
 from ..models.kaggle_models_extended import DatasetNewVersionResponse
 from ..models.kaggle_models_extended import File
 from ..models.kaggle_models_extended import FileUploadInfo
+from ..models.kaggle_models_extended import Kernel
+from ..models.kaggle_models_extended import KernelPushResponse
 from ..models.kaggle_models_extended import LeaderboardEntry
 from ..models.kaggle_models_extended import ListFilesResult
 from ..models.kaggle_models_extended import Submission
 from ..models.kaggle_models_extended import SubmitResult
+from ..models.kernel_push_request import KernelPushRequest
 import requests
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
@@ -55,7 +59,7 @@ except NameError:
 
 
 class KaggleApi(KaggleApi):
-  __version__ = '1.3.12'
+  __version__ = '1.4.0'
 
   CONFIG_NAME_PROXY = 'proxy'
   CONFIG_NAME_COMPETITION = 'competition'
@@ -64,9 +68,12 @@ class KaggleApi(KaggleApi):
   CONFIG_NAME_KEY = 'key'
 
   HEADER_API_VERSION = 'X-Kaggle-ApiVersion'
-  METADATA_FILE = 'datapackage.json'
+  DATASET_METADATA_FILE = 'dataset-metadata.json'
+  OLD_DATASET_METADATA_FILE = 'datapackage.json'
+  KERNEL_METADATA_FILE = 'kernel-metadata.json'
 
-  config_path = os.environ.get('KAGGLE_CONFIG_DIR') or os.path.join(expanduser('~'), '.kaggle')
+  config_path = os.environ.get('KAGGLE_CONFIG_DIR') or os.path.join(
+      expanduser('~'), '.kaggle')
   if not os.path.exists(config_path):
     os.makedirs(config_path)
   config_file = 'kaggle.json'
@@ -104,12 +111,14 @@ class KaggleApi(KaggleApi):
 
     except Exception as error:
       if 'Proxy' in type(error).__name__:
-        sys.exit('The specified proxy ' + config_data[self.CONFIG_NAME_PROXY] +
-                 ' is not valid, please check your proxy settings')
+        raise ValueError('The specified proxy ' +
+                         config_data[self.CONFIG_NAME_PROXY] +
+                         ' is not valid, please check your proxy settings')
       else:
-        sys.exit(
-            'Unauthorized: you must download an API key from https://www.kaggle.com/<username>/account\nThen put '
-            + self.config_file + ' in the folder ' + self.config_path)
+        raise ValueError(
+            'Unauthorized: you must download an API key from '
+            'https://www.kaggle.com/<username>/account\nThen put ' +
+            self.config_file + ' in the folder ' + self.config_path)
 
   def set_config_value(self, name, value, quiet=False):
     try:
@@ -118,7 +127,7 @@ class KaggleApi(KaggleApi):
       if value is not None:
         config_data[name] = value
         with open(self.config, 'w') as f:
-          json.dump(config_data, f)
+          json.dump(config_data, f, indent=2)
       if name in config_data:
         self.config_values[name] = config_data[name]
     except:
@@ -132,7 +141,7 @@ class KaggleApi(KaggleApi):
         config_data = json.load(f)
       config_data[name] = None
       with open(self.config, 'w') as f:
-        json.dump(config_data, f)
+        json.dump(config_data, f, indent=2)
       self.config_values[name] = None
     except:
       pass
@@ -194,7 +203,7 @@ class KaggleApi(KaggleApi):
         print('Using competition: ' + competition)
 
     if competition is None:
-      sys.exit('No competition specified')
+      raise ValueError('No competition specified')
     else:
       url_result = self.process_response(
           self.competitions_submissions_url_with_http_info(
@@ -216,14 +225,16 @@ class KaggleApi(KaggleApi):
               submission_description=message))
       return SubmitResult(submit_result)
 
-  def competition_submit_cli(self, file_name, message, competition, quiet=False):
+  def competition_submit_cli(self, file_name, message, competition,
+                             quiet=False):
     try:
-      submit_result = self.competition_submit(file_name, message, competition, quiet)
+      submit_result = self.competition_submit(file_name, message, competition,
+                                              quiet)
     except ApiException as e:
       if e.status == 404:
-        print(
-            'Could not find competition - please verify that you entered the correct competition ID and that the competition is still accepting submissions.'
-        )
+        print('Could not find competition - please verify that you entered the '
+              'correct competition ID and that the competition is still '
+              'accepting submissions.')
         return None
       else:
         raise e
@@ -244,7 +255,7 @@ class KaggleApi(KaggleApi):
         print('Using competition: ' + competition)
 
     if competition is None:
-      sys.exit('No competition specified')
+      raise ValueError('No competition specified')
     else:
       submissions = self.competition_submissions(competition)
       fields = [
@@ -274,7 +285,7 @@ class KaggleApi(KaggleApi):
         print('Using competition: ' + competition)
 
     if competition is None:
-      sys.exit('No competition specified')
+      raise ValueError('No competition specified')
     else:
       files = self.competition_list_files(competition)
       fields = ['name', 'size', 'creationDate']
@@ -331,7 +342,7 @@ class KaggleApi(KaggleApi):
         print('Using competition: ' + competition)
 
     if competition is None:
-      sys.exit('No competition specified')
+      raise ValueError('No competition specified')
     else:
       if file_name is None:
         self.competition_download_files(competition, path, force, quiet)
@@ -367,7 +378,7 @@ class KaggleApi(KaggleApi):
                                   csv_display=False,
                                   quiet=False):
     if not view and not download:
-      sys.exit('Either --show or --download must be specified')
+      raise ValueError('Either --show or --download must be specified')
 
     if competition is None:
       competition = self.get_config_value(self.CONFIG_NAME_COMPETITION)
@@ -375,7 +386,7 @@ class KaggleApi(KaggleApi):
         print('Using competition: ' + competition)
 
     if competition is None:
-      sys.exit('No competition specified')
+      raise ValueError('No competition specified')
 
     if download:
       self.competition_leaderboard_download(competition, path, quiet)
@@ -399,6 +410,7 @@ class KaggleApi(KaggleApi):
     return [Dataset(d) for d in datasets_list_result]
 
   def datasets_view(self, dataset):
+    self.validate_dataset_string(dataset)
     dataset_urls = dataset.split('/')
     owner_slug = dataset_urls[0]
     dataset_slug = dataset_urls[1]
@@ -419,6 +431,7 @@ class KaggleApi(KaggleApi):
       print('No datasets found')
 
   def dataset_list_files(self, dataset):
+    self.validate_dataset_string(dataset)
     dataset_url_list = dataset.split('/')
     owner_slug = dataset_url_list[0]
     dataset_slug = dataset_url_list[1]
@@ -447,6 +460,7 @@ class KaggleApi(KaggleApi):
                             path=None,
                             force=False,
                             quiet=True):
+    self.validate_dataset_string(dataset)
     dataset_url_list = dataset.split('/')
     owner_slug = dataset_url_list[0]
     dataset_slug = dataset_url_list[1]
@@ -472,6 +486,7 @@ class KaggleApi(KaggleApi):
       return False
 
   def dataset_download_files(self, dataset, path=None, force=False, quiet=True):
+    self.validate_dataset_string(dataset)
     dataset_url_list = dataset.split('/')
     owner_slug = dataset_url_list[0]
     dataset_slug = dataset_url_list[1]
@@ -522,23 +537,23 @@ class KaggleApi(KaggleApi):
                              convert_to_csv=True,
                              delete_old_versions=False):
     if not os.path.isdir(folder):
-      sys.exit('Invalid folder: ' + folder)
+      raise ValueError('Invalid folder: ' + folder)
 
-    meta_file = os.path.join(folder, self.METADATA_FILE)
-    if not os.path.isfile(meta_file):
-      sys.exit('Metadata file not found: ' + self.METADATA_FILE)
+    meta_file = self.get_dataset_metadata_file()
 
     # read json
     with open(meta_file, 'r') as f:
       meta_data = json.load(f)
-    ref = self.get_or_exit(meta_data, 'id')
+    ref = self.get_or_fail(meta_data, 'id')
+    self.validate_dataset_string(ref)
     ref_list = ref.split('/')
     owner_slug = ref_list[0]
     dataset_slug = ref_list[1]
 
     # validations
     if ref == self.config_values[self.CONFIG_NAME_USER] + '/INSERT_SLUG_HERE':
-      sys.exit('Default slug detected, please change values before uploading')
+      raise ValueError(
+          'Default slug detected, please change values before uploading')
 
     subtitle = meta_data.get('subtitle')
     if subtitle and (len(subtitle) < 20 or len(subtitle) > 80):
@@ -580,13 +595,12 @@ class KaggleApi(KaggleApi):
         quiet=quiet,
         convert_to_csv=convert_to_csv,
         delete_old_versions=delete_old_versions)
-    if result.invalidTags is not None and len(result.invalidTags) > 0:
-      print(
-          'The following are not valid tags and could not be added to the dataset: '
-          + str(result.invalidTags))
+    if result.invalidTags:
+      print(('The following are not valid tags and could not be added to the '
+             'dataset: ') + str(result.invalidTags))
     if result is None:
       print('Dataset version creation error: See previous output')
-    elif result.status == 'ok':
+    elif result.status.lower() == 'ok':
       print('Dataset version is being created. Please check progress at ' +
             result.url)
     else:
@@ -594,17 +608,17 @@ class KaggleApi(KaggleApi):
 
   def dataset_initialize(self, folder):
     if not os.path.isdir(folder):
-      sys.exit('Invalid folder: ' + folder)
+      raise ValueError('Invalid folder: ' + folder)
 
     ref = self.config_values[self.CONFIG_NAME_USER] + '/INSERT_SLUG_HERE'
     licenses = []
-    license = {'name': 'CC0-1.0'}
-    licenses.append(license)
+    default_license = {'name': 'CC0-1.0'}
+    licenses.append(default_license)
 
     meta_data = {'title': 'INSERT_TITLE_HERE', 'id': ref, 'licenses': licenses}
-    meta_file = os.path.join(folder, self.METADATA_FILE)
+    meta_file = os.path.join(folder, self.DATASET_METADATA_FILE)
     with open(meta_file, 'w') as f:
-      json.dump(meta_data, f)
+      json.dump(meta_data, f, indent=2)
 
     print('Data package template written to: ' + meta_file)
     return meta_file
@@ -615,31 +629,31 @@ class KaggleApi(KaggleApi):
                          quiet=False,
                          convert_to_csv=True):
     if not os.path.isdir(folder):
-      sys.exit('Invalid folder: ' + folder)
+      raise ValueError('Invalid folder: ' + folder)
 
-    meta_file = os.path.join(folder, self.METADATA_FILE)
-    if not os.path.isfile(meta_file):
-      sys.exit('Metadata file not found: ' + self.METADATA_FILE)
+    meta_file = self.get_dataset_metadata_file()
 
     # read json
     with open(meta_file, 'r') as f:
       meta_data = json.load(f)
-    ref = self.get_or_exit(meta_data, 'id')
-    title = self.get_or_exit(meta_data, 'title')
-    licenses = self.get_or_exit(meta_data, 'licenses')
+    ref = self.get_or_fail(meta_data, 'id')
+    title = self.get_or_fail(meta_data, 'title')
+    licenses = self.get_or_fail(meta_data, 'licenses')
     ref_list = ref.split('/')
     owner_slug = ref_list[0]
     dataset_slug = ref_list[1]
 
     # validations
     if ref == self.config_values[self.CONFIG_NAME_USER] + '/INSERT_SLUG_HERE':
-      sys.exit('Default slug detected, please change values before uploading')
+      raise ValueError(
+          'Default slug detected, please change values before uploading')
     if title == 'INSERT_TITLE_HERE':
-      sys.exit('Default title detected, please change values before uploading')
+      raise ValueError(
+          'Default title detected, please change values before uploading')
     if len(licenses) != 1:
-      sys.exit('Please specify exactly one license')
+      raise ValueError('Please specify exactly one license')
 
-    license_name = self.get_or_exit(licenses[0], 'name')
+    license_name = self.get_or_fail(licenses[0], 'name')
     description = meta_data.get('description')
     keywords = self.get_or_default(meta_data, 'keywords', [])
 
@@ -675,11 +689,10 @@ class KaggleApi(KaggleApi):
                              quiet=False,
                              convert_to_csv=True):
     result = self.dataset_create_new(folder, public, quiet, convert_to_csv)
-    if result.invalidTags is not None and len(result.invalidTags) > 0:
-      print(
-          'The following are not valid tags and could not be added to the dataset: '
-          + str(result.invalidTags))
-    if result.status == 'ok':
+    if result.invalidTags:
+      print(('The following are not valid tags and could not be added to the '
+             'dataset: ') + str(result.invalidTags))
+    if result.status.lower() == 'ok':
       if public:
         print('Your public Dataset is being created. Please check progress at '
               + result.url)
@@ -710,6 +723,412 @@ class KaggleApi(KaggleApi):
           pbar.update(len(data))
       if not quiet:
         print('\n', end='')
+
+  def kernels_list(self,
+                   page=1,
+                   page_size=20,
+                   dataset=None,
+                   competition=None,
+                   parent_kernel=None,
+                   search=None,
+                   mine=False,
+                   user=None,
+                   language=None,
+                   kernel_type=None,
+                   output_type=None,
+                   sort_by=None):
+    if int(page) <= 0:
+      raise ValueError('Page number must be >= 1')
+
+    page_size = int(page_size)
+    if page_size <= 0:
+      raise ValueError('Page size must be >= 1')
+    if page_size > 100:
+      page_size = 100
+
+    valid_languages = ['all', 'python', 'r', 'sqlite', 'julia']
+    if language and language not in valid_languages:
+      raise ValueError('Invalid language specified. Valid options are ' +
+                       str(valid_languages))
+
+    valid_kernel_types = ['all', 'script', 'notebook']
+    if kernel_type and kernel_type not in valid_kernel_types:
+      raise ValueError('Invalid kernel type specified. Valid options are ' +
+                       str(valid_kernel_types))
+
+    valid_output_types = ['all', 'visualization', 'data']
+    if output_type and output_type not in valid_output_types:
+      raise ValueError('Invalid output type specified. Valid options are ' +
+                       str(valid_output_types))
+
+    valid_sort_by = [
+        'hotness', 'commentCount', 'dateCreated', 'dateRun', 'relevance',
+        'scoreAscending', 'scoreDescending', 'viewCount', 'voteCount'
+    ]
+    if sort_by and sort_by not in valid_sort_by:
+      raise ValueError('Invalid sort by type specified. Valid options are ' +
+                       str(valid_sort_by))
+    if sort_by == 'relevance' and search == '':
+      raise ValueError('Cannot sort by relevance without a search term.')
+
+    self.validate_dataset_string(dataset)
+    self.validate_kernel_string(parent_kernel)
+
+    group = 'everyone'
+    if mine:
+      group = 'profile'
+
+    kernels_list_result = self.process_response(
+        self.kernels_list_with_http_info(
+            page=page,
+            page_size=page_size,
+            group=group,
+            user=user or '',
+            language=language or 'all',
+            kernel_type=kernel_type or 'all',
+            output_type=output_type or 'all',
+            sort_by=sort_by or 'hotness',
+            dataset=dataset or '',
+            competition=competition or '',
+            parent_kernel=parent_kernel or '',
+            search=search or ''))
+    return [Kernel(k) for k in kernels_list_result]
+
+  def kernels_list_cli(self,
+                       mine=False,
+                       page=1,
+                       page_size=20,
+                       search=None,
+                       csv_display=False,
+                       parent=None,
+                       competition=None,
+                       dataset=None,
+                       user=None,
+                       language=None,
+                       kernel_type=None,
+                       output_type=None,
+                       sort_by=None):
+    kernels = self.kernels_list(
+        page=page,
+        page_size=page_size,
+        search=search,
+        mine=mine,
+        dataset=dataset,
+        competition=competition,
+        parent_kernel=parent,
+        user=user,
+        language=language,
+        kernel_type=kernel_type,
+        output_type=output_type,
+        sort_by=sort_by)
+    fields = ['ref', 'title', 'author']
+    if kernels:
+      if csv_display:
+        self.print_csv(kernels, fields)
+      else:
+        self.print_table(kernels, fields)
+    else:
+      print('No kernels found')
+
+  def kernels_initialize(self, folder, kernel=None):
+    if not os.path.isdir(folder):
+      raise ValueError('Invalid folder: ' + folder)
+
+    resources = []
+    resource = {'path': 'INSERT_SCRIPT_PATH_HERE'}
+    resources.append(resource)
+
+    meta_data = {
+        'id': 'INSERT_USERNAME_HERE/INSERT_KERNEL_SLUG_HERE',
+        'title': 'INSERT_TITLE_HERE',
+        'code_file': 'INSERT_CODE_FILE_PATH_HERE',
+        'language': 'INSERT_LANGUAGE_HERE',
+        'kernel_type': 'INSERT_KERNEL_TYPE_HERE',
+        'is_private': 'true',
+        'enable_gpu': 'false',
+        'enable_internet': 'false',
+        'dataset_sources': [],
+        'competition_sources': [],
+        'kernel_sources': [],
+    }
+    meta_file = os.path.join(folder, self.KERNEL_METADATA_FILE)
+    with open(meta_file, 'w') as f:
+      json.dump(meta_data, f, indent=2)
+
+    return meta_file
+
+  def kernels_initialize_cli(self, folder, kernel=None):
+    meta_file = self.kernels_initialize(folder, kernel)
+    print('Kernel metadata template written to: ' + meta_file)
+
+  def kernels_push(self, folder):
+    if not os.path.isdir(folder):
+      raise ValueError('Invalid folder: ' + folder)
+
+    meta_file = os.path.join(folder, self.KERNEL_METADATA_FILE)
+    if not os.path.isfile(meta_file):
+      raise ValueError('Metadata file not found: ' + self.KERNEL_METADATA_FILE)
+
+    with open(meta_file, 'r') as f:
+      meta_data = json.load(f)
+
+    slug = meta_data['id']
+    if not slug:
+      raise ValueError('ID must be specified in the metadata')
+    self.validate_kernel_string(slug)
+
+    valid_languages = ['python', 'r', 'rmarkdown']
+    language = self.get_or_default(meta_data, 'language', '')
+    if language not in valid_languages:
+      raise ValueError(
+          'A valid language must be specified in the metadata. Valid options '
+          'are ' + str(valid_languages))
+
+    valid_kernel_types = ['script', 'notebook']
+    kernel_type = self.get_or_default(meta_data, 'kernel_type', '')
+    if kernel_type not in valid_kernel_types:
+      raise ValueError(
+          'A valid kernel type must be specified in the metadata. Valid '
+          'options are ' + str(valid_kernel_types))
+
+    if kernel_type == 'notebook' and language == 'rmarkdown':
+      language = 'r'
+
+    code_path = self.get_or_default(meta_data, 'code_file', '')
+    if not code_path:
+      raise ValueError('A source file must be specified in the metadata')
+
+    dataset_sources = self.get_or_default(meta_data, 'dataset_sources', [])
+    for source in dataset_sources:
+      self.validate_dataset_string(source)
+
+    kernel_sources = self.get_or_default(meta_data, 'kernel_sources', [])
+    for source in kernel_sources:
+      self.validate_kernel_string(source)
+
+    code_file = os.path.join(folder, code_path)
+    if not os.path.isfile(code_file):
+      raise ValueError('Source file not found: ' + code_file)
+
+    with open(code_file, 'r') as f:
+      script_body = f.read()
+
+    if kernel_type == 'notebook':
+      json_body = json.loads(script_body)
+      if 'cells' in json_body:
+        for cell in json_body['cells']:
+          if 'outputs' in cell and cell['cell_type'] == 'code':
+            cell['outputs'] = []
+      script_body = json.dumps(json_body)
+
+    kernel_push_request = KernelPushRequest(
+        slug=slug,
+        new_title=self.get_or_default(meta_data, 'title', None),
+        text=script_body,
+        language=language,
+        kernel_type=kernel_type,
+        is_private=self.get_or_default(meta_data, 'is_private', None),
+        enable_gpu=self.get_or_default(meta_data, 'enable_gpu', None),
+        enable_internet=self.get_or_default(meta_data, 'enable_internet', None),
+        dataset_data_sources=dataset_sources,
+        competition_data_sources=self.get_or_default(meta_data,
+                                                     'competition_sources', []),
+        kernel_data_sources=kernel_sources,
+        category_ids=self.get_or_default(meta_data, 'keywords', []))
+
+    result = KernelPushResponse(
+        self.process_response(
+            self.kernel_push_with_http_info(
+                kernel_push_request=kernel_push_request)))
+    return result
+
+  def kernels_push_cli(self, folder):
+    result = self.kernels_push(folder)
+
+    if result is None:
+      print('Kernel push error: see previous output')
+    elif not result.error:
+      if result.invalidTags:
+        print(('The following are not valid tags and could not be added to the '
+               'kernel: ') + str(result.invalidTags))
+      if result.invalidDatasetSources:
+        print((
+            'The following are not valid dataset sources and could not be added '
+            'to the kernel: ') + str(result.invalidDatasetSources))
+      if result.invalidCompetitionSources:
+        print(
+            ('The following are not valid competition sources and could not be '
+             'added to the kernel: ') + str(result.invalidCompetitionSources))
+      if result.invalidKernelSources:
+        print(('The following are not valid kernel sources and could not be '
+               'added to the kernel: ') + str(result.invalidKernelSources))
+      print('Kernel successfully pushed.  Please check progress at ' +
+            result.url)
+    else:
+      print('Kernel push error: ' + result.error)
+
+  def kernels_pull(self, kernel, path, metadata=False):
+    self.validate_kernel_string(kernel)
+    kernel_url_list = kernel.split('/')
+    owner_slug = kernel_url_list[0]
+    kernel_slug = kernel_url_list[1]
+
+    if path is None:
+      effective_path = os.path.join(self.get_config_path(), 'kernels',
+                                    owner_slug, kernel_slug)
+    else:
+      effective_path = path
+
+    if not os.path.exists(effective_path):
+      os.makedirs(effective_path)
+
+    response = self.process_response(
+        self.kernel_pull_with_http_info(owner_slug, kernel_slug))
+    blob = response['blob']
+
+    if not os.path.isfile(effective_path):
+      language = blob['language'].lower()
+      kernel_type = blob['kernelType'].lower()
+      extension = None
+      if kernel_type == 'script':
+        if language == 'python':
+          extension = '.py'
+        elif language == 'r':
+          extension = '.R'
+        elif language == 'rmarkdown':
+          extension = '.Rmd'
+        elif language == 'sqlite':
+          extension = '.sql'
+        elif language == 'julia':
+          extension = '.jl'
+      elif kernel_type == 'notebook':
+        if language == 'python':
+          extension = '.ipynb'
+        elif language == 'r':
+          extension = '.irnb'
+        elif language == 'julia':
+          extension = '.ijlnb'
+      file_name = blob['slug'] + extension
+
+      if file_name is None:
+        print('Unknown language %s + kernel type %s - please report this on '
+              'the kaggle-api github issues' % (language, kernel_type))
+        print(
+            'Saving as a python file, even though this may not be the correct '
+            'language')
+        file_name = 'script.py'
+      script_path = os.path.join(effective_path, file_name)
+    else:
+      script_path = effective_path
+      file_name = os.path.basename(effective_path)
+
+    with open(script_path, 'w') as f:
+      f.write(blob['source'])
+
+    if metadata:
+      if os.path.isfile(effective_path):
+        effective_dir = os.path.dirname(effective_path)
+      else:
+        effective_dir = effective_path
+
+      data = {}
+
+      server_metadata = response['metadata']
+      data['id'] = server_metadata['ref']
+      data['title'] = server_metadata['title']
+      data['code_file'] = file_name
+      data['language'] = server_metadata['language']
+      data['kernel_type'] = server_metadata['kernelType']
+      self.set_if_present(server_metadata, 'isPrivate', data, 'is_private')
+      self.set_if_present(server_metadata, 'enableGpu', data, 'enable_gpu')
+      self.set_if_present(server_metadata, 'enableInternet', data,
+                          'enable_internet')
+      self.set_if_present(server_metadata, 'categoryIds', data, 'keywords')
+      self.set_if_present(server_metadata, 'datasetDataSources', data,
+                          'dataset_sources')
+      self.set_if_present(server_metadata, 'kernelDataSources', data,
+                          'kernel_sources')
+      self.set_if_present(server_metadata, 'competitionDataSources', data,
+                          'competition_sources')
+
+      metadata_path = os.path.join(effective_dir, self.KERNEL_METADATA_FILE)
+      with open(metadata_path, 'w') as f:
+        json.dump(data, f, indent=2)
+
+      return effective_dir
+    else:
+      return script_path
+
+  def kernels_pull_cli(self, kernel, path=None, metadata=False):
+    effective_path = self.kernels_pull(kernel, path=path, metadata=metadata)
+    if metadata:
+      print('Source code and metadata downloaded to ' + effective_path)
+    else:
+      print('Source code downloaded to ' + effective_path)
+
+  def kernels_output(self, kernel, path, force=False, quiet=True):
+    self.validate_kernel_string(kernel)
+    kernel_url_list = kernel.split('/')
+    owner_slug = kernel_url_list[0]
+    kernel_slug = kernel_url_list[1]
+
+    if path is None:
+      target_dir = os.path.join(self.get_config_path(), 'kernels', owner_slug,
+                                kernel_slug, 'output')
+    else:
+      target_dir = path
+
+    if not os.path.exists(target_dir):
+      os.makedirs(target_dir)
+
+    if not os.path.isdir(target_dir):
+      raise ValueError('You must specify a directory for the kernels output')
+
+    response = self.process_response(
+        self.kernel_output_with_http_info(owner_slug, kernel_slug))
+    outfiles = []
+    for item in response['files']:
+      outfile = os.path.join(target_dir, item['fileName'])
+      outfiles.append(outfile)
+      download_response = requests.get(item['url'])
+      if force or self.download_needed(item, outfile, quiet):
+        with open(outfile, 'wb') as out:
+          out.write(download_response.content)
+        if not quiet:
+          print('Output file downloaded to %s' % outfile)
+
+    log = response['log']
+    if log:
+      outfile = os.path.join(target_dir, 'kernel-log.log')
+      outfiles.append(outfile)
+      with open(outfile, 'w') as out:
+        out.write(log)
+      if not quiet:
+        print('Kernel log downloaded to %s ' % outfile)
+
+    return outfiles
+
+  def kernels_output_cli(self, kernel, path=None, force=False, quiet=False):
+    self.kernels_output(kernel, path, force, quiet)
+
+  def kernels_status(self, kernel):
+    self.validate_kernel_string(kernel)
+    kernel_url_list = kernel.split('/')
+    owner_slug = kernel_url_list[0]
+    kernel_slug = kernel_url_list[1]
+    response = self.process_response(
+        self.kernel_status_with_http_info(owner_slug, kernel_slug))
+    return response
+
+  def kernels_status_cli(self, kernel):
+    response = self.kernels_status(kernel)
+    status = response['status']
+    message = response['failureMessage']
+    if message:
+      print('%s has status "%s"' % (kernel, status))
+      print('Failure message: "%s"' % message)
+    else:
+      print('%s has status "%s"' % (kernel, status))
 
   def download_needed(self, response, outfile, quiet=True):
     try:
@@ -755,15 +1174,28 @@ class KaggleApi(KaggleApi):
   def string(self, item):
     return item if isinstance(item, unicode) else str(item)
 
-  def get_or_exit(self, data, key):
+  def get_or_fail(self, data, key):
     if key in data:
       return data[key]
-    sys.exit('Key ' + key + ' not found in data')
+    raise ValueError('Key ' + key + ' not found in data')
 
   def get_or_default(self, data, key, default):
     if key in data:
       return data[key]
     return default
+
+  def set_if_present(self, data, key, output, output_key):
+    if key in data:
+      output[output_key] = data[key]
+
+  def get_dataset_metadata_file(self):
+    meta_file = os.path.join(folder, self.DATASET_METADATA_FILE)
+    if not os.path.isfile(meta_file):
+      meta_file = os.path.join(folder, self.OLD_DATASET_METADATA_FILE)
+      if not os.path.isfile(meta_file):
+        raise ValueError('Metadata file not found: ' +
+                         self.DATASET_METADATA_FILE)
+    return meta_file
 
   def process_response(self, result):
     if len(result) == 3:
@@ -771,10 +1203,11 @@ class KaggleApi(KaggleApi):
       headers = result[2]
       if self.HEADER_API_VERSION in headers:
         api_version = headers[self.HEADER_API_VERSION]
-        if not self.already_printed_version_warning and not self.is_up_to_date(api_version):
-          print(
-              'Warning: Looks like you\'re using an outdated API Version, please consider updating (server '
-              + api_version + ' / client ' + self.__version__ + ')')
+        if not self.already_printed_version_warning and not self.is_up_to_date(
+            api_version):
+          print('Warning: Looks like you\'re using an outdated API Version, '
+                'please consider updating (server ' + api_version +
+                ' / client ' + self.__version__ + ')')
           self.already_printed_version_warning = True
       return data
     return result
@@ -792,16 +1225,23 @@ class KaggleApi(KaggleApi):
       server_split.append('0')
 
     for i in range(0, client_len):
+      if 'b' in client_split[i]:
+        # Using a beta version, don't check
+        return True
       client = int(client_split[i])
       server = int(server_split[i])
       if client < server:
         return False
+      elif server < client:
+        return True
 
     return True
 
   def upload_files(self, request, resources, folder, quiet):
     for file_name in os.listdir(folder):
-      if file_name == self.METADATA_FILE:
+      if (file_name == self.DATASET_METADATA_FILE or
+          file_name == self.OLD_DATASET_METADATA_FILE or
+          file_name == self.KERNEL_METADATA_FILE):
         continue
       full_path = os.path.join(folder, file_name)
 
@@ -842,10 +1282,10 @@ class KaggleApi(KaggleApi):
 
   def process_column(self, column):
     processed_column = DatasetColumn(
-        name=self.get_or_exit(column, 'name'),
+        name=self.get_or_fail(column, 'name'),
         description=self.get_or_default(column, 'description', ''))
     if 'type' in column:
-      original_type = column['type']
+      original_type = column['type'].lower()
       processed_column.original_type = original_type
       if (original_type == 'string' or original_type == 'date' or
           original_type == 'time' or original_type == 'yearmonth' or
@@ -884,6 +1324,26 @@ class KaggleApi(KaggleApi):
       print(error)
       return False
     return response.status_code == 200 or response.status_code == 201
+
+  def validate_dataset_string(self, dataset):
+    if dataset:
+      if '/' not in dataset:
+        raise ValueError('Dataset must be specified in the form of '
+                         '\'{username}/{dataset-slug}\'')
+
+      split = dataset.split('/')
+      if not split[0] or not split[1]:
+        raise ValueError('Invalid dataset specification ' + dataset)
+
+  def validate_kernel_string(self, kernel):
+    if kernel:
+      if '/' not in kernel:
+        raise ValueError('Kernel must be specified in the form of '
+                         '\'{username}/{kernel-slug}\'')
+
+      split = kernel.split('/')
+      if not split[0] or not split[1]:
+        raise ValueError('Invalid kernel specification ' + kernel)
 
 
 class TqdmBufferedReader(io.BufferedReader):

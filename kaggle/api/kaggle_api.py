@@ -1680,3 +1680,536 @@ class KaggleApi(object):
             _preload_content=params.get('_preload_content', True),
             _request_timeout=params.get('_request_timeout'),
             collection_formats=collection_formats)
+
+    def kernel_output(self, user_name, kernel_slug, **kwargs):  # noqa: E501
+        """Download the latest output from a kernel  # noqa: E501
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async=True
+        >>> thread = api.kernel_output(user_name, kernel_slug, async=True)
+        >>> result = thread.get()
+
+        :param async bool
+        :param str user_name: Kernel owner (required)
+        :param str kernel_slug: Kernel name (required)
+        :return: Result
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+        kwargs['_return_http_data_only'] = True
+        if kwargs.get('async'):
+            return self.kernel_output_with_http_info(user_name, kernel_slug, **kwargs)  # noqa: E501
+        else:
+            (data) = self.kernel_output_with_http_info(user_name, kernel_slug, **kwargs)  # noqa: E501
+            return data
+
+    def kernel_output_with_http_info(self, user_name, kernel_slug, **kwargs):  # noqa: E501
+        """Download the latest output from a kernel  # noqa: E501
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async=True
+        >>> thread = api.kernel_output_with_http_info(user_name, kernel_slug, async=True)
+        >>> result = thread.get()
+
+        :param async bool
+        :param str user_name: Kernel owner (required)
+        :param str kernel_slug: Kernel name (required)
+        :return: Result
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+
+        all_params = ['user_name', 'kernel_slug']  # noqa: E501
+        all_params.append('async')
+        all_params.append('_return_http_data_only')
+        all_params.append('_preload_content')
+        all_params.append('_request_timeout')
+
+        params = locals()
+        for key, val in six.iteritems(params['kwargs']):
+            if key not in all_params:
+                raise TypeError(
+                    "Got an unexpected keyword argument '%s'"
+                    " to method kernel_output" % key
+                )
+            params[key] = val
+        del params['kwargs']
+        # verify the required parameter 'user_name' is set
+        if ('user_name' not in params or
+                params['user_name'] is None):
+            raise ValueError("Missing the required parameter `user_name` when calling `kernel_output`")  # noqa: E501
+        # verify the required parameter 'kernel_slug' is set
+        if ('kernel_slug' not in params or
+                params['kernel_slug'] is None):
+            raise ValueError("Missing the required parameter `kernel_slug` when calling `kernel_output`")  # noqa: E501
+
+        collection_formats = {}
+
+        path_params = {}
+
+        query_params = []
+        if 'user_name' in params:
+            query_params.append(('userName', params['user_name']))  # noqa: E501
+        if 'kernel_slug' in params:
+            query_params.append(('kernelSlug', params['kernel_slug']))  # noqa: E501
+
+        header_params = {}
+
+        form_params = []
+        local_var_files = {}
+
+        body_params = None
+        # HTTP header `Accept`
+        header_params['Accept'] = self.api_client.select_header_accept(
+            ['application/json'])  # noqa: E501
+
+        # Authentication setting
+        auth_settings = ['basicAuth']  # noqa: E501
+
+        return self.api_client.call_api(
+            '/kernels/output', 'GET',
+            path_params,
+            query_params,
+            header_params,
+            body=body_params,
+            post_params=form_params,
+            files=local_var_files,
+            response_type='Result',  # noqa: E501
+            auth_settings=auth_settings,
+            async=params.get('async'),
+            _return_http_data_only=params.get('_return_http_data_only'),
+            _preload_content=params.get('_preload_content', True),
+            _request_timeout=params.get('_request_timeout'),
+            collection_formats=collection_formats)
+
+    def kernel_pull(self, user_name, kernel_slug, **kwargs):  # noqa: E501
+        """Pull the latest code from a kernel  # noqa: E501
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async=True
+        >>> thread = api.kernel_pull(user_name, kernel_slug, async=True)
+        >>> result = thread.get()
+
+        :param async bool
+        :param str user_name: Kernel owner (required)
+        :param str kernel_slug: Kernel name (required)
+        :return: Result
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+        kwargs['_return_http_data_only'] = True
+        if kwargs.get('async'):
+            return self.kernel_pull_with_http_info(user_name, kernel_slug, **kwargs)  # noqa: E501
+        else:
+            (data) = self.kernel_pull_with_http_info(user_name, kernel_slug, **kwargs)  # noqa: E501
+            return data
+
+    def kernel_pull_with_http_info(self, user_name, kernel_slug, **kwargs):  # noqa: E501
+        """Pull the latest code from a kernel  # noqa: E501
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async=True
+        >>> thread = api.kernel_pull_with_http_info(user_name, kernel_slug, async=True)
+        >>> result = thread.get()
+
+        :param async bool
+        :param str user_name: Kernel owner (required)
+        :param str kernel_slug: Kernel name (required)
+        :return: Result
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+
+        all_params = ['user_name', 'kernel_slug']  # noqa: E501
+        all_params.append('async')
+        all_params.append('_return_http_data_only')
+        all_params.append('_preload_content')
+        all_params.append('_request_timeout')
+
+        params = locals()
+        for key, val in six.iteritems(params['kwargs']):
+            if key not in all_params:
+                raise TypeError(
+                    "Got an unexpected keyword argument '%s'"
+                    " to method kernel_pull" % key
+                )
+            params[key] = val
+        del params['kwargs']
+        # verify the required parameter 'user_name' is set
+        if ('user_name' not in params or
+                params['user_name'] is None):
+            raise ValueError("Missing the required parameter `user_name` when calling `kernel_pull`")  # noqa: E501
+        # verify the required parameter 'kernel_slug' is set
+        if ('kernel_slug' not in params or
+                params['kernel_slug'] is None):
+            raise ValueError("Missing the required parameter `kernel_slug` when calling `kernel_pull`")  # noqa: E501
+
+        collection_formats = {}
+
+        path_params = {}
+
+        query_params = []
+        if 'user_name' in params:
+            query_params.append(('userName', params['user_name']))  # noqa: E501
+        if 'kernel_slug' in params:
+            query_params.append(('kernelSlug', params['kernel_slug']))  # noqa: E501
+
+        header_params = {}
+
+        form_params = []
+        local_var_files = {}
+
+        body_params = None
+        # HTTP header `Accept`
+        header_params['Accept'] = self.api_client.select_header_accept(
+            ['application/json'])  # noqa: E501
+
+        # Authentication setting
+        auth_settings = ['basicAuth']  # noqa: E501
+
+        return self.api_client.call_api(
+            '/kernels/pull', 'GET',
+            path_params,
+            query_params,
+            header_params,
+            body=body_params,
+            post_params=form_params,
+            files=local_var_files,
+            response_type='Result',  # noqa: E501
+            auth_settings=auth_settings,
+            async=params.get('async'),
+            _return_http_data_only=params.get('_return_http_data_only'),
+            _preload_content=params.get('_preload_content', True),
+            _request_timeout=params.get('_request_timeout'),
+            collection_formats=collection_formats)
+
+    def kernel_push(self, kernel_push_request, **kwargs):  # noqa: E501
+        """Push a new kernel version.  Can be used to create a new kernel and update an existing one.  # noqa: E501
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async=True
+        >>> thread = api.kernel_push(kernel_push_request, async=True)
+        >>> result = thread.get()
+
+        :param async bool
+        :param KernelPushRequest kernel_push_request: Information for pushing a new kernel version (required)
+        :return: Result
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+        kwargs['_return_http_data_only'] = True
+        if kwargs.get('async'):
+            return self.kernel_push_with_http_info(kernel_push_request, **kwargs)  # noqa: E501
+        else:
+            (data) = self.kernel_push_with_http_info(kernel_push_request, **kwargs)  # noqa: E501
+            return data
+
+    def kernel_push_with_http_info(self, kernel_push_request, **kwargs):  # noqa: E501
+        """Push a new kernel version.  Can be used to create a new kernel and update an existing one.  # noqa: E501
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async=True
+        >>> thread = api.kernel_push_with_http_info(kernel_push_request, async=True)
+        >>> result = thread.get()
+
+        :param async bool
+        :param KernelPushRequest kernel_push_request: Information for pushing a new kernel version (required)
+        :return: Result
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+
+        all_params = ['kernel_push_request']  # noqa: E501
+        all_params.append('async')
+        all_params.append('_return_http_data_only')
+        all_params.append('_preload_content')
+        all_params.append('_request_timeout')
+
+        params = locals()
+        for key, val in six.iteritems(params['kwargs']):
+            if key not in all_params:
+                raise TypeError(
+                    "Got an unexpected keyword argument '%s'"
+                    " to method kernel_push" % key
+                )
+            params[key] = val
+        del params['kwargs']
+        # verify the required parameter 'kernel_push_request' is set
+        if ('kernel_push_request' not in params or
+                params['kernel_push_request'] is None):
+            raise ValueError("Missing the required parameter `kernel_push_request` when calling `kernel_push`")  # noqa: E501
+
+        collection_formats = {}
+
+        path_params = {}
+
+        query_params = []
+
+        header_params = {}
+
+        form_params = []
+        local_var_files = {}
+
+        body_params = None
+        if 'kernel_push_request' in params:
+            body_params = params['kernel_push_request']
+        # HTTP header `Accept`
+        header_params['Accept'] = self.api_client.select_header_accept(
+            ['application/json'])  # noqa: E501
+
+        # HTTP header `Content-Type`
+        header_params['Content-Type'] = self.api_client.select_header_content_type(  # noqa: E501
+            ['application/json'])  # noqa: E501
+
+        # Authentication setting
+        auth_settings = ['basicAuth']  # noqa: E501
+
+        return self.api_client.call_api(
+            '/kernels/push', 'POST',
+            path_params,
+            query_params,
+            header_params,
+            body=body_params,
+            post_params=form_params,
+            files=local_var_files,
+            response_type='Result',  # noqa: E501
+            auth_settings=auth_settings,
+            async=params.get('async'),
+            _return_http_data_only=params.get('_return_http_data_only'),
+            _preload_content=params.get('_preload_content', True),
+            _request_timeout=params.get('_request_timeout'),
+            collection_formats=collection_formats)
+
+    def kernel_status(self, user_name, kernel_slug, **kwargs):  # noqa: E501
+        """Get the status of the latest kernel version  # noqa: E501
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async=True
+        >>> thread = api.kernel_status(user_name, kernel_slug, async=True)
+        >>> result = thread.get()
+
+        :param async bool
+        :param str user_name: Kernel owner (required)
+        :param str kernel_slug: Kernel name (required)
+        :return: Result
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+        kwargs['_return_http_data_only'] = True
+        if kwargs.get('async'):
+            return self.kernel_status_with_http_info(user_name, kernel_slug, **kwargs)  # noqa: E501
+        else:
+            (data) = self.kernel_status_with_http_info(user_name, kernel_slug, **kwargs)  # noqa: E501
+            return data
+
+    def kernel_status_with_http_info(self, user_name, kernel_slug, **kwargs):  # noqa: E501
+        """Get the status of the latest kernel version  # noqa: E501
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async=True
+        >>> thread = api.kernel_status_with_http_info(user_name, kernel_slug, async=True)
+        >>> result = thread.get()
+
+        :param async bool
+        :param str user_name: Kernel owner (required)
+        :param str kernel_slug: Kernel name (required)
+        :return: Result
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+
+        all_params = ['user_name', 'kernel_slug']  # noqa: E501
+        all_params.append('async')
+        all_params.append('_return_http_data_only')
+        all_params.append('_preload_content')
+        all_params.append('_request_timeout')
+
+        params = locals()
+        for key, val in six.iteritems(params['kwargs']):
+            if key not in all_params:
+                raise TypeError(
+                    "Got an unexpected keyword argument '%s'"
+                    " to method kernel_status" % key
+                )
+            params[key] = val
+        del params['kwargs']
+        # verify the required parameter 'user_name' is set
+        if ('user_name' not in params or
+                params['user_name'] is None):
+            raise ValueError("Missing the required parameter `user_name` when calling `kernel_status`")  # noqa: E501
+        # verify the required parameter 'kernel_slug' is set
+        if ('kernel_slug' not in params or
+                params['kernel_slug'] is None):
+            raise ValueError("Missing the required parameter `kernel_slug` when calling `kernel_status`")  # noqa: E501
+
+        collection_formats = {}
+
+        path_params = {}
+
+        query_params = []
+        if 'user_name' in params:
+            query_params.append(('userName', params['user_name']))  # noqa: E501
+        if 'kernel_slug' in params:
+            query_params.append(('kernelSlug', params['kernel_slug']))  # noqa: E501
+
+        header_params = {}
+
+        form_params = []
+        local_var_files = {}
+
+        body_params = None
+        # HTTP header `Accept`
+        header_params['Accept'] = self.api_client.select_header_accept(
+            ['application/json'])  # noqa: E501
+
+        # Authentication setting
+        auth_settings = ['basicAuth']  # noqa: E501
+
+        return self.api_client.call_api(
+            '/kernels/status', 'GET',
+            path_params,
+            query_params,
+            header_params,
+            body=body_params,
+            post_params=form_params,
+            files=local_var_files,
+            response_type='Result',  # noqa: E501
+            auth_settings=auth_settings,
+            async=params.get('async'),
+            _return_http_data_only=params.get('_return_http_data_only'),
+            _preload_content=params.get('_preload_content', True),
+            _request_timeout=params.get('_request_timeout'),
+            collection_formats=collection_formats)
+
+    def kernels_list(self, **kwargs):  # noqa: E501
+        """List kernels  # noqa: E501
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async=True
+        >>> thread = api.kernels_list(async=True)
+        >>> result = thread.get()
+
+        :param async bool
+        :param int page: Page number
+        :param int page_size: Page size
+        :param str search: Search terms
+        :param str group: Display only your kernels
+        :param str user: Display kernels by a specific user
+        :param str language: Display kernels in a specific language
+        :param str kernel_type: Display kernels of a specific type
+        :param str output_type: Display kernels with a specific output type
+        :param str sort_by: Sort the results. 'relevance' only works if there is a search query
+        :param str dataset: Display kernels using the specified dataset
+        :param str competition: Display kernels using the specified competition
+        :param str parent_kernel: Display kernels that have forked the specified kernel
+        :return: Result
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+        kwargs['_return_http_data_only'] = True
+        if kwargs.get('async'):
+            return self.kernels_list_with_http_info(**kwargs)  # noqa: E501
+        else:
+            (data) = self.kernels_list_with_http_info(**kwargs)  # noqa: E501
+            return data
+
+    def kernels_list_with_http_info(self, **kwargs):  # noqa: E501
+        """List kernels  # noqa: E501
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async=True
+        >>> thread = api.kernels_list_with_http_info(async=True)
+        >>> result = thread.get()
+
+        :param async bool
+        :param int page: Page number
+        :param int page_size: Page size
+        :param str search: Search terms
+        :param str group: Display only your kernels
+        :param str user: Display kernels by a specific user
+        :param str language: Display kernels in a specific language
+        :param str kernel_type: Display kernels of a specific type
+        :param str output_type: Display kernels with a specific output type
+        :param str sort_by: Sort the results. 'relevance' only works if there is a search query
+        :param str dataset: Display kernels using the specified dataset
+        :param str competition: Display kernels using the specified competition
+        :param str parent_kernel: Display kernels that have forked the specified kernel
+        :return: Result
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+
+        all_params = ['page', 'page_size', 'search', 'group', 'user', 'language', 'kernel_type', 'output_type', 'sort_by', 'dataset', 'competition', 'parent_kernel']  # noqa: E501
+        all_params.append('async')
+        all_params.append('_return_http_data_only')
+        all_params.append('_preload_content')
+        all_params.append('_request_timeout')
+
+        params = locals()
+        for key, val in six.iteritems(params['kwargs']):
+            if key not in all_params:
+                raise TypeError(
+                    "Got an unexpected keyword argument '%s'"
+                    " to method kernels_list" % key
+                )
+            params[key] = val
+        del params['kwargs']
+
+        collection_formats = {}
+
+        path_params = {}
+
+        query_params = []
+        if 'page' in params:
+            query_params.append(('page', params['page']))  # noqa: E501
+        if 'page_size' in params:
+            query_params.append(('pageSize', params['page_size']))  # noqa: E501
+        if 'search' in params:
+            query_params.append(('search', params['search']))  # noqa: E501
+        if 'group' in params:
+            query_params.append(('group', params['group']))  # noqa: E501
+        if 'user' in params:
+            query_params.append(('user', params['user']))  # noqa: E501
+        if 'language' in params:
+            query_params.append(('language', params['language']))  # noqa: E501
+        if 'kernel_type' in params:
+            query_params.append(('kernelType', params['kernel_type']))  # noqa: E501
+        if 'output_type' in params:
+            query_params.append(('outputType', params['output_type']))  # noqa: E501
+        if 'sort_by' in params:
+            query_params.append(('sortBy', params['sort_by']))  # noqa: E501
+        if 'dataset' in params:
+            query_params.append(('dataset', params['dataset']))  # noqa: E501
+        if 'competition' in params:
+            query_params.append(('competition', params['competition']))  # noqa: E501
+        if 'parent_kernel' in params:
+            query_params.append(('parentKernel', params['parent_kernel']))  # noqa: E501
+
+        header_params = {}
+
+        form_params = []
+        local_var_files = {}
+
+        body_params = None
+        # HTTP header `Accept`
+        header_params['Accept'] = self.api_client.select_header_accept(
+            ['application/json'])  # noqa: E501
+
+        # Authentication setting
+        auth_settings = ['basicAuth']  # noqa: E501
+
+        return self.api_client.call_api(
+            '/kernels/list', 'GET',
+            path_params,
+            query_params,
+            header_params,
+            body=body_params,
+            post_params=form_params,
+            files=local_var_files,
+            response_type='Result',  # noqa: E501
+            auth_settings=auth_settings,
+            async=params.get('async'),
+            _return_http_data_only=params.get('_return_http_data_only'),
+            _preload_content=params.get('_preload_content', True),
+            _request_timeout=params.get('_request_timeout'),
+            collection_formats=collection_formats)

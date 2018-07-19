@@ -14,22 +14,26 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# coding=utf-8
 from setuptools import setup, find_packages
 
 setup(
     name='kaggle',
-    version='1.3.12',
+    version='1.4.0',
     description='Kaggle API',
     long_description=
-    'Official API for https://www.kaggle.com, accessible using a command line tool implemented in Python. Beta release - Kaggle reserves the right to modify the API functionality currently offered.',
+    ('Official API for https://www.kaggle.com, accessible using a command line '
+     'tool implemented in Python. Beta release - Kaggle reserves the right to '
+     'modify the API functionality currently offered.'),
     author='Kaggle',
     author_email='support@kaggle.com',
     url='https://github.com/Kaggle/kaggle-api',
     keywords=['Kaggle', 'API'],
     entry_points={'console_scripts': ['kaggle = kaggle.cli:main']},
     install_requires=[
-        # Restriction that urllib3's version is less than 1.23.0 needed to avoid requests dependency problem.
-        # This restriction will be removed after request release later than 2.18.4.
+        # Restriction that urllib3's version is less than 1.23.0 needed to avoid
+        # requests dependency problem. This restriction will be removed after
+        # request release later than 2.18.4.
         # ref: https://github.com/Kaggle/kaggle-api/pull/49
         'urllib3 >= 1.15, < 1.23.0',
         'six >= 1.10',

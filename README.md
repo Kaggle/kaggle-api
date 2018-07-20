@@ -558,8 +558,7 @@ Example:
 
 
 ## Limitations
-Currently working with large datasets (>= 2GB) is not possible. Kernel support is also preliminary and may have some issues.
-
+Kernel support is preliminary and may have some issues.
 
 ## License
 

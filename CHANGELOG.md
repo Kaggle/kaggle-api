@@ -2,7 +2,7 @@ Changelog
 ====
 
 #### 1.4.2
-Release date: TBD
+Release date: 7/20/18
 * Validate dataset slug and title length before uploading
 * Fix issue with dataset metadata file detection
 * Cleaned up KeyboardInterrupt errors

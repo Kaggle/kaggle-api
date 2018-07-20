@@ -558,7 +558,7 @@ Example:
 
 
 ## Limitations
-The biggest limitation at the moment is that kernels are not supported in any way at this point.  We do intend to implement support in the near future, though there's no ETA.  Additionally, working with large datasets (>= 2GB) is currently not possible.
+Currently working with large datasets (>= 2GB) is not possible. Kernel support is also preliminary and may have some issues.
 
 
 ## License

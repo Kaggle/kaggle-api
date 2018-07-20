@@ -764,7 +764,7 @@ class Help(object):
   param_dataset_upfile = (
       'Folder for upload, containing data files and a '
       'special metadata.json file '
-      '(https://github.com/Kaggle/kaggle-api/wiki/Metadata)')
+      '(https://github.com/Kaggle/kaggle-api/wiki/Dataset-Metadata)')
 
   # Kernels params
   param_kernel = ('Kernel URL suffix in format <owner>/<kernel-name> (use '
@@ -774,7 +774,7 @@ class Help(object):
                        'kernels list" to show options)')
   param_kernel_upfile = ('Folder for upload, containing data files and a '
                          'special kernel-metadata.json file '
-                         '(https://github.com/Kaggle/kaggle-api/wiki/Metadata)')
+                         '(https://github.com/Kaggle/kaggle-api/wiki/Kernel-Metadata)')
   param_kernel_parent = 'Find children of the specified parent kernel'
   param_kernel_competition = 'Find kernels for a given competition slug'
   param_kernel_dataset = ('Find kernels for a given dataset slug. Format is '

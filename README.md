@@ -277,7 +277,7 @@ usage: kaggle datasets init [-h] -p FOLDER
 
 required arguments:
   -p FOLDER, --path FOLDER
-                        Folder for upload, containing data files and a special metadata.json file (https://github.com/Kaggle/kaggle-api/wiki/Metadata)
+                        Folder for upload, containing data files and a special metadata.json file (https://github.com/Kaggle/kaggle-api/wiki/Dataset-Metadata)
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -294,7 +294,7 @@ usage: kaggle datasets create [-h] -p FOLDER [-u] [-q]
 
 required arguments:
   -p FOLDER, --path FOLDER
-                        Folder for upload, containing data files and a special metadata.json file (https://github.com/Kaggle/kaggle-api/wiki/Metadata)
+                        Folder for upload, containing data files and a special metadata.json file (https://github.com/Kaggle/kaggle-api/wiki/Dataset-Metadata)
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -316,7 +316,7 @@ required arguments:
   -m VERSION_NOTES, --message VERSION_NOTES
                         Message describing the new version
   -p FOLDER, --path FOLDER
-                        Folder for upload, containing data files and a special metadata.json file (https://github.com/Kaggle/kaggle-api/wiki/Metadata)
+                        Folder for upload, containing data files and a special metadata.json file (https://github.com/Kaggle/kaggle-api/wiki/Dataset-Metadata)
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -392,7 +392,7 @@ usage: kaggle kernels init [-h] -p FOLDER
 
 required arguments:
   -p FOLDER, --path FOLDER
-                        Folder for upload, containing data files and a special kernel-metadata.json file (https://github.com/Kaggle/kaggle-api/wiki/Metadata)
+                        Folder for upload, containing data files and a special kernel-metadata.json file (https://github.com/Kaggle/kaggle-api/wiki/Kernel-Metadata)
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -409,7 +409,7 @@ usage: kaggle kernels push [-h] -p FOLDER
 
 required arguments:
   -p FOLDER, --path FOLDER
-                        Folder for upload, containing data files and a special kernel-metadata.json file (https://github.com/Kaggle/kaggle-api/wiki/Metadata)
+                        Folder for upload, containing data files and a special kernel-metadata.json file (https://github.com/Kaggle/kaggle-api/wiki/Kernel-Metadata)
 
 optional arguments:
   -h, --help            show this help message and exit

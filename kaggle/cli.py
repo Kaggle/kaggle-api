@@ -48,9 +48,14 @@ def main():
     del command_args['command']
     try:
         out = args.func(**command_args)
-    except (ApiException, ValueError) as e:
-        # Skipping stacktrace but still show error
+    except ApiException as e:
+        print(str(e.status) + ' - ' + e.reason)
+        out = None
+    except ValueError as e:
         print(e)
+        out = None
+    except KeyboardInterrupt:
+        print('User cancelled operation')
         out = None
     if out is not None:
         print(out, end='')

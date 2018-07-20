@@ -1,6 +1,14 @@
 Changelog
 ====
 
+#### 1.4.2
+Release date: TBD
+* Validate dataset slug and title length before uploading
+* Fix issue with dataset metadata file detection
+* Cleaned up KeyboardInterrupt errors
+* Validate all specified files in a dataset exist prior to uploading
+* Make ApiExceptions (slightly) less ugly
+
 #### 1.4.1
 Release date: 7/20/18
 * Add python 3.7 compatibility

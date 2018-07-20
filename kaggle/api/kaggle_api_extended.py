@@ -59,7 +59,7 @@ except NameError:
 
 
 class KaggleApi(KaggleApi):
-    __version__ = '1.4.1'
+    __version__ = '1.4.2'
 
     CONFIG_NAME_PROXY = 'proxy'
     CONFIG_NAME_COMPETITION = 'competition'
@@ -550,7 +550,7 @@ class KaggleApi(KaggleApi):
         if not os.path.isdir(folder):
             raise ValueError('Invalid folder: ' + folder)
 
-        meta_file = self.get_dataset_metadata_file()
+        meta_file = self.get_dataset_metadata_file(folder)
 
         # read json
         with open(meta_file, 'r') as f:
@@ -571,6 +571,8 @@ class KaggleApi(KaggleApi):
         if subtitle and (len(subtitle) < 20 or len(subtitle) > 80):
             raise ValueError(
                 'Subtitle length must be between 20 and 80 characters')
+        resources = meta_data.get('resources')
+        self.validate_files_exist(folder, resources)
 
         description = meta_data.get('description')
         keywords = self.get_or_default(meta_data, 'keywords', [])
@@ -583,17 +585,11 @@ class KaggleApi(KaggleApi):
             convert_to_csv=convert_to_csv,
             category_ids=keywords,
             delete_old_versions=delete_old_versions)
-        resources = meta_data.get('resources')
         self.upload_files(request, resources, folder, quiet)
         result = DatasetNewVersionResponse(
             self.process_response(
                 self.datasets_create_version_with_http_info(
                     owner_slug, dataset_slug, request)))
-
-        # Alert the user that dataset creation takes time beyond command
-        if not quiet:
-            print('Your Dataset is being created. Please allow time for '
-                  'processing.')
 
         return result
 
@@ -650,7 +646,7 @@ class KaggleApi(KaggleApi):
         if not os.path.isdir(folder):
             raise ValueError('Invalid folder: ' + folder)
 
-        meta_file = self.get_dataset_metadata_file()
+        meta_file = self.get_dataset_metadata_file(folder)
 
         # read json
         with open(meta_file, 'r') as f:
@@ -673,6 +669,14 @@ class KaggleApi(KaggleApi):
             )
         if len(licenses) != 1:
             raise ValueError('Please specify exactly one license')
+        if len(dataset_slug) < 6 or len(dataset_slug) > 50:
+            raise ValueError('The dataset slug must be between 6 and 50 '
+                             'characters')
+        if len(title) < 6 or len(title) > 50:
+            raise ValueError('The dataset title must be between 6 and 50 '
+                             'characters')
+        resources = meta_data.get('resources')
+        self.validate_files_exist(folder, resources)
 
         license_name = self.get_or_fail(licenses[0], 'name')
         description = meta_data.get('description')
@@ -699,11 +703,6 @@ class KaggleApi(KaggleApi):
         result = DatasetNewResponse(
             self.process_response(
                 self.datasets_create_new_with_http_info(request)))
-
-        # Alert the user that dataset creation takes time beyond command
-        if not quiet:
-            print('Your Dataset is being created. Please allow time for '
-                  'processing.')
 
         return result
 
@@ -1236,7 +1235,7 @@ class KaggleApi(KaggleApi):
         if key in data:
             output[output_key] = data[key]
 
-    def get_dataset_metadata_file(self):
+    def get_dataset_metadata_file(self, folder):
         meta_file = os.path.join(folder, self.DATASET_METADATA_FILE)
         if not os.path.isfile(meta_file):
             meta_file = os.path.join(folder, self.OLD_DATASET_METADATA_FILE)
@@ -1395,6 +1394,13 @@ class KaggleApi(KaggleApi):
             split = kernel.split('/')
             if not split[0] or not split[1]:
                 raise ValueError('Invalid kernel specification ' + kernel)
+
+    def validate_files_exist(self, folder, resources):
+        for item in resources:
+            file_name = item.get('path')
+            full_path = os.path.join(folder, file_name)
+            if not os.path.isfile(full_path):
+                raise ValueError('%s does not exist' % full_path)
 
 
 class TqdmBufferedReader(io.BufferedReader):

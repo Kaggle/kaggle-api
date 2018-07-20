@@ -97,6 +97,7 @@ class DatasetNewVersionRequest(object):
     def version_notes(self):
         """Gets the version_notes of this DatasetNewVersionRequest.  # noqa: E501
 
+        The version notes for the new dataset version  # noqa: E501
 
         :return: The version_notes of this DatasetNewVersionRequest.  # noqa: E501
         :rtype: str
@@ -107,6 +108,7 @@ class DatasetNewVersionRequest(object):
     def version_notes(self, version_notes):
         """Sets the version_notes of this DatasetNewVersionRequest.
 
+        The version notes for the new dataset version  # noqa: E501
 
         :param version_notes: The version_notes of this DatasetNewVersionRequest.  # noqa: E501
         :type: str
@@ -120,6 +122,7 @@ class DatasetNewVersionRequest(object):
     def subtitle(self):
         """Gets the subtitle of this DatasetNewVersionRequest.  # noqa: E501
 
+        The subtitle to set on the dataset  # noqa: E501
 
         :return: The subtitle of this DatasetNewVersionRequest.  # noqa: E501
         :rtype: str
@@ -130,6 +133,7 @@ class DatasetNewVersionRequest(object):
     def subtitle(self, subtitle):
         """Sets the subtitle of this DatasetNewVersionRequest.
 
+        The subtitle to set on the dataset  # noqa: E501
 
         :param subtitle: The subtitle of this DatasetNewVersionRequest.  # noqa: E501
         :type: str
@@ -141,6 +145,7 @@ class DatasetNewVersionRequest(object):
     def description(self):
         """Gets the description of this DatasetNewVersionRequest.  # noqa: E501
 
+        The description to set on the dataset  # noqa: E501
 
         :return: The description of this DatasetNewVersionRequest.  # noqa: E501
         :rtype: str
@@ -151,6 +156,7 @@ class DatasetNewVersionRequest(object):
     def description(self, description):
         """Sets the description of this DatasetNewVersionRequest.
 
+        The description to set on the dataset  # noqa: E501
 
         :param description: The description of this DatasetNewVersionRequest.  # noqa: E501
         :type: str
@@ -162,6 +168,7 @@ class DatasetNewVersionRequest(object):
     def files(self):
         """Gets the files of this DatasetNewVersionRequest.  # noqa: E501
 
+        A list of files that should be associated with the dataset  # noqa: E501
 
         :return: The files of this DatasetNewVersionRequest.  # noqa: E501
         :rtype: list[DatasetUploadFile]
@@ -172,6 +179,7 @@ class DatasetNewVersionRequest(object):
     def files(self, files):
         """Sets the files of this DatasetNewVersionRequest.
 
+        A list of files that should be associated with the dataset  # noqa: E501
 
         :param files: The files of this DatasetNewVersionRequest.  # noqa: E501
         :type: list[DatasetUploadFile]
@@ -185,6 +193,7 @@ class DatasetNewVersionRequest(object):
     def convert_to_csv(self):
         """Gets the convert_to_csv of this DatasetNewVersionRequest.  # noqa: E501
 
+        Whether or not a tabular dataset should be converted to csv  # noqa: E501
 
         :return: The convert_to_csv of this DatasetNewVersionRequest.  # noqa: E501
         :rtype: bool
@@ -195,6 +204,7 @@ class DatasetNewVersionRequest(object):
     def convert_to_csv(self, convert_to_csv):
         """Sets the convert_to_csv of this DatasetNewVersionRequest.
 
+        Whether or not a tabular dataset should be converted to csv  # noqa: E501
 
         :param convert_to_csv: The convert_to_csv of this DatasetNewVersionRequest.  # noqa: E501
         :type: bool
@@ -206,6 +216,7 @@ class DatasetNewVersionRequest(object):
     def category_ids(self):
         """Gets the category_ids of this DatasetNewVersionRequest.  # noqa: E501
 
+        A list of tag IDs to associated with the dataset  # noqa: E501
 
         :return: The category_ids of this DatasetNewVersionRequest.  # noqa: E501
         :rtype: list[str]
@@ -216,6 +227,7 @@ class DatasetNewVersionRequest(object):
     def category_ids(self, category_ids):
         """Sets the category_ids of this DatasetNewVersionRequest.
 
+        A list of tag IDs to associated with the dataset  # noqa: E501
 
         :param category_ids: The category_ids of this DatasetNewVersionRequest.  # noqa: E501
         :type: list[str]
@@ -227,6 +239,7 @@ class DatasetNewVersionRequest(object):
     def delete_old_versions(self):
         """Gets the delete_old_versions of this DatasetNewVersionRequest.  # noqa: E501
 
+        Whether or not all previous versions of the dataset should be deleted upon creating the new version  # noqa: E501
 
         :return: The delete_old_versions of this DatasetNewVersionRequest.  # noqa: E501
         :rtype: bool
@@ -237,6 +250,7 @@ class DatasetNewVersionRequest(object):
     def delete_old_versions(self, delete_old_versions):
         """Sets the delete_old_versions of this DatasetNewVersionRequest.
 
+        Whether or not all previous versions of the dataset should be deleted upon creating the new version  # noqa: E501
 
         :param delete_old_versions: The delete_old_versions of this DatasetNewVersionRequest.  # noqa: E501
         :type: bool

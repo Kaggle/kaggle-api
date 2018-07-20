@@ -87,6 +87,7 @@ class DatasetColumn(object):
     def order(self):
         """Gets the order of this DatasetColumn.  # noqa: E501
 
+        The order that the column comes in, 0-based. (The first column is 0, second is 1, etc.)  # noqa: E501
 
         :return: The order of this DatasetColumn.  # noqa: E501
         :rtype: float
@@ -97,6 +98,7 @@ class DatasetColumn(object):
     def order(self, order):
         """Sets the order of this DatasetColumn.
 
+        The order that the column comes in, 0-based. (The first column is 0, second is 1, etc.)  # noqa: E501
 
         :param order: The order of this DatasetColumn.  # noqa: E501
         :type: float
@@ -108,6 +110,7 @@ class DatasetColumn(object):
     def name(self):
         """Gets the name of this DatasetColumn.  # noqa: E501
 
+        The column name  # noqa: E501
 
         :return: The name of this DatasetColumn.  # noqa: E501
         :rtype: str
@@ -118,6 +121,7 @@ class DatasetColumn(object):
     def name(self, name):
         """Sets the name of this DatasetColumn.
 
+        The column name  # noqa: E501
 
         :param name: The name of this DatasetColumn.  # noqa: E501
         :type: str
@@ -129,6 +133,7 @@ class DatasetColumn(object):
     def type(self):
         """Gets the type of this DatasetColumn.  # noqa: E501
 
+        The type of all of the fields in the column  # noqa: E501
 
         :return: The type of this DatasetColumn.  # noqa: E501
         :rtype: str
@@ -139,6 +144,7 @@ class DatasetColumn(object):
     def type(self, type):
         """Sets the type of this DatasetColumn.
 
+        The type of all of the fields in the column  # noqa: E501
 
         :param type: The type of this DatasetColumn.  # noqa: E501
         :type: str
@@ -156,6 +162,7 @@ class DatasetColumn(object):
     def original_type(self):
         """Gets the original_type of this DatasetColumn.  # noqa: E501
 
+        Used to store the original type of the column, which will be converted to Kaggle's types. For example, an `originalType` of `\"integer\"` would convert to a `type` of `\"numeric\"`  # noqa: E501
 
         :return: The original_type of this DatasetColumn.  # noqa: E501
         :rtype: str
@@ -166,6 +173,7 @@ class DatasetColumn(object):
     def original_type(self, original_type):
         """Sets the original_type of this DatasetColumn.
 
+        Used to store the original type of the column, which will be converted to Kaggle's types. For example, an `originalType` of `\"integer\"` would convert to a `type` of `\"numeric\"`  # noqa: E501
 
         :param original_type: The original_type of this DatasetColumn.  # noqa: E501
         :type: str
@@ -177,6 +185,7 @@ class DatasetColumn(object):
     def description(self):
         """Gets the description of this DatasetColumn.  # noqa: E501
 
+        The description of the column  # noqa: E501
 
         :return: The description of this DatasetColumn.  # noqa: E501
         :rtype: str
@@ -187,6 +196,7 @@ class DatasetColumn(object):
     def description(self, description):
         """Sets the description of this DatasetColumn.
 
+        The description of the column  # noqa: E501
 
         :param description: The description of this DatasetColumn.  # noqa: E501
         :type: str

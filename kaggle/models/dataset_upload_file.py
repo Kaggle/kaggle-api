@@ -79,6 +79,7 @@ class DatasetUploadFile(object):
     def token(self):
         """Gets the token of this DatasetUploadFile.  # noqa: E501
 
+        A token referencing a specific file upload that can be used across requests  # noqa: E501
 
         :return: The token of this DatasetUploadFile.  # noqa: E501
         :rtype: str
@@ -89,6 +90,7 @@ class DatasetUploadFile(object):
     def token(self, token):
         """Sets the token of this DatasetUploadFile.
 
+        A token referencing a specific file upload that can be used across requests  # noqa: E501
 
         :param token: The token of this DatasetUploadFile.  # noqa: E501
         :type: str
@@ -100,6 +102,7 @@ class DatasetUploadFile(object):
     def description(self):
         """Gets the description of this DatasetUploadFile.  # noqa: E501
 
+        The file description  # noqa: E501
 
         :return: The description of this DatasetUploadFile.  # noqa: E501
         :rtype: str
@@ -110,6 +113,7 @@ class DatasetUploadFile(object):
     def description(self, description):
         """Sets the description of this DatasetUploadFile.
 
+        The file description  # noqa: E501
 
         :param description: The description of this DatasetUploadFile.  # noqa: E501
         :type: str
@@ -121,6 +125,7 @@ class DatasetUploadFile(object):
     def columns(self):
         """Gets the columns of this DatasetUploadFile.  # noqa: E501
 
+        A list of dataset column metadata  # noqa: E501
 
         :return: The columns of this DatasetUploadFile.  # noqa: E501
         :rtype: list[DatasetColumn]
@@ -131,6 +136,7 @@ class DatasetUploadFile(object):
     def columns(self, columns):
         """Sets the columns of this DatasetUploadFile.
 
+        A list of dataset column metadata  # noqa: E501
 
         :param columns: The columns of this DatasetUploadFile.  # noqa: E501
         :type: list[DatasetColumn]

@@ -59,7 +59,7 @@ except NameError:
 
 
 class KaggleApi(KaggleApi):
-    __version__ = '1.4.0'
+    __version__ = '1.4.1'
 
     CONFIG_NAME_PROXY = 'proxy'
     CONFIG_NAME_COMPETITION = 'competition'

@@ -1,8 +1,12 @@
 Changelog
 ====
 
+#### 1.4.1
+Release date: 7/20/18
+* Add python 3.7 compatibility
+
 #### 1.4.0
-Release date: TBD
+Release date: 7/19/18
 * Add kernels support
 ** List and search kernels
 ** Push kernels code

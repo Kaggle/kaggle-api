@@ -53,18 +53,18 @@ class KaggleApi(object):
         """Download competition leaderboard  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async=True
-        >>> thread = api.competition_download_leaderboard(id, async=True)
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.competition_download_leaderboard(id, async_req=True)
         >>> result = thread.get()
 
-        :param async bool
+        :param async_req bool
         :param str id: Competition name (required)
         :return: Result
                  If the method is called asynchronously,
                  returns the request thread.
         """
         kwargs['_return_http_data_only'] = True
-        if kwargs.get('async'):
+        if kwargs.get('async_req'):
             return self.competition_download_leaderboard_with_http_info(id, **kwargs)  # noqa: E501
         else:
             (data) = self.competition_download_leaderboard_with_http_info(id, **kwargs)  # noqa: E501
@@ -74,11 +74,11 @@ class KaggleApi(object):
         """Download competition leaderboard  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async=True
-        >>> thread = api.competition_download_leaderboard_with_http_info(id, async=True)
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.competition_download_leaderboard_with_http_info(id, async_req=True)
         >>> result = thread.get()
 
-        :param async bool
+        :param async_req bool
         :param str id: Competition name (required)
         :return: Result
                  If the method is called asynchronously,
@@ -86,7 +86,7 @@ class KaggleApi(object):
         """
 
         all_params = ['id']  # noqa: E501
-        all_params.append('async')
+        all_params.append('async_req')
         all_params.append('_return_http_data_only')
         all_params.append('_preload_content')
         all_params.append('_request_timeout')
@@ -132,7 +132,7 @@ class KaggleApi(object):
             files=local_var_files,
             response_type='Result',  # noqa: E501
             auth_settings=auth_settings,
-            async=params.get('async'),
+            async_req=params.get('async_req'),
             _return_http_data_only=params.get('_return_http_data_only'),
             _preload_content=params.get('_preload_content', True),
             _request_timeout=params.get('_request_timeout'),
@@ -142,18 +142,18 @@ class KaggleApi(object):
         """VIew competition leaderboard  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async=True
-        >>> thread = api.competition_view_leaderboard(id, async=True)
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.competition_view_leaderboard(id, async_req=True)
         >>> result = thread.get()
 
-        :param async bool
+        :param async_req bool
         :param str id: Competition name (required)
         :return: Result
                  If the method is called asynchronously,
                  returns the request thread.
         """
         kwargs['_return_http_data_only'] = True
-        if kwargs.get('async'):
+        if kwargs.get('async_req'):
             return self.competition_view_leaderboard_with_http_info(id, **kwargs)  # noqa: E501
         else:
             (data) = self.competition_view_leaderboard_with_http_info(id, **kwargs)  # noqa: E501
@@ -163,11 +163,11 @@ class KaggleApi(object):
         """VIew competition leaderboard  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async=True
-        >>> thread = api.competition_view_leaderboard_with_http_info(id, async=True)
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.competition_view_leaderboard_with_http_info(id, async_req=True)
         >>> result = thread.get()
 
-        :param async bool
+        :param async_req bool
         :param str id: Competition name (required)
         :return: Result
                  If the method is called asynchronously,
@@ -175,7 +175,7 @@ class KaggleApi(object):
         """
 
         all_params = ['id']  # noqa: E501
-        all_params.append('async')
+        all_params.append('async_req')
         all_params.append('_return_http_data_only')
         all_params.append('_preload_content')
         all_params.append('_request_timeout')
@@ -221,7 +221,7 @@ class KaggleApi(object):
             files=local_var_files,
             response_type='Result',  # noqa: E501
             auth_settings=auth_settings,
-            async=params.get('async'),
+            async_req=params.get('async_req'),
             _return_http_data_only=params.get('_return_http_data_only'),
             _preload_content=params.get('_preload_content', True),
             _request_timeout=params.get('_request_timeout'),
@@ -231,11 +231,11 @@ class KaggleApi(object):
         """Download competition data file  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async=True
-        >>> thread = api.competitions_data_download_file(id, file_name, async=True)
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.competitions_data_download_file(id, file_name, async_req=True)
         >>> result = thread.get()
 
-        :param async bool
+        :param async_req bool
         :param str id: Competition name (required)
         :param str file_name: Competition name (required)
         :return: Result
@@ -243,7 +243,7 @@ class KaggleApi(object):
                  returns the request thread.
         """
         kwargs['_return_http_data_only'] = True
-        if kwargs.get('async'):
+        if kwargs.get('async_req'):
             return self.competitions_data_download_file_with_http_info(id, file_name, **kwargs)  # noqa: E501
         else:
             (data) = self.competitions_data_download_file_with_http_info(id, file_name, **kwargs)  # noqa: E501
@@ -253,11 +253,11 @@ class KaggleApi(object):
         """Download competition data file  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async=True
-        >>> thread = api.competitions_data_download_file_with_http_info(id, file_name, async=True)
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.competitions_data_download_file_with_http_info(id, file_name, async_req=True)
         >>> result = thread.get()
 
-        :param async bool
+        :param async_req bool
         :param str id: Competition name (required)
         :param str file_name: Competition name (required)
         :return: Result
@@ -266,7 +266,7 @@ class KaggleApi(object):
         """
 
         all_params = ['id', 'file_name']  # noqa: E501
-        all_params.append('async')
+        all_params.append('async_req')
         all_params.append('_return_http_data_only')
         all_params.append('_preload_content')
         all_params.append('_request_timeout')
@@ -318,7 +318,7 @@ class KaggleApi(object):
             files=local_var_files,
             response_type='Result',  # noqa: E501
             auth_settings=auth_settings,
-            async=params.get('async'),
+            async_req=params.get('async_req'),
             _return_http_data_only=params.get('_return_http_data_only'),
             _preload_content=params.get('_preload_content', True),
             _request_timeout=params.get('_request_timeout'),
@@ -328,18 +328,18 @@ class KaggleApi(object):
         """List competition data files  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async=True
-        >>> thread = api.competitions_data_list_files(id, async=True)
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.competitions_data_list_files(id, async_req=True)
         >>> result = thread.get()
 
-        :param async bool
+        :param async_req bool
         :param str id: Competition name (required)
         :return: Result
                  If the method is called asynchronously,
                  returns the request thread.
         """
         kwargs['_return_http_data_only'] = True
-        if kwargs.get('async'):
+        if kwargs.get('async_req'):
             return self.competitions_data_list_files_with_http_info(id, **kwargs)  # noqa: E501
         else:
             (data) = self.competitions_data_list_files_with_http_info(id, **kwargs)  # noqa: E501
@@ -349,11 +349,11 @@ class KaggleApi(object):
         """List competition data files  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async=True
-        >>> thread = api.competitions_data_list_files_with_http_info(id, async=True)
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.competitions_data_list_files_with_http_info(id, async_req=True)
         >>> result = thread.get()
 
-        :param async bool
+        :param async_req bool
         :param str id: Competition name (required)
         :return: Result
                  If the method is called asynchronously,
@@ -361,7 +361,7 @@ class KaggleApi(object):
         """
 
         all_params = ['id']  # noqa: E501
-        all_params.append('async')
+        all_params.append('async_req')
         all_params.append('_return_http_data_only')
         all_params.append('_preload_content')
         all_params.append('_request_timeout')
@@ -411,7 +411,7 @@ class KaggleApi(object):
             files=local_var_files,
             response_type='Result',  # noqa: E501
             auth_settings=auth_settings,
-            async=params.get('async'),
+            async_req=params.get('async_req'),
             _return_http_data_only=params.get('_return_http_data_only'),
             _preload_content=params.get('_preload_content', True),
             _request_timeout=params.get('_request_timeout'),
@@ -421,11 +421,11 @@ class KaggleApi(object):
         """List competitions  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async=True
-        >>> thread = api.competitions_list(async=True)
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.competitions_list(async_req=True)
         >>> result = thread.get()
 
-        :param async bool
+        :param async_req bool
         :param int page: Page number
         :param str search: Search terms
         :return: Result
@@ -433,7 +433,7 @@ class KaggleApi(object):
                  returns the request thread.
         """
         kwargs['_return_http_data_only'] = True
-        if kwargs.get('async'):
+        if kwargs.get('async_req'):
             return self.competitions_list_with_http_info(**kwargs)  # noqa: E501
         else:
             (data) = self.competitions_list_with_http_info(**kwargs)  # noqa: E501
@@ -443,11 +443,11 @@ class KaggleApi(object):
         """List competitions  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async=True
-        >>> thread = api.competitions_list_with_http_info(async=True)
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.competitions_list_with_http_info(async_req=True)
         >>> result = thread.get()
 
-        :param async bool
+        :param async_req bool
         :param int page: Page number
         :param str search: Search terms
         :return: Result
@@ -456,7 +456,7 @@ class KaggleApi(object):
         """
 
         all_params = ['page', 'search']  # noqa: E501
-        all_params.append('async')
+        all_params.append('async_req')
         all_params.append('_return_http_data_only')
         all_params.append('_preload_content')
         all_params.append('_request_timeout')
@@ -504,7 +504,7 @@ class KaggleApi(object):
             files=local_var_files,
             response_type='Result',  # noqa: E501
             auth_settings=auth_settings,
-            async=params.get('async'),
+            async_req=params.get('async_req'),
             _return_http_data_only=params.get('_return_http_data_only'),
             _preload_content=params.get('_preload_content', True),
             _request_timeout=params.get('_request_timeout'),
@@ -514,11 +514,11 @@ class KaggleApi(object):
         """List competition submissions  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async=True
-        >>> thread = api.competitions_submissions_list(id, async=True)
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.competitions_submissions_list(id, async_req=True)
         >>> result = thread.get()
 
-        :param async bool
+        :param async_req bool
         :param str id: Competition name (required)
         :param int page: Page number
         :return: Result
@@ -526,7 +526,7 @@ class KaggleApi(object):
                  returns the request thread.
         """
         kwargs['_return_http_data_only'] = True
-        if kwargs.get('async'):
+        if kwargs.get('async_req'):
             return self.competitions_submissions_list_with_http_info(id, **kwargs)  # noqa: E501
         else:
             (data) = self.competitions_submissions_list_with_http_info(id, **kwargs)  # noqa: E501
@@ -536,11 +536,11 @@ class KaggleApi(object):
         """List competition submissions  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async=True
-        >>> thread = api.competitions_submissions_list_with_http_info(id, async=True)
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.competitions_submissions_list_with_http_info(id, async_req=True)
         >>> result = thread.get()
 
-        :param async bool
+        :param async_req bool
         :param str id: Competition name (required)
         :param int page: Page number
         :return: Result
@@ -549,7 +549,7 @@ class KaggleApi(object):
         """
 
         all_params = ['id', 'page']  # noqa: E501
-        all_params.append('async')
+        all_params.append('async_req')
         all_params.append('_return_http_data_only')
         all_params.append('_preload_content')
         all_params.append('_request_timeout')
@@ -601,7 +601,7 @@ class KaggleApi(object):
             files=local_var_files,
             response_type='Result',  # noqa: E501
             auth_settings=auth_settings,
-            async=params.get('async'),
+            async_req=params.get('async_req'),
             _return_http_data_only=params.get('_return_http_data_only'),
             _preload_content=params.get('_preload_content', True),
             _request_timeout=params.get('_request_timeout'),
@@ -611,11 +611,11 @@ class KaggleApi(object):
         """Submit to competition  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async=True
-        >>> thread = api.competitions_submissions_submit(blob_file_tokens, submission_description, id, async=True)
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.competitions_submissions_submit(blob_file_tokens, submission_description, id, async_req=True)
         >>> result = thread.get()
 
-        :param async bool
+        :param async_req bool
         :param str blob_file_tokens: Token identifying location of uploaded submission file (required)
         :param str submission_description: Description of competition submission (required)
         :param str id: Competition name (required)
@@ -624,7 +624,7 @@ class KaggleApi(object):
                  returns the request thread.
         """
         kwargs['_return_http_data_only'] = True
-        if kwargs.get('async'):
+        if kwargs.get('async_req'):
             return self.competitions_submissions_submit_with_http_info(blob_file_tokens, submission_description, id, **kwargs)  # noqa: E501
         else:
             (data) = self.competitions_submissions_submit_with_http_info(blob_file_tokens, submission_description, id, **kwargs)  # noqa: E501
@@ -634,11 +634,11 @@ class KaggleApi(object):
         """Submit to competition  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async=True
-        >>> thread = api.competitions_submissions_submit_with_http_info(blob_file_tokens, submission_description, id, async=True)
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.competitions_submissions_submit_with_http_info(blob_file_tokens, submission_description, id, async_req=True)
         >>> result = thread.get()
 
-        :param async bool
+        :param async_req bool
         :param str blob_file_tokens: Token identifying location of uploaded submission file (required)
         :param str submission_description: Description of competition submission (required)
         :param str id: Competition name (required)
@@ -648,7 +648,7 @@ class KaggleApi(object):
         """
 
         all_params = ['blob_file_tokens', 'submission_description', 'id']  # noqa: E501
-        all_params.append('async')
+        all_params.append('async_req')
         all_params.append('_return_http_data_only')
         all_params.append('_preload_content')
         all_params.append('_request_timeout')
@@ -714,7 +714,7 @@ class KaggleApi(object):
             files=local_var_files,
             response_type='Result',  # noqa: E501
             auth_settings=auth_settings,
-            async=params.get('async'),
+            async_req=params.get('async_req'),
             _return_http_data_only=params.get('_return_http_data_only'),
             _preload_content=params.get('_preload_content', True),
             _request_timeout=params.get('_request_timeout'),
@@ -724,11 +724,11 @@ class KaggleApi(object):
         """Upload competition submission file  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async=True
-        >>> thread = api.competitions_submissions_upload(file, guid, content_length, last_modified_date_utc, async=True)
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.competitions_submissions_upload(file, guid, content_length, last_modified_date_utc, async_req=True)
         >>> result = thread.get()
 
-        :param async bool
+        :param async_req bool
         :param file file: Competition submission file (required)
         :param str guid: Location where submission should be uploaded (required)
         :param int content_length: Content length of file in bytes (required)
@@ -738,7 +738,7 @@ class KaggleApi(object):
                  returns the request thread.
         """
         kwargs['_return_http_data_only'] = True
-        if kwargs.get('async'):
+        if kwargs.get('async_req'):
             return self.competitions_submissions_upload_with_http_info(file, guid, content_length, last_modified_date_utc, **kwargs)  # noqa: E501
         else:
             (data) = self.competitions_submissions_upload_with_http_info(file, guid, content_length, last_modified_date_utc, **kwargs)  # noqa: E501
@@ -748,11 +748,11 @@ class KaggleApi(object):
         """Upload competition submission file  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async=True
-        >>> thread = api.competitions_submissions_upload_with_http_info(file, guid, content_length, last_modified_date_utc, async=True)
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.competitions_submissions_upload_with_http_info(file, guid, content_length, last_modified_date_utc, async_req=True)
         >>> result = thread.get()
 
-        :param async bool
+        :param async_req bool
         :param file file: Competition submission file (required)
         :param str guid: Location where submission should be uploaded (required)
         :param int content_length: Content length of file in bytes (required)
@@ -763,7 +763,7 @@ class KaggleApi(object):
         """
 
         all_params = ['file', 'guid', 'content_length', 'last_modified_date_utc']  # noqa: E501
-        all_params.append('async')
+        all_params.append('async_req')
         all_params.append('_return_http_data_only')
         all_params.append('_preload_content')
         all_params.append('_request_timeout')
@@ -835,7 +835,7 @@ class KaggleApi(object):
             files=local_var_files,
             response_type='Result',  # noqa: E501
             auth_settings=auth_settings,
-            async=params.get('async'),
+            async_req=params.get('async_req'),
             _return_http_data_only=params.get('_return_http_data_only'),
             _preload_content=params.get('_preload_content', True),
             _request_timeout=params.get('_request_timeout'),
@@ -845,11 +845,11 @@ class KaggleApi(object):
         """Generate competition submission URL  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async=True
-        >>> thread = api.competitions_submissions_url(content_length, last_modified_date_utc, async=True)
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.competitions_submissions_url(content_length, last_modified_date_utc, async_req=True)
         >>> result = thread.get()
 
-        :param async bool
+        :param async_req bool
         :param int content_length: Content length of file in bytes (required)
         :param int last_modified_date_utc: Last modified date of file in milliseconds since epoch in UTC (required)
         :param str file_name: Competition submission file name
@@ -858,7 +858,7 @@ class KaggleApi(object):
                  returns the request thread.
         """
         kwargs['_return_http_data_only'] = True
-        if kwargs.get('async'):
+        if kwargs.get('async_req'):
             return self.competitions_submissions_url_with_http_info(content_length, last_modified_date_utc, **kwargs)  # noqa: E501
         else:
             (data) = self.competitions_submissions_url_with_http_info(content_length, last_modified_date_utc, **kwargs)  # noqa: E501
@@ -868,11 +868,11 @@ class KaggleApi(object):
         """Generate competition submission URL  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async=True
-        >>> thread = api.competitions_submissions_url_with_http_info(content_length, last_modified_date_utc, async=True)
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.competitions_submissions_url_with_http_info(content_length, last_modified_date_utc, async_req=True)
         >>> result = thread.get()
 
-        :param async bool
+        :param async_req bool
         :param int content_length: Content length of file in bytes (required)
         :param int last_modified_date_utc: Last modified date of file in milliseconds since epoch in UTC (required)
         :param str file_name: Competition submission file name
@@ -882,7 +882,7 @@ class KaggleApi(object):
         """
 
         all_params = ['content_length', 'last_modified_date_utc', 'file_name']  # noqa: E501
-        all_params.append('async')
+        all_params.append('async_req')
         all_params.append('_return_http_data_only')
         all_params.append('_preload_content')
         all_params.append('_request_timeout')
@@ -944,7 +944,7 @@ class KaggleApi(object):
             files=local_var_files,
             response_type='Result',  # noqa: E501
             auth_settings=auth_settings,
-            async=params.get('async'),
+            async_req=params.get('async_req'),
             _return_http_data_only=params.get('_return_http_data_only'),
             _preload_content=params.get('_preload_content', True),
             _request_timeout=params.get('_request_timeout'),
@@ -954,18 +954,18 @@ class KaggleApi(object):
         """Create a new dataset  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async=True
-        >>> thread = api.datasets_create_new(dataset_new_request, async=True)
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.datasets_create_new(dataset_new_request, async_req=True)
         >>> result = thread.get()
 
-        :param async bool
+        :param async_req bool
         :param DatasetNewRequest dataset_new_request: Information for creating a new dataset (required)
         :return: Result
                  If the method is called asynchronously,
                  returns the request thread.
         """
         kwargs['_return_http_data_only'] = True
-        if kwargs.get('async'):
+        if kwargs.get('async_req'):
             return self.datasets_create_new_with_http_info(dataset_new_request, **kwargs)  # noqa: E501
         else:
             (data) = self.datasets_create_new_with_http_info(dataset_new_request, **kwargs)  # noqa: E501
@@ -975,11 +975,11 @@ class KaggleApi(object):
         """Create a new dataset  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async=True
-        >>> thread = api.datasets_create_new_with_http_info(dataset_new_request, async=True)
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.datasets_create_new_with_http_info(dataset_new_request, async_req=True)
         >>> result = thread.get()
 
-        :param async bool
+        :param async_req bool
         :param DatasetNewRequest dataset_new_request: Information for creating a new dataset (required)
         :return: Result
                  If the method is called asynchronously,
@@ -987,7 +987,7 @@ class KaggleApi(object):
         """
 
         all_params = ['dataset_new_request']  # noqa: E501
-        all_params.append('async')
+        all_params.append('async_req')
         all_params.append('_return_http_data_only')
         all_params.append('_preload_content')
         all_params.append('_request_timeout')
@@ -1041,7 +1041,7 @@ class KaggleApi(object):
             files=local_var_files,
             response_type='Result',  # noqa: E501
             auth_settings=auth_settings,
-            async=params.get('async'),
+            async_req=params.get('async_req'),
             _return_http_data_only=params.get('_return_http_data_only'),
             _preload_content=params.get('_preload_content', True),
             _request_timeout=params.get('_request_timeout'),
@@ -1051,11 +1051,11 @@ class KaggleApi(object):
         """Create a new dataset version  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async=True
-        >>> thread = api.datasets_create_version(owner_slug, dataset_slug, dataset_new_version_request, async=True)
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.datasets_create_version(owner_slug, dataset_slug, dataset_new_version_request, async_req=True)
         >>> result = thread.get()
 
-        :param async bool
+        :param async_req bool
         :param str owner_slug: Dataset owner (required)
         :param str dataset_slug: Dataset name (required)
         :param DatasetNewVersionRequest dataset_new_version_request: Information for creating a new dataset version (required)
@@ -1064,7 +1064,7 @@ class KaggleApi(object):
                  returns the request thread.
         """
         kwargs['_return_http_data_only'] = True
-        if kwargs.get('async'):
+        if kwargs.get('async_req'):
             return self.datasets_create_version_with_http_info(owner_slug, dataset_slug, dataset_new_version_request, **kwargs)  # noqa: E501
         else:
             (data) = self.datasets_create_version_with_http_info(owner_slug, dataset_slug, dataset_new_version_request, **kwargs)  # noqa: E501
@@ -1074,11 +1074,11 @@ class KaggleApi(object):
         """Create a new dataset version  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async=True
-        >>> thread = api.datasets_create_version_with_http_info(owner_slug, dataset_slug, dataset_new_version_request, async=True)
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.datasets_create_version_with_http_info(owner_slug, dataset_slug, dataset_new_version_request, async_req=True)
         >>> result = thread.get()
 
-        :param async bool
+        :param async_req bool
         :param str owner_slug: Dataset owner (required)
         :param str dataset_slug: Dataset name (required)
         :param DatasetNewVersionRequest dataset_new_version_request: Information for creating a new dataset version (required)
@@ -1088,7 +1088,7 @@ class KaggleApi(object):
         """
 
         all_params = ['owner_slug', 'dataset_slug', 'dataset_new_version_request']  # noqa: E501
-        all_params.append('async')
+        all_params.append('async_req')
         all_params.append('_return_http_data_only')
         all_params.append('_preload_content')
         all_params.append('_request_timeout')
@@ -1154,7 +1154,7 @@ class KaggleApi(object):
             files=local_var_files,
             response_type='Result',  # noqa: E501
             auth_settings=auth_settings,
-            async=params.get('async'),
+            async_req=params.get('async_req'),
             _return_http_data_only=params.get('_return_http_data_only'),
             _preload_content=params.get('_preload_content', True),
             _request_timeout=params.get('_request_timeout'),
@@ -1164,11 +1164,11 @@ class KaggleApi(object):
         """Download dataset file  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async=True
-        >>> thread = api.datasets_download_file(owner_slug, dataset_slug, file_name, async=True)
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.datasets_download_file(owner_slug, dataset_slug, file_name, async_req=True)
         >>> result = thread.get()
 
-        :param async bool
+        :param async_req bool
         :param str owner_slug: Dataset owner (required)
         :param str dataset_slug: Dataset name (required)
         :param str file_name: File name (required)
@@ -1178,7 +1178,7 @@ class KaggleApi(object):
                  returns the request thread.
         """
         kwargs['_return_http_data_only'] = True
-        if kwargs.get('async'):
+        if kwargs.get('async_req'):
             return self.datasets_download_file_with_http_info(owner_slug, dataset_slug, file_name, **kwargs)  # noqa: E501
         else:
             (data) = self.datasets_download_file_with_http_info(owner_slug, dataset_slug, file_name, **kwargs)  # noqa: E501
@@ -1188,11 +1188,11 @@ class KaggleApi(object):
         """Download dataset file  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async=True
-        >>> thread = api.datasets_download_file_with_http_info(owner_slug, dataset_slug, file_name, async=True)
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.datasets_download_file_with_http_info(owner_slug, dataset_slug, file_name, async_req=True)
         >>> result = thread.get()
 
-        :param async bool
+        :param async_req bool
         :param str owner_slug: Dataset owner (required)
         :param str dataset_slug: Dataset name (required)
         :param str file_name: File name (required)
@@ -1203,7 +1203,7 @@ class KaggleApi(object):
         """
 
         all_params = ['owner_slug', 'dataset_slug', 'file_name', 'dataset_version_number']  # noqa: E501
-        all_params.append('async')
+        all_params.append('async_req')
         all_params.append('_return_http_data_only')
         all_params.append('_preload_content')
         all_params.append('_request_timeout')
@@ -1267,7 +1267,7 @@ class KaggleApi(object):
             files=local_var_files,
             response_type='Result',  # noqa: E501
             auth_settings=auth_settings,
-            async=params.get('async'),
+            async_req=params.get('async_req'),
             _return_http_data_only=params.get('_return_http_data_only'),
             _preload_content=params.get('_preload_content', True),
             _request_timeout=params.get('_request_timeout'),
@@ -1277,11 +1277,11 @@ class KaggleApi(object):
         """List datasets  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async=True
-        >>> thread = api.datasets_list(async=True)
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.datasets_list(async_req=True)
         >>> result = thread.get()
 
-        :param async bool
+        :param async_req bool
         :param int page: Page number
         :param str search: Search terms
         :return: Result
@@ -1289,7 +1289,7 @@ class KaggleApi(object):
                  returns the request thread.
         """
         kwargs['_return_http_data_only'] = True
-        if kwargs.get('async'):
+        if kwargs.get('async_req'):
             return self.datasets_list_with_http_info(**kwargs)  # noqa: E501
         else:
             (data) = self.datasets_list_with_http_info(**kwargs)  # noqa: E501
@@ -1299,11 +1299,11 @@ class KaggleApi(object):
         """List datasets  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async=True
-        >>> thread = api.datasets_list_with_http_info(async=True)
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.datasets_list_with_http_info(async_req=True)
         >>> result = thread.get()
 
-        :param async bool
+        :param async_req bool
         :param int page: Page number
         :param str search: Search terms
         :return: Result
@@ -1312,7 +1312,7 @@ class KaggleApi(object):
         """
 
         all_params = ['page', 'search']  # noqa: E501
-        all_params.append('async')
+        all_params.append('async_req')
         all_params.append('_return_http_data_only')
         all_params.append('_preload_content')
         all_params.append('_request_timeout')
@@ -1360,7 +1360,7 @@ class KaggleApi(object):
             files=local_var_files,
             response_type='Result',  # noqa: E501
             auth_settings=auth_settings,
-            async=params.get('async'),
+            async_req=params.get('async_req'),
             _return_http_data_only=params.get('_return_http_data_only'),
             _preload_content=params.get('_preload_content', True),
             _request_timeout=params.get('_request_timeout'),
@@ -1370,11 +1370,11 @@ class KaggleApi(object):
         """List dataset files  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async=True
-        >>> thread = api.datasets_list_files(owner_slug, dataset_slug, async=True)
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.datasets_list_files(owner_slug, dataset_slug, async_req=True)
         >>> result = thread.get()
 
-        :param async bool
+        :param async_req bool
         :param str owner_slug: Dataset owner (required)
         :param str dataset_slug: Dataset name (required)
         :return: Result
@@ -1382,7 +1382,7 @@ class KaggleApi(object):
                  returns the request thread.
         """
         kwargs['_return_http_data_only'] = True
-        if kwargs.get('async'):
+        if kwargs.get('async_req'):
             return self.datasets_list_files_with_http_info(owner_slug, dataset_slug, **kwargs)  # noqa: E501
         else:
             (data) = self.datasets_list_files_with_http_info(owner_slug, dataset_slug, **kwargs)  # noqa: E501
@@ -1392,11 +1392,11 @@ class KaggleApi(object):
         """List dataset files  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async=True
-        >>> thread = api.datasets_list_files_with_http_info(owner_slug, dataset_slug, async=True)
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.datasets_list_files_with_http_info(owner_slug, dataset_slug, async_req=True)
         >>> result = thread.get()
 
-        :param async bool
+        :param async_req bool
         :param str owner_slug: Dataset owner (required)
         :param str dataset_slug: Dataset name (required)
         :return: Result
@@ -1405,7 +1405,7 @@ class KaggleApi(object):
         """
 
         all_params = ['owner_slug', 'dataset_slug']  # noqa: E501
-        all_params.append('async')
+        all_params.append('async_req')
         all_params.append('_return_http_data_only')
         all_params.append('_preload_content')
         all_params.append('_request_timeout')
@@ -1461,7 +1461,7 @@ class KaggleApi(object):
             files=local_var_files,
             response_type='Result',  # noqa: E501
             auth_settings=auth_settings,
-            async=params.get('async'),
+            async_req=params.get('async_req'),
             _return_http_data_only=params.get('_return_http_data_only'),
             _preload_content=params.get('_preload_content', True),
             _request_timeout=params.get('_request_timeout'),
@@ -1471,11 +1471,11 @@ class KaggleApi(object):
         """Get URL and token to start uploading a data file  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async=True
-        >>> thread = api.datasets_upload_file(file_name, content_length, last_modified_date_utc, async=True)
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.datasets_upload_file(file_name, content_length, last_modified_date_utc, async_req=True)
         >>> result = thread.get()
 
-        :param async bool
+        :param async_req bool
         :param str file_name: Dataset file name (required)
         :param int content_length: Content length of file in bytes (required)
         :param int last_modified_date_utc: Last modified date of file in milliseconds since epoch in UTC (required)
@@ -1484,7 +1484,7 @@ class KaggleApi(object):
                  returns the request thread.
         """
         kwargs['_return_http_data_only'] = True
-        if kwargs.get('async'):
+        if kwargs.get('async_req'):
             return self.datasets_upload_file_with_http_info(file_name, content_length, last_modified_date_utc, **kwargs)  # noqa: E501
         else:
             (data) = self.datasets_upload_file_with_http_info(file_name, content_length, last_modified_date_utc, **kwargs)  # noqa: E501
@@ -1494,11 +1494,11 @@ class KaggleApi(object):
         """Get URL and token to start uploading a data file  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async=True
-        >>> thread = api.datasets_upload_file_with_http_info(file_name, content_length, last_modified_date_utc, async=True)
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.datasets_upload_file_with_http_info(file_name, content_length, last_modified_date_utc, async_req=True)
         >>> result = thread.get()
 
-        :param async bool
+        :param async_req bool
         :param str file_name: Dataset file name (required)
         :param int content_length: Content length of file in bytes (required)
         :param int last_modified_date_utc: Last modified date of file in milliseconds since epoch in UTC (required)
@@ -1508,7 +1508,7 @@ class KaggleApi(object):
         """
 
         all_params = ['file_name', 'content_length', 'last_modified_date_utc']  # noqa: E501
-        all_params.append('async')
+        all_params.append('async_req')
         all_params.append('_return_http_data_only')
         all_params.append('_preload_content')
         all_params.append('_request_timeout')
@@ -1574,7 +1574,7 @@ class KaggleApi(object):
             files=local_var_files,
             response_type='Result',  # noqa: E501
             auth_settings=auth_settings,
-            async=params.get('async'),
+            async_req=params.get('async_req'),
             _return_http_data_only=params.get('_return_http_data_only'),
             _preload_content=params.get('_preload_content', True),
             _request_timeout=params.get('_request_timeout'),
@@ -1584,11 +1584,11 @@ class KaggleApi(object):
         """Show details about a dataset  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async=True
-        >>> thread = api.datasets_view(owner_slug, dataset_slug, async=True)
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.datasets_view(owner_slug, dataset_slug, async_req=True)
         >>> result = thread.get()
 
-        :param async bool
+        :param async_req bool
         :param str owner_slug: Dataset owner (required)
         :param str dataset_slug: Dataset name (required)
         :return: Result
@@ -1596,7 +1596,7 @@ class KaggleApi(object):
                  returns the request thread.
         """
         kwargs['_return_http_data_only'] = True
-        if kwargs.get('async'):
+        if kwargs.get('async_req'):
             return self.datasets_view_with_http_info(owner_slug, dataset_slug, **kwargs)  # noqa: E501
         else:
             (data) = self.datasets_view_with_http_info(owner_slug, dataset_slug, **kwargs)  # noqa: E501
@@ -1606,11 +1606,11 @@ class KaggleApi(object):
         """Show details about a dataset  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async=True
-        >>> thread = api.datasets_view_with_http_info(owner_slug, dataset_slug, async=True)
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.datasets_view_with_http_info(owner_slug, dataset_slug, async_req=True)
         >>> result = thread.get()
 
-        :param async bool
+        :param async_req bool
         :param str owner_slug: Dataset owner (required)
         :param str dataset_slug: Dataset name (required)
         :return: Result
@@ -1619,7 +1619,7 @@ class KaggleApi(object):
         """
 
         all_params = ['owner_slug', 'dataset_slug']  # noqa: E501
-        all_params.append('async')
+        all_params.append('async_req')
         all_params.append('_return_http_data_only')
         all_params.append('_preload_content')
         all_params.append('_request_timeout')
@@ -1675,7 +1675,7 @@ class KaggleApi(object):
             files=local_var_files,
             response_type='Result',  # noqa: E501
             auth_settings=auth_settings,
-            async=params.get('async'),
+            async_req=params.get('async_req'),
             _return_http_data_only=params.get('_return_http_data_only'),
             _preload_content=params.get('_preload_content', True),
             _request_timeout=params.get('_request_timeout'),
@@ -1685,11 +1685,11 @@ class KaggleApi(object):
         """Download the latest output from a kernel  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async=True
-        >>> thread = api.kernel_output(user_name, kernel_slug, async=True)
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.kernel_output(user_name, kernel_slug, async_req=True)
         >>> result = thread.get()
 
-        :param async bool
+        :param async_req bool
         :param str user_name: Kernel owner (required)
         :param str kernel_slug: Kernel name (required)
         :return: Result
@@ -1697,7 +1697,7 @@ class KaggleApi(object):
                  returns the request thread.
         """
         kwargs['_return_http_data_only'] = True
-        if kwargs.get('async'):
+        if kwargs.get('async_req'):
             return self.kernel_output_with_http_info(user_name, kernel_slug, **kwargs)  # noqa: E501
         else:
             (data) = self.kernel_output_with_http_info(user_name, kernel_slug, **kwargs)  # noqa: E501
@@ -1707,11 +1707,11 @@ class KaggleApi(object):
         """Download the latest output from a kernel  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async=True
-        >>> thread = api.kernel_output_with_http_info(user_name, kernel_slug, async=True)
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.kernel_output_with_http_info(user_name, kernel_slug, async_req=True)
         >>> result = thread.get()
 
-        :param async bool
+        :param async_req bool
         :param str user_name: Kernel owner (required)
         :param str kernel_slug: Kernel name (required)
         :return: Result
@@ -1720,7 +1720,7 @@ class KaggleApi(object):
         """
 
         all_params = ['user_name', 'kernel_slug']  # noqa: E501
-        all_params.append('async')
+        all_params.append('async_req')
         all_params.append('_return_http_data_only')
         all_params.append('_preload_content')
         all_params.append('_request_timeout')
@@ -1776,7 +1776,7 @@ class KaggleApi(object):
             files=local_var_files,
             response_type='Result',  # noqa: E501
             auth_settings=auth_settings,
-            async=params.get('async'),
+            async_req=params.get('async_req'),
             _return_http_data_only=params.get('_return_http_data_only'),
             _preload_content=params.get('_preload_content', True),
             _request_timeout=params.get('_request_timeout'),
@@ -1786,11 +1786,11 @@ class KaggleApi(object):
         """Pull the latest code from a kernel  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async=True
-        >>> thread = api.kernel_pull(user_name, kernel_slug, async=True)
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.kernel_pull(user_name, kernel_slug, async_req=True)
         >>> result = thread.get()
 
-        :param async bool
+        :param async_req bool
         :param str user_name: Kernel owner (required)
         :param str kernel_slug: Kernel name (required)
         :return: Result
@@ -1798,7 +1798,7 @@ class KaggleApi(object):
                  returns the request thread.
         """
         kwargs['_return_http_data_only'] = True
-        if kwargs.get('async'):
+        if kwargs.get('async_req'):
             return self.kernel_pull_with_http_info(user_name, kernel_slug, **kwargs)  # noqa: E501
         else:
             (data) = self.kernel_pull_with_http_info(user_name, kernel_slug, **kwargs)  # noqa: E501
@@ -1808,11 +1808,11 @@ class KaggleApi(object):
         """Pull the latest code from a kernel  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async=True
-        >>> thread = api.kernel_pull_with_http_info(user_name, kernel_slug, async=True)
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.kernel_pull_with_http_info(user_name, kernel_slug, async_req=True)
         >>> result = thread.get()
 
-        :param async bool
+        :param async_req bool
         :param str user_name: Kernel owner (required)
         :param str kernel_slug: Kernel name (required)
         :return: Result
@@ -1821,7 +1821,7 @@ class KaggleApi(object):
         """
 
         all_params = ['user_name', 'kernel_slug']  # noqa: E501
-        all_params.append('async')
+        all_params.append('async_req')
         all_params.append('_return_http_data_only')
         all_params.append('_preload_content')
         all_params.append('_request_timeout')
@@ -1877,7 +1877,7 @@ class KaggleApi(object):
             files=local_var_files,
             response_type='Result',  # noqa: E501
             auth_settings=auth_settings,
-            async=params.get('async'),
+            async_req=params.get('async_req'),
             _return_http_data_only=params.get('_return_http_data_only'),
             _preload_content=params.get('_preload_content', True),
             _request_timeout=params.get('_request_timeout'),
@@ -1887,18 +1887,18 @@ class KaggleApi(object):
         """Push a new kernel version.  Can be used to create a new kernel and update an existing one.  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async=True
-        >>> thread = api.kernel_push(kernel_push_request, async=True)
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.kernel_push(kernel_push_request, async_req=True)
         >>> result = thread.get()
 
-        :param async bool
+        :param async_req bool
         :param KernelPushRequest kernel_push_request: Information for pushing a new kernel version (required)
         :return: Result
                  If the method is called asynchronously,
                  returns the request thread.
         """
         kwargs['_return_http_data_only'] = True
-        if kwargs.get('async'):
+        if kwargs.get('async_req'):
             return self.kernel_push_with_http_info(kernel_push_request, **kwargs)  # noqa: E501
         else:
             (data) = self.kernel_push_with_http_info(kernel_push_request, **kwargs)  # noqa: E501
@@ -1908,11 +1908,11 @@ class KaggleApi(object):
         """Push a new kernel version.  Can be used to create a new kernel and update an existing one.  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async=True
-        >>> thread = api.kernel_push_with_http_info(kernel_push_request, async=True)
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.kernel_push_with_http_info(kernel_push_request, async_req=True)
         >>> result = thread.get()
 
-        :param async bool
+        :param async_req bool
         :param KernelPushRequest kernel_push_request: Information for pushing a new kernel version (required)
         :return: Result
                  If the method is called asynchronously,
@@ -1920,7 +1920,7 @@ class KaggleApi(object):
         """
 
         all_params = ['kernel_push_request']  # noqa: E501
-        all_params.append('async')
+        all_params.append('async_req')
         all_params.append('_return_http_data_only')
         all_params.append('_preload_content')
         all_params.append('_request_timeout')
@@ -1974,7 +1974,7 @@ class KaggleApi(object):
             files=local_var_files,
             response_type='Result',  # noqa: E501
             auth_settings=auth_settings,
-            async=params.get('async'),
+            async_req=params.get('async_req'),
             _return_http_data_only=params.get('_return_http_data_only'),
             _preload_content=params.get('_preload_content', True),
             _request_timeout=params.get('_request_timeout'),
@@ -1984,11 +1984,11 @@ class KaggleApi(object):
         """Get the status of the latest kernel version  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async=True
-        >>> thread = api.kernel_status(user_name, kernel_slug, async=True)
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.kernel_status(user_name, kernel_slug, async_req=True)
         >>> result = thread.get()
 
-        :param async bool
+        :param async_req bool
         :param str user_name: Kernel owner (required)
         :param str kernel_slug: Kernel name (required)
         :return: Result
@@ -1996,7 +1996,7 @@ class KaggleApi(object):
                  returns the request thread.
         """
         kwargs['_return_http_data_only'] = True
-        if kwargs.get('async'):
+        if kwargs.get('async_req'):
             return self.kernel_status_with_http_info(user_name, kernel_slug, **kwargs)  # noqa: E501
         else:
             (data) = self.kernel_status_with_http_info(user_name, kernel_slug, **kwargs)  # noqa: E501
@@ -2006,11 +2006,11 @@ class KaggleApi(object):
         """Get the status of the latest kernel version  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async=True
-        >>> thread = api.kernel_status_with_http_info(user_name, kernel_slug, async=True)
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.kernel_status_with_http_info(user_name, kernel_slug, async_req=True)
         >>> result = thread.get()
 
-        :param async bool
+        :param async_req bool
         :param str user_name: Kernel owner (required)
         :param str kernel_slug: Kernel name (required)
         :return: Result
@@ -2019,7 +2019,7 @@ class KaggleApi(object):
         """
 
         all_params = ['user_name', 'kernel_slug']  # noqa: E501
-        all_params.append('async')
+        all_params.append('async_req')
         all_params.append('_return_http_data_only')
         all_params.append('_preload_content')
         all_params.append('_request_timeout')
@@ -2075,7 +2075,7 @@ class KaggleApi(object):
             files=local_var_files,
             response_type='Result',  # noqa: E501
             auth_settings=auth_settings,
-            async=params.get('async'),
+            async_req=params.get('async_req'),
             _return_http_data_only=params.get('_return_http_data_only'),
             _preload_content=params.get('_preload_content', True),
             _request_timeout=params.get('_request_timeout'),
@@ -2085,11 +2085,11 @@ class KaggleApi(object):
         """List kernels  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async=True
-        >>> thread = api.kernels_list(async=True)
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.kernels_list(async_req=True)
         >>> result = thread.get()
 
-        :param async bool
+        :param async_req bool
         :param int page: Page number
         :param int page_size: Page size
         :param str search: Search terms
@@ -2107,7 +2107,7 @@ class KaggleApi(object):
                  returns the request thread.
         """
         kwargs['_return_http_data_only'] = True
-        if kwargs.get('async'):
+        if kwargs.get('async_req'):
             return self.kernels_list_with_http_info(**kwargs)  # noqa: E501
         else:
             (data) = self.kernels_list_with_http_info(**kwargs)  # noqa: E501
@@ -2117,11 +2117,11 @@ class KaggleApi(object):
         """List kernels  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async=True
-        >>> thread = api.kernels_list_with_http_info(async=True)
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.kernels_list_with_http_info(async_req=True)
         >>> result = thread.get()
 
-        :param async bool
+        :param async_req bool
         :param int page: Page number
         :param int page_size: Page size
         :param str search: Search terms
@@ -2140,7 +2140,7 @@ class KaggleApi(object):
         """
 
         all_params = ['page', 'page_size', 'search', 'group', 'user', 'language', 'kernel_type', 'output_type', 'sort_by', 'dataset', 'competition', 'parent_kernel']  # noqa: E501
-        all_params.append('async')
+        all_params.append('async_req')
         all_params.append('_return_http_data_only')
         all_params.append('_preload_content')
         all_params.append('_request_timeout')
@@ -2208,7 +2208,7 @@ class KaggleApi(object):
             files=local_var_files,
             response_type='Result',  # noqa: E501
             auth_settings=auth_settings,
-            async=params.get('async'),
+            async_req=params.get('async_req'),
             _return_http_data_only=params.get('_return_http_data_only'),
             _preload_content=params.get('_preload_content', True),
             _request_timeout=params.get('_request_timeout'),

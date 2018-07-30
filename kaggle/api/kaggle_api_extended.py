@@ -171,7 +171,7 @@ class KaggleApi(KaggleApi):
         print(prefix + name + separator + value_out)
 
     def print_config_values(self):
-        print('Configuration values from ' + self.get_config_path())
+        print('Configuration values from ' + self.config_path)
         self.print_config_value(self.CONFIG_NAME_USER, prefix='- ')
         self.print_config_value(self.CONFIG_NAME_PATH, prefix='- ')
         self.print_config_value(self.CONFIG_NAME_PROXY, prefix='- ')

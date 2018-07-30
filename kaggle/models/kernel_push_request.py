@@ -47,6 +47,7 @@ class KernelPushRequest(object):
                             and the value is json key in definition.
     """
     swagger_types = {
+        'id': 'int',
         'slug': 'str',
         'new_title': 'str',
         'text': 'str',
@@ -62,6 +63,7 @@ class KernelPushRequest(object):
     }
 
     attribute_map = {
+        'id': 'id',
         'slug': 'slug',
         'new_title': 'newTitle',
         'text': 'text',
@@ -76,9 +78,10 @@ class KernelPushRequest(object):
         'category_ids': 'categoryIds'
     }
 
-    def __init__(self, slug=None, new_title=None, text=None, language=None, kernel_type=None, is_private=None, enable_gpu=None, enable_internet=None, dataset_data_sources=None, competition_data_sources=None, kernel_data_sources=None, category_ids=None):  # noqa: E501
+    def __init__(self, id=None, slug=None, new_title=None, text=None, language=None, kernel_type=None, is_private=None, enable_gpu=None, enable_internet=None, dataset_data_sources=None, competition_data_sources=None, kernel_data_sources=None, category_ids=None):  # noqa: E501
         """KernelPushRequest - a model defined in Swagger"""  # noqa: E501
 
+        self._id = None
         self._slug = None
         self._new_title = None
         self._text = None
@@ -93,7 +96,10 @@ class KernelPushRequest(object):
         self._category_ids = None
         self.discriminator = None
 
-        self.slug = slug
+        if id is not None:
+            self.id = id
+        if slug is not None:
+            self.slug = slug
         if new_title is not None:
             self.new_title = new_title
         self.text = text
@@ -115,10 +121,33 @@ class KernelPushRequest(object):
             self.category_ids = category_ids
 
     @property
+    def id(self):
+        """Gets the id of this KernelPushRequest.  # noqa: E501
+
+        The kernel's ID number. One of `id` and `slug` are required. If both are specified, `id` will be preferred  # noqa: E501
+
+        :return: The id of this KernelPushRequest.  # noqa: E501
+        :rtype: int
+        """
+        return self._id
+
+    @id.setter
+    def id(self, id):
+        """Sets the id of this KernelPushRequest.
+
+        The kernel's ID number. One of `id` and `slug` are required. If both are specified, `id` will be preferred  # noqa: E501
+
+        :param id: The id of this KernelPushRequest.  # noqa: E501
+        :type: int
+        """
+
+        self._id = id
+
+    @property
     def slug(self):
         """Gets the slug of this KernelPushRequest.  # noqa: E501
 
-        The full slug of the kernel to push to, in the format `USERNAME/KERNEL-SLUG`. The kernel slug must be the title lowercased with dashes (`-`) replacing spaces  # noqa: E501
+        The full slug of the kernel to push to, in the format `USERNAME/KERNEL-SLUG`. The kernel slug must be the title lowercased with dashes (`-`) replacing spaces. One of `id` and `slug` are required. If both are specified, `id` will be preferred  # noqa: E501
 
         :return: The slug of this KernelPushRequest.  # noqa: E501
         :rtype: str
@@ -129,13 +158,11 @@ class KernelPushRequest(object):
     def slug(self, slug):
         """Sets the slug of this KernelPushRequest.
 
-        The full slug of the kernel to push to, in the format `USERNAME/KERNEL-SLUG`. The kernel slug must be the title lowercased with dashes (`-`) replacing spaces  # noqa: E501
+        The full slug of the kernel to push to, in the format `USERNAME/KERNEL-SLUG`. The kernel slug must be the title lowercased with dashes (`-`) replacing spaces. One of `id` and `slug` are required. If both are specified, `id` will be preferred  # noqa: E501
 
         :param slug: The slug of this KernelPushRequest.  # noqa: E501
         :type: str
         """
-        if slug is None:
-            raise ValueError("Invalid value for `slug`, must not be `None`")  # noqa: E501
 
         self._slug = slug
 

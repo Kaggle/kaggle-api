@@ -53,14 +53,30 @@ paths:
         - application/json
       parameters:
         - in: query
+          name: group
+          type: string
+          enum: [general, entered, inClass]
+          default: general
+          description: Filter competitions by a particular group
+        - in: query
+          name: category
+          type: string
+          enum: [all, featured, research, recruitment, gettingStarted, masters, playground]
+          default: all
+          description: Filter competitions by a particular category
+        - in: query
+          name: sortBy
+          type: string
+          enum: [grouped, prize, earliestDeadline, latestDeadline, numberOfTeams, recentlyCreated]
+          default: latestDeadline
+          description: Sort the results
+        - in: query
           name: page
-          required: false
           type: integer
           default: 1
           description: Page number
         - in: query
           name: search
-          required: false
           type: string
           default: ''
           description: Search terms
@@ -313,17 +329,53 @@ paths:
         - application/json
       parameters:
         - in: query
-          name: page
-          required: false
-          type: integer
-          default: 1
-          description: Page number
+          name: group
+          type: string
+          enum: [public, my, myPrivate, upvoted, user]
+          default: public
+          description: Display datasets by a particular group
+        - in: query
+          name: sortBy
+          type: string
+          enum: [hottest, votes, updated, active]
+          default: hottest
+          description: Sort the results
+        - in: query
+          name: size
+          type: string
+          enum: [all, small, medium, large]
+          default: all
+          description: Display datasets of a specific size
+        - in: query
+          name: filetype
+          type: string
+          enum: [all, csv, sqlite, json, bigQuery]
+          default: all
+          description: Display datasets of a specific file type
+        - in: query
+          name: license
+          type: string
+          enum: [all, cc, gpl, odb, other]
+          default: all
+          description: Display datasets with a specific license
+        - in: query
+          name: tagids
+          type: string
+          description: A comma separated list of tags to filter by
         - in: query
           name: search
-          required: false
           default: ''
           type: string
           description: Search terms
+        - in: query
+          name: user
+          type: string
+          description: Display datasets by a specific user or organization
+        - in: query
+          name: page
+          type: integer
+          default: 1
+          description: Page number
       responses:
         200:
           description: Result
@@ -361,6 +413,34 @@ paths:
           description: Error
           schema:
             $ref: '#/definitions/Error'
+  /datasets/status/{ownerSlug}/{datasetSlug}:
+    get:
+      tags:
+      - kaggle
+      summary: Get dataset creation status
+      operationId: DatasetsStatus
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        name: ownerSlug
+        required: true
+        type: string
+        description: Dataset owner
+      - in: path
+        name: datasetSlug
+        required: true
+        type: string
+        description: Dataset name
+      responses:
+        200:
+          description: Result
+          schema:
+            $ref: '#/definitions/Result'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/Error'
   /datasets/view/{ownerSlug}/{datasetSlug}:
     get:
       tags:
@@ -386,6 +466,39 @@ paths:
           schema:
             $ref: '#/definitions/Result'
         default: 
+          description: Error
+          schema:
+            $ref: '#/definitions/Error'
+  /datasets/download/{ownerSlug}/{datasetSlug}:
+    get:
+      tags:
+      - kaggle
+      summary: Download dataset file
+      operationId: DatasetsDownload
+      produces:
+        - file
+      parameters:
+        - in: path
+          name: ownerSlug
+          required: true
+          type: string
+          description: Dataset owner
+        - in: path
+          name: datasetSlug
+          required: true
+          type: string
+          description: Dataset name
+        - in: query
+          name: datasetVersionNumber
+          required: false
+          type: string
+          description: Dataset version number
+      responses:
+        200:
+          description: Result
+          schema:
+            $ref: '#/definitions/Result'
+        default:
           description: Error
           schema:
             $ref: '#/definitions/Error'
@@ -459,6 +572,37 @@ paths:
           schema:
             $ref: '#/definitions/Result'
         default: 
+          description: Error
+          schema:
+            $ref: '#/definitions/Error'
+  /datasets/create/version/{id}:
+    post:
+      tags:
+      - kaggle
+      summary: Create a new dataset version by id
+      operationId: DatasetsCreateVersionById
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+          description: Dataset ID
+        - in: body
+          name: datasetNewVersionRequest
+          required: true
+          schema:
+            $ref: '#/definitions/DatasetNewVersionRequest'
+          description: Information for creating a new dataset version
+      responses:
+        200:
+          description: Result
+          schema:
+            $ref: '#/definitions/Result'
+        default:
           description: Error
           schema:
             $ref: '#/definitions/Error'
@@ -557,7 +701,7 @@ paths:
         - in: query
           name: user
           type: string
-          description: Display kernels by a specific user
+          description: Display kernels by a particular group
         - in: query
           name: language
           type: string
@@ -738,14 +882,7 @@ definitions:
         description: The column name
       type:
         type: string
-        description: The type of all of the fields in the column
-        default: unknown
-        enum:
-        - string
-        - boolean
-        - numeric
-        - datetime
-        - unknown
+        description: The type of all of the fields in the column. Please see the data types on https://github.com/Kaggle/kaggle-api/wiki/Dataset-Metadata
       originalType:
         type: string
         description: Used to store the original type of the column, which will be converted to Kaggle's types. For example, an `originalType` of `"integer"` would convert to a `type` of `"numeric"`
@@ -860,14 +997,16 @@ definitions:
   KernelPushRequest:
     type: object
     required:
-    - slug
     - text
     - language
     - kernelType
     properties:
+      id:
+        type: integer
+        description: The kernel's ID number. One of `id` and `slug` are required. If both are specified, `id` will be preferred
       slug:
         type: string
-        description: The full slug of the kernel to push to, in the format `USERNAME/KERNEL-SLUG`. The kernel slug must be the title lowercased with dashes (`-`) replacing spaces
+        description: The full slug of the kernel to push to, in the format `USERNAME/KERNEL-SLUG`. The kernel slug must be the title lowercased with dashes (`-`) replacing spaces. One of `id` and `slug` are required. If both are specified, `id` will be preferred
       newTitle:
         type: string
         description: The title to be set on the kernel

@@ -79,113 +79,112 @@ Example:
 ##### List competition files
 
 ```
-usage: kaggle competitions files [-h] [-c COMPETITION] [-v] [-q]
+usage: kaggle competitions files [-h] [-v] [-q] [competition]
 
 optional arguments:
-  -h, --help            show this help message and exit
-  -c COMPETITION, --competition COMPETITION
-                        Competition URL suffix (use "kaggle competitions list" to show options)
-                        If empty, the default competition will be used (use "kaggle config set competition")"
-  -v, --csv             Print results in CSV format (if not set print in table format)
-  -q, --quiet           Suppress printing information about download progress
+  -h, --help   show this help message and exit
+  competition  Competition URL suffix (use "kaggle competitions list" to show options)
+               If empty, the default competition will be used (use "kaggle config set competition")"
+  -v, --csv    Print results in CSV format (if not set print in table format)
+  -q, --quiet  Suppress printing information about the upload/download progress
 ```
 
 Example:
 
-`kaggle competitions files -c favorita-grocery-sales-forecasting`
+`kaggle competitions files favorita-grocery-sales-forecasting`
 
 ##### Download competition files
 
 ```
-usage: kaggle competitions download [-h] [-c COMPETITION] [-f FILE] [-p PATH]
-                                    [-w] [-o] [-q]
+usage: kaggle competitions download [-h] [-f FILE_NAME] [-p PATH] [-w] [-o]
+                                    [-q]
+                                    [competition]
 
 optional arguments:
   -h, --help            show this help message and exit
-  -c COMPETITION, --competition COMPETITION
-                        Competition URL suffix (use "kaggle competitions list" to show options)
+  competition           Competition URL suffix (use "kaggle competitions list" to show options)
                         If empty, the default competition will be used (use "kaggle config set competition")"
-  -f FILE, --file FILE  File name, all files downloaded if not provided
+  -f FILE_NAME, --file FILE_NAME
+                        File name, all files downloaded if not provided
                         (use "kaggle competitions files -c <competition>" to show options)
-  -p PATH, --path PATH  Folder where file(s) will be downloaded, defaults to  ~/.kaggle
+  -p PATH, --path PATH  Folder where file(s) will be downloaded, defaults to current working directory
   -w, --wp              Download files to current working path
   -o, --force           Skip check whether local version of file is up to date, force file download
-  -q, --quiet           Suppress printing information about download progress
- ```
+  -q, --quiet           Suppress printing information about the upload/download progress
+```
 
 Examples:
 
-`kaggle competitions download -c favorita-grocery-sales-forecasting`
+`kaggle competitions download favorita-grocery-sales-forecasting`
 
-`kaggle competitions download -c favorita-grocery-sales-forecasting -f test.csv.7z`
+`kaggle competitions download favorita-grocery-sales-forecasting -f test.csv.7z`
 
 Note: you will need to accept competition rules at `https://www.kaggle.com/c/<competition-name>/rules`.
 
 ##### Submit to a competition
 
 ```
-usage: kaggle competitions submit [-h] [-c COMPETITION] -f FILE -m MESSAGE
-                                  [-q]
+usage: kaggle competitions submit [-h] -f FILE_NAME -m MESSAGE [-q]
+                                  [competition]
 
 required arguments:
-  -f FILE, --file FILE  File for upload (full path)
+  -f FILE_NAME, --file FILE_NAME
+                        File for upload (full path)
   -m MESSAGE, --message MESSAGE
                         Message describing this submission
 
 optional arguments:
   -h, --help            show this help message and exit
-  -c COMPETITION, --competition COMPETITION
-                        Competition URL suffix (use "kaggle competitions list" to show options)
+  competition           Competition URL suffix (use "kaggle competitions list" to show options)
                         If empty, the default competition will be used (use "kaggle config set competition")"
-  -q, --quiet           Suppress printing information about download progress
+  -q, --quiet           Suppress printing information about the upload/download progress
 ```
 
 Example: 
 
-`kaggle competitions submit -c favorita-grocery-sales-forecasting -f sample_submission_favorita.csv.7z -m "My submission message"`
+`kaggle competitions submit favorita-grocery-sales-forecasting -f sample_submission_favorita.csv.7z -m "My submission message"`
 
 Note: you will need to accept competition rules at `https://www.kaggle.com/c/<competition-name>/rules`.
 
 ##### List competition submissions
 
 ```
-usage: kaggle competitions submissions [-h] [-c COMPETITION] [-v] [-q]
+usage: kaggle competitions submissions [-h] [-v] [-q] [competition]
 
 optional arguments:
-  -h, --help            show this help message and exit
-  -c COMPETITION, --competition COMPETITION
-                        Competition URL suffix (use "kaggle competitions list" to show options)
-                        If empty, the default competition will be used (use "kaggle config set competition")"
-  -v, --csv             Print results in CSV format (if not set print in table format)
-  -q, --quiet           Suppress printing information about download progress
- ```
+  -h, --help   show this help message and exit
+  competition  Competition URL suffix (use "kaggle competitions list" to show options)
+               If empty, the default competition will be used (use "kaggle config set competition")"
+  -v, --csv    Print results in CSV format (if not set print in table format)
+  -q, --quiet  Suppress printing information about the upload/download progress
+```
  
 Example:
 
-`kaggle competitions submissions -c favorita-grocery-sales-forecasting`
+`kaggle competitions submissions favorita-grocery-sales-forecasting`
 
 Note: you will need to accept competition rules at `https://www.kaggle.com/c/<competition-name>/rules`.
 
 ##### Get competition leaderboard
 
 ```
-usage: kaggle competitions leaderboard [-h] [-c COMPETITION] [-s] [-d]
-                                       [-p PATH] [-q]
+usage: kaggle competitions leaderboard [-h] [-s] [-d] [-p PATH] [-v] [-q]
+                                       [competition]
 
 optional arguments:
   -h, --help            show this help message and exit
-  -c COMPETITION, --competition COMPETITION
-                        Competition URL suffix (use "kaggle competitions list" to show options)
+  competition           Competition URL suffix (use "kaggle competitions list" to show options)
                         If empty, the default competition will be used (use "kaggle config set competition")"
   -s, --show            Show the top of the leaderboard
   -d, --download        Download entire leaderboard
-  -p PATH, --path PATH  Folder where file(s) will be downloaded, defaults to ~/.kaggle
-  -q, --quiet           Suppress printing information about download progress
+  -p PATH, --path PATH  Folder where file(s) will be downloaded, defaults to current working directory
+  -v, --csv             Print results in CSV format (if not set print in table format)
+  -q, --quiet           Suppress printing information about the upload/download progress
 ```
 
 Example:
 
-`kaggle competitions leaderboard -c favorita-grocery-sales-forecasting -s`
+`kaggle competitions leaderboard favorita-grocery-sales-forecasting -s`
 
 
 ### Datasets
@@ -193,19 +192,21 @@ Example:
 The API supports the following commands for Kaggle Datasets.
 
 ```
-usage: kaggle datasets [-h] {list,files,download,create,version,init} ...
+usage: kaggle datasets [-h]
+                       {list,files,download,create,version,init,metadata} ...
 
 optional arguments:
   -h, --help            show this help message and exit
 
 commands:
-  {list,files,download,create,version,init}
+  {list,files,download,create,version,init,metadata}
     list                List available datasets
     files               List dataset files
     download            Download dataset files
     create              Create a new dataset
     version             Create a new dataset version
     init                Initialize metadata file for dataset creation
+    metadata            Download metadata about a dataset
 ```
 
 ##### List datasets
@@ -228,59 +229,52 @@ Example:
 ##### List files for a dataset
 
 ```
-usage: kaggle datasets files [-h] -d DATASET [-v]
-
-required arguments:
-  -d DATASET, --dataset DATASET
-                        Dataset URL suffix in format <owner>/<dataset-name> (use "kaggle datasets list" to show options)
+usage: kaggle datasets files [-h] [-v] [dataset]
 
 optional arguments:
-  -h, --help            show this help message and exit
-  -v, --csv             Print results in CSV format (if not set print in table format)
- ```
+  -h, --help  show this help message and exit
+  dataset     Dataset URL suffix in format <owner>/<dataset-name> (use "kaggle datasets list" to show options)
+  -v, --csv   Print results in CSV format (if not set print in table format)
+```
 
 Example:
 
-`kaggle datasets files -d zillow/zecon`
+`kaggle datasets files zillow/zecon`
 
 ##### Download dataset files
 
 ```
-usage: kaggle datasets download [-h] -d DATASET [-f FILE] [-p PATH] [-w] [-o]
-                                [-q]
-
-required arguments:
-  -d DATASET, --dataset DATASET
-                        Dataset URL suffix in format <owner>/<dataset-name> (use "kaggle datasets list" to show options)
+usage: kaggle datasets download [-h] [-f FILE_NAME] [-p PATH] [-w] [-o] [-q]
+                                [dataset]
 
 optional arguments:
   -h, --help            show this help message and exit
-  -f FILE, --file FILE  File name, all files downloaded if not provided
+  dataset               Dataset URL suffix in format <owner>/<dataset-name> (use "kaggle datasets list" to show options)
+  -f FILE_NAME, --file FILE_NAME
+                        File name, all files downloaded if not provided
                         (use "kaggle datasets files -d <dataset>" to show options)
-  -p PATH, --path PATH  Folder where file(s) will be downloaded, defaults to ~/.kaggle
+  -p PATH, --path PATH  Folder where file(s) will be downloaded, defaults to current working directory
   -w, --wp              Download files to current working path
   -o, --force           Skip check whether local version of file is up to date, force file download
-  -q, --quiet           Suppress printing information about download progress
+  -q, --quiet           Suppress printing information about the upload/download progress
 ```
 
 
 Examples:
 
-`kaggle datasets download -d zillow/zecon`
+`kaggle datasets download zillow/zecon`
 
-`kaggle datasets download -d zillow/zecon -f State_time_series.csv`
+`kaggle datasets download zillow/zecon -f State_time_series.csv`
 
 ##### Initialize metadata file for dataset creation
 
 ```
-usage: kaggle datasets init [-h] -p FOLDER
-
-required arguments:
-  -p FOLDER, --path FOLDER
-                        Folder for upload, containing data files and a special metadata.json file (https://github.com/Kaggle/kaggle-api/wiki/Dataset-Metadata)
+usage: kaggle datasets init [-h] [-p FOLDER]
 
 optional arguments:
   -h, --help            show this help message and exit
+  -p FOLDER, --path FOLDER
+                        Folder for upload, containing data files and a special dataset-metadata.json file (https://github.com/Kaggle/kaggle-api/wiki/Dataset-Metadata). Defaults to current working directory
 ```
 
 Example:
@@ -290,16 +284,14 @@ Example:
 ##### Create a new dataset
 
 ```
-usage: kaggle datasets create [-h] -p FOLDER [-u] [-q]
-
-required arguments:
-  -p FOLDER, --path FOLDER
-                        Folder for upload, containing data files and a special metadata.json file (https://github.com/Kaggle/kaggle-api/wiki/Dataset-Metadata)
+usage: kaggle datasets create [-h] [-p FOLDER] [-u] [-q] [-t]
 
 optional arguments:
   -h, --help            show this help message and exit
-  -u, --public          Create the Dataset publicly (default is private)
-  -q, --quiet           Suppress printing information about download progress
+  -p FOLDER, --path FOLDER
+                        Folder for upload, containing data files and a special dataset-metadata.json file (https://github.com/Kaggle/kaggle-api/wiki/Dataset-Metadata). Defaults to current working directory
+  -u, --public          Create publicly (default is private)
+  -q, --quiet           Suppress printing information about the upload/download progress
   -t, --keep-tabular    Do not convert tabular files to CSV (default is to convert)
 ```
 
@@ -310,17 +302,18 @@ Example:
 ##### Create a new dataset version
 
 ```
-usage: kaggle datasets version [-h] -m VERSION_NOTES -p FOLDER [-q]
+usage: kaggle datasets version [-h] -m VERSION_NOTES [-p FOLDER] [-q] [-t]
+                               [-d]
 
 required arguments:
   -m VERSION_NOTES, --message VERSION_NOTES
                         Message describing the new version
-  -p FOLDER, --path FOLDER
-                        Folder for upload, containing data files and a special metadata.json file (https://github.com/Kaggle/kaggle-api/wiki/Dataset-Metadata)
 
 optional arguments:
   -h, --help            show this help message and exit
-  -q, --quiet           Suppress printing information about download progress
+  -p FOLDER, --path FOLDER
+                        Folder for upload, containing data files and a special dataset-metadata.json file (https://github.com/Kaggle/kaggle-api/wiki/Dataset-Metadata). Defaults to current working directory
+  -q, --quiet           Suppress printing information about the upload/download progress
   -t, --keep-tabular    Do not convert tabular files to CSV (default is to convert)
   -d, --delete-old-versions
                         Delete old versions of this dataset
@@ -329,6 +322,37 @@ optional arguments:
 Example:
 
 `kaggle datasets version -p /path/to/dataset -m "Updated data"`
+
+
+##### Download metadata for an existing dataset
+
+```
+usage: kaggle datasets metadata [-h] [-p PATH] [dataset]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  dataset               Dataset URL suffix in format <owner>/<dataset-name> (use "kaggle datasets list" to show options)
+  -p PATH, --path PATH  Location to download dataset metadata to. Defaults to current working directory
+```
+
+Example:
+
+`kaggle datasets metadata -p /path/to/download zillow/zecon`
+
+
+##### Get dataset creation status 
+
+```
+usage: kaggle datasets status [-h] [dataset]
+
+optional arguments:
+  -h, --help  show this help message and exit
+  dataset     Dataset URL suffix in format <owner>/<dataset-name> (use "kaggle datasets list" to show options)
+```
+
+Example:
+
+`kaggle datasets status zillow/zecon`
 
 
 ### Kernels
@@ -388,14 +412,12 @@ Example:
 ##### Initialize metadata file for a kernel
 
 ```
-usage: kaggle kernels init [-h] -p FOLDER
-
-required arguments:
-  -p FOLDER, --path FOLDER
-                        Folder for upload, containing data files and a special kernel-metadata.json file (https://github.com/Kaggle/kaggle-api/wiki/Kernel-Metadata)
+usage: kaggle kernels init [-h] [-p FOLDER]
 
 optional arguments:
   -h, --help            show this help message and exit
+  -p FOLDER, --path FOLDER
+                        Folder for upload, containing data files and a special kernel-metadata.json file (https://github.com/Kaggle/kaggle-api/wiki/Kernel-Metadata). Defaults to current working directory
 ```
 
 Example:
@@ -407,50 +429,42 @@ Example:
 ```
 usage: kaggle kernels push [-h] -p FOLDER
 
-required arguments:
-  -p FOLDER, --path FOLDER
-                        Folder for upload, containing data files and a special kernel-metadata.json file (https://github.com/Kaggle/kaggle-api/wiki/Kernel-Metadata)
-
 optional arguments:
   -h, --help            show this help message and exit
+  -p FOLDER, --path FOLDER
+                        Folder for upload, containing data files and a special kernel-metadata.json file (https://github.com/Kaggle/kaggle-api/wiki/Kernel-Metadata). Defaults to current working directory
 ```
 
 Example:
 
-`kaggle kernels push -p .`
+`kaggle kernels push -p /path/to/kernel`
 
 ##### Pull a kernel
 
 ```
-usage: kaggle kernels pull [-h] -k KERNEL [-p PATH] [-w] [-m]
-
-required arguments:
-  -k KERNEL, --kernel KERNEL
-                        Kernel URL suffix in format <owner>/<kernel-name> (use "kaggle kernels list" to show options)
+usage: kaggle kernels pull [-h] [-p PATH] [-w] [-m] [kernel]
 
 optional arguments:
   -h, --help            show this help message and exit
-  -p PATH, --path PATH  Folder where file(s) will be downloaded, defaults to ~\.kaggle
+  kernel                Kernel URL suffix in format <owner>/<kernel-name> (use "kaggle kernels list" to show options)
+  -p PATH, --path PATH  Folder where file(s) will be downloaded, defaults to current working directory
   -w, --wp              Download files to current working path
   -m, --metadata        Generate metadata when pulling kernel
 ```
 
 Example:
 
-`kaggle kernels pull -k rtatman/list-of-5-day-challenges -p /path/to/dest`
+`kaggle kernels pull rtatman/list-of-5-day-challenges -p /path/to/dest`
 
 ##### Retrieve a kernel's output
 
 ```
-usage: kaggle kernels output [-h] -k KERNEL [-p PATH] [-w] [-o] [-q]
-
-required arguments:
-  -k KERNEL, --kernel KERNEL
-                        Kernel URL suffix in format <owner>/<kernel-name> (use "kaggle kernels list" to show options)
+usage: kaggle kernels output [-h] [-p PATH] [-w] [-o] [-q] [kernel]
 
 optional arguments:
   -h, --help            show this help message and exit
-  -p PATH, --path PATH  Folder where file(s) will be downloaded, defaults to ~\.kaggle
+  kernel                Kernel URL suffix in format <owner>/<kernel-name> (use "kaggle kernels list" to show options)
+  -p PATH, --path PATH  Folder where file(s) will be downloaded, defaults to current working directory
   -w, --wp              Download files to current working path
   -o, --force           Skip check whether local version of file is up to date, force file download
   -q, --quiet           Suppress printing information about the upload/download progress
@@ -458,24 +472,21 @@ optional arguments:
 
 Example:
 
-`kaggle kernels output -k mrisdal/exploring-survival-on-the-titanic -p /path/to/dest`
+`kaggle kernels output mrisdal/exploring-survival-on-the-titanic -p /path/to/dest`
 
 ##### Get the status of the latest kernel run
 
 ```
-usage: kaggle kernels status [-h] -k KERNEL
-
-required arguments:
-  -k KERNEL, --kernel KERNEL
-                        Kernel URL suffix in format <owner>/<kernel-name> (use "kaggle kernels list" to show options)
+usage: kaggle kernels status [-h] [kernel]
 
 optional arguments:
-  -h, --help            show this help message and exit
+  -h, --help  show this help message and exit
+  kernel      Kernel URL suffix in format <owner>/<kernel-name> (use "kaggle kernels list" to show options)
 ```
 
 Example:
 
-`kaggle kernels status -k mrisdal/exploring-survival-on-the-titanic`
+`kaggle kernels status mrisdal/exploring-survival-on-the-titanic`
 
 ### Config
 

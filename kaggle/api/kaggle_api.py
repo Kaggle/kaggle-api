@@ -426,6 +426,9 @@ class KaggleApi(object):
         >>> result = thread.get()
 
         :param async_req bool
+        :param str group: Filter competitions by a particular group
+        :param str category: Filter competitions by a particular category
+        :param str sort_by: Sort the results
         :param int page: Page number
         :param str search: Search terms
         :return: Result
@@ -448,6 +451,9 @@ class KaggleApi(object):
         >>> result = thread.get()
 
         :param async_req bool
+        :param str group: Filter competitions by a particular group
+        :param str category: Filter competitions by a particular category
+        :param str sort_by: Sort the results
         :param int page: Page number
         :param str search: Search terms
         :return: Result
@@ -455,7 +461,7 @@ class KaggleApi(object):
                  returns the request thread.
         """
 
-        all_params = ['page', 'search']  # noqa: E501
+        all_params = ['group', 'category', 'sort_by', 'page', 'search']  # noqa: E501
         all_params.append('async_req')
         all_params.append('_return_http_data_only')
         all_params.append('_preload_content')
@@ -476,6 +482,12 @@ class KaggleApi(object):
         path_params = {}
 
         query_params = []
+        if 'group' in params:
+            query_params.append(('group', params['group']))  # noqa: E501
+        if 'category' in params:
+            query_params.append(('category', params['category']))  # noqa: E501
+        if 'sort_by' in params:
+            query_params.append(('sortBy', params['sort_by']))  # noqa: E501
         if 'page' in params:
             query_params.append(('page', params['page']))  # noqa: E501
         if 'search' in params:
@@ -1160,6 +1172,216 @@ class KaggleApi(object):
             _request_timeout=params.get('_request_timeout'),
             collection_formats=collection_formats)
 
+    def datasets_create_version_by_id(self, id, dataset_new_version_request, **kwargs):  # noqa: E501
+        """Create a new dataset version by id  # noqa: E501
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.datasets_create_version_by_id(id, dataset_new_version_request, async_req=True)
+        >>> result = thread.get()
+
+        :param async_req bool
+        :param int id: Dataset ID (required)
+        :param DatasetNewVersionRequest dataset_new_version_request: Information for creating a new dataset version (required)
+        :return: Result
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+        kwargs['_return_http_data_only'] = True
+        if kwargs.get('async_req'):
+            return self.datasets_create_version_by_id_with_http_info(id, dataset_new_version_request, **kwargs)  # noqa: E501
+        else:
+            (data) = self.datasets_create_version_by_id_with_http_info(id, dataset_new_version_request, **kwargs)  # noqa: E501
+            return data
+
+    def datasets_create_version_by_id_with_http_info(self, id, dataset_new_version_request, **kwargs):  # noqa: E501
+        """Create a new dataset version by id  # noqa: E501
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.datasets_create_version_by_id_with_http_info(id, dataset_new_version_request, async_req=True)
+        >>> result = thread.get()
+
+        :param async_req bool
+        :param int id: Dataset ID (required)
+        :param DatasetNewVersionRequest dataset_new_version_request: Information for creating a new dataset version (required)
+        :return: Result
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+
+        all_params = ['id', 'dataset_new_version_request']  # noqa: E501
+        all_params.append('async_req')
+        all_params.append('_return_http_data_only')
+        all_params.append('_preload_content')
+        all_params.append('_request_timeout')
+
+        params = locals()
+        for key, val in six.iteritems(params['kwargs']):
+            if key not in all_params:
+                raise TypeError(
+                    "Got an unexpected keyword argument '%s'"
+                    " to method datasets_create_version_by_id" % key
+                )
+            params[key] = val
+        del params['kwargs']
+        # verify the required parameter 'id' is set
+        if ('id' not in params or
+                params['id'] is None):
+            raise ValueError("Missing the required parameter `id` when calling `datasets_create_version_by_id`")  # noqa: E501
+        # verify the required parameter 'dataset_new_version_request' is set
+        if ('dataset_new_version_request' not in params or
+                params['dataset_new_version_request'] is None):
+            raise ValueError("Missing the required parameter `dataset_new_version_request` when calling `datasets_create_version_by_id`")  # noqa: E501
+
+        collection_formats = {}
+
+        path_params = {}
+        if 'id' in params:
+            path_params['id'] = params['id']  # noqa: E501
+
+        query_params = []
+
+        header_params = {}
+
+        form_params = []
+        local_var_files = {}
+
+        body_params = None
+        if 'dataset_new_version_request' in params:
+            body_params = params['dataset_new_version_request']
+        # HTTP header `Accept`
+        header_params['Accept'] = self.api_client.select_header_accept(
+            ['application/json'])  # noqa: E501
+
+        # HTTP header `Content-Type`
+        header_params['Content-Type'] = self.api_client.select_header_content_type(  # noqa: E501
+            ['application/json'])  # noqa: E501
+
+        # Authentication setting
+        auth_settings = ['basicAuth']  # noqa: E501
+
+        return self.api_client.call_api(
+            '/datasets/create/version/{id}', 'POST',
+            path_params,
+            query_params,
+            header_params,
+            body=body_params,
+            post_params=form_params,
+            files=local_var_files,
+            response_type='Result',  # noqa: E501
+            auth_settings=auth_settings,
+            async_req=params.get('async_req'),
+            _return_http_data_only=params.get('_return_http_data_only'),
+            _preload_content=params.get('_preload_content', True),
+            _request_timeout=params.get('_request_timeout'),
+            collection_formats=collection_formats)
+
+    def datasets_download(self, owner_slug, dataset_slug, **kwargs):  # noqa: E501
+        """Download dataset file  # noqa: E501
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.datasets_download(owner_slug, dataset_slug, async_req=True)
+        >>> result = thread.get()
+
+        :param async_req bool
+        :param str owner_slug: Dataset owner (required)
+        :param str dataset_slug: Dataset name (required)
+        :param str dataset_version_number: Dataset version number
+        :return: Result
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+        kwargs['_return_http_data_only'] = True
+        if kwargs.get('async_req'):
+            return self.datasets_download_with_http_info(owner_slug, dataset_slug, **kwargs)  # noqa: E501
+        else:
+            (data) = self.datasets_download_with_http_info(owner_slug, dataset_slug, **kwargs)  # noqa: E501
+            return data
+
+    def datasets_download_with_http_info(self, owner_slug, dataset_slug, **kwargs):  # noqa: E501
+        """Download dataset file  # noqa: E501
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.datasets_download_with_http_info(owner_slug, dataset_slug, async_req=True)
+        >>> result = thread.get()
+
+        :param async_req bool
+        :param str owner_slug: Dataset owner (required)
+        :param str dataset_slug: Dataset name (required)
+        :param str dataset_version_number: Dataset version number
+        :return: Result
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+
+        all_params = ['owner_slug', 'dataset_slug', 'dataset_version_number']  # noqa: E501
+        all_params.append('async_req')
+        all_params.append('_return_http_data_only')
+        all_params.append('_preload_content')
+        all_params.append('_request_timeout')
+
+        params = locals()
+        for key, val in six.iteritems(params['kwargs']):
+            if key not in all_params:
+                raise TypeError(
+                    "Got an unexpected keyword argument '%s'"
+                    " to method datasets_download" % key
+                )
+            params[key] = val
+        del params['kwargs']
+        # verify the required parameter 'owner_slug' is set
+        if ('owner_slug' not in params or
+                params['owner_slug'] is None):
+            raise ValueError("Missing the required parameter `owner_slug` when calling `datasets_download`")  # noqa: E501
+        # verify the required parameter 'dataset_slug' is set
+        if ('dataset_slug' not in params or
+                params['dataset_slug'] is None):
+            raise ValueError("Missing the required parameter `dataset_slug` when calling `datasets_download`")  # noqa: E501
+
+        collection_formats = {}
+
+        path_params = {}
+        if 'owner_slug' in params:
+            path_params['ownerSlug'] = params['owner_slug']  # noqa: E501
+        if 'dataset_slug' in params:
+            path_params['datasetSlug'] = params['dataset_slug']  # noqa: E501
+
+        query_params = []
+        if 'dataset_version_number' in params:
+            query_params.append(('datasetVersionNumber', params['dataset_version_number']))  # noqa: E501
+
+        header_params = {}
+
+        form_params = []
+        local_var_files = {}
+
+        body_params = None
+        # HTTP header `Accept`
+        header_params['Accept'] = self.api_client.select_header_accept(
+            ['file'])  # noqa: E501
+
+        # Authentication setting
+        auth_settings = ['basicAuth']  # noqa: E501
+
+        return self.api_client.call_api(
+            '/datasets/download/{ownerSlug}/{datasetSlug}', 'GET',
+            path_params,
+            query_params,
+            header_params,
+            body=body_params,
+            post_params=form_params,
+            files=local_var_files,
+            response_type='Result',  # noqa: E501
+            auth_settings=auth_settings,
+            async_req=params.get('async_req'),
+            _return_http_data_only=params.get('_return_http_data_only'),
+            _preload_content=params.get('_preload_content', True),
+            _request_timeout=params.get('_request_timeout'),
+            collection_formats=collection_formats)
+
     def datasets_download_file(self, owner_slug, dataset_slug, file_name, **kwargs):  # noqa: E501
         """Download dataset file  # noqa: E501
 
@@ -1282,8 +1504,15 @@ class KaggleApi(object):
         >>> result = thread.get()
 
         :param async_req bool
-        :param int page: Page number
+        :param str group: Display datasets by a particular group
+        :param str sort_by: Sort the results
+        :param str size: Display datasets of a specific size
+        :param str filetype: Display datasets of a specific file type
+        :param str license: Display datasets with a specific license
+        :param str tagids: A comma separated list of tags to filter by
         :param str search: Search terms
+        :param str user: Display datasets by a specific user or organization
+        :param int page: Page number
         :return: Result
                  If the method is called asynchronously,
                  returns the request thread.
@@ -1304,14 +1533,21 @@ class KaggleApi(object):
         >>> result = thread.get()
 
         :param async_req bool
-        :param int page: Page number
+        :param str group: Display datasets by a particular group
+        :param str sort_by: Sort the results
+        :param str size: Display datasets of a specific size
+        :param str filetype: Display datasets of a specific file type
+        :param str license: Display datasets with a specific license
+        :param str tagids: A comma separated list of tags to filter by
         :param str search: Search terms
+        :param str user: Display datasets by a specific user or organization
+        :param int page: Page number
         :return: Result
                  If the method is called asynchronously,
                  returns the request thread.
         """
 
-        all_params = ['page', 'search']  # noqa: E501
+        all_params = ['group', 'sort_by', 'size', 'filetype', 'license', 'tagids', 'search', 'user', 'page']  # noqa: E501
         all_params.append('async_req')
         all_params.append('_return_http_data_only')
         all_params.append('_preload_content')
@@ -1332,10 +1568,24 @@ class KaggleApi(object):
         path_params = {}
 
         query_params = []
-        if 'page' in params:
-            query_params.append(('page', params['page']))  # noqa: E501
+        if 'group' in params:
+            query_params.append(('group', params['group']))  # noqa: E501
+        if 'sort_by' in params:
+            query_params.append(('sortBy', params['sort_by']))  # noqa: E501
+        if 'size' in params:
+            query_params.append(('size', params['size']))  # noqa: E501
+        if 'filetype' in params:
+            query_params.append(('filetype', params['filetype']))  # noqa: E501
+        if 'license' in params:
+            query_params.append(('license', params['license']))  # noqa: E501
+        if 'tagids' in params:
+            query_params.append(('tagids', params['tagids']))  # noqa: E501
         if 'search' in params:
             query_params.append(('search', params['search']))  # noqa: E501
+        if 'user' in params:
+            query_params.append(('user', params['user']))  # noqa: E501
+        if 'page' in params:
+            query_params.append(('page', params['page']))  # noqa: E501
 
         header_params = {}
 
@@ -1453,6 +1703,107 @@ class KaggleApi(object):
 
         return self.api_client.call_api(
             '/datasets/list/{ownerSlug}/{datasetSlug}', 'GET',
+            path_params,
+            query_params,
+            header_params,
+            body=body_params,
+            post_params=form_params,
+            files=local_var_files,
+            response_type='Result',  # noqa: E501
+            auth_settings=auth_settings,
+            async_req=params.get('async_req'),
+            _return_http_data_only=params.get('_return_http_data_only'),
+            _preload_content=params.get('_preload_content', True),
+            _request_timeout=params.get('_request_timeout'),
+            collection_formats=collection_formats)
+
+    def datasets_status(self, owner_slug, dataset_slug, **kwargs):  # noqa: E501
+        """Get dataset creation status  # noqa: E501
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.datasets_status(owner_slug, dataset_slug, async_req=True)
+        >>> result = thread.get()
+
+        :param async_req bool
+        :param str owner_slug: Dataset owner (required)
+        :param str dataset_slug: Dataset name (required)
+        :return: Result
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+        kwargs['_return_http_data_only'] = True
+        if kwargs.get('async_req'):
+            return self.datasets_status_with_http_info(owner_slug, dataset_slug, **kwargs)  # noqa: E501
+        else:
+            (data) = self.datasets_status_with_http_info(owner_slug, dataset_slug, **kwargs)  # noqa: E501
+            return data
+
+    def datasets_status_with_http_info(self, owner_slug, dataset_slug, **kwargs):  # noqa: E501
+        """Get dataset creation status  # noqa: E501
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.datasets_status_with_http_info(owner_slug, dataset_slug, async_req=True)
+        >>> result = thread.get()
+
+        :param async_req bool
+        :param str owner_slug: Dataset owner (required)
+        :param str dataset_slug: Dataset name (required)
+        :return: Result
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+
+        all_params = ['owner_slug', 'dataset_slug']  # noqa: E501
+        all_params.append('async_req')
+        all_params.append('_return_http_data_only')
+        all_params.append('_preload_content')
+        all_params.append('_request_timeout')
+
+        params = locals()
+        for key, val in six.iteritems(params['kwargs']):
+            if key not in all_params:
+                raise TypeError(
+                    "Got an unexpected keyword argument '%s'"
+                    " to method datasets_status" % key
+                )
+            params[key] = val
+        del params['kwargs']
+        # verify the required parameter 'owner_slug' is set
+        if ('owner_slug' not in params or
+                params['owner_slug'] is None):
+            raise ValueError("Missing the required parameter `owner_slug` when calling `datasets_status`")  # noqa: E501
+        # verify the required parameter 'dataset_slug' is set
+        if ('dataset_slug' not in params or
+                params['dataset_slug'] is None):
+            raise ValueError("Missing the required parameter `dataset_slug` when calling `datasets_status`")  # noqa: E501
+
+        collection_formats = {}
+
+        path_params = {}
+        if 'owner_slug' in params:
+            path_params['ownerSlug'] = params['owner_slug']  # noqa: E501
+        if 'dataset_slug' in params:
+            path_params['datasetSlug'] = params['dataset_slug']  # noqa: E501
+
+        query_params = []
+
+        header_params = {}
+
+        form_params = []
+        local_var_files = {}
+
+        body_params = None
+        # HTTP header `Accept`
+        header_params['Accept'] = self.api_client.select_header_accept(
+            ['application/json'])  # noqa: E501
+
+        # Authentication setting
+        auth_settings = ['basicAuth']  # noqa: E501
+
+        return self.api_client.call_api(
+            '/datasets/status/{ownerSlug}/{datasetSlug}', 'GET',
             path_params,
             query_params,
             header_params,
@@ -2094,7 +2445,7 @@ class KaggleApi(object):
         :param int page_size: Page size
         :param str search: Search terms
         :param str group: Display only your kernels
-        :param str user: Display kernels by a specific user
+        :param str user: Display kernels by a particular group
         :param str language: Display kernels in a specific language
         :param str kernel_type: Display kernels of a specific type
         :param str output_type: Display kernels with a specific output type
@@ -2126,7 +2477,7 @@ class KaggleApi(object):
         :param int page_size: Page size
         :param str search: Search terms
         :param str group: Display only your kernels
-        :param str user: Display kernels by a specific user
+        :param str user: Display kernels by a particular group
         :param str language: Display kernels in a specific language
         :param str kernel_type: Display kernels of a specific type
         :param str output_type: Display kernels with a specific output type

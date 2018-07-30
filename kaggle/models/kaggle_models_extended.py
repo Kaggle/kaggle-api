@@ -75,7 +75,7 @@ class DatasetVersion(object):
         self.__dict__.update(parsed_dict)
 
     def __repr__(self):
-        return str(self.version_number)
+        return str(self.versionNumber)
 
 
 class File(object):

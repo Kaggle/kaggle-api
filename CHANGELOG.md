@@ -1,6 +1,21 @@
 Changelog
 ====
 
+#### 1.4.3
+Release date: TBD
+* Add more competitions list options
+* Add more datasets list options
+* Add a couple more fields to kernels list display
+* Add support for kernel and dataset ID's
+* Allow generating metadata for an existing dataset
+* Fix issue with downloading from datasets whose titles don't match their slugs
+* Use kernel slug as filename for kernel output
+* Make upload and download directory default to current working directory 
+* Use a default username on downloading kernel or dataset data if none is specified
+* Support extended data types on datasets
+* Stop requiring `-c`, `-d`, and `-k` arguments
+* Don't require `resources` field in dataset metadata
+
 #### 1.4.2
 Release date: 7/20/18
 * Validate dataset slug and title length before uploading

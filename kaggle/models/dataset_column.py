@@ -62,7 +62,7 @@ class DatasetColumn(object):
         'description': 'description'
     }
 
-    def __init__(self, order=None, name=None, type='unknown', original_type=None, description=None):  # noqa: E501
+    def __init__(self, order=None, name=None, type=None, original_type=None, description=None):  # noqa: E501
         """DatasetColumn - a model defined in Swagger"""  # noqa: E501
 
         self._order = None
@@ -133,7 +133,7 @@ class DatasetColumn(object):
     def type(self):
         """Gets the type of this DatasetColumn.  # noqa: E501
 
-        The type of all of the fields in the column  # noqa: E501
+        The type of all of the fields in the column. Please see the data types on https://github.com/Kaggle/kaggle-api/wiki/Dataset-Metadata  # noqa: E501
 
         :return: The type of this DatasetColumn.  # noqa: E501
         :rtype: str
@@ -144,17 +144,11 @@ class DatasetColumn(object):
     def type(self, type):
         """Sets the type of this DatasetColumn.
 
-        The type of all of the fields in the column  # noqa: E501
+        The type of all of the fields in the column. Please see the data types on https://github.com/Kaggle/kaggle-api/wiki/Dataset-Metadata  # noqa: E501
 
         :param type: The type of this DatasetColumn.  # noqa: E501
         :type: str
         """
-        allowed_values = ["string", "boolean", "numeric", "datetime", "unknown"]  # noqa: E501
-        if type not in allowed_values:
-            raise ValueError(
-                "Invalid value for `type` ({0}), must be one of {1}"  # noqa: E501
-                .format(type, allowed_values)
-            )
 
         self._type = type
 

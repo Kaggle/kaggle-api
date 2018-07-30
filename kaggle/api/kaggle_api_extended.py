@@ -59,7 +59,7 @@ except NameError:
 
 
 class KaggleApi(KaggleApi):
-    __version__ = '1.4.3'
+    __version__ = '1.4.4'
 
     CONFIG_NAME_PROXY = 'proxy'
     CONFIG_NAME_COMPETITION = 'competition'
@@ -1148,8 +1148,8 @@ class KaggleApi(KaggleApi):
         if not os.path.isfile(code_file):
             raise ValueError('Source file not found: ' + code_file)
 
-        slug = meta_data['id']
-        id_no = meta_data['id_no']
+        slug = meta_data.get('id')
+        id_no = meta_data.get('id_no')
         if not slug and not id_no:
             raise ValueError('ID or slug must be specified in the metadata')
         if slug:

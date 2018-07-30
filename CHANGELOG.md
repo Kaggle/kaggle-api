@@ -1,6 +1,10 @@
 Changelog
 ====
 
+#### 1.4.4.
+Release date: 7/30/18
+* Fix issue with reading kernel metadata
+
 #### 1.4.3
 Release date: 7/30/18
 * Add more competitions list options

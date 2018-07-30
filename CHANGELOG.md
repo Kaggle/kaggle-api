@@ -2,7 +2,7 @@ Changelog
 ====
 
 #### 1.4.3
-Release date: TBD
+Release date: 7/30/18
 * Add more competitions list options
 * Add more datasets list options
 * Add a couple more fields to kernels list display

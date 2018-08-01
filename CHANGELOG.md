@@ -1,7 +1,11 @@
 Changelog
 ====
 
-#### 1.4.4.
+#### 1.4.5
+Release date: 8/1/18
+* Add error if dataset metadata repeats files
+
+#### 1.4.4
 Release date: 7/30/18
 * Fix issue with reading kernel metadata
 
@@ -48,7 +52,6 @@ Release date: 6/25/18
 * Alert users that dataset creation takes time
 
 #### 1.3.11.1
-=======
 * Fix other invalid tags check
 
 #### 1.3.11

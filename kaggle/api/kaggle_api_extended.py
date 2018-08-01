@@ -59,7 +59,7 @@ except NameError:
 
 
 class KaggleApi(KaggleApi):
-    __version__ = '1.4.4'
+    __version__ = '1.4.5'
 
     CONFIG_NAME_PROXY = 'proxy'
     CONFIG_NAME_COMPETITION = 'competition'
@@ -782,7 +782,7 @@ class KaggleApi(KaggleApi):
             raise ValueError(
                 'Subtitle length must be between 20 and 80 characters')
         resources = meta_data.get('resources')
-        self.validate_files_exist(folder, resources)
+        self.validate_resources(folder, resources)
 
         description = meta_data.get('description')
         keywords = self.get_or_default(meta_data, 'keywords', [])
@@ -908,7 +908,7 @@ class KaggleApi(KaggleApi):
                 'The dataset title must be between 6 and 50 characters')
         resources = meta_data.get('resources')
         if resources:
-            self.validate_files_exist(folder, resources)
+            self.validate_resources(folder, resources)
 
         license_name = self.get_or_fail(licenses[0], 'name')
         description = meta_data.get('description')
@@ -1682,12 +1682,26 @@ class KaggleApi(KaggleApi):
             if not split[0] or not split[1]:
                 raise ValueError('Invalid kernel specification ' + kernel)
 
+    def validate_resources(self, folder, resources):
+        self.validate_files_exist(folder, resources)
+        self.validate_no_duplicate_paths(resources)
+
     def validate_files_exist(self, folder, resources):
         for item in resources:
             file_name = item.get('path')
             full_path = os.path.join(folder, file_name)
             if not os.path.isfile(full_path):
                 raise ValueError('%s does not exist' % full_path)
+
+    def validate_no_duplicate_paths(self, resources):
+        paths = set()
+        for item in resources:
+            file_name = item.get('path')
+            if file_name in paths:
+                raise ValueError(
+                    '%s path was specified more than once in the metadata' %
+                    file_name)
+            paths.add(file_name)
 
     def convert_to_dataset_file_metadata(self, file_data, path):
         as_metadata = {

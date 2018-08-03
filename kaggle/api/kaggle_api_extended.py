@@ -76,6 +76,7 @@ class KaggleApi(KaggleApi):
         expanduser('~'), '.kaggle')
     if not os.path.exists(config_dir):
         os.makedirs(config_dir)
+
     config_file = 'kaggle.json'
     config = os.path.join(config_dir, config_file)
     config_values = {}
@@ -98,7 +99,7 @@ class KaggleApi(KaggleApi):
 
         # Step 1: read in configuration file, if it exists
         if os.path.exists(self.config):
-            config_data = self._authenticate_config(config_data)
+            config_data = self._auth_from_config(config_data)
 
         # Step 2:, get username/password from environment
         config_data = self._auth_from_environment(config_data)
@@ -187,7 +188,7 @@ class KaggleApi(KaggleApi):
                           + 'for instructions.')
 
 
-    def _authenticate_config(self, config_data, quiet=False):
+    def _auth_from_config(self, config_data, quiet=False):
         '''autheticate config is the first effort to get a username
            and key to authenticate to the Kaggle API. Since we can get the
            username and password from the environment, it's not required.
@@ -236,7 +237,7 @@ class KaggleApi(KaggleApi):
         return config_data
 
 
-    def _write_config(self, config_data, indent=1):
+    def _write_config_file(self, config_data, indent=2):
         '''write config data to file.
         '''
         with open(self.config, 'w') as f:
@@ -260,7 +261,7 @@ class KaggleApi(KaggleApi):
             self.config_values[name] = value
 
             # If defined by client, set and save!
-            self._write_config(config_data)
+            self._write_config_file(config_data)
 
             if not quiet:
                 self.print_config_value(name, separator=' is now set to: ')
@@ -271,14 +272,11 @@ class KaggleApi(KaggleApi):
 
         config_data = self._read_config_file()
 
-        # Remove it, if exists, both from loaded file and client
-
-        del self.config_values[name] # is there reason this was None?
-
         if name in config_data:
+
             del config_data[name]
 
-            self._write_config(config_data)
+            self._write_config_file(config_data)
 
             if not quiet:
                 self.print_config_value(name, separator=' is now set to: ')
@@ -295,12 +293,12 @@ class KaggleApi(KaggleApi):
         if name in self.config_values:
             return self.config_values[name]
 
-    def get_config_path(self):
+    def get_config_dir(self):
         '''get the path configuration value, otherwise return default.
         '''
         path = self.get_config_value(self.CONFIG_NAME_PATH)
         if path is None:
-            return self.config_path
+            return self.config_dir
         return path
 
     def print_config_value(self, name, prefix='', separator=': '):
@@ -320,7 +318,7 @@ class KaggleApi(KaggleApi):
     def print_config_values(self):
         '''a wrapper to print_config_value to print all configuration values
         '''
-        print('Configuration values from ' + self.get_config_path())
+        print('Configuration values from ' + self.get_config_dir())
         self.print_config_value(self.CONFIG_NAME_USER, prefix='- ')
         self.print_config_value(self.CONFIG_NAME_PATH, prefix='- ')
         self.print_config_value(self.CONFIG_NAME_PROXY, prefix='- ')

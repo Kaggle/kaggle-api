@@ -290,7 +290,7 @@ class KaggleApi(KaggleApi):
         if name in self.config_values:
             return self.config_values[name]
 
-    def get_default_download_dir(self):
+    def get_default_download_dir(self, *subdirs):
         '''get the path configuration value, otherwise return default.
         '''
         # Look up value for key "path" in the config
@@ -300,7 +300,7 @@ class KaggleApi(KaggleApi):
         if path is None:
             return os.getcwd()
 
-        return path
+        return os.path.join(path, *subdirs)
 
     def print_config_value(self, name, prefix='', separator=': '):
         '''print a single configuration value, based on a prefix and separator

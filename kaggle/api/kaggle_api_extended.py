@@ -95,6 +95,7 @@ class KaggleApi(KaggleApi):
            variables, and falling back to looking for the .kaggle/kaggle.json
            configuration file.
         '''
+
         config_data = {}
 
         # Step 1: read in configuration file, if it exists
@@ -289,12 +290,16 @@ class KaggleApi(KaggleApi):
         if name in self.config_values:
             return self.config_values[name]
 
-    def get_config_dir(self):
+    def get_default_download_dir(self):
         '''get the path configuration value, otherwise return default.
         '''
+        # Look up value for key "path" in the config
         path = self.get_config_value(self.CONFIG_NAME_PATH)
+
+        # If not set in config, default to present working directory
         if path is None:
-            return self.config_dir
+            return os.getcwd()
+
         return path
 
     def print_config_value(self, name, prefix='', separator=': '):
@@ -314,7 +319,7 @@ class KaggleApi(KaggleApi):
     def print_config_values(self):
         '''a wrapper to print_config_value to print all configuration values
         '''
-        print('Configuration values from ' + self.get_config_dir())
+        print('Configuration values from ' + self.config_dir)
         self.print_config_value(self.CONFIG_NAME_USER, prefix='- ')
         self.print_config_value(self.CONFIG_NAME_PATH, prefix='- ')
         self.print_config_value(self.CONFIG_NAME_PROXY, prefix='- ')

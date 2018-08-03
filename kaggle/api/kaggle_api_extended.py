@@ -86,97 +86,247 @@ class KaggleApi(KaggleApi):
         reload(sys)
         sys.setdefaultencoding('latin1')
 
+## Authentication
+
     def authenticate(self):
+        '''authenticate the user with the Kaggle API. This method will generate
+           a configuration, first checking the environment for credential
+           variables, and falling back to looking for the .kaggle/kaggle.json
+           configuration file.
+        '''
+        config_data = {}
+
+        # Step 1: read in configuration file, if it exists
+        if os.path.exists(self.config):
+            config_data = self._authenticate_config(config_data)
+
+        # Step 2:, get username/password from environment
+        config_data = self._authenticate_environment(config_data)
+
+
+        # Step 3: load into configuration!
+        self._load_config(config_data)
+
+
+    def _authenticate_environment(self, config_data=None, quiet=False):
+        '''autheticate environment is the second effort to get a username
+           and key to authenticate to the Kaggle API. The environment keys
+           are equivalent to the kaggle.json file, but with "KAGGLE_" prefix
+           to define a unique namespace.
+
+           Parameters
+           ==========
+           configuration: the Configuration object to save a username and
+                          password, if defined
+           config_data: a partially loaded configuration dictionary (optional)
+           quiet: add verbosity
+
+        '''
+
+        if config_data == None:
+            config_data = {}
+
+        # Add all variables that start with KAGGLE_ to config data
+
+        for key,val in os.environ.items():
+            if key.startswith('KAGGLE_'):
+                config_key = key.replace('KAGGLE_','',1).lower()
+                config_data[config_key] = val
+
+        return config_data
+
+
+## Configuration
+
+    def _load_config(self, config_data):
+        '''the final step of the authenticate steps, where we load the values
+           from config_data into the Configuration object.
+
+           Parameters
+           ==========
+           config_data: a dictionary with configuration values (keys) to read
+                        into self.config_values
+
+        '''
+        # Username and password are required.
+
+        for item in [self.CONFIG_NAME_USER, self.CONFIG_NAME_KEY]:
+            if item not in config_data:
+                print('Error: Missing %s in configuration.' % item)
+                sys.exit(1)
+
+        configuration = Configuration()
+
+        # Add to the final configuration (required)
+
+        configuration.username = config_data[self.CONFIG_NAME_USER]
+        configuration.password = config_data[self.CONFIG_NAME_KEY]
+
+        # Proxy
+
+        if self.CONFIG_NAME_PROXY in config_data:
+            configuration.proxy = config_data[self.CONFIG_NAME_PROXY]
+
+        # Keep config values with class instance, and load api client!
+
+        self.config_values = config_data
+
         try:
-            configuration = Configuration()
-            if os.name != 'nt':
-                permissions = os.stat(self.config).st_mode
-                if (permissions & 4) or (permissions & 32):
-                    print('Warning: Your Kaggle API key is readable by other '
-                          'users on this system! To fix this, you can run '
-                          '\'chmod 600 {}\''.format(self.config))
-            with open(self.config, 'r') as f:
-                config_data = json.load(f)
-
-            self.copy_config_value(self.CONFIG_NAME_PROXY, config_data)
-            self.copy_config_value(self.CONFIG_NAME_PATH, config_data)
-            self.copy_config_value(self.CONFIG_NAME_COMPETITION, config_data)
-            self.copy_config_value(self.CONFIG_NAME_USER, config_data)
-
-            configuration.username = config_data[self.CONFIG_NAME_USER]
-            configuration.password = config_data[self.CONFIG_NAME_KEY]
-            if self.CONFIG_NAME_PROXY in config_data:
-                configuration.proxy = config_data[self.CONFIG_NAME_PROXY]
             self.api_client = ApiClient(configuration)
 
         except Exception as error:
+
             if 'Proxy' in type(error).__name__:
-                raise ValueError(
-                    'The specified proxy ' +
-                    config_data[self.CONFIG_NAME_PROXY] +
-                    ' is not valid, please check your proxy settings')
+                sys.exit('The specified proxy ' + 
+                         config_data[self.CONFIG_NAME_PROXY] +
+                         ' is not valid, please check your proxy settings')
             else:
-                raise ValueError(
-                    'Unauthorized: you must download an API key from '
-                    'https://www.kaggle.com/<username>/account\nThen put ' +
-                    self.config_file + ' in the folder ' + self.config_dir)
+                sys.exit('Unauthorized: you must download an API key or export '
+                         'credentials to the environment. Please see\n ' +
+                         'https://github.com/Kaggle/kaggle-api#api-credentials '
+                          + 'for instructions.')
+
+
+    def _authenticate_config(self, quiet=False):
+        '''autheticate config is the first effort to get a username
+           and key to authenticate to the Kaggle API. Since we can get the
+           username and password from the environment, it's not required.
+
+           Parameters
+           ==========
+           configuration: the Configuration object to save a username and
+                          password, if defined
+           quiet: add verbosity
+        '''
+        config_data = {}
+
+        if os.path.exists(self.config):
+
+            try:
+                if os.name != 'nt':
+                    permissions = os.stat(self.config).st_mode
+                    if (permissions & 4) or (permissions & 32):
+                        print('Warning: Your Kaggle API key is readable by other' 
+                              'users on this system! To fix this, you can run' + 
+                              '\'chmod 600 {}\''.format(self.config))
+
+                with open(self.config, 'r') as f:
+                    config_data = json.load(f)
+            except:
+                pass
+
+        else:
+
+            # Warn the user that configuration will be reliant on environment
+            if not quiet:
+                print('No Kaggle API config file found, will use environment.')
+
+        return config_data
+
+  
+    def _read_config(self):
+        '''read in the configuration file, a json file defined at self.confi'''
+        
+        try:
+            with open(self.config, 'r') as f:
+                config_data = json.load(f)
+        except FileNotFoundError:
+            config_data = {}
+
+        return config_data
+
+
+    def _write_config(self, config_data, indent=1):
+        '''write config data to file.
+        '''
+        with open(self.config, 'w') as f:
+            json.dump(config_data, f, indent=indent)
+
 
     def set_config_value(self, name, value, quiet=False):
-        try:
-            with open(self.config, 'r') as f:
-                config_data = json.load(f)
-            if value is not None:
-                config_data[name] = value
-                with open(self.config, 'w') as f:
-                    json.dump(config_data, f, indent=2)
-            if name in config_data:
-                self.config_values[name] = config_data[name]
-        except:
-            pass
-        if not quiet:
-            self.print_config_value(name, separator=' is now set to: ')
+        '''a client helper function to set a configuration value, meaning
+           reading in the configuration file (if it exists), saving a new
+           config value, and then writing back
+        '''
+
+        config_data = self._read_config()
+   
+        # If defined by client, set and save!
+        self._write_config(config_data)
+
+        if value is not None:
+
+            # Update the config file with the value
+            config_data[name] = value
+
+            # Update the instance with the value
+            self.config_values[name] = value
+
+            if not quiet:
+                self.print_config_value(name, separator=' is now set to: ')
+
 
     def unset_config_value(self, name, quiet=False):
-        try:
-            with open(self.config, 'r') as f:
-                config_data = json.load(f)
-            config_data[name] = None
-            with open(self.config, 'w') as f:
-                json.dump(config_data, f, indent=2)
-            self.config_values[name] = None
-        except:
-            pass
-        if not quiet:
-            self.print_config_value(name, separator=' is now set to: ')
+        '''unset a configuration value'''
 
-    def copy_config_value(self, name, values):
-        if name in values:
-            self.config_values[name] = values[name]
+        config_data = self._read_config()
+
+        # Remove it, if exists, both from loaded file and client
+
+        del self.config_values[name] # is there reason this was None?
+
+        if name in config_data:
+            del config_data[name]
+
+            self._write_config(config_data)
+
+            if not quiet:
+                self.print_config_value(name, separator=' is now set to: ')
 
     def get_config_value(self, name):
+        ''' return a config value (with key name) if it's in the config_values,
+            otherwise return None
+ 
+            Parameters
+            ==========
+            name: the config value key to get
+
+        '''
         if name in self.config_values:
             return self.config_values[name]
-        return None
 
-    def get_default_download_dir(self, *subdirs):
+    def get_config_path(self):
+        '''get the path configuration value, otherwise return default.
+        '''
         path = self.get_config_value(self.CONFIG_NAME_PATH)
         if path is None:
-            return os.getcwd()
-        else:
-            return os.path.join(path, *subdirs)
+            return self.config_path
+        return path
 
     def print_config_value(self, name, prefix='', separator=': '):
+        '''print a single configuration value, based on a prefix and separator
+
+           Parameters
+           ==========
+           name: the key of the config valur in self.config_values to print
+           prefix: the prefix to print
+           separator: the separator to use (default is : )
+        '''
         value_out = 'None'
         if name in self.config_values and self.config_values[name] is not None:
             value_out = self.config_values[name]
         print(prefix + name + separator + value_out)
 
     def print_config_values(self):
-        print('Configuration values from ' + self.config_dir)
+        '''a wrapper to print_config_value to print all configuration values
+        '''
+        print('Configuration values from ' + self.get_config_path())
         self.print_config_value(self.CONFIG_NAME_USER, prefix='- ')
         self.print_config_value(self.CONFIG_NAME_PATH, prefix='- ')
         self.print_config_value(self.CONFIG_NAME_PROXY, prefix='- ')
         self.print_config_value(self.CONFIG_NAME_COMPETITION, prefix='- ')
+
+## Competitions
 
     def competitions_list(self,
                           group=None,

@@ -104,12 +104,11 @@ class KaggleApi(KaggleApi):
         # Step 2:, get username/password from environment
         config_data = self._auth_from_environment(config_data)
 
-
         # Step 3: load into configuration!
         self._load_config(config_data)
 
 
-    def _auth_from_environment(self, config_data=None, quiet=False):
+    def _auth_from_environment(self, config_data={}, quiet=False):
         '''autheticate environment is the second effort to get a username
            and key to authenticate to the Kaggle API. The environment keys
            are equivalent to the kaggle.json file, but with "KAGGLE_" prefix
@@ -124,14 +123,11 @@ class KaggleApi(KaggleApi):
 
         '''
 
-        if config_data == None:
-            config_data = {}
-
         # Add all variables that start with KAGGLE_ to config data
 
         for key,val in os.environ.items():
             if key.startswith('KAGGLE_'):
-                config_key = key.replace('KAGGLE_','',1).lower()
+                config_key = key.replace('KAGGLE_', '', 1).lower()
                 config_data[config_key] = val
 
         return config_data

@@ -101,14 +101,14 @@ class KaggleApi(KaggleApi):
             config_data = self._authenticate_config(config_data)
 
         # Step 2:, get username/password from environment
-        config_data = self._authenticate_environment(config_data)
+        config_data = self._auth_from_environment(config_data)
 
 
         # Step 3: load into configuration!
         self._load_config(config_data)
 
 
-    def _authenticate_environment(self, config_data=None, quiet=False):
+    def _auth_from_environment(self, config_data=None, quiet=False):
         '''autheticate environment is the second effort to get a username
            and key to authenticate to the Kaggle API. The environment keys
            are equivalent to the kaggle.json file, but with "KAGGLE_" prefix
@@ -152,8 +152,8 @@ class KaggleApi(KaggleApi):
 
         for item in [self.CONFIG_NAME_USER, self.CONFIG_NAME_KEY]:
             if item not in config_data:
-                print('Error: Missing %s in configuration.' % item)
-                sys.exit(1)
+                raise ValueError('Error: Missing %s in configuration.' % item)
+         
 
         configuration = Configuration()
 
@@ -177,17 +177,17 @@ class KaggleApi(KaggleApi):
         except Exception as error:
 
             if 'Proxy' in type(error).__name__:
-                sys.exit('The specified proxy ' + 
+                raise ValueError('The specified proxy ' + 
                          config_data[self.CONFIG_NAME_PROXY] +
                          ' is not valid, please check your proxy settings')
             else:
-                sys.exit('Unauthorized: you must download an API key or export '
+                raise ValueError('Unauthorized: you must download an API key or export '
                          'credentials to the environment. Please see\n ' +
                          'https://github.com/Kaggle/kaggle-api#api-credentials '
                           + 'for instructions.')
 
 
-    def _authenticate_config(self, quiet=False):
+    def _authenticate_config(self, config_data, quiet=False):
         '''autheticate config is the first effort to get a username
            and key to authenticate to the Kaggle API. Since we can get the
            username and password from the environment, it's not required.
@@ -224,7 +224,7 @@ class KaggleApi(KaggleApi):
         return config_data
 
   
-    def _read_config(self):
+    def _read_config_file(self):
         '''read in the configuration file, a json file defined at self.confi'''
         
         try:
@@ -249,11 +249,8 @@ class KaggleApi(KaggleApi):
            config value, and then writing back
         '''
 
-        config_data = self._read_config()
+        config_data = self._read_config_file()
    
-        # If defined by client, set and save!
-        self._write_config(config_data)
-
         if value is not None:
 
             # Update the config file with the value
@@ -262,6 +259,9 @@ class KaggleApi(KaggleApi):
             # Update the instance with the value
             self.config_values[name] = value
 
+            # If defined by client, set and save!
+            self._write_config(config_data)
+
             if not quiet:
                 self.print_config_value(name, separator=' is now set to: ')
 
@@ -269,7 +269,7 @@ class KaggleApi(KaggleApi):
     def unset_config_value(self, name, quiet=False):
         '''unset a configuration value'''
 
-        config_data = self._read_config()
+        config_data = self._read_config_file()
 
         # Remove it, if exists, both from loaded file and client
 

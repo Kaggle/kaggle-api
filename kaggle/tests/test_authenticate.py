@@ -1,5 +1,7 @@
 from kaggle.api.kaggle_api_extended import KaggleApi
 
+# python -m unittest tests.test_authenticate
+
 import os  
 import unittest
 
@@ -14,21 +16,25 @@ class TestAuthenticate(unittest.TestCase):
     # Environment
 
     def test_environment_variables(self):
-        print('testing initialization with environment variables')
-        os.putenv('KAGGLE_USER','dinosaur')
-        os.putenv('KAGGLE_KEY','xxxxxxxxxxxx')
+        os.environ['KAGGLE_USERNAME'] = 'dinosaur'
+        os.environ['KAGGLE_KEY'] = 'xxxxxxxxxxxx'
         api = KaggleApi()
-        
+
+        # We haven't authenticated yet
+        self.assertTrue("key" not in api.config_values)
+        self.assertTrue("username" not in api.config_values)
+        api.authenticate()
+
+        # Should be set from the environment
+        self.assertEqual(api.config_values['key'], 'xxxxxxxxxxxx')
+        self.assertEqual(api.config_values['username'], 'dinosaur')
+
     # Configuration Actions
 
     def test_config_actions(self):
-        print('testing default config directory is called .kaggle')
         api = KaggleApi()
 
-        assert(api.get_config_dir().endswith('.kaggle'))
-        self.assertEqual(api.get_config_dir(), api.config_dir)
-
-        print('testing that asking for non-existent value returns none')
+        self.assertTrue(api.config_dir.endswith('.kaggle'))
         self.assertEqual(api.get_config_value('doesntexist'), None)
 
  

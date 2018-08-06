@@ -100,16 +100,16 @@ class KaggleApi(KaggleApi):
 
         # Step 1: read in configuration file, if it exists
         if os.path.exists(self.config):
-            config_data = self._auth_from_config(config_data)
+            config_data = self.read_config_file(config_data)
 
         # Step 2:, get username/password from environment
-        config_data = self._auth_from_environment(config_data)
+        config_data = self.read_config_environment(config_data)
 
         # Step 3: load into configuration!
         self._load_config(config_data)
 
 
-    def _auth_from_environment(self, config_data={}, quiet=False):
+    def read_config_environment(self, config_data={}, quiet=False):
         '''autheticate environment is the second effort to get a username
            and key to authenticate to the Kaggle API. The environment keys
            are equivalent to the kaggle.json file, but with "KAGGLE_" prefix
@@ -185,7 +185,7 @@ class KaggleApi(KaggleApi):
                           + 'for instructions.')
 
 
-    def _auth_from_config(self, config_data, quiet=False):
+    def read_config_file(self, config_data, quiet=False):
         '''autheticate config is the first effort to get a username
            and key to authenticate to the Kaggle API. Since we can get the
            username and password from the environment, it's not required.

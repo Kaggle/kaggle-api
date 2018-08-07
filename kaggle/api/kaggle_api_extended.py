@@ -109,7 +109,7 @@ class KaggleApi(KaggleApi):
         self._load_config(config_data)
 
     def read_config_environment(self, config_data={}, quiet=False):
-        '''autheticate environment is the second effort to get a username
+        '''authenticate environment is the second effort to get a username
            and key to authenticate to the Kaggle API. The environment keys
            are equivalent to the kaggle.json file, but with "KAGGLE_" prefix
            to define a unique namespace.
@@ -184,7 +184,7 @@ class KaggleApi(KaggleApi):
                     'for instructions.')
 
     def read_config_file(self, config_data, quiet=False):
-        '''autheticate config is the first effort to get a username
+        '''read_config_file is the first effort to get a username
            and key to authenticate to the Kaggle API. Since we can get the
            username and password from the environment, it's not required.
 
@@ -241,6 +241,12 @@ class KaggleApi(KaggleApi):
         '''a client helper function to set a configuration value, meaning
            reading in the configuration file (if it exists), saving a new
            config value, and then writing back
+
+           Parameters
+           ==========
+           name: the name of the value to set (key in dictionary)
+           value: the value to set at the key
+           quiet: disable verbose output if True (default is False)
         '''
 
         config_data = self._read_config_file()
@@ -260,7 +266,13 @@ class KaggleApi(KaggleApi):
                 self.print_config_value(name, separator=' is now set to: ')
 
     def unset_config_value(self, name, quiet=False):
-        '''unset a configuration value'''
+        '''unset a configuration value
+
+           Parameters
+           ==========
+           name: the name of the value to unset (remove key in dictionary)
+           quiet: disable verbose output if True (default is False)
+        '''
 
         config_data = self._read_config_file()
 
@@ -286,7 +298,12 @@ class KaggleApi(KaggleApi):
             return self.config_values[name]
 
     def get_default_download_dir(self, *subdirs):
-        '''get the path configuration value, otherwise return default.
+        ''' Get the download path for a file. If not defined, return default 
+            from config.
+            
+            Parameters
+            ==========
+            subdirs: a single (or list of) subfolders under the basepath
         '''
         # Look up value for key "path" in the config
         path = self.get_config_value(self.CONFIG_NAME_PATH)
@@ -329,6 +346,19 @@ class KaggleApi(KaggleApi):
                           sort_by=None,
                           page=1,
                           search=None):
+        ''' make call to list competitions, format the response, and return
+            a list of Competition instances
+           
+            Parameters
+            ==========
+           
+            page: the page to return (default is 1)
+            search: a search term to use (default is empty string)
+            sort_by: how to sort the result, see valid_sort_by for options
+            category: category to filter result to
+            group: group to filter result to
+        '''
+
         valid_groups = ['general', 'entered', 'inClass']
         if group and group not in valid_groups:
             raise ValueError('Invalid group specified. Valid options are ' +
@@ -366,6 +396,14 @@ class KaggleApi(KaggleApi):
                               page=1,
                               search=None,
                               csv_display=False):
+        ''' a wrapper for competitions_list for the client. Additional
+            parameters are listed here not present in the competitions_list
+        
+            Parameters
+            ==========
+            csv_display: if True, print comma separated values
+
+        '''
         competitions = self.competitions_list(
             group=group,
             category=category,
@@ -385,6 +423,16 @@ class KaggleApi(KaggleApi):
             print('No competitions found')
 
     def competition_submit(self, file_name, message, competition, quiet=False):
+        ''' submit a competition!
+      
+            Parameters
+            ==========
+            file_name: the competition metadata file 
+            message: the submission description
+            competition: the competition name
+            quiet: suppress verbose output (default is False)           
+
+        '''
         if competition is None:
             competition = self.get_config_value(self.CONFIG_NAME_COMPETITION)
             if competition is not None and not quiet:
@@ -420,6 +468,10 @@ class KaggleApi(KaggleApi):
                                competition,
                                competition_opt=None,
                                quiet=False):
+
+        '''submit a competition using the client. Arguments are same as for
+           competition_submit
+        '''
         competition = competition or competition_opt
         try:
             submit_result = self.competition_submit(file_name, message,
@@ -435,6 +487,12 @@ class KaggleApi(KaggleApi):
         return submit_result
 
     def competition_submissions(self, competition):
+        ''' get the list of Submission for a particular competition
+           
+            Parameters
+            ==========
+            competition: the name of the competition
+        '''
         submissions_result = self.process_response(
             self.competitions_submissions_list_with_http_info(id=competition))
         return [Submission(s) for s in submissions_result]
@@ -444,6 +502,16 @@ class KaggleApi(KaggleApi):
                                     competition_opt=None,
                                     csv_display=False,
                                     quiet=False):
+        ''' wrapper to competition_submission, will return either json or csv
+            to the user. Additional parameters are listed below, see
+            competition_submissions for rest.
+            
+            Parameters
+            ==========
+            competition: the name of the competition. If None, look to config
+            csv_display: if True, print comma separated values
+           
+        '''
         competition = competition or competition_opt
         if competition is None:
             competition = self.get_config_value(self.CONFIG_NAME_COMPETITION)
@@ -467,6 +535,12 @@ class KaggleApi(KaggleApi):
                 print('No submissions found')
 
     def competition_list_files(self, competition):
+        '''list files for competition
+
+            Parameters
+            ==========
+            competition: the name of the competition
+        '''
         competition_list_files_result = self.process_response(
             self.competitions_data_list_files_with_http_info(id=competition))
         return [File(f) for f in competition_list_files_result]
@@ -476,6 +550,13 @@ class KaggleApi(KaggleApi):
                                    competition_opt=None,
                                    csv_display=False,
                                    quiet=False):
+        ''' List files for a competition, if it exists
+            
+            Parameters
+            ==========
+            competition: the name of the competition. If None, look to config
+            csv_display: if True, print comma separated values
+        '''
         competition = competition or competition_opt
         if competition is None:
             competition = self.get_config_value(self.CONFIG_NAME_COMPETITION)
@@ -501,6 +582,18 @@ class KaggleApi(KaggleApi):
                                   path=None,
                                   force=False,
                                   quiet=False):
+        ''' download a competition file to a designated location, or use
+            a default location
+            
+            Paramters
+            =========
+            competition: the name of the competition
+            file_name: the configuration file name
+            path: a path to download the file to
+            force: force the download if the file already exists (default False)
+            quiet: suppress verbose output (default is False)
+          
+        '''
         if path is None:
             effective_path = self.get_default_download_dir(
                 'competitions', competition)
@@ -521,6 +614,18 @@ class KaggleApi(KaggleApi):
                                    path=None,
                                    force=False,
                                    quiet=True):
+        ''' a wrapper to competition_download_file to download all competition
+            files.
+            
+            Parameters
+            =========
+            competition: the name of the competition
+            file_name: the configuration file name
+            path: a path to download the file to
+            force: force the download if the file already exists (default False)
+            quiet: suppress verbose output (default is False)
+
+        '''
         files = self.competition_list_files(competition)
         if not files:
             print('This competition does not have any available data files')
@@ -535,6 +640,16 @@ class KaggleApi(KaggleApi):
                                  path=None,
                                  force=False,
                                  quiet=False):
+        ''' a wrapper to competition_download_files, but first will parse input
+            from API client. Additional parameters are listed here, see 
+            competition_download for remaining.
+            
+            Parameters
+            =========
+            competition: the name of the competition
+            file_name: the configuration file name
+            path: a path to download the file to
+        '''
         competition = competition or competition_opt
         if competition is None:
             competition = self.get_config_value(self.CONFIG_NAME_COMPETITION)
@@ -552,6 +667,14 @@ class KaggleApi(KaggleApi):
                                                force, quiet)
 
     def competition_leaderboard_download(self, competition, path, quiet=True):
+        ''' Download competition leaderboards
+ 
+            Parameters
+            =========
+            competition: the name of the competition
+            file_name: the configuration file name
+            path: a path to download the file to
+        '''
         response = self.process_response(
             self.competition_download_leaderboard_with_http_info(
                 competition, _preload_content=False))
@@ -567,6 +690,12 @@ class KaggleApi(KaggleApi):
         self.download_file(response, outfile, quiet)
 
     def competition_leaderboard_view(self, competition):
+        ''' view a leaderboard based on a competition name
+ 
+            Parameters
+            ==========
+            competition: the competition name to view leadboard for
+        '''
         result = self.process_response(
             self.competition_view_leaderboard_with_http_info(competition))
         return [LeaderboardEntry(e) for e in result['submissions']]
@@ -579,6 +708,16 @@ class KaggleApi(KaggleApi):
                                     download=False,
                                     csv_display=False,
                                     quiet=False):
+        ''' a wrapper for competition_leaderbord_view that will print the
+            results as a table or comma separated values
+            
+            Parameters
+            ==========
+            competition: the competition name to view leadboard for
+            path: a path to download to, if download is True
+            view: if True, show the results in the terminal as csv or table
+            csv_display: if True, print comma separated values instead of table
+        '''
         competition = competition or competition_opt
         if not view and not download:
             raise ValueError('Either --show or --download must be specified')
@@ -615,6 +754,13 @@ class KaggleApi(KaggleApi):
                      user=None,
                      mine=False,
                      page=1):
+        ''' return a list of datasets!
+            
+            Parameters
+            ==========
+            page: the page to return (default is 1)
+            search: a search term to use (default is empty string)
+        '''
         valid_sort_bys = ['hottest', 'votes', 'updated', 'active', 'published']
         if sort_by and sort_by not in valid_sort_bys:
             raise ValueError('Invalid sort by specified. Valid options are ' +
@@ -670,6 +816,14 @@ class KaggleApi(KaggleApi):
                          mine=False,
                          page=1,
                          csv_display=False):
+        ''' a wrapper to datasets_list for the client. Additional parameters
+            are described here, see dataset_list for others.
+            
+            Parameters
+            ==========
+            page: the page to return (default is 1)
+            search: a search term to use (default is empty string)
+        '''
         datasets = self.dataset_list(sort_by, size, file_type, license_name,
                                      tag_ids, search, user, mine, page)
         fields = ['ref', 'title', 'size', 'lastUpdated', 'downloadCount']
@@ -682,6 +836,13 @@ class KaggleApi(KaggleApi):
             print('No datasets found')
 
     def dataset_view(self, dataset):
+        ''' view metadata for a dataset.
+          
+            Parameters
+            ==========
+            dataset: the string identified of the dataset
+                     should be in format [owner]/[dataset-name]   
+        '''
         if '/' in dataset:
             self.validate_dataset_string(dataset)
             dataset_urls = dataset.split('/')
@@ -742,6 +903,13 @@ class KaggleApi(KaggleApi):
         print('Downloaded metadata to ' + meta_file)
 
     def dataset_list_files(self, dataset):
+        ''' list files for a dataset
+
+            Parameters     
+            ==========
+            dataset: the string identified of the dataset
+                     should be in format [owner]/[dataset-name]   
+        '''
         if dataset is None:
             raise ValueError('A dataset must be specified')
         if '/' in dataset:
@@ -761,6 +929,15 @@ class KaggleApi(KaggleApi):
                                dataset,
                                dataset_opt=None,
                                csv_display=False):
+        ''' a wrapper to dataset_list_files for the client 
+            (list files for a dataset)
+
+            Parameters
+            ==========
+            csv_display: if True, print comma separated values instead of table
+            dataset: the string identified of the dataset
+                     should be in format [owner]/[dataset-name]   
+        '''
         dataset = dataset or dataset_opt
         result = self.dataset_list_files(dataset)
         if result:
@@ -801,6 +978,16 @@ class KaggleApi(KaggleApi):
                               path=None,
                               force=False,
                               quiet=True):
+        '''download a single file for a dataset
+           
+           Parameters
+           ==========
+           dataset: the string identified of the dataset
+                    should be in format [owner]/[dataset-name]   
+           file_name: the dataset configuration file
+           path: if defined, download to this location
+
+        '''
         if '/' in dataset:
             self.validate_dataset_string(dataset)
             dataset_urls = dataset.split('/')
@@ -835,6 +1022,15 @@ class KaggleApi(KaggleApi):
                                path=None,
                                force=False,
                                quiet=True):
+        ''' download all files for a dataset
+         
+            Parameters
+            ==========
+            dataset: the string identified of the dataset
+                     should be in format [owner]/[dataset-name]   
+            path: the path to download the dataset to
+         
+        '''
         if dataset is None:
             raise ValueError('A dataset must be specified')
         if '/' in dataset:
@@ -882,6 +1078,15 @@ class KaggleApi(KaggleApi):
                              path=None,
                              force=False,
                              quiet=False):
+        ''' client wrapper for dataset_download_files to download dataset files
+         
+            Parameters
+            ==========
+            dataset: the string identified of the dataset
+                     should be in format [owner]/[dataset-name]   
+            path: the path to download the dataset to
+         
+        '''
         dataset = dataset or dataset_opt
         if file_name is None:
             self.dataset_download_files(dataset, path, force, quiet)
@@ -889,6 +1094,13 @@ class KaggleApi(KaggleApi):
             self.dataset_download_file(dataset, file_name, path, force, quiet)
 
     def dataset_upload_file(self, path, quiet):
+        ''' upload a dataset file
+        
+            Parameters
+            ==========
+            path: the complete path to upload
+
+        '''
         file_name = os.path.basename(path)
         content_length = os.path.getsize(path)
         last_modified_date_utc = int(os.path.getmtime(path))
@@ -909,6 +1121,16 @@ class KaggleApi(KaggleApi):
                                quiet=False,
                                convert_to_csv=True,
                                delete_old_versions=False):
+        ''' create a version of a dataset
+        
+            Parameters
+            ==========
+            folder: the folder with the dataset configuration / data files
+            version_notes: notes to add for the version
+            convert_to_csv: on upload, if data should be converted to csv
+            delete_old_versions: if True, do that (default False)
+
+        '''
         if not os.path.isdir(folder):
             raise ValueError('Invalid folder: ' + folder)
 
@@ -970,6 +1192,17 @@ class KaggleApi(KaggleApi):
                                    quiet=False,
                                    convert_to_csv=True,
                                    delete_old_versions=False):
+        ''' client wrapper for creating a version of a dataset
+
+            Parameters
+            ==========
+            folder: the folder with the dataset configuration / data files
+            version_notes: notes to add for the version
+            convert_to_csv: on upload, if data should be converted to csv
+            delete_old_versions: if True, do that (default False)
+
+        '''
+
         result = self.dataset_create_version(
             folder,
             version_notes,
@@ -989,6 +1222,12 @@ class KaggleApi(KaggleApi):
             print('Dataset version creation error: ' + result.error)
 
     def dataset_initialize(self, folder):
+        ''' initialize a folder with a a dataset configuration (metadata) file
+            
+            Parameters
+            ==========
+            folder: the folder to initialize the metadata file in
+        '''
         if not os.path.isdir(folder):
             raise ValueError('Invalid folder: ' + folder)
 
@@ -1019,6 +1258,16 @@ class KaggleApi(KaggleApi):
                            public=False,
                            quiet=False,
                            convert_to_csv=True):
+        ''' create a new dataset, meaning the same as creating a version but
+            with extra metadata like license and user/owner.
+
+            Parameters
+            ==========
+            folder: the folder to initialize the metadata file in
+            public: should the dataset be public?
+            convert_to_csv: if True, convert data to comma separated value
+        '''
+
         if not os.path.isdir(folder):
             raise ValueError('Invalid folder: ' + folder)
 
@@ -1088,6 +1337,14 @@ class KaggleApi(KaggleApi):
                                public=False,
                                quiet=False,
                                convert_to_csv=True):
+        ''' client wrapper for creating a new dataset
+
+            Parameters
+            ==========
+            folder: the folder to initialize the metadata file in
+            public: should the dataset be public?
+            convert_to_csv: if True, convert data to comma separated value
+        '''
         if folder is None:
             folder = os.getcwd()
         result = self.dataset_create_new(folder, public, quiet, convert_to_csv)
@@ -1105,6 +1362,16 @@ class KaggleApi(KaggleApi):
             print('Dataset creation error: ' + result.error)
 
     def download_file(self, response, outfile, quiet=True, chunk_size=1048576):
+        ''' download a file to an output file based on a chunk size
+ 
+            Parameters
+            ==========
+            response: the response to download
+            outfile: the output file to download to
+            chunk_size: the size of the chunk to strema
+
+        '''
+
         outpath = os.path.dirname(outfile)
         if not os.path.exists(outpath):
             os.makedirs(outpath)
@@ -1607,6 +1874,14 @@ class KaggleApi(KaggleApi):
             print('%s has status "%s"' % (kernel, status))
 
     def download_needed(self, response, outfile, quiet=True):
+        ''' determine if a download is needed based on timestamp. Return True
+            if needed (remote is newer) or False if local is newest.
+
+            Parameters
+            ==========
+            response: the response from the API
+            outfile: the output file to write to
+        '''
         try:
             remote_date = datetime.strptime(response.headers['Last-Modified'],
                                             '%a, %d %b %Y %X %Z')
@@ -1624,6 +1899,13 @@ class KaggleApi(KaggleApi):
         return True
 
     def print_table(self, items, fields):
+        ''' print a table of items, for a set of fields defined
+   
+            Parameters
+            ==========
+            items: a list of items to print
+            fields: a list of fields to select from items
+         '''
         formats = []
         borders = []
         for f in fields:
@@ -1642,6 +1924,13 @@ class KaggleApi(KaggleApi):
             print(row_format.format(*i_fields))
 
     def print_csv(self, items, fields):
+        ''' print a set of fields in a set of items using a csv.writer
+            
+            Parameters
+            ==========
+            items: a list of items to print
+            fields: a list of fields to select from items
+        ''' 
         writer = csv.writer(sys.stdout)
         writer.writerow(fields)
         for i in items:
@@ -1675,6 +1964,15 @@ class KaggleApi(KaggleApi):
         return meta_file
 
     def process_response(self, result):
+        ''' process a response from the API. We check the API version against
+            the client's to see if it's old, and give them a warning (once)
+  
+            Parameters
+            ==========
+            result: the result from the API
+
+        '''
+
         if len(result) == 3:
             data = result[0]
             headers = result[2]
@@ -1715,6 +2013,14 @@ class KaggleApi(KaggleApi):
         return True
 
     def upload_files(self, request, resources, folder, quiet):
+        ''' upload files in a folder
+
+            Parameters
+            ==========
+            request: the prepared request
+            resources: the files to upload
+            folder: the folder to upload from
+        '''
         for file_name in os.listdir(folder):
             if (file_name == self.DATASET_METADATA_FILE
                     or file_name == self.OLD_DATASET_METADATA_FILE
@@ -1760,6 +2066,13 @@ class KaggleApi(KaggleApi):
                     print('Skipping: ' + file_name)
 
     def process_column(self, column):
+        '''process a column, check for the type, and return the processed
+           column
+
+           Parameters
+           ==========
+           column: a list of values in a column to be processed
+        '''
         processed_column = DatasetColumn(
             name=self.get_or_fail(column, 'name'),
             description=self.get_or_default(column, 'description', ''))

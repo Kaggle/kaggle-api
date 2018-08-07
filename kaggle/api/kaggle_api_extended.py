@@ -59,7 +59,7 @@ except NameError:
 
 
 class KaggleApi(KaggleApi):
-    __version__ = '1.4.5'
+    __version__ = '1.4.6'
 
     CONFIG_NAME_PROXY = 'proxy'
     CONFIG_NAME_COMPETITION = 'competition'
@@ -108,7 +108,6 @@ class KaggleApi(KaggleApi):
         # Step 3: load into configuration!
         self._load_config(config_data)
 
-
     def read_config_environment(self, config_data={}, quiet=False):
         '''autheticate environment is the second effort to get a username
            and key to authenticate to the Kaggle API. The environment keys
@@ -126,13 +125,12 @@ class KaggleApi(KaggleApi):
 
         # Add all variables that start with KAGGLE_ to config data
 
-        for key,val in os.environ.items():
+        for key, val in os.environ.items():
             if key.startswith('KAGGLE_'):
                 config_key = key.replace('KAGGLE_', '', 1).lower()
                 config_data[config_key] = val
 
         return config_data
-
 
 ## Configuration
 
@@ -151,7 +149,6 @@ class KaggleApi(KaggleApi):
         for item in [self.CONFIG_NAME_USER, self.CONFIG_NAME_KEY]:
             if item not in config_data:
                 raise ValueError('Error: Missing %s in configuration.' % item)
-         
 
         configuration = Configuration()
 
@@ -175,15 +172,16 @@ class KaggleApi(KaggleApi):
         except Exception as error:
 
             if 'Proxy' in type(error).__name__:
-                raise ValueError('The specified proxy ' + 
-                         config_data[self.CONFIG_NAME_PROXY] +
-                         ' is not valid, please check your proxy settings')
+                raise ValueError(
+                    'The specified proxy ' +
+                    config_data[self.CONFIG_NAME_PROXY] +
+                    ' is not valid, please check your proxy settings')
             else:
-                raise ValueError('Unauthorized: you must download an API key or export '
-                         'credentials to the environment. Please see\n ' +
-                         'https://github.com/Kaggle/kaggle-api#api-credentials '
-                          + 'for instructions.')
-
+                raise ValueError(
+                    'Unauthorized: you must download an API key or export '
+                    'credentials to the environment. Please see\n ' +
+                    'https://github.com/Kaggle/kaggle-api#api-credentials ' +
+                    'for instructions.')
 
     def read_config_file(self, config_data, quiet=False):
         '''autheticate config is the first effort to get a username
@@ -204,9 +202,10 @@ class KaggleApi(KaggleApi):
                 if os.name != 'nt':
                     permissions = os.stat(self.config).st_mode
                     if (permissions & 4) or (permissions & 32):
-                        print('Warning: Your Kaggle API key is readable by other' 
-                              'users on this system! To fix this, you can run' + 
-                              '\'chmod 600 {}\''.format(self.config))
+                        print(
+                            'Warning: Your Kaggle API key is readable by other'
+                            'users on this system! To fix this, you can run' +
+                            '\'chmod 600 {}\''.format(self.config))
 
                 with open(self.config, 'r') as f:
                     config_data = json.load(f)
@@ -221,10 +220,9 @@ class KaggleApi(KaggleApi):
 
         return config_data
 
-  
     def _read_config_file(self):
         '''read in the configuration file, a json file defined at self.confi'''
-        
+
         try:
             with open(self.config, 'r') as f:
                 config_data = json.load(f)
@@ -233,13 +231,11 @@ class KaggleApi(KaggleApi):
 
         return config_data
 
-
     def _write_config_file(self, config_data, indent=2):
         '''write config data to file.
         '''
         with open(self.config, 'w') as f:
             json.dump(config_data, f, indent=indent)
-
 
     def set_config_value(self, name, value, quiet=False):
         '''a client helper function to set a configuration value, meaning
@@ -248,7 +244,7 @@ class KaggleApi(KaggleApi):
         '''
 
         config_data = self._read_config_file()
-   
+
         if value is not None:
 
             # Update the config file with the value
@@ -262,7 +258,6 @@ class KaggleApi(KaggleApi):
 
             if not quiet:
                 self.print_config_value(name, separator=' is now set to: ')
-
 
     def unset_config_value(self, name, quiet=False):
         '''unset a configuration value'''
@@ -324,6 +319,7 @@ class KaggleApi(KaggleApi):
         self.print_config_value(self.CONFIG_NAME_PATH, prefix='- ')
         self.print_config_value(self.CONFIG_NAME_PROXY, prefix='- ')
         self.print_config_value(self.CONFIG_NAME_COMPETITION, prefix='- ')
+
 
 ## Competitions
 

@@ -1,6 +1,10 @@
 Changelog
 ====
 
+#### 1.4.6
+Release date: 8/7/18
+* Allow setting config values through environmental variables
+
 #### 1.4.5
 Release date: 8/1/18
 * Add error if dataset metadata repeats files

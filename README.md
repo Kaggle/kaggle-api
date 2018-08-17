@@ -27,8 +27,8 @@ For your security, ensure that other users of your computer do not have read acc
 You can also choose to export your Kaggle username and token to the environment:
 
 ```bash
-export KAGGLE_USER=datadinosaur
-export KAGGLE_TOKEN=xxxxxxxxxxxxxx
+export KAGGLE_USERNAME=datadinosaur
+export KAGGLE_KEY=xxxxxxxxxxxxxx
 ```
 In addition, you can export any other configuration value that normally would be in
 the `$HOME/.kaggle/kaggle.json` in the format 'KAGGLE_<VARIABLE>' (note uppercase).  

@@ -256,7 +256,8 @@ Example:
 ##### Download dataset files
 
 ```
-usage: kaggle datasets download [-h] [-f FILE_NAME] [-p PATH] [-w] [-o] [-q]
+usage: kaggle datasets download [-h] [-f FILE_NAME] [-p PATH] [-w] [--unzip]
+                                [-o] [-q]
                                 [dataset]
 
 optional arguments:
@@ -267,6 +268,7 @@ optional arguments:
                         (use "kaggle datasets files -d <dataset>" to show options)
   -p PATH, --path PATH  Folder where file(s) will be downloaded, defaults to current working directory
   -w, --wp              Download files to current working path
+  --unzip               Unzip the downloaded file. Will delete the zip file when completed.
   -o, --force           Skip check whether local version of file is up to date, force file download
   -q, --quiet           Suppress printing information about the upload/download progress
 ```
@@ -277,6 +279,8 @@ Examples:
 `kaggle datasets download zillow/zecon`
 
 `kaggle datasets download zillow/zecon -f State_time_series.csv`
+
+Please note that BigQuery datasets cannot be downloaded.
 
 ##### Initialize metadata file for dataset creation
 

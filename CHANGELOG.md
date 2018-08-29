@@ -1,6 +1,21 @@
 Changelog
 ====
 
+#### 1.4.7.1
+Release date: 8/28/18
+* Fix host
+
+#### 1.4.7
+Release date: 8/28/18
+* Make dataset version `-p` argument actually optinal
+* Don't require the `resources` field when updating a dataset
+* Don't automatically unzip datasets
+* Add an unzip option for dataset downloads
+* Add validation for kernel title and slug length
+* Give a warning if kernel title does not resolve to the specified slug
+* Show kernel version number after pushing
+* Respect `code_file` value in kernel metadata when pulling kernels
+
 #### 1.4.6
 Release date: 8/7/18
 * Allow setting config values through environmental variables

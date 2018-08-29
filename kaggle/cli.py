@@ -451,6 +451,8 @@ def parse_datasets(subparsers):
         required=False,
         help=Help.param_wp)
     parser_datasets_download_optional.add_argument(
+        '--unzip', dest='unzip', action='store_true', help=Help.param_unzip)
+    parser_datasets_download_optional.add_argument(
         '-o',
         '--force',
         dest='force',
@@ -944,6 +946,8 @@ class Help(object):
         'max is 100')
     param_search = 'Term(s) to search for'
     param_mine = 'Display only my items'
+    param_unzip = (
+        'Unzip the downloaded file. Will delete the zip file when completed.')
 
     # Competitions params
     param_competition = (

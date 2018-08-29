@@ -19,7 +19,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='kaggle',
-    version='1.4.6',
+    version='1.4.7.1',
     description='Kaggle API',
     long_description=
     ('Official API for https://www.kaggle.com, accessible using a command line '
@@ -40,7 +40,8 @@ setup(
         'certifi',
         'python-dateutil',
         'requests',
-        'tqdm'
+        'tqdm',
+        'python-slugify'
     ],
     packages=find_packages(),
     license='Apache 2.0')

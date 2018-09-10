@@ -1,12 +1,12 @@
 # Kaggle API
 
-Official API for https://www.kaggle.com, accessible using a command line tool implemented in Python.
+Official API for https://www.kaggle.com, accessible using a command line tool implemented in Python 3.  
 
 Beta release - Kaggle reserves the right to modify the API functionality currently offered.
 
 ## Installation
 
-Ensure you have Python and the package manager `pip` installed.
+Ensure you have Python 3 and the package manager `pip` installed.
 
 Run the following command to access the Kaggle API using the command line:
 
@@ -15,6 +15,8 @@ Run the following command to access the Kaggle API using the command line:
 You can now use the `kaggle` command as shown in the examples below.
 
 If you run into a `kaggle: command not found` error, ensure that your python binaries are on your path.  You can see where `kaggle` is installed by doing `pip uninstall kaggle` and seeing where the binary is.  For a local user install on Linux, the default location is `~/.local/bin`.  On Windows, the default location is `$PYTHON_HOME/Scripts`.
+
+IMPORTANT: We do not offer Python 2 support.  Please ensure that you are using Python 3 before reporting any issues.
 
 ## API credentials
 

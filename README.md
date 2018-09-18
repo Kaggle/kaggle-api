@@ -94,11 +94,12 @@ Example:
 ##### List competition files
 
 ```
-usage: kaggle competitions files [-h] [-v] [-q] [competition]
+usage: kaggle competitions files [-h] [-v] [-q] [-c COMPETITION]
 
 optional arguments:
   -h, --help   show this help message and exit
-  competition  Competition URL suffix (use "kaggle competitions list" to show options)
+  -с COMPETITION, --competition COMPETITION   
+               Competition URL suffix (use "kaggle competitions list" to show options)
                If empty, the default competition will be used (use "kaggle config set competition")"
   -v, --csv    Print results in CSV format (if not set print in table format)
   -q, --quiet  Suppress printing information about the upload/download progress
@@ -106,18 +107,19 @@ optional arguments:
 
 Example:
 
-`kaggle competitions files favorita-grocery-sales-forecasting`
+`kaggle competitions files -c favorita-grocery-sales-forecasting`
 
 ##### Download competition files
 
 ```
 usage: kaggle competitions download [-h] [-f FILE_NAME] [-p PATH] [-w] [-o]
                                     [-q]
-                                    [competition]
+                                    [-c COMPETITION]
 
 optional arguments:
   -h, --help            show this help message and exit
-  competition           Competition URL suffix (use "kaggle competitions list" to show options)
+  -с COMPETITION, --competition COMPETITION
+                        Competition URL suffix (use "kaggle competitions list" to show options)
                         If empty, the default competition will be used (use "kaggle config set competition")"
   -f FILE_NAME, --file FILE_NAME
                         File name, all files downloaded if not provided
@@ -130,9 +132,9 @@ optional arguments:
 
 Examples:
 
-`kaggle competitions download favorita-grocery-sales-forecasting`
+`kaggle competitions download -c favorita-grocery-sales-forecasting`
 
-`kaggle competitions download favorita-grocery-sales-forecasting -f test.csv.7z`
+`kaggle competitions download -c favorita-grocery-sales-forecasting -f test.csv.7z`
 
 Note: you will need to accept competition rules at `https://www.kaggle.com/c/<competition-name>/rules`.
 
@@ -140,7 +142,7 @@ Note: you will need to accept competition rules at `https://www.kaggle.com/c/<co
 
 ```
 usage: kaggle competitions submit [-h] -f FILE_NAME -m MESSAGE [-q]
-                                  [competition]
+                                  [-c COMPETITION]
 
 required arguments:
   -f FILE_NAME, --file FILE_NAME
@@ -150,25 +152,27 @@ required arguments:
 
 optional arguments:
   -h, --help            show this help message and exit
-  competition           Competition URL suffix (use "kaggle competitions list" to show options)
+  -с COMPETITION, --competition COMPETITION
+                        Competition URL suffix (use "kaggle competitions list" to show options)
                         If empty, the default competition will be used (use "kaggle config set competition")"
   -q, --quiet           Suppress printing information about the upload/download progress
 ```
 
 Example: 
 
-`kaggle competitions submit favorita-grocery-sales-forecasting -f sample_submission_favorita.csv.7z -m "My submission message"`
+`kaggle competitions submit -c favorita-grocery-sales-forecasting -f sample_submission_favorita.csv.7z -m "My submission message"`
 
 Note: you will need to accept competition rules at `https://www.kaggle.com/c/<competition-name>/rules`.
 
 ##### List competition submissions
 
 ```
-usage: kaggle competitions submissions [-h] [-v] [-q] [competition]
+usage: kaggle competitions submissions [-h] [-v] [-q] [-c COMPETITION]
 
 optional arguments:
   -h, --help   show this help message and exit
-  competition  Competition URL suffix (use "kaggle competitions list" to show options)
+  -с COMPETITION, --competition COMPETITION
+               Competition URL suffix (use "kaggle competitions list" to show options)
                If empty, the default competition will be used (use "kaggle config set competition")"
   -v, --csv    Print results in CSV format (if not set print in table format)
   -q, --quiet  Suppress printing information about the upload/download progress
@@ -176,7 +180,7 @@ optional arguments:
  
 Example:
 
-`kaggle competitions submissions favorita-grocery-sales-forecasting`
+`kaggle competitions submissions -c favorita-grocery-sales-forecasting`
 
 Note: you will need to accept competition rules at `https://www.kaggle.com/c/<competition-name>/rules`.
 
@@ -184,11 +188,12 @@ Note: you will need to accept competition rules at `https://www.kaggle.com/c/<co
 
 ```
 usage: kaggle competitions leaderboard [-h] [-s] [-d] [-p PATH] [-v] [-q]
-                                       [competition]
+                                       [-c COMPETITION]
 
 optional arguments:
   -h, --help            show this help message and exit
-  competition           Competition URL suffix (use "kaggle competitions list" to show options)
+  -с COMPETITION, --competition COMPETITION
+                        Competition URL suffix (use "kaggle competitions list" to show options)
                         If empty, the default competition will be used (use "kaggle config set competition")"
   -s, --show            Show the top of the leaderboard
   -d, --download        Download entire leaderboard
@@ -199,7 +204,7 @@ optional arguments:
 
 Example:
 
-`kaggle competitions leaderboard favorita-grocery-sales-forecasting -s`
+`kaggle competitions leaderboard -c favorita-grocery-sales-forecasting -s`
 
 
 ### Datasets

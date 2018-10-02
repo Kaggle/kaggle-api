@@ -531,7 +531,7 @@ usage: kaggle config path [-h] [-p PATH]
 
 optional arguments:
   -h, --help            show this help message and exit
-  -p PATH, --path PATH  folder where file(s) will be downloaded, defaults to ~/.kaggle
+  -p PATH, --path PATH  folder where file(s) will be downloaded, defaults to current working directory
 ```
 
 Example:
@@ -563,7 +563,7 @@ required arguments:
   -v VALUE, --value VALUE
                         Value of the configuration parameter, valid values depending on name
                         - competition: Competition URL suffix (use "kaggle competitions list" to show options)
-                        - path: Folder where file(s) will be downloaded, defaults to ~/.kaggle
+                        - path: Folder where file(s) will be downloaded, defaults to current working directory
                         - proxy: Proxy for HTTP requests
 ```
 

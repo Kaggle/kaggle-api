@@ -103,7 +103,7 @@ class KaggleApi(KaggleApi):
         config_data = self.read_config_environment(config_data)
 
         # Step 2: if credentials were not in environment read in configuration file
-        if 'username' not in config_data or 'key' not in config_data:
+        if self.CONFIG_NAME_USER not in config_data or self.CONFIG_NAME_KEY not in config_data:
             if os.path.exists(self.config):
                 config_data = self.read_config_file(config_data)
             else:

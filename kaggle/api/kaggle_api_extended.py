@@ -99,12 +99,16 @@ class KaggleApi(KaggleApi):
 
         config_data = {}
 
-        # Step 1: read in configuration file, if it exists
-        if os.path.exists(self.config):
-            config_data = self.read_config_file(config_data)
-
-        # Step 2:, get username/password from environment
+        # Step 1: try getting username/password from environment
         config_data = self.read_config_environment(config_data)
+
+        # Step 2: if credentials were not in environment read in configuration file
+        if 'username' not in config_data or 'key' not in config_data:
+            if os.path.exists(self.config):
+                config_data = self.read_config_file(config_data)
+            else:
+                raise IOError('Could not find kaggle.json. Make sure it\'s located in {}.'
+                              ' Or use the environment method.'.format(self.config_dir))
 
         # Step 3: load into configuration!
         self._load_config(config_data)

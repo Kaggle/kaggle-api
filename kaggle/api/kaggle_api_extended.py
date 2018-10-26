@@ -1208,7 +1208,8 @@ class KaggleApi(KaggleApi):
                                version_notes,
                                quiet=False,
                                convert_to_csv=True,
-                               delete_old_versions=False):
+                               delete_old_versions=False,
+                               dir_mode='skip'):
         """ create a version of a dataset
 
             Parameters
@@ -1251,7 +1252,7 @@ class KaggleApi(KaggleApi):
             convert_to_csv=convert_to_csv,
             category_ids=keywords,
             delete_old_versions=delete_old_versions)
-        self.upload_files(request, resources, folder, quiet)
+        self.upload_files(request, resources, folder, quiet, dir_mode)
 
         if id_no:
             result = DatasetNewVersionResponse(
@@ -1280,7 +1281,8 @@ class KaggleApi(KaggleApi):
                                    version_notes,
                                    quiet=False,
                                    convert_to_csv=True,
-                                   delete_old_versions=False):
+                                   delete_old_versions=False,
+                                   dir_mode='skip'):
         """ client wrapper for creating a version of a dataset
              Parameters
             ==========
@@ -1296,7 +1298,8 @@ class KaggleApi(KaggleApi):
             version_notes,
             quiet=quiet,
             convert_to_csv=convert_to_csv,
-            delete_old_versions=delete_old_versions)
+            delete_old_versions=delete_old_versions,
+            dir_mode=dir_mode)
         if result.invalidTags:
             print(
                 ('The following are not valid tags and could not be added to '
@@ -1344,7 +1347,8 @@ class KaggleApi(KaggleApi):
                            folder,
                            public=False,
                            quiet=False,
-                           convert_to_csv=True):
+                           convert_to_csv=True,
+                           dir_mode='skip'):
         """ create a new dataset, meaning the same as creating a version but
             with extra metadata like license and user/owner.
              Parameters
@@ -1422,7 +1426,8 @@ class KaggleApi(KaggleApi):
                                folder=None,
                                public=False,
                                quiet=False,
-                               convert_to_csv=True):
+                               convert_to_csv=True,
+                               dir_mode='skip'):
         """ client wrapper for creating a new dataset
              Parameters
             ==========
@@ -1432,7 +1437,7 @@ class KaggleApi(KaggleApi):
             convert_to_csv: if True, convert data to comma separated value
         """
         folder = folder or os.getcwd()
-        result = self.dataset_create_new(folder, public, quiet, convert_to_csv)
+        result = self.dataset_create_new(folder, public, quiet, convert_to_csv, dir_mode)
         if result.invalidTags:
             print('The following are not valid tags and could not be added to '
                   'the dataset: ' + str(result.invalidTags))
@@ -2212,7 +2217,7 @@ class KaggleApi(KaggleApi):
 
         return True
 
-    def upload_files(self, request, resources, folder, quiet=False):
+    def upload_files(self, request, resources, folder, quiet=False, dir_mode='skip'):
         """ upload files in a folder
              Parameters
             ==========
@@ -2232,7 +2237,7 @@ class KaggleApi(KaggleApi):
                 exitcode = self._upload_file(file_name, full_path, quiet, request, resources)
                 if exitcode:
                     return
-            if os.path.isdir(full_path):
+            if os.path.isdir(full_path) and dir_mode == 'zip':
                 temp_dir = tempfile.mkdtemp()
                 try:
                     _, dir_name = os.path.split(full_path)

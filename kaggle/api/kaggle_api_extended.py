@@ -24,7 +24,9 @@ import os
 from os.path import expanduser
 from os.path import isfile
 import sys
+import shutil
 import zipfile
+import tempfile
 from ..api_client import ApiClient
 from kaggle.configuration import Configuration
 from .kaggle_api import KaggleApi
@@ -2209,39 +2211,55 @@ class KaggleApi(KaggleApi):
             if not quiet:
                 print('Starting upload for file ' + file_name)
             if os.path.isfile(full_path):
-                content_length = os.path.getsize(full_path)
-                token = self.dataset_upload_file(full_path, quiet)
-                if token is None:
-                    if not quiet:
-                        print('Upload unsuccessful: ' + file_name)
+                retval = self._upload_file(file_name, full_path, quiet, request, resources)
+                if retval:
                     return
-
-                if not quiet:
-                    print('Upload successful: ' + file_name + ' (' +
-                          File.get_size(content_length) + ')')
-
-                upload_file = DatasetUploadFile()
-                upload_file.token = token
-                if resources:
-                    for item in resources:
-                        if file_name == item.get('path'):
-                            upload_file.description = item.get('description')
-                            if 'schema' in item:
-                                fields = self.get_or_default(
-                                    item['schema'], 'fields', [])
-                                processed = []
-                                count = 0
-                                for field in fields:
-                                    processed.append(
-                                        self.process_column(field))
-                                    processed[count].order = count
-                                    count += 1
-                                upload_file.columns = processed
-
-                request.files.append(upload_file)
+            if os.path.isdir(full_path):
+                temp_dir = tempfile.mkdtemp()
+                try:
+                    _, dir_name = os.path.split(full_path)
+                    archive_path = shutil.make_archive(os.path.join(temp_dir, dir_name), "zip",
+                                                       full_path)
+                    _, archive_name = os.path.split(archive_path)
+                    retval = self._upload_file(archive_name, archive_path, quiet, request,
+                                               resources)
+                finally:
+                    shutil.rmtree(temp_dir)
+                if retval:
+                    return
             else:
                 if not quiet:
                     print('Skipping: ' + file_name)
+
+    def _upload_file(self, file_name, full_path, quiet, request, resources):
+        content_length = os.path.getsize(full_path)
+        token = self.dataset_upload_file(full_path, quiet)
+        if token is None:
+            if not quiet:
+                print('Upload unsuccessful: ' + file_name)
+            return True
+        if not quiet:
+            print('Upload successful: ' + file_name + ' (' +
+                  File.get_size(content_length) + ')')
+        upload_file = DatasetUploadFile()
+        upload_file.token = token
+        if resources:
+            for item in resources:
+                if file_name == item.get('path'):
+                    upload_file.description = item.get('description')
+                    if 'schema' in item:
+                        fields = self.get_or_default(
+                            item['schema'], 'fields', [])
+                        processed = []
+                        count = 0
+                        for field in fields:
+                            processed.append(
+                                self.process_column(field))
+                            processed[count].order = count
+                            count += 1
+                        upload_file.columns = processed
+        request.files.append(upload_file)
+        return False
 
     def process_column(self, column):
         """ process a column, check for the type, and return the processed

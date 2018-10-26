@@ -2229,8 +2229,8 @@ class KaggleApi(KaggleApi):
             full_path = os.path.join(folder, file_name)
 
             if os.path.isfile(full_path):
-                retval = self._upload_file(file_name, full_path, quiet, request, resources)
-                if retval:
+                exitcode = self._upload_file(file_name, full_path, quiet, request, resources)
+                if exitcode:
                     return
             if os.path.isdir(full_path):
                 temp_dir = tempfile.mkdtemp()
@@ -2239,17 +2239,28 @@ class KaggleApi(KaggleApi):
                     archive_path = shutil.make_archive(os.path.join(temp_dir, dir_name), "zip",
                                                        full_path)
                     _, archive_name = os.path.split(archive_path)
-                    retval = self._upload_file(archive_name, archive_path, quiet, request,
-                                               resources)
+                    exitcode = self._upload_file(archive_name, archive_path, quiet, request,
+                                                 resources)
                 finally:
                     shutil.rmtree(temp_dir)
-                if retval:
+                if exitcode:
                     return
             else:
                 if not quiet:
                     print('Skipping: ' + file_name)
 
     def _upload_file(self, file_name, full_path, quiet, request, resources):
+        """ Helper function to upload a single file
+            Parameters
+            ==========
+            file_name: name of the file to upload
+            full_path: path to the file to upload
+            request: the prepared request
+            resources: the files to upload
+            quiet: suppress verbose output
+            :return: True - upload unsuccessful; False - upload successful
+        """
+
         if not quiet:
             print('Starting upload for file ' + file_name)
 

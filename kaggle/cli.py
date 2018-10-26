@@ -499,6 +499,13 @@ def parse_datasets(subparsers):
         dest='convert_to_csv',
         action='store_false',
         help=Help.param_keep_tabular)
+    parser_datasets_create_optional.add_argument(
+        '-d',
+        '--dir-mode',
+        dest='dir_mode',
+        choices=['skip', 'zip'],
+        default='skip',
+        help=Help.param_dir_mode)
     parser_datasets_create._action_groups.append(
         parser_datasets_create_optional)
     parser_datasets_create.set_defaults(func=api.dataset_create_new_cli)
@@ -536,6 +543,13 @@ def parse_datasets(subparsers):
         dest='convert_to_csv',
         action='store_false',
         help=Help.param_keep_tabular)
+    parser_datasets_create_optional.add_argument(
+        '-d',
+        '--dir-mode',
+        dest='dir_mode',
+        choices=['skip', 'zip'],
+        default='skip',
+        help=Help.param_dir_mode)
     parser_datasets_version_optional.add_argument(
         '-d',
         '--delete-old-versions',
@@ -934,6 +948,8 @@ class Help(object):
     param_public = 'Create publicly (default is private)'
     param_keep_tabular = (
         'Do not convert tabular files to CSV (default is to convert)')
+    param_dir_mode = (
+        'What to do with directories: "skip" - ignore; "zip" - compress and upload')
     param_delete_old_version = 'Delete old versions of this dataset'
     param_force = (
         'Skip check whether local version of file is up to date, force'

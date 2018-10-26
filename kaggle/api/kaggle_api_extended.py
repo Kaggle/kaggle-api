@@ -2236,7 +2236,7 @@ class KaggleApi(KaggleApi):
             file_name: name of the file to upload
             full_path: path to the file to upload
             request: the prepared request
-            resources: the files to upload
+            resources: optional file metadata
             quiet: suppress verbose output
             :return: True - upload unsuccessful; False - upload successful
         """

@@ -118,7 +118,7 @@ paths:
           description: Error
           schema:
             $ref: '#/definitions/Error'
-  /competitions/submissions/url/{contentLength}/{lastModifiedDateUtc}:
+  /competitions/{id}/submissions/url/{contentLength}/{lastModifiedDateUtc}:
     post:
       tags:
         - kaggle
@@ -133,7 +133,12 @@ paths:
           name: fileName
           required: false
           type: string
-          description: Competition submission file name    
+          description: Competition submission file name
+        - in: path
+          name: id
+          required: true
+          type: string
+          description: Competition name, as it appears in the competition's URL
         - in: path
           name: contentLength
           required: true

@@ -2221,19 +2221,23 @@ class KaggleApi(KaggleApi):
                 exitcode = self._upload_file(file_name, full_path, quiet, request, resources)
                 if exitcode:
                     return
-            if os.path.isdir(full_path) and dir_mode == 'zip':
-                temp_dir = tempfile.mkdtemp()
-                try:
-                    _, dir_name = os.path.split(full_path)
-                    archive_path = shutil.make_archive(os.path.join(temp_dir, dir_name), "zip",
-                                                       full_path)
-                    _, archive_name = os.path.split(archive_path)
-                    exitcode = self._upload_file(archive_name, archive_path, quiet, request,
-                                                 resources)
-                finally:
-                    shutil.rmtree(temp_dir)
-                if exitcode:
-                    return
+            elif os.path.isdir(full_path):
+                if dir_mode == 'zip':
+                    temp_dir = tempfile.mkdtemp()
+                    try:
+                        _, dir_name = os.path.split(full_path)
+                        archive_path = shutil.make_archive(os.path.join(temp_dir, dir_name), "zip",
+                                                           full_path)
+                        _, archive_name = os.path.split(archive_path)
+                        exitcode = self._upload_file(archive_name, archive_path, quiet, request,
+                                                     resources)
+                    finally:
+                        shutil.rmtree(temp_dir)
+                    if exitcode:
+                        return
+                elif not quiet:
+                    print("Skipping folder: " + file_name + "; use '--dir-mode zip' to upload "
+                                                            "folders")
             else:
                 if not quiet:
                     print('Skipping: ' + file_name)

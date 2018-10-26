@@ -1,6 +1,11 @@
 Changelog
 ====
 
+#### 1.5.0
+Release date: 10/19/18
+* Update API to work with new competitions submissions backend.  This change will force old API clients to update.  
+* Update error message when config file is not found.
+
 #### 1.4.7.1
 Release date: 8/28/18
 * Fix host

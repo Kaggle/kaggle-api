@@ -4,6 +4,8 @@ Official API for https://www.kaggle.com, accessible using a command line tool im
 
 Beta release - Kaggle reserves the right to modify the API functionality currently offered.
 
+IMPORTANT: Competitions submissions using an API version prior to 1.5.0 may not work.  If you are encountering difficulties with submitting to competitions, please check your version with `kaggle --version`.  If it is below 1.5.0, please update with `pip install kaggle --upgrade`.
+
 ## Installation
 
 Ensure you have Python 3 and the package manager `pip` installed.

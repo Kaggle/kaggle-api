@@ -853,15 +853,16 @@ class KaggleApi(object):
             _request_timeout=params.get('_request_timeout'),
             collection_formats=collection_formats)
 
-    def competitions_submissions_url(self, content_length, last_modified_date_utc, **kwargs):  # noqa: E501
+    def competitions_submissions_url(self, id, content_length, last_modified_date_utc, **kwargs):  # noqa: E501
         """Generate competition submission URL  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
-        >>> thread = api.competitions_submissions_url(content_length, last_modified_date_utc, async_req=True)
+        >>> thread = api.competitions_submissions_url(id, content_length, last_modified_date_utc, async_req=True)
         >>> result = thread.get()
 
         :param async_req bool
+        :param str id: Competition name, as it appears in the competition's URL (required)
         :param int content_length: Content length of file in bytes (required)
         :param int last_modified_date_utc: Last modified date of file in milliseconds since epoch in UTC (required)
         :param str file_name: Competition submission file name
@@ -871,20 +872,21 @@ class KaggleApi(object):
         """
         kwargs['_return_http_data_only'] = True
         if kwargs.get('async_req'):
-            return self.competitions_submissions_url_with_http_info(content_length, last_modified_date_utc, **kwargs)  # noqa: E501
+            return self.competitions_submissions_url_with_http_info(id, content_length, last_modified_date_utc, **kwargs)  # noqa: E501
         else:
-            (data) = self.competitions_submissions_url_with_http_info(content_length, last_modified_date_utc, **kwargs)  # noqa: E501
+            (data) = self.competitions_submissions_url_with_http_info(id, content_length, last_modified_date_utc, **kwargs)  # noqa: E501
             return data
 
-    def competitions_submissions_url_with_http_info(self, content_length, last_modified_date_utc, **kwargs):  # noqa: E501
+    def competitions_submissions_url_with_http_info(self, id, content_length, last_modified_date_utc, **kwargs):  # noqa: E501
         """Generate competition submission URL  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
-        >>> thread = api.competitions_submissions_url_with_http_info(content_length, last_modified_date_utc, async_req=True)
+        >>> thread = api.competitions_submissions_url_with_http_info(id, content_length, last_modified_date_utc, async_req=True)
         >>> result = thread.get()
 
         :param async_req bool
+        :param str id: Competition name, as it appears in the competition's URL (required)
         :param int content_length: Content length of file in bytes (required)
         :param int last_modified_date_utc: Last modified date of file in milliseconds since epoch in UTC (required)
         :param str file_name: Competition submission file name
@@ -893,7 +895,7 @@ class KaggleApi(object):
                  returns the request thread.
         """
 
-        all_params = ['content_length', 'last_modified_date_utc', 'file_name']  # noqa: E501
+        all_params = ['id', 'content_length', 'last_modified_date_utc', 'file_name']  # noqa: E501
         all_params.append('async_req')
         all_params.append('_return_http_data_only')
         all_params.append('_preload_content')
@@ -908,6 +910,10 @@ class KaggleApi(object):
                 )
             params[key] = val
         del params['kwargs']
+        # verify the required parameter 'id' is set
+        if ('id' not in params or
+                params['id'] is None):
+            raise ValueError("Missing the required parameter `id` when calling `competitions_submissions_url`")  # noqa: E501
         # verify the required parameter 'content_length' is set
         if ('content_length' not in params or
                 params['content_length'] is None):
@@ -920,6 +926,8 @@ class KaggleApi(object):
         collection_formats = {}
 
         path_params = {}
+        if 'id' in params:
+            path_params['id'] = params['id']  # noqa: E501
         if 'content_length' in params:
             path_params['contentLength'] = params['content_length']  # noqa: E501
         if 'last_modified_date_utc' in params:
@@ -947,7 +955,7 @@ class KaggleApi(object):
         auth_settings = ['basicAuth']  # noqa: E501
 
         return self.api_client.call_api(
-            '/competitions/submissions/url/{contentLength}/{lastModifiedDateUtc}', 'POST',
+            '/competitions/{id}/submissions/url/{contentLength}/{lastModifiedDateUtc}', 'POST',
             path_params,
             query_params,
             header_params,

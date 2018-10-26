@@ -60,7 +60,7 @@ except NameError:
 
 
 class KaggleApi(KaggleApi):
-    __version__ = '1.4.7.1'
+    __version__ = '1.5.0'
 
     CONFIG_NAME_PROXY = 'proxy'
     CONFIG_NAME_COMPETITION = 'competition'
@@ -109,13 +109,13 @@ class KaggleApi(KaggleApi):
                 config_data = self.read_config_file(config_data)
             else:
                 raise IOError('Could not find {}. Make sure it\'s located in'
-                              ' {}. Or use the environment method.'
-                              .format(self.config_file, self.config_dir))
+                              ' {}. Or use the environment method.'.format(
+                                  self.config_file, self.config_dir))
 
         # Step 3: load into configuration!
         self._load_config(config_data)
 
-    def read_config_environment(self, config_data={}, quiet=False):
+    def read_config_environment(self, config_data=None, quiet=False):
         """read_config_environment is the second effort to get a username
            and key to authenticate to the Kaggle API. The environment keys
            are equivalent to the kaggle.json file, but with "KAGGLE_" prefix
@@ -129,6 +129,8 @@ class KaggleApi(KaggleApi):
 
         # Add all variables that start with KAGGLE_ to config data
 
+        if config_data is None:
+            config_data = {}
         for key, val in os.environ.items():
             if key.startswith('KAGGLE_'):
                 config_key = key.replace('KAGGLE_', '', 1).lower()
@@ -187,7 +189,7 @@ class KaggleApi(KaggleApi):
                     'https://github.com/Kaggle/kaggle-api#api-credentials ' +
                     'for instructions.')
 
-    def read_config_file(self, config_data={}, quiet=False):
+    def read_config_file(self, config_data=None, quiet=False):
         """read_config_file is the first effort to get a username
            and key to authenticate to the Kaggle API. Since we can get the
            username and password from the environment, it's not required.
@@ -198,7 +200,8 @@ class KaggleApi(KaggleApi):
                         password, if defined
            quiet: suppress verbose print of output (default is False)
         """
-        config_data = {}
+        if config_data is None:
+            config_data = {}
 
         if os.path.exists(self.config):
 
@@ -211,7 +214,7 @@ class KaggleApi(KaggleApi):
                             'users on this system! To fix this, you can run' +
                             '\'chmod 600 {}\''.format(self.config))
 
-                with open(self.config, 'r') as f:
+                with open(self.config) as f:
                     config_data = json.load(f)
             except:
                 pass
@@ -458,18 +461,35 @@ class KaggleApi(KaggleApi):
         else:
             url_result = self.process_response(
                 self.competitions_submissions_url_with_http_info(
+                    id=competition,
                     file_name=os.path.basename(file_name),
                     content_length=os.path.getsize(file_name),
-                    last_modified_date_utc=int(
-                        os.path.getmtime(file_name) * 1000)))
-            url_result_list = url_result['createUrl'].split('/')
-            upload_result = self.process_response(
-                self.competitions_submissions_upload_with_http_info(
-                    file=file_name,
-                    guid=url_result_list[-3],
-                    content_length=url_result_list[-2],
-                    last_modified_date_utc=url_result_list[-1]))
-            upload_result_token = upload_result['token']
+                    last_modified_date_utc=int(os.path.getmtime(file_name))))
+
+            # Temporary while new worker is gradually turned on.  'isComplete'
+            # exists on the old DTO but not the new, so this is an hacky but
+            # easy solution to figure out which submission logic to use
+            if 'isComplete' in url_result:
+                # Old submissions path
+                url_result_list = url_result['createUrl'].split('/')
+                upload_result = self.process_response(
+                    self.competitions_submissions_upload_with_http_info(
+                        file=file_name,
+                        guid=url_result_list[-3],
+                        content_length=url_result_list[-2],
+                        last_modified_date_utc=url_result_list[-1]))
+                upload_result_token = upload_result['token']
+            else:
+                # New submissions path!
+                success = self.upload_complete(file_name,
+                                               url_result['createUrl'], quiet)
+                if not success:
+                    # Actual error is printed during upload_complete.  Not
+                    # ideal but changing would not be backwards compatible
+                    return "Could not submit to competition"
+
+                upload_result_token = url_result['token']
+
             submit_result = self.process_response(
                 self.competitions_submissions_submit_with_http_info(
                     id=competition,

@@ -2228,8 +2228,6 @@ class KaggleApi(KaggleApi):
                 continue
             full_path = os.path.join(folder, file_name)
 
-            if not quiet:
-                print('Starting upload for file ' + file_name)
             if os.path.isfile(full_path):
                 retval = self._upload_file(file_name, full_path, quiet, request, resources)
                 if retval:
@@ -2252,6 +2250,9 @@ class KaggleApi(KaggleApi):
                     print('Skipping: ' + file_name)
 
     def _upload_file(self, file_name, full_path, quiet, request, resources):
+        if not quiet:
+            print('Starting upload for file ' + file_name)
+
         content_length = os.path.getsize(full_path)
         token = self.dataset_upload_file(full_path, quiet)
         if token is None:

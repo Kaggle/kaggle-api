@@ -314,8 +314,8 @@ optional arguments:
   -u, --public          Create publicly (default is private)
   -q, --quiet           Suppress printing information about the upload/download progress
   -t, --keep-tabular    Do not convert tabular files to CSV (default is to convert)
-  -r {skip,zip}, --dir-mode {skip,zip}
-                        What to do with directories: "skip" - ignore; "zip" - compress and upload
+  -r {skip,zip,tar}, --dir-mode {skip,zip,tar}
+                        What to do with directories: "skip" - ignore; "zip" - compressed upload; "tar" - uncompressed upload
 ```
 
 Example:
@@ -338,8 +338,8 @@ optional arguments:
                         Folder for upload, containing data files and a special dataset-metadata.json file (https://github.com/Kaggle/kaggle-api/wiki/Dataset-Metadata). Defaults to current working directory
   -q, --quiet           Suppress printing information about the upload/download progress
   -t, --keep-tabular    Do not convert tabular files to CSV (default is to convert)
-  -r {skip,zip}, --dir-mode {skip,zip}
-                        What to do with directories: "skip" - ignore; "zip" - compress and upload
+  -r {skip,zip,tar}, --dir-mode {skip,zip,tar}
+                        What to do with directories: "skip" - ignore; "zip" - compressed upload; "tar" - uncompressed upload
   -d, --delete-old-versions
                         Delete old versions of this dataset
 ```

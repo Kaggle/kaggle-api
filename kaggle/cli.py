@@ -503,7 +503,7 @@ def parse_datasets(subparsers):
         '-r',
         '--dir-mode',
         dest='dir_mode',
-        choices=['skip', 'zip'],
+        choices=['skip', 'zip', 'tar'],
         default='skip',
         help=Help.param_dir_mode)
     parser_datasets_create._action_groups.append(
@@ -547,7 +547,7 @@ def parse_datasets(subparsers):
         '-r',
         '--dir-mode',
         dest='dir_mode',
-        choices=['skip', 'zip'],
+        choices=['skip', 'zip', 'tar'],
         default='skip',
         help=Help.param_dir_mode)
     parser_datasets_version_optional.add_argument(
@@ -949,7 +949,8 @@ class Help(object):
     param_keep_tabular = (
         'Do not convert tabular files to CSV (default is to convert)')
     param_dir_mode = (
-        'What to do with directories: "skip" - ignore; "zip" - compress and upload')
+        'What to do with directories: "skip" - ignore; "zip" - compressed upload; "tar" - '
+        'uncompressed upload')
     param_delete_old_version = 'Delete old versions of this dataset'
     param_force = (
         'Skip check whether local version of file is up to date, force'

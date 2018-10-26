@@ -1219,6 +1219,7 @@ class KaggleApi(KaggleApi):
             quiet: suppress verbose output (default is False)
             convert_to_csv: on upload, if data should be converted to csv
             delete_old_versions: if True, do that (default False)
+            dir_mode: What to do with directories: "skip" - ignore; "zip" - compress and upload
         """
         if not os.path.isdir(folder):
             raise ValueError('Invalid folder: ' + folder)
@@ -1291,6 +1292,7 @@ class KaggleApi(KaggleApi):
             quiet: suppress verbose output (default is False)
             convert_to_csv: on upload, if data should be converted to csv
             delete_old_versions: if True, do that (default False)
+            dir_mode: What to do with directories: "skip" - ignore; "zip" - compress and upload
         """
         folder = folder or os.getcwd()
         result = self.dataset_create_version(
@@ -1357,6 +1359,7 @@ class KaggleApi(KaggleApi):
             public: should the dataset be public?
             quiet: suppress verbose output (default is False)
             convert_to_csv: if True, convert data to comma separated value
+            dir_mode: What to do with directories: "skip" - ignore; "zip" - compress and upload
         """
         if not os.path.isdir(folder):
             raise ValueError('Invalid folder: ' + folder)
@@ -1435,6 +1438,7 @@ class KaggleApi(KaggleApi):
             public: should the dataset be public?
             quiet: suppress verbose output (default is False)
             convert_to_csv: if True, convert data to comma separated value
+            dir_mode: What to do with directories: "skip" - ignore; "zip" - compress and upload
         """
         folder = folder or os.getcwd()
         result = self.dataset_create_new(folder, public, quiet, convert_to_csv, dir_mode)

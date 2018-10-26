@@ -500,7 +500,7 @@ def parse_datasets(subparsers):
         action='store_false',
         help=Help.param_keep_tabular)
     parser_datasets_create_optional.add_argument(
-        '-d',
+        '-r',
         '--dir-mode',
         dest='dir_mode',
         choices=['skip', 'zip'],
@@ -543,8 +543,8 @@ def parse_datasets(subparsers):
         dest='convert_to_csv',
         action='store_false',
         help=Help.param_keep_tabular)
-    parser_datasets_create_optional.add_argument(
-        '-d',
+    parser_datasets_version_optional.add_argument(
+        '-r',
         '--dir-mode',
         dest='dir_mode',
         choices=['skip', 'zip'],

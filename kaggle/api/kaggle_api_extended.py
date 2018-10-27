@@ -1418,7 +1418,7 @@ class KaggleApi(KaggleApi):
             convert_to_csv=convert_to_csv,
             category_ids=keywords)
         resources = meta_data.get('resources')
-        self.upload_files(request, resources, folder, quiet)
+        self.upload_files(request, resources, folder, quiet, dir_mode)
         result = DatasetNewResponse(
             self.process_response(
                 self.datasets_create_new_with_http_info(request)))

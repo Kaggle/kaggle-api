@@ -2353,7 +2353,7 @@ class KaggleApi(KaggleApi):
                     unit_scale=True,
                     unit_divisor=1024,
                     disable=quiet) as progress_bar:
-                with open(path, 'rb', buffering=0) as fp:
+                with io.open(path, 'rb', buffering=0) as fp:
                     reader = TqdmBufferedReader(fp, progress_bar)
                     session = requests.Session()
                     retries = Retry(total=10, backoff_factor=0.5)

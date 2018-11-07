@@ -173,7 +173,7 @@ class KaggleApi(KaggleApi):
 
         # Cert File
             
-        if self.CONFIG_NAME_CA_CERTS in config_data:
+        if self.CONFIG_NAME_SSL_CA_CERT in config_data:
             configuration.ssl_ca_cert = config_data[self.CONFIG_NAME_SSL_CA_CERT]
             
         # Keep config values with class instance, and load api client!

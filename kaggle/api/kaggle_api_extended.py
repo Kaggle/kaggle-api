@@ -69,6 +69,7 @@ class KaggleApi(KaggleApi):
     CONFIG_NAME_PATH = 'path'
     CONFIG_NAME_USER = 'username'
     CONFIG_NAME_KEY = 'key'
+    CONFIG_NAME_CERT_FILE = 'cert_file'
 
     HEADER_API_VERSION = 'X-Kaggle-ApiVersion'
     DATASET_METADATA_FILE = 'dataset-metadata.json'
@@ -170,6 +171,11 @@ class KaggleApi(KaggleApi):
         if self.CONFIG_NAME_PROXY in config_data:
             configuration.proxy = config_data[self.CONFIG_NAME_PROXY]
 
+        # Cert File
+            
+        if self.CONFIG_NAME_PROXY in config_data:
+            configuration.cert_file = config_data[self.CONFIG_NAME_CERT_FILE]
+            
         # Keep config values with class instance, and load api client!
 
         self.config_values = config_data

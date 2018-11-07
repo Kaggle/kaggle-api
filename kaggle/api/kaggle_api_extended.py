@@ -69,7 +69,7 @@ class KaggleApi(KaggleApi):
     CONFIG_NAME_PATH = 'path'
     CONFIG_NAME_USER = 'username'
     CONFIG_NAME_KEY = 'key'
-    CONFIG_NAME_CA_CERTS = 'ca_certs'
+    CONFIG_NAME_SSL_CA_CERT = 'ssl_ca_cert'
 
     HEADER_API_VERSION = 'X-Kaggle-ApiVersion'
     DATASET_METADATA_FILE = 'dataset-metadata.json'
@@ -174,7 +174,7 @@ class KaggleApi(KaggleApi):
         # Cert File
             
         if self.CONFIG_NAME_CA_CERTS in config_data:
-            configuration.ca_certs = config_data[self.CONFIG_NAME_CA_CERTS]
+            configuration.ssl_ca_cert = config_data[self.CONFIG_NAME_SSL_CA_CERT]
             
         # Keep config values with class instance, and load api client!
 

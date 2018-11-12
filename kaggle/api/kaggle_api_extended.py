@@ -212,8 +212,8 @@ class KaggleApi(KaggleApi):
                     permissions = os.stat(self.config).st_mode
                     if (permissions & 4) or (permissions & 32):
                         print(
-                            'Warning: Your Kaggle API key is readable by other'
-                            'users on this system! To fix this, you can run' +
+                            'Warning: Your Kaggle API key is readable by other '
+                            'users on this system! To fix this, you can run ' +
                             '\'chmod 600 {}\''.format(self.config))
 
                 with open(self.config) as f:

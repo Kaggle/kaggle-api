@@ -304,7 +304,7 @@ Example:
 
 ##### Create a new dataset
 
-If you want to create a new dataset, you need to initiate metadata file at first. You could fulfill this by running `kaggle datasets init -p FOLDER`.
+If you want to create a new dataset, you need to initiate metadata file at first. You could fulfill this by running `kaggle datasets init` as describe above.
 
 ```
 usage: kaggle datasets create [-h] [-p FOLDER] [-u] [-q] [-t]

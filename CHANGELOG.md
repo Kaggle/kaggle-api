@@ -1,6 +1,16 @@
 Changelog
 ====
 
+#### 1.5.1.1
+Release date: 12/5/18
+* Add missing cli option for dataset subfolders
+
+#### 1.5.1
+Release date: 12/5/18
+* Allow custom ca_cert files
+* Support uplodaing datasets with subfolders
+* Fix kaggle.json permissions warning
+
 #### 1.5.0
 Release date: 10/19/18
 * Update API to work with new competitions submissions backend.  This change will force old API clients to update.  

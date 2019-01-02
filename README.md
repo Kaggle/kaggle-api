@@ -256,6 +256,7 @@ optional arguments:
 Example:
 
 `kaggle datasets list -s demographics`
+
 `kaggle datasets list --sort-by votes`
 
 ##### List files for a dataset

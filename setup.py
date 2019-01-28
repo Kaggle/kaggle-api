@@ -1,6 +1,6 @@
 #!/usr/bin/python
 #
-# Copyright 2018 Kaggle Inc
+# Copyright 2019 Kaggle Inc
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='kaggle',
-    version='1.5.1.1',
+    version='1.5.2',
     description='Kaggle API',
     long_description=
     ('Official API for https://www.kaggle.com, accessible using a command line '

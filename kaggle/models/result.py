@@ -1,6 +1,6 @@
 #!/usr/bin/python
 #
-# Copyright 2018 Kaggle Inc
+# Copyright 2019 Kaggle Inc
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.

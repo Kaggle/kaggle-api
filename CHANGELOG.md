@@ -1,6 +1,11 @@
 Changelog
 ====
 
+#### 1.5.2
+Release date: 1/28/19
+* Don't error on encoding errors when printing tables
+* Exit with error code when an exception is caught
+
 #### 1.5.1.1
 Release date: 12/5/18
 * Add missing cli option for dataset subfolders

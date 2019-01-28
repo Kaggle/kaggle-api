@@ -1,6 +1,6 @@
 #!/usr/bin/python
 #
-# Copyright 2018 Kaggle Inc
+# Copyright 2019 Kaggle Inc
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -62,7 +62,7 @@ except NameError:
 
 
 class KaggleApi(KaggleApi):
-    __version__ = '1.5.1.1'
+    __version__ = '1.5.2'
 
     CONFIG_NAME_PROXY = 'proxy'
     CONFIG_NAME_COMPETITION = 'competition'
@@ -2132,7 +2132,10 @@ class KaggleApi(KaggleApi):
         print(row_format.format(*borders))
         for i in items:
             i_fields = [self.string(getattr(i, f)) + '  ' for f in fields]
-            print(row_format.format(*i_fields))
+            try:
+                print(row_format.format(*i_fields))
+            except UnicodeEncodeError:
+                print(row_format.format(*i_fields).encode('utf-8'))
 
     def print_csv(self, items, fields):
         """ print a set of fields in a set of items using a csv.writer

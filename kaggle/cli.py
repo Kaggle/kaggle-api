@@ -1,6 +1,6 @@
 #!/usr/bin/python
 #
-# Copyright 2018 Kaggle Inc
+# Copyright 2019 Kaggle Inc
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -46,19 +46,26 @@ def main():
     command_args.update(vars(args))
     del command_args['func']
     del command_args['command']
+    error = False
     try:
         out = args.func(**command_args)
     except ApiException as e:
         print(str(e.status) + ' - ' + e.reason)
         out = None
+        error = True
     except ValueError as e:
         print(e)
         out = None
+        error = True
     except KeyboardInterrupt:
         print('User cancelled operation')
         out = None
     if out is not None:
         print(out, end='')
+
+    # This is so that scripts that pick up on error codes can tell when there was a failure
+    if error:
+        exit(1)
 
 
 def parse_competitions(subparsers):

@@ -31,7 +31,7 @@ security:
   - basicAuth: []
 externalDocs:
   description: Further Kaggle documentation
-  url: https://www.kaggle.com
+  url: www.kaggle.com
 tags:
   - name: kaggle
 parameters:

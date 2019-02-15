@@ -669,7 +669,7 @@ class KaggleApi(KaggleApi):
             competition: the name of the competition
             path: a path to download the file to
             force: force the download if the file already exists (default False)
-            quiet: suppress verbose output (default is False)
+            quiet: suppress verbose output (default is True)
         """
         files = self.competition_list_files(competition)
         if not files:

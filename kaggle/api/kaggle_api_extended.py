@@ -721,7 +721,7 @@ class KaggleApi(KaggleApi):
             =========
             competition: the name of the competition
             path: a path to download the file to
-            quiet: suppress verbose output (default is False)
+            quiet: suppress verbose output (default is True)
         """
         response = self.process_response(
             self.competition_download_leaderboard_with_http_info(
@@ -1062,7 +1062,7 @@ class KaggleApi(KaggleApi):
             file_name: the dataset configuration file
             path: if defined, download to this location
             force: force the download if the file already exists (default False)
-            quiet: suppress verbose output (default is False)
+            quiet: suppress verbose output (default is True)
         """
         if '/' in dataset:
             self.validate_dataset_string(dataset)
@@ -1107,7 +1107,7 @@ class KaggleApi(KaggleApi):
                      should be in format [owner]/[dataset-name]
             path: the path to download the dataset to
             force: force the download if the file already exists (default False)
-            quiet: suppress verbose output (default is False)
+            quiet: suppress verbose output (default is True)
             unzip: if True, unzip files upon download (default is False)
         """
         if dataset is None:
@@ -1470,7 +1470,7 @@ class KaggleApi(KaggleApi):
             ==========
             response: the response to download
             outfile: the output file to download to
-            quiet: suppress verbose output (default is False)
+            quiet: suppress verbose output (default is True)
             chunk_size: the size of the chunk to stream
         """
 
@@ -1834,7 +1834,7 @@ class KaggleApi(KaggleApi):
             kernel: the kernel to pull
             path: the path to pull files to on the filesystem
             metadata: if True, also pull metadata
-            quiet: suppress verbosity (default is False)
+            quiet: suppress verbosity (default is True)
         """
         existing_metadata = None
         if kernel is None:

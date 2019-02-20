@@ -1,6 +1,10 @@
 Changelog
 ====
 
+#### 1.5.3
+Release date: 2/20/19
+* Bump urllib3 version
+
 #### 1.5.2
 Release date: 1/28/19
 * Don't error on encoding errors when printing tables

@@ -45,7 +45,7 @@ and it would be discovered by the client.
 The command line tool supports the following commands:
 
 ``` 
-kaggle competitions {list,files,download,submit,submissions,leaderboard}
+kaggle competitions {list, files, download, submit, submissions, leaderboard}
 kaggle datasets {list, files, download, create, version, init}
 kaggle kernels {list, init, push, pull, output, status}
 kaggle config {view, set, unset}
@@ -215,7 +215,7 @@ The API supports the following commands for Kaggle Datasets.
 
 ```
 usage: kaggle datasets [-h]
-                       {list,files,download,create,version,init,metadata, status} ...
+                       {list,files,download,create,version,init,metadata,status} ...
 
 optional arguments:
   -h, --help            show this help message and exit

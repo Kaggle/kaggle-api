@@ -749,7 +749,7 @@ def parse_kernels(subparsers):
         required=False,
         choices=['script', 'notebook'],
         default='INSERT_KERNEL_TYPE_HERE',
-        help=Help.param_kernel_init_script)
+        help=Help.param_kernel_init_type)
     parser_kernels_init_optional.add_argument(
         '-b',
         '--public',
@@ -1139,10 +1139,10 @@ class Help(object):
     param_kernel_init_title = 'kernel title, must be more than 5 characters and less or equal to 50 characters long'
     param_kernel_init_code_file = 'code file filename'
     param_kernel_init_language = 'set kernel programming language'
-    param_kernel_init_script = 'set kernel type to script, default: notebook'
+    param_kernel_init_type = 'set kernel type to script or notebook'
     param_kernel_init_public = 'make the kernel public, default private'
     param_kernel_init_gpu = 'enable GPU training for the kernel, default: False'
-    param_kernel_init_internet = 'enable internet access for kernel, default: False'
+    param_kernel_init_internet = 'enable internet access for kernel, default: false'
     param_kernel_init_datasets = 'add kernel data sources from kaggle datasets'
     param_kernel_init_comp = 'add kernel data source from competitions'
     param_kernel_init_kernels = 'add kernel data sources from kernel output'

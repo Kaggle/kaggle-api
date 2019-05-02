@@ -1631,7 +1631,9 @@ class KaggleApi(KaggleApi):
         else:
             print('No kernels found')
 
-    def kernels_initialize(self, folder):
+    def kernels_initialize(self, folder, slug, title, code_file,
+                           language, k_type, is_private, gpu, internet,
+                           datasets, competitions, kernels):
         """ create a new kernel in a specified folder from template, including
             json metadata that grabs values from the configuration.
              Parameters
@@ -1647,17 +1649,17 @@ class KaggleApi(KaggleApi):
 
         username = self.get_config_value(self.CONFIG_NAME_USER)
         meta_data = {
-            'id': username + '/INSERT_KERNEL_SLUG_HERE',
-            'title': 'INSERT_TITLE_HERE',
-            'code_file': 'INSERT_CODE_FILE_PATH_HERE',
-            'language': 'INSERT_LANGUAGE_HERE',
-            'kernel_type': 'INSERT_KERNEL_TYPE_HERE',
-            'is_private': 'true',
-            'enable_gpu': 'false',
-            'enable_internet': 'false',
-            'dataset_sources': [],
-            'competition_sources': [],
-            'kernel_sources': [],
+            'id': username + '/' + slug,
+            'title': title,
+            'code_file': code_file,
+            'language': language,
+            'kernel_type': k_type,
+            'is_private': is_private,
+            'enable_gpu': gpu,
+            'enable_internet': internet,
+            'dataset_sources': datasets,
+            'competition_sources': competitions,
+            'kernel_sources': kernels
         }
         meta_file = os.path.join(folder, self.KERNEL_METADATA_FILE)
         with open(meta_file, 'w') as f:
@@ -1665,7 +1667,9 @@ class KaggleApi(KaggleApi):
 
         return meta_file
 
-    def kernels_initialize_cli(self, folder=None):
+    def kernels_initialize_cli(self, folder, slug, title, code_file, language,
+                               k_type, public, gpu, internet, datasets,
+                               competitions, kernels):
         """ client wrapper for kernels_initialize, takes same arguments but
             sets default folder to be None. If None, defaults to present
             working directory.
@@ -1674,7 +1678,11 @@ class KaggleApi(KaggleApi):
             folder: the path of the folder (None defaults to ${PWD})
         """
         folder = folder or os.getcwd()
-        meta_file = self.kernels_initialize(folder)
+        is_private = 'false' if public else 'true'
+        meta_file = self.kernels_initialize(folder, slug, title, code_file,
+                                            language, k_type, is_private, gpu,
+                                            internet, datasets, competitions,
+                                            kernels)
         print('Kernel metadata template written to: ' + meta_file)
 
     def kernels_push(self, folder):

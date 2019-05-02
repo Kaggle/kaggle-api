@@ -711,7 +711,95 @@ def parse_kernels(subparsers):
         '--path',
         dest='folder',
         required=False,
+        default=None,
         help=Help.param_kernel_upfile)
+    parser_kernels_init_optional.add_argument(
+        '-s',
+        '--slug',
+        dest='slug',
+        required=False,
+        default='INSERT_KERNEL_SLUG_HERE',
+        help=Help.param_kernel_init_slug)
+    parser_kernels_init_optional.add_argument(
+        '-t',
+        '--title',
+        dest='title',
+        required=False,
+        default='INSERT_TITLE_HERE',
+        help=Help.param_kernel_init_title)
+    parser_kernels_init_optional.add_argument(
+        '-f',
+        '--code-file',
+        dest='code_file',
+        required=False,
+        default='INSERT_CODE_FILE_PATH_HERE',
+        help=Help.param_kernel_init_code_file)
+    parser_kernels_init_optional.add_argument(
+        '-l',
+        '--language',
+        dest='language',
+        required=False,
+        choices=['r', 'rmarkdown', 'python'],
+        default='INSERT_LANGUAGE_HERE',
+        help=Help.param_kernel_init_language)
+    parser_kernels_init_optional.add_argument(
+        '-e',
+        '--type',
+        dest='k_type',
+        required=False,
+        choices=['script', 'notebook'],
+        default='INSERT_KERNEL_TYPE_HERE',
+        help=Help.param_kernel_init_script)
+    parser_kernels_init_optional.add_argument(
+        '-b',
+        '--public',
+        dest='public',
+        required=False,
+        default=False,
+        action='store_true',
+        help=Help.param_kernel_init_public)
+    parser_kernels_init_optional.add_argument(
+        '-g',
+        '--gpu',
+        dest='gpu',
+        required=False,
+        default='false',
+        action='store_const',
+        const='true',
+        help=Help.param_kernel_init_gpu)
+    parser_kernels_init_optional.add_argument(
+        '-i',
+        '--internet',
+        dest='internet',
+        required=False,
+        default='false',
+        action='store_const',
+        const='true',
+        help=Help.param_kernel_init_internet)
+    parser_kernels_init_optional.add_argument(
+        '-d',
+        '--datasets',
+        dest='datasets',
+        required=False,
+        nargs='*',
+        default=[],
+        help=Help.param_kernel_init_datasets)
+    parser_kernels_init_optional.add_argument(
+        '-c',
+        '--competitions',
+        dest='competitions',
+        required=False,
+        nargs='*',
+        default=[],
+        help=Help.param_kernel_init_comp)
+    parser_kernels_init_optional.add_argument(
+        '-k',
+        '--kernels',
+        dest='kernels',
+        required=False,
+        nargs='*',
+        default=[],
+        help=Help.param_kernel_init_kernels)
     parser_kernels_init._action_groups.append(parser_kernels_init_optional)
     parser_kernels_init.set_defaults(func=api.kernels_initialize_cli)
 
@@ -1047,6 +1135,17 @@ class Help(object):
         'special kernel-metadata.json file '
         '(https://github.com/Kaggle/kaggle-api/wiki/Kernel-Metadata). '
         'Defaults to current working directory')
+    param_kernel_init_slug = 'kernel slug, what comes after the `username/`, default: kernel title slug'
+    param_kernel_init_title = 'kernel title, must be more than 5 characters and less or equal to 50 characters long'
+    param_kernel_init_code_file = 'code file filename'
+    param_kernel_init_language = 'set kernel programming language'
+    param_kernel_init_script = 'set kernel type to script, default: notebook'
+    param_kernel_init_public = 'make the kernel public, default private'
+    param_kernel_init_gpu = 'enable GPU training for the kernel, default: False'
+    param_kernel_init_internet = 'enable internet access for kernel, default: False'
+    param_kernel_init_datasets = 'add kernel data sources from kaggle datasets'
+    param_kernel_init_comp = 'add kernel data source from competitions'
+    param_kernel_init_kernels = 'add kernel data sources from kernel output'
     param_kernel_parent = 'Find children of the specified parent kernel'
     param_kernel_competition = 'Find kernels for a given competition slug'
     param_kernel_dataset = ('Find kernels for a given dataset slug. Format is '

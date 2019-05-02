@@ -1696,8 +1696,11 @@ class KaggleApi(KaggleApi):
             meta_data = json.load(f)
 
         title = self.get_or_default(meta_data, 'title', None)
-        if title and len(title) < 5:
-            raise ValueError('Title must be at least five characters')
+        if title:
+            if len(title) < 5:
+                raise ValueError('Title must be at least five characters')
+            elif len(title) > 50:
+                raise ValueError('Title must be at most fifty characters')
 
         code_path = self.get_or_default(meta_data, 'code_file', '')
         if not code_path:
@@ -1764,6 +1767,10 @@ class KaggleApi(KaggleApi):
                         cell['outputs'] = []
             script_body = json.dumps(json_body)
 
+        print('id:', id_no)
+        print('slug:', slug)
+        print('title:', title)
+        print('new_title:', self.get_or_default(meta_data, 'title', None))
         kernel_push_request = KernelPushRequest(
             id=id_no,
             slug=slug,

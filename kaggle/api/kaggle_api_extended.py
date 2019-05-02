@@ -1767,10 +1767,6 @@ class KaggleApi(KaggleApi):
                         cell['outputs'] = []
             script_body = json.dumps(json_body)
 
-        print('id:', id_no)
-        print('slug:', slug)
-        print('title:', title)
-        print('new_title:', self.get_or_default(meta_data, 'title', None))
         kernel_push_request = KernelPushRequest(
             id=id_no,
             slug=slug,

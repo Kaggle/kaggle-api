@@ -86,6 +86,29 @@ class KaggleApi(KaggleApi):
     config_values = {}
     already_printed_version_warning = False
 
+    # Kernels valid types
+    valid_push_kernel_types = ['script', 'notebook']
+    valid_push_language_types = ['python', 'r', 'rmarkdown']
+    valid_list_languages = ['all', 'python', 'r', 'sqlite', 'julia']
+    valid_list_kernel_types = ['all', 'script', 'notebook']
+    valid_list_output_types = ['all', 'visualization', 'data']
+    valid_list_sort_by = ['hotness', 'commentCount', 'dateCreated', 'dateRun',
+                          'relevance', 'scoreAscending', 'scoreDescending', 'viewCount', 'voteCount']
+
+    # Competitoins valid types
+    valid_competition_groups = ['general', 'entered', 'inClass']
+    valid_competition_categories = [
+        'all', 'featured', 'research', 'recruitment', 'gettingStarted', 'masters', 'playground']
+    valid_competition_sort_by = ['grouped', 'prize', 'earliestDeadline',
+                                 'latestDeadline', 'numberOfTeams', 'recentlyCreated']
+
+    # Datasets valid types
+    valid_dataset_file_types = ['all', 'csv', 'sqlite', 'json', 'bigQuery']
+    valid_dataset_license_names = ['all', 'cc', 'gpl', 'odb', 'other']
+    valid_dataset_sizes = ['all', 'small', 'medium', 'large']
+    valid_dataset_sort_bys = ['hottest', 'votes',
+                              'updated', 'active', 'published']
+
     # Hack for https://github.com/Kaggle/kaggle-api/issues/22 / b/78194015
     if six.PY2:
         reload(sys)
@@ -380,30 +403,21 @@ class KaggleApi(KaggleApi):
 
             page: the page to return (default is 1)
             search: a search term to use (default is empty string)
-            sort_by: how to sort the result, see valid_sort_by for options
+            sort_by: how to sort the result, see valid_competition_sort_by for options
             category: category to filter result to
             group: group to filter result to
         """
-        valid_groups = ['general', 'entered', 'inClass']
-        if group and group not in valid_groups:
+        if group and group not in self.valid_competition_groups:
             raise ValueError('Invalid group specified. Valid options are ' +
-                             str(valid_groups))
+                             str(self.valid_competition_groups))
 
-        valid_categories = [
-            'all', 'featured', 'research', 'recruitment', 'gettingStarted',
-            'masters', 'playground'
-        ]
-        if category and category not in valid_categories:
+        if category and category not in self.valid_competition_categories:
             raise ValueError('Invalid category specified. Valid options are ' +
-                             str(valid_categories))
+                             str(self.valid_competition_categories))
 
-        valid_sort_by = [
-            'grouped', 'prize', 'earliestDeadline', 'latestDeadline',
-            'numberOfTeams', 'recentlyCreated'
-        ]
-        if sort_by and sort_by not in valid_sort_by:
+        if sort_by and sort_by not in self.valid_competition_sort_by:
             raise ValueError('Invalid sort_by specified. Valid options are ' +
-                             str(valid_sort_by))
+                             str(self.valid_competition_sort_by))
 
         competitions_list_result = self.process_response(
             self.competitions_list_with_http_info(
@@ -809,35 +823,31 @@ class KaggleApi(KaggleApi):
 
             Parameters
             ==========
-            sort_by: how to sort the result, see valid_sort_bys for options
-            size: the size of the dataset, see valid_sizes for string options
-            file_type: the format, see valid_file_types for string options
-            license_name: string descriptor for license, see valid_license_names
+            sort_by: how to sort the result, see valid_dataset_sort_bys for options
+            size: the size of the dataset, see valid_dataset_sizes for string options
+            file_type: the format, see valid_dataset_file_types for string options
+            license_name: string descriptor for license, see valid_dataset_license_names
             tag_ids: tag identifiers to filter the search
             search: a search term to use (default is empty string)
             user: username to filter the search to
             mine: boolean if True, group is changed to "my" to return personal
             page: the page to return (default is 1)
         """
-        valid_sort_bys = ['hottest', 'votes', 'updated', 'active', 'published']
-        if sort_by and sort_by not in valid_sort_bys:
+        if sort_by and sort_by not in self.valid_dataset_sort_bys:
             raise ValueError('Invalid sort by specified. Valid options are ' +
-                             str(valid_sort_bys))
+                             str(self.valid_dataset_sort_bys))
 
-        valid_sizes = ['all', 'small', 'medium', 'large']
-        if size and size not in valid_sizes:
+        if size and size not in self.valid_dataset_sizes:
             raise ValueError('Invalid size specified. Valid options are ' +
-                             str(valid_sizes))
+                             str(self.valid_dataset_sizes))
 
-        valid_file_types = ['all', 'csv', 'sqlite', 'json', 'bigQuery']
-        if file_type and file_type not in valid_file_types:
+        if file_type and file_type not in self.valid_dataset_file_types:
             raise ValueError('Invalid file type specified. Valid options are '
-                             + str(valid_file_types))
+                             + str(self.valid_dataset_file_types))
 
-        valid_license_names = ['all', 'cc', 'gpl', 'odb', 'other']
-        if license_name and license_name not in valid_license_names:
+        if license_name and license_name not in self.valid_dataset_license_names:
             raise ValueError('Invalid license specified. Valid options are ' +
-                             str(valid_license_names))
+                             str(self.valid_dataset_license_names))
 
         if int(page) <= 0:
             raise ValueError('Page number must be >= 1')
@@ -879,10 +889,10 @@ class KaggleApi(KaggleApi):
 
             Parameters
             ==========
-            sort_by: how to sort the result, see valid_sort_bys for options
-            size: the size of the dataset, see valid_sizes for string options
-            file_type: the format, see valid_file_types for string options
-            license_name: string descriptor for license, see valid_license_names
+            sort_by: how to sort the result, see valid_dataset_sort_bys for options
+            size: the size of the dataset, see valid_dataset_sizes for string options
+            file_type: the format, see valid_dataset_file_types for string options
+            license_name: string descriptor for license, see valid_dataset_license_names
             tag_ids: tag identifiers to filter the search
             search: a search term to use (default is empty string)
             user: username to filter the search to
@@ -1525,9 +1535,9 @@ class KaggleApi(KaggleApi):
             mine: if true, group is specified as "my" to return personal kernels
             user: filter results to a specific user
             language: the programming language of the kernel
-            kernel_type: the type of kernel, one of valid_kernel_types (str)
-            output_type: the output type, one of valid_output_types (str)
-            sort_by: if defined, sort results by this string (valid_sort_by)
+            kernel_type: the type of kernel, one of valid_list_kernel_types (str)
+            output_type: the output type, one of valid_list_output_types (str)
+            sort_by: if defined, sort results by this string (valid_list_sort_by)
         """
         if int(page) <= 0:
             raise ValueError('Page number must be >= 1')
@@ -1538,31 +1548,25 @@ class KaggleApi(KaggleApi):
         if page_size > 100:
             page_size = 100
 
-        valid_languages = ['all', 'python', 'r', 'sqlite', 'julia']
-        if language and language not in valid_languages:
+        if language and language not in self.valid_list_languages:
             raise ValueError('Invalid language specified. Valid options are ' +
-                             str(valid_languages))
+                             str(self.valid_list_languages))
 
-        valid_kernel_types = ['all', 'script', 'notebook']
-        if kernel_type and kernel_type not in valid_kernel_types:
+        if kernel_type and kernel_type not in self.valid_list_kernel_types:
             raise ValueError(
                 'Invalid kernel type specified. Valid options are ' +
-                str(valid_kernel_types))
+                str(self.valid_list_kernel_types))
 
-        valid_output_types = ['all', 'visualization', 'data']
-        if output_type and output_type not in valid_output_types:
+        if output_type and output_type not in self.valid_list_output_types:
             raise ValueError(
                 'Invalid output type specified. Valid options are ' +
-                str(valid_output_types))
-
-        valid_sort_by = [
-            'hotness', 'commentCount', 'dateCreated', 'dateRun', 'relevance',
-            'scoreAscending', 'scoreDescending', 'viewCount', 'voteCount'
-        ]
-        if sort_by and sort_by not in valid_sort_by:
+                str(self.valid_list_output_types))
+       
+        if sort_by and sort_by not in self.valid_list_sort_by:
             raise ValueError(
                 'Invalid sort by type specified. Valid options are ' +
-                str(valid_sort_by))
+                str(self.valid_list_sort_by))
+
         if sort_by == 'relevance' and search == '':
             raise ValueError('Cannot sort by relevance without a search term.')
 
@@ -1650,8 +1654,8 @@ class KaggleApi(KaggleApi):
             'id': username + '/INSERT_KERNEL_SLUG_HERE',
             'title': 'INSERT_TITLE_HERE',
             'code_file': 'INSERT_CODE_FILE_PATH_HERE',
-            'language': 'INSERT_LANGUAGE_HERE',
-            'kernel_type': 'INSERT_KERNEL_TYPE_HERE',
+            'language': 'Pick one of: {' + ','.join(x for x in self.valid_push_language_types) + '}',
+            'kernel_type': 'Pick one of: {' + ','.join(x for x in self.valid_push_kernel_types) + '}',
             'is_private': 'true',
             'enable_gpu': 'false',
             'enable_internet': 'false',
@@ -1728,19 +1732,17 @@ class KaggleApi(KaggleApi):
                         'how slugs are determined.' %
                         'https://en.wikipedia.org/wiki/Clean_URL#Slug')
 
-        valid_languages = ['python', 'r', 'rmarkdown']
         language = self.get_or_default(meta_data, 'language', '')
-        if language not in valid_languages:
+        if language not in self.valid_push_language_types:
             raise ValueError(
                 'A valid language must be specified in the metadata. Valid '
-                'options are ' + str(valid_languages))
+                'options are ' + str(self.valid_push_language_types))
 
-        valid_kernel_types = ['script', 'notebook']
         kernel_type = self.get_or_default(meta_data, 'kernel_type', '')
-        if kernel_type not in valid_kernel_types:
+        if kernel_type not in self.valid_push_kernel_types:
             raise ValueError(
                 'A valid kernel type must be specified in the metadata. Valid '
-                'options are ' + str(valid_kernel_types))
+                'options are ' + str(self.valid_push_kernel_types))
 
         if kernel_type == 'notebook' and language == 'rmarkdown':
             language = 'r'

@@ -1052,7 +1052,7 @@ class Help(object):
     param_kernel_dataset = ('Find kernels for a given dataset slug. Format is '
                             '{username/dataset-slug}')
     param_kernel_user = 'Find kernels created by a given username'
-    # TODO: Pull these from the same spot as the api impl
+    # TODO(b/129357583): Pull these from the same spot as the api impl
     param_kernel_language = (
         'Specify the language the kernel is written in. Default is \'all\'. '
         'Valid options are \'all\', \'python\', \'r\', \'sqlite\', and '

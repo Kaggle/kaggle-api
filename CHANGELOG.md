@@ -1,6 +1,11 @@
 Changelog
 ====
 
+#### 1.5.4
+Release date: 5/28/19
+* Make kernels init more friendly
+* Make directories if needed for kernels output
+
 #### 1.5.3
 Release date: 2/20/19
 * Bump urllib3 version

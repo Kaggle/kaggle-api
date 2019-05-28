@@ -590,7 +590,7 @@ required arguments:
   -v VALUE, --value VALUE
                         Value of the configuration parameter, valid values depending on name
                         - competition: Competition URL suffix (use "kaggle competitions list" to show options)
-                        - path: Folder where file(s) will be downloaded, defaults to current working directory
+                        - path: Folder where file(s) will be downloaded, defaults to current working directory
                         - proxy: Proxy for HTTP requests
 ```
 

@@ -62,7 +62,7 @@ except NameError:
 
 
 class KaggleApi(KaggleApi):
-    __version__ = '1.5.3'
+    __version__ = '1.5.4'
 
     CONFIG_NAME_PROXY = 'proxy'
     CONFIG_NAME_COMPETITION = 'competition'
@@ -92,29 +92,36 @@ class KaggleApi(KaggleApi):
     valid_list_languages = ['all', 'python', 'r', 'sqlite', 'julia']
     valid_list_kernel_types = ['all', 'script', 'notebook']
     valid_list_output_types = ['all', 'visualization', 'data']
-    valid_list_sort_by = ['hotness', 'commentCount', 'dateCreated', 'dateRun',
-                          'relevance', 'scoreAscending', 'scoreDescending', 'viewCount', 'voteCount']
+    valid_list_sort_by = [
+        'hotness', 'commentCount', 'dateCreated', 'dateRun', 'relevance',
+        'scoreAscending', 'scoreDescending', 'viewCount', 'voteCount'
+    ]
 
     # Competitoins valid types
     valid_competition_groups = ['general', 'entered', 'inClass']
     valid_competition_categories = [
-        'all', 'featured', 'research', 'recruitment', 'gettingStarted', 'masters', 'playground']
-    valid_competition_sort_by = ['grouped', 'prize', 'earliestDeadline',
-                                 'latestDeadline', 'numberOfTeams', 'recentlyCreated']
+        'all', 'featured', 'research', 'recruitment', 'gettingStarted',
+        'masters', 'playground'
+    ]
+    valid_competition_sort_by = [
+        'grouped', 'prize', 'earliestDeadline', 'latestDeadline',
+        'numberOfTeams', 'recentlyCreated'
+    ]
 
     # Datasets valid types
     valid_dataset_file_types = ['all', 'csv', 'sqlite', 'json', 'bigQuery']
     valid_dataset_license_names = ['all', 'cc', 'gpl', 'odb', 'other']
     valid_dataset_sizes = ['all', 'small', 'medium', 'large']
-    valid_dataset_sort_bys = ['hottest', 'votes',
-                              'updated', 'active', 'published']
+    valid_dataset_sort_bys = [
+        'hottest', 'votes', 'updated', 'active', 'published'
+    ]
 
     # Hack for https://github.com/Kaggle/kaggle-api/issues/22 / b/78194015
     if six.PY2:
         reload(sys)
         sys.setdefaultencoding('latin1')
 
-## Authentication
+    ## Authentication
 
     def authenticate(self):
         """authenticate the user with the Kaggle API. This method will generate
@@ -164,7 +171,7 @@ class KaggleApi(KaggleApi):
 
         return config_data
 
-## Configuration
+    ## Configuration
 
     def _load_config(self, config_data):
         """the final step of the authenticate steps, where we load the values
@@ -386,8 +393,7 @@ class KaggleApi(KaggleApi):
         self.print_config_value(self.CONFIG_NAME_PROXY, prefix=prefix)
         self.print_config_value(self.CONFIG_NAME_COMPETITION, prefix=prefix)
 
-
-## Competitions
+    ## Competitions
 
     def competitions_list(self,
                           group=None,
@@ -1561,7 +1567,7 @@ class KaggleApi(KaggleApi):
             raise ValueError(
                 'Invalid output type specified. Valid options are ' +
                 str(self.valid_list_output_types))
-       
+
         if sort_by and sort_by not in self.valid_list_sort_by:
             raise ValueError(
                 'Invalid sort by type specified. Valid options are ' +
@@ -1651,14 +1657,24 @@ class KaggleApi(KaggleApi):
 
         username = self.get_config_value(self.CONFIG_NAME_USER)
         meta_data = {
-            'id': username + '/INSERT_KERNEL_SLUG_HERE',
-            'title': 'INSERT_TITLE_HERE',
-            'code_file': 'INSERT_CODE_FILE_PATH_HERE',
-            'language': 'Pick one of: {' + ','.join(x for x in self.valid_push_language_types) + '}',
-            'kernel_type': 'Pick one of: {' + ','.join(x for x in self.valid_push_kernel_types) + '}',
-            'is_private': 'true',
-            'enable_gpu': 'false',
-            'enable_internet': 'false',
+            'id':
+            username + '/INSERT_KERNEL_SLUG_HERE',
+            'title':
+            'INSERT_TITLE_HERE',
+            'code_file':
+            'INSERT_CODE_FILE_PATH_HERE',
+            'language':
+            'Pick one of: {' + ','.join(
+                x for x in self.valid_push_language_types) + '}',
+            'kernel_type':
+            'Pick one of: {' + ','.join(
+                x for x in self.valid_push_kernel_types) + '}',
+            'is_private':
+            'true',
+            'enable_gpu':
+            'false',
+            'enable_internet':
+            'false',
             'dataset_sources': [],
             'competition_sources': [],
             'kernel_sources': [],

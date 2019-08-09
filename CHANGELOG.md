@@ -1,6 +1,13 @@
 Changelog
 ====
 
+#### 1.5.5
+Release date: 8/30/19
+* Add vote count and usability rating to datasets listing
+* Add min and max dataset size filters to datasets listing
+* Add additional information to dataset metadata API
+* Allow updating dataset metdata
+
 #### 1.5.4
 Release date: 5/28/19
 * Make kernels init more friendly
@@ -27,7 +34,7 @@ Release date: 12/5/18
 
 #### 1.5.0
 Release date: 10/19/18
-* Update API to work with new competitions submissions backend.  This change will force old API clients to update.  
+* Update API to work with new competitions submissions backend.  This change will force old API clients to update.
 * Update error message when config file is not found.
 
 #### 1.4.7.1
@@ -66,7 +73,7 @@ Release date: 7/30/18
 * Allow generating metadata for an existing dataset
 * Fix issue with downloading from datasets whose titles don't match their slugs
 * Use kernel slug as filename for kernel output
-* Make upload and download directory default to current working directory 
+* Make upload and download directory default to current working directory
 * Use a default username on downloading kernel or dataset data if none is specified
 * Support extended data types on datasets
 * Stop requiring `-c`, `-d`, and `-k` arguments

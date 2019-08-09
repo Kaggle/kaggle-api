@@ -31,10 +31,13 @@
 from __future__ import absolute_import
 
 # import models into model package
+from kaggle.models.collaborator import Collaborator
 from kaggle.models.dataset_column import DatasetColumn
 from kaggle.models.dataset_new_request import DatasetNewRequest
 from kaggle.models.dataset_new_version_request import DatasetNewVersionRequest
+from kaggle.models.dataset_update_settings_request import DatasetUpdateSettingsRequest
 from kaggle.models.dataset_upload_file import DatasetUploadFile
 from kaggle.models.error import Error
 from kaggle.models.kernel_push_request import KernelPushRequest
+from kaggle.models.license import License
 from kaggle.models.result import Result

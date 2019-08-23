@@ -23,7 +23,7 @@ info:
 host: www.kaggle.com
 basePath: /api/v1
 schemes:
-   - https
+  - https
 securityDefinitions:
   basicAuth:
     type: basic
@@ -85,7 +85,7 @@ paths:
           description: Result
           schema:
             $ref: '#/definitions/Result'
-        default: 
+        default:
           description: Error
           schema:
             $ref: '#/definitions/Error'
@@ -114,7 +114,7 @@ paths:
           description: Result
           schema:
             $ref: '#/definitions/Result'
-        default: 
+        default:
           description: Error
           schema:
             $ref: '#/definitions/Error'
@@ -154,7 +154,7 @@ paths:
           description: Result
           schema:
             $ref: '#/definitions/Result'
-        default: 
+        default:
           description: Error
           schema:
             $ref: '#/definitions/Error'
@@ -194,7 +194,7 @@ paths:
           description: Result
           schema:
             $ref: '#/definitions/Result'
-        default: 
+        default:
           description: Error
           schema:
             $ref: '#/definitions/Error'
@@ -229,7 +229,7 @@ paths:
           description: Result
           schema:
             $ref: '#/definitions/Result'
-        default: 
+        default:
           description: Error
           schema:
             $ref: '#/definitions/Error'
@@ -252,7 +252,7 @@ paths:
           description: Result
           schema:
             $ref: '#/definitions/Result'
-        default: 
+        default:
           description: Error
           schema:
             $ref: '#/definitions/Error'
@@ -278,7 +278,7 @@ paths:
           description: Result
           schema:
             $ref: '#/definitions/Result'
-        default: 
+        default:
           description: Error
           schema:
             $ref: '#/definitions/Error'
@@ -348,9 +348,9 @@ paths:
         - in: query
           name: size
           type: string
-          enum: [all, small, medium, large]
+          enum: []
           default: all
-          description: Display datasets of a specific size
+          description: (DEPRECATED). Please use --max-size and --min-size to filter dataset sizes.
         - in: query
           name: filetype
           type: string
@@ -381,12 +381,22 @@ paths:
           type: integer
           default: 1
           description: Page number
+        - in: query
+          name: maxSize
+          type: integer
+          format: int64
+          description: Max Dataset Size (bytes)
+        - in: query
+          name: minSize
+          type: integer
+          format: int64
+          description: Max Dataset Size (bytes)
       responses:
         200:
           description: Result
           schema:
             $ref: '#/definitions/Result'
-        default: 
+        default:
           description: Error
           schema:
             $ref: '#/definitions/Error'
@@ -414,7 +424,7 @@ paths:
           description: Result
           schema:
             $ref: '#/definitions/Result'
-        default: 
+        default:
           description: Error
           schema:
             $ref: '#/definitions/Error'
@@ -470,7 +480,7 @@ paths:
           description: Result
           schema:
             $ref: '#/definitions/Result'
-        default: 
+        default:
           description: Error
           schema:
             $ref: '#/definitions/Error'
@@ -541,7 +551,7 @@ paths:
           description: Result
           schema:
             $ref: '#/definitions/Result'
-        default: 
+        default:
           description: Error
           schema:
             $ref: '#/definitions/Error'
@@ -576,7 +586,7 @@ paths:
           description: Result
           schema:
             $ref: '#/definitions/Result'
-        default: 
+        default:
           description: Error
           schema:
             $ref: '#/definitions/Error'
@@ -643,7 +653,7 @@ paths:
           description: Result
           schema:
             $ref: '#/definitions/Result'
-        default: 
+        default:
           description: Error
           schema:
             $ref: '#/definitions/Error'
@@ -651,7 +661,7 @@ paths:
     post:
       tags:
       - kaggle
-      summary: Create a new dataset 
+      summary: Create a new dataset
       operationId: DatasetsCreateNew
       produces:
         - application/json
@@ -669,7 +679,7 @@ paths:
           description: Result
           schema:
             $ref: '#/definitions/Result'
-        default: 
+        default:
           description: Error
           schema:
             $ref: '#/definitions/Error'
@@ -853,6 +863,70 @@ paths:
           required: true
           type: string
           description: Kernel name
+      responses:
+        200:
+          description: Result
+          schema:
+            $ref: '#/definitions/Result'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/Error'
+  /datasets/metadata/{ownerSlug}/{datasetSlug}:
+    get:
+      tags:
+      - kaggle
+      summary: Get the metadata for a dataset
+      operationId: MetadataGet
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        name: ownerSlug
+        required: true
+        type: string
+        description: Dataset owner
+      - in: path
+        name: datasetSlug
+        required: true
+        type: string
+        description: Dataset name
+      responses:
+        200:
+          description: Result
+          schema:
+            $ref: '#/definitions/Result'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/Error'
+    post:
+      tags:
+      - kaggle
+      summary: Update the metadata for a dataset
+      operationId: MetadataPost
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        name: ownerSlug
+        required: true
+        type: string
+        description: Dataset owner
+      - in: path
+        name: datasetSlug
+        required: true
+        type: string
+        description: Dataset name
+      - in: body
+        name: settings
+        required: true
+        description: Dataset metadata to update
+        type: object
+        schema:
+          $ref: '#/definitions/DatasetUpdateSettingsRequest'
       responses:
         200:
           description: Result
@@ -1060,3 +1134,79 @@ definitions:
         description: A list of tag IDs to associated with the dataset
         items:
           type: string
+  DatasetUpdateSettingsRequest:
+    type: object
+    required:
+    properties:
+      title:
+        type: string
+        description: Title of the dataset
+      subtitle:
+        type: string
+        description: Subtitle of the dataset
+      description:
+        type: string
+        description: Decription of the dataset
+      isPrivate:
+        type: boolean
+        description: Whether or not the dataset should be private
+      licenses:
+        type: array
+        description: A list of licenses that apply to this dataset
+        items:
+          type: object
+          schema:
+            $ref: '!/definitions/License'
+      keywords:
+        type: array
+        description: A list of keywords that apply to this dataset
+        items:
+          type: string
+      collaborators:
+        type: array
+        description: A list of collaborators that may read or edit this dataset
+        items:
+          type: object
+          schema:
+            $ref: '!definitions/Collaborators'
+      data:
+        type: array
+        description: A list containing metadata for each file in the dataset
+        items:
+          type: object
+  License:
+    type: object
+    required:
+    - name
+    properties:
+      name:
+        type: string
+        description: Name of the license
+        enum:
+        - CC0-1.0
+        - CC-BY-SA-4.0
+        - GPL-2.0
+        - ODbL-1.0
+        - CC-BY-NC-SA-4.0
+        - unknown
+        - DbCL-1.0
+        - CC-BY-SA-3.0
+        - copyright-authors
+        - other
+        - reddit-api
+        - world-bank
+  Collaborator:
+    type: object
+    required:
+    - username
+    - role
+    properties:
+      username:
+        type: string
+        description: Username of the collaborator
+      role:
+        type: string
+        description: Role of the collaborator
+        enum:
+        - reader
+        - writer

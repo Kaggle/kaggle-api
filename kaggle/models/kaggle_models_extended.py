@@ -15,6 +15,7 @@
 # limitations under the License.
 
 # coding=utf-8
+import os
 from datetime import datetime
 
 
@@ -67,6 +68,18 @@ class Dataset(object):
 
     def __repr__(self):
         return self.ref
+
+
+class Metadata(object):
+    def __init__(self, init_info):
+        parsed_info = {k: parse(v) for k, v in init_info.items()}
+        # backwards compatibility
+        self.id = parsed_info["ownerUser"] + "/" + parsed_info['datasetSlug']
+        self.id_no = parsed_info['datasetId']
+        self.__dict__.update(parsed_info)
+
+    def __repr__(self):
+        return str(self.datasetId)
 
 
 class DatasetVersion(object):

@@ -31,9 +31,8 @@ setup(
     keywords=['Kaggle', 'API'],
     entry_points={'console_scripts': ['kaggle = kaggle.cli:main']},
     install_requires=[
-        # Restriction that urllib3's version is less than 1.25 needed to avoid
-        # requests dependency problem.
-        'urllib3 >= 1.21.1, < 1.25',
+        # Restriction that urllib3's version needed to avoid requests dependency problem.
+        'urllib3 >= 1.21.1, < 1.26, != 1.25.0, != 1.25.1',
         'six >= 1.10',
         'certifi',
         'python-dateutil',

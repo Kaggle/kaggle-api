@@ -139,7 +139,7 @@ class KaggleApi(object):
             collection_formats=collection_formats)
 
     def competition_view_leaderboard(self, id, **kwargs):  # noqa: E501
-        """VIew competition leaderboard  # noqa: E501
+        """View competition leaderboard  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True

@@ -66,7 +66,7 @@ except NameError:
 
 
 class KaggleApi(KaggleApi):
-    __version__ = '1.5.5'
+    __version__ = '1.5.6'
 
     CONFIG_NAME_PROXY = 'proxy'
     CONFIG_NAME_COMPETITION = 'competition'
@@ -682,8 +682,7 @@ class KaggleApi(KaggleApi):
                                    path=None,
                                    force=False,
                                    quiet=True):
-        """ a wrapper to competition_download_file to download all competition
-            files.
+        """ downloads all competition files.
 
             Parameters
             =========
@@ -692,12 +691,21 @@ class KaggleApi(KaggleApi):
             force: force the download if the file already exists (default False)
             quiet: suppress verbose output (default is True)
         """
-        files = self.competition_list_files(competition)
-        if not files:
-            print('This competition does not have any available data files')
-        for file_name in files:
-            self.competition_download_file(competition, file_name.ref, path,
-                                           force, quiet)
+        if path is None:
+            effective_path = self.get_default_download_dir(
+                'competitions', competition)
+        else:
+            effective_path = path
+
+        response = self.process_response(
+            self.competitions_data_download_files_with_http_info(
+                id=competition, _preload_content=False))
+        url = response.retries.history[0].redirect_location.split('?')[0]
+        outfile = os.path.join(effective_path,
+                               competition + '.' + url.split('.')[-1])
+
+        if force or self.download_needed(response, outfile, quiet):
+            self.download_file(response, outfile, quiet)
 
     def competition_download_cli(self,
                                  competition,

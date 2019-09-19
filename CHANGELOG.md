@@ -1,6 +1,10 @@
 Changelog
 ====
 
+#### 1.5.6
+Release date: 9/19/19
+* Downloading all files for a competition downloads a zip instead of individual files
+
 #### 1.5.5
 Release date: 8/30/19
 * Add vote count and usability rating to datasets listing

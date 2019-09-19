@@ -282,6 +282,27 @@ paths:
           description: Error
           schema:
             $ref: '#/definitions/Error'
+  /competitions/data/download-all/{id}:
+    get:
+      tags:
+        - kaggle
+      summary: Download all competition data files
+      operationId: CompetitionsDataDownloadFiles
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: string
+          description: Competition name
+      responses:
+        200:
+          description: Result
+          schema:
+            $ref: '#/definitions/Result'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/Error'
   /competitions/{id}/leaderboard/download:
     get:
       tags:

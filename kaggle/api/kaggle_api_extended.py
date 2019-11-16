@@ -711,9 +711,9 @@ class KaggleApi(KaggleApi):
             self.download_file(response, outfile, quiet)
         if unzip:
             import glob
-            for zipfile in glob.glob(effective_path+"/*.zip"):
-                with zipfile.Zipfile(zipfile, 'r') as zipped:
-                    zipped.extract_all(effective_path+"/"+zipfile)
+            for zip_file in glob.glob(effective_path+"/*.zip"):
+                with zipfile.ZipFile(zip_file, 'r') as zipped:
+                    zipped.extractall("./"+zip_file[:-4])
 
 
     def competition_download_cli(self,

@@ -198,6 +198,11 @@ def parse_competitions(subparsers):
                                                        dest='quiet',
                                                        action='store_true',
                                                        help=Help.param_quiet)
+    parser_competitions_download_optional.add_argument('-z',
+                                                       '--unzip',
+                                                       dest='unzip',
+                                                       action='store_true' ,
+                                                       help=Help.param_unzip)
     parser_competitions_download._action_groups.append(
         parser_competitions_download_optional)
     parser_competitions_download.set_defaults(
@@ -451,10 +456,6 @@ def parse_datasets(subparsers):
                                                    const='.',
                                                    required=False,
                                                    help=Help.param_wp)
-    parser_datasets_download_optional.add_argument('--unzip',
-                                                   dest='unzip',
-                                                   action='store_true',
-                                                   help=Help.param_unzip)
     parser_datasets_download_optional.add_argument('-o',
                                                    '--force',
                                                    dest='force',
@@ -465,6 +466,10 @@ def parse_datasets(subparsers):
                                                    dest='quiet',
                                                    action='store_true',
                                                    help=Help.param_quiet)
+    parser_datasets_download_optional.add_argument('--unzip',
+                                                   dest='unzip',
+                                                   action='store_true',
+                                                   help=Help.param_unzip)
     parser_datasets_download._action_groups.append(
         parser_datasets_download_optional)
     parser_datasets_download.set_defaults(func=api.dataset_download_cli)
@@ -945,6 +950,7 @@ class Help(object):
     param_proxy = 'Proxy for HTTP requests'
     param_quiet = (
         'Suppress printing information about the upload/download progress')
+    param_unzip = 'Unzip files into competition file structure on Kaggle'
     param_public = 'Create publicly (default is private)'
     param_keep_tabular = (
         'Do not convert tabular files to CSV (default is to convert)')

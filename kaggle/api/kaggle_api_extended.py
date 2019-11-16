@@ -101,7 +101,7 @@ class KaggleApi(KaggleApi):
         'scoreAscending', 'scoreDescending', 'viewCount', 'voteCount'
     ]
 
-    # Competitoins valid types
+    # Competitions valid types
     valid_competition_groups = ['general', 'entered', 'inClass']
     valid_competition_categories = [
         'all', 'featured', 'research', 'recruitment', 'gettingStarted',
@@ -661,6 +661,7 @@ class KaggleApi(KaggleApi):
             path: a path to download the file to
             force: force the download if the file already exists (default False)
             quiet: suppress verbose output (default is False)
+            unzip: unzip zip files to format found on competitions page on Kaggle
         """
         if path is None:
             effective_path = self.get_default_download_dir(
@@ -675,13 +676,14 @@ class KaggleApi(KaggleApi):
         outfile = os.path.join(effective_path, url.split('/')[-1])
 
         if force or self.download_needed(response, outfile, quiet):
-            self.download_file(response, outfile, quiet)
+            self.download_file(response, outfile, quiet, unzip)
 
     def competition_download_files(self,
                                    competition,
                                    path=None,
                                    force=False,
-                                   quiet=True):
+                                   quiet=True,
+                                   unzip=False):
         """ downloads all competition files.
 
             Parameters
@@ -690,6 +692,7 @@ class KaggleApi(KaggleApi):
             path: a path to download the file to
             force: force the download if the file already exists (default False)
             quiet: suppress verbose output (default is True)
+            unzip: unzip zip files to format found on competitions page on Kaggle
         """
         if path is None:
             effective_path = self.get_default_download_dir(
@@ -706,6 +709,12 @@ class KaggleApi(KaggleApi):
 
         if force or self.download_needed(response, outfile, quiet):
             self.download_file(response, outfile, quiet)
+        if unzip:
+            import glob
+            for zipfile in glob.glob(effective_path+"/*.zip"):
+                with zipfile.Zipfile(zipfile, 'r') as zipped:
+                    zipped.extract_all(effective_path+"/"+zipfile)
+
 
     def competition_download_cli(self,
                                  competition,
@@ -713,7 +722,8 @@ class KaggleApi(KaggleApi):
                                  file_name=None,
                                  path=None,
                                  force=False,
-                                 quiet=False):
+                                 quiet=False,
+                                 unzip=False):
         """ a wrapper to competition_download_files, but first will parse input
             from API client. Additional parameters are listed here, see
             competition_download for remaining.
@@ -726,6 +736,7 @@ class KaggleApi(KaggleApi):
             path: a path to download the file to
             force: force the download if the file already exists (default False)
             quiet: suppress verbose output (default is False)
+            unzip: unzip zip files to format found on competitions page on Kaggle
         """
         competition = competition or competition_opt
         if competition is None:
@@ -738,7 +749,7 @@ class KaggleApi(KaggleApi):
         else:
             if file_name is None:
                 self.competition_download_files(competition, path, force,
-                                                quiet)
+                                                quiet, unzip)
             else:
                 self.competition_download_file(competition, file_name, path,
                                                force, quiet)

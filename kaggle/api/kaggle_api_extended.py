@@ -710,10 +710,16 @@ class KaggleApi(KaggleApi):
         if force or self.download_needed(response, outfile, quiet):
             self.download_file(response, outfile, quiet)
         if unzip:
-            import glob
-            for zip_file in glob.glob(effective_path+"/*.zip"):
-                with zipfile.ZipFile(zip_file, 'r') as zipped:
-                    zipped.extractall("./"+zip_file[:-4])
+            import fnmatch
+            for file in os.listdir(effective_path):
+                if fnmatch.fnmatch(file, "*.zip"):
+                    with zipfile.ZipFile(os.path.join(effective_path, file), 'r') as zipped:
+                        zipped.extractall("./"+file[:-4])
+            for root, dirs, files in os.walk(effective_path):
+                for filename in file:
+                    if fnmatch.fnmatch(filename, "*.zip"):
+                        with zipfile.ZipFile(os.path.join(root, dirs, filename), 'r') as zipped:
+                            zipped.extractall(os.path.join(root, dirs, filename[:-4]))
 
 
     def competition_download_cli(self,

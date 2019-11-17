@@ -714,12 +714,13 @@ class KaggleApi(KaggleApi):
             for file in os.listdir(effective_path):
                 if fnmatch.fnmatch(file, "*.zip"):
                     with zipfile.ZipFile(os.path.join(effective_path, file), 'r') as zipped:
-                        zipped.extractall("./"+file[:-4])
+                        zipped.extractall(os.path.join(effective_path,file[:-4]))
             for dirname, _, filenames in os.walk(effective_path):
                 for filename in filenames:
                     if fnmatch.fnmatch(filename, "*.zip"):
+                        print("Unzipping", filename)
                         with zipfile.ZipFile(os.path.join(dirname, filename), 'r') as zipped:
-                            zipped.extractall(os.path.join(dirname, filename[:-4]))
+                            zipped.extractall(dirname)
 
 
     def competition_download_cli(self,

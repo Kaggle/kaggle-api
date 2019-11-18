@@ -950,7 +950,7 @@ class Help(object):
     param_proxy = 'Proxy for HTTP requests'
     param_quiet = (
         'Suppress printing information about the upload/download progress')
-    param_unzip = 'Unzip files into competition file structure on Kaggle'
+    param_unzip = 'Unzip downloaded zip files automatically'
     param_public = 'Create publicly (default is private)'
     param_keep_tabular = (
         'Do not convert tabular files to CSV (default is to convert)')

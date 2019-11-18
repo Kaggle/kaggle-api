@@ -133,7 +133,7 @@ optional arguments:
   -w, --wp              Download files to current working path
   -o, --force           Skip check whether local version of file is up to date, force file download
   -q, --quiet           Suppress printing information about the upload/download progress
-  -z, --unzip           Unzip downloaded competition files in format on data page of competition
+  -z, --unzip           Unzip downloaded zip files
 ```
 
 Examples:

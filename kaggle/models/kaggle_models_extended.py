@@ -104,6 +104,8 @@ class File(object):
     def get_size(size, precision=0):
         suffixes = ['B', 'KB', 'MB', 'GB', 'TB']
         suffix_index = 0
+        if size is None:
+            size = 0
         while size >= 1024 and suffix_index < 4:
             suffix_index += 1
             size /= 1024.0

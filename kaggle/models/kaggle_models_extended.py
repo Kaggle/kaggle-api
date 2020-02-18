@@ -42,7 +42,10 @@ class Submission(object):
     def __init__(self, init_dict):
         parsed_dict = {k: parse(v) for k, v in init_dict.items()}
         self.__dict__.update(parsed_dict)
-        self.size = File.get_size(self.totalBytes)
+        try:
+            self.size = File.get_size(self.totalBytes)
+        except:
+            self.size = 0
 
     def __repr__(self):
         return str(self.ref)

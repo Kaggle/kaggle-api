@@ -1742,7 +1742,7 @@ class KaggleApi(KaggleApi):
             'enable_gpu':
             'false',
             'enable_internet':
-            'false',
+            'true',
             'dataset_sources': [],
             'competition_sources': [],
             'kernel_sources': [],

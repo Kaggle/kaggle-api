@@ -1,0 +1,4 @@
+#! /bin/bash
+# execute to install kaggle
+python setup.py build
+sudo python setup.py install

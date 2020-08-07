@@ -54,7 +54,7 @@ class LeaderboardEntry(object):
         self.__dict__.update(parsed_dict)
 
     def __repr__(self):
-        return self.teamId
+        return str(self.teamId)
 
 
 class Dataset(object):

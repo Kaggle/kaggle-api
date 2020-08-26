@@ -66,7 +66,7 @@ except NameError:
 
 
 class KaggleApi(KaggleApi):
-    __version__ = '1.5.6'
+    __version__ = '1.5.7'
 
     CONFIG_NAME_PROXY = 'proxy'
     CONFIG_NAME_COMPETITION = 'competition'
@@ -93,6 +93,7 @@ class KaggleApi(KaggleApi):
     # Kernels valid types
     valid_push_kernel_types = ['script', 'notebook']
     valid_push_language_types = ['python', 'r', 'rmarkdown']
+    valid_push_pinning_types = ['original', 'latest']
     valid_list_languages = ['all', 'python', 'r', 'sqlite', 'julia']
     valid_list_kernel_types = ['all', 'script', 'notebook']
     valid_list_output_types = ['all', 'visualization', 'data']
@@ -1839,6 +1840,14 @@ class KaggleApi(KaggleApi):
         for source in kernel_sources:
             self.validate_kernel_string(source)
 
+        docker_pinning_type = self.get_or_default(
+            meta_data, 'docker_image_pinning_type', None)
+        if (docker_pinning_type is not None
+            and docker_pinning_type not in self.valid_push_pinning_types):
+            raise ValueError(
+                'If specified, the docker_image_pinning_type must be '
+                'one of ' + str(self.valid_push_pinning_types))
+
         with open(code_file) as f:
             script_body = f.read()
 
@@ -1865,7 +1874,8 @@ class KaggleApi(KaggleApi):
             competition_data_sources=self.get_or_default(
                 meta_data, 'competition_sources', []),
             kernel_data_sources=kernel_sources,
-            category_ids=self.get_or_default(meta_data, 'keywords', []))
+            category_ids=self.get_or_default(meta_data, 'keywords', []),
+            docker_image_pinning_type=docker_pinning_type)
 
         result = KernelPushResponse(
             self.process_response(

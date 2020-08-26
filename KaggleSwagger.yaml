@@ -1155,6 +1155,12 @@ definitions:
         description: A list of tag IDs to associated with the dataset
         items:
           type: string
+      dockerImagePinningType:
+        type: string
+        description: Which docker image to use for executing all new versions going forward, either "original" or "latest".
+        enum:
+        - original
+        - latest
   DatasetUpdateSettingsRequest:
     type: object
     required:

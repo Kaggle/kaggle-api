@@ -1,6 +1,11 @@
 Changelog
 ====
 
+#### 1.5.7
+Release date: 8/26/20
+* Add ability to specify the kernel docker image pinning type
+* Kernels have internet enabled by default
+
 #### 1.5.6
 Release date: 9/19/19
 * Downloading all files for a competition downloads a zip instead of individual files

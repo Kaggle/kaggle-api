@@ -1152,9 +1152,15 @@ definitions:
           type: string
       categoryIds:
         type: array
-        description: A list of tag IDs to associated with the dataset
+        description: A list of tag IDs to associated with the kernel
         items:
           type: string
+      dockerImagePinningType:
+        type: string
+        description: Which docker image to use for executing new versions going forward.
+        enum:
+        - original
+        - latest
   DatasetUpdateSettingsRequest:
     type: object
     required:

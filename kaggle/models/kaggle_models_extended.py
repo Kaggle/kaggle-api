@@ -1,5 +1,21 @@
 #!/usr/bin/python
 #
+# Copyright 2020 Kaggle Inc
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+#!/usr/bin/python
+#
 # Copyright 2019 Kaggle Inc
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -42,7 +58,10 @@ class Submission(object):
     def __init__(self, init_dict):
         parsed_dict = {k: parse(v) for k, v in init_dict.items()}
         self.__dict__.update(parsed_dict)
-        self.size = File.get_size(self.totalBytes)
+        if self.totalBytes is None:
+            self.size = None
+        else:
+            self.size = File.get_size(self.totalBytes)
 
     def __repr__(self):
         return str(self.ref)

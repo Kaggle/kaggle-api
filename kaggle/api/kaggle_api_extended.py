@@ -1,5 +1,21 @@
 #!/usr/bin/python
 #
+# Copyright 2020 Kaggle Inc
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+#!/usr/bin/python
+#
 # Copyright 2019 Kaggle Inc
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -66,7 +82,7 @@ except NameError:
 
 
 class KaggleApi(KaggleApi):
-    __version__ = '1.5.6'
+    __version__ = '1.5.8'
 
     CONFIG_NAME_PROXY = 'proxy'
     CONFIG_NAME_COMPETITION = 'competition'
@@ -93,6 +109,7 @@ class KaggleApi(KaggleApi):
     # Kernels valid types
     valid_push_kernel_types = ['script', 'notebook']
     valid_push_language_types = ['python', 'r', 'rmarkdown']
+    valid_push_pinning_types = ['original', 'latest']
     valid_list_languages = ['all', 'python', 'r', 'sqlite', 'julia']
     valid_list_kernel_types = ['all', 'script', 'notebook']
     valid_list_output_types = ['all', 'visualization', 'data']
@@ -1835,6 +1852,15 @@ class KaggleApi(KaggleApi):
         for source in kernel_sources:
             self.validate_kernel_string(source)
 
+        docker_pinning_type = self.get_or_default(meta_data,
+                                                  'docker_image_pinning_type',
+                                                  None)
+        if (docker_pinning_type is not None
+                and docker_pinning_type not in self.valid_push_pinning_types):
+            raise ValueError(
+                'If specified, the docker_image_pinning_type must be '
+                'one of ' + str(self.valid_push_pinning_types))
+
         with open(code_file) as f:
             script_body = f.read()
 
@@ -1861,7 +1887,8 @@ class KaggleApi(KaggleApi):
             competition_data_sources=self.get_or_default(
                 meta_data, 'competition_sources', []),
             kernel_data_sources=kernel_sources,
-            category_ids=self.get_or_default(meta_data, 'keywords', []))
+            category_ids=self.get_or_default(meta_data, 'keywords', []),
+            docker_image_pinning_type=docker_pinning_type)
 
         result = KernelPushResponse(
             self.process_response(

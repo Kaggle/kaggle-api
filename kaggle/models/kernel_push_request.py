@@ -1,6 +1,6 @@
 #!/usr/bin/python
 #
-# Copyright 2019 Kaggle Inc
+# Copyright 2020 Kaggle Inc
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -59,7 +59,8 @@ class KernelPushRequest(object):
         'dataset_data_sources': 'list[str]',
         'competition_data_sources': 'list[str]',
         'kernel_data_sources': 'list[str]',
-        'category_ids': 'list[str]'
+        'category_ids': 'list[str]',
+        'docker_image_pinning_type': 'str'
     }
 
     attribute_map = {
@@ -75,10 +76,11 @@ class KernelPushRequest(object):
         'dataset_data_sources': 'datasetDataSources',
         'competition_data_sources': 'competitionDataSources',
         'kernel_data_sources': 'kernelDataSources',
-        'category_ids': 'categoryIds'
+        'category_ids': 'categoryIds',
+        'docker_image_pinning_type': 'dockerImagePinningType'
     }
 
-    def __init__(self, id=None, slug=None, new_title=None, text=None, language=None, kernel_type=None, is_private=None, enable_gpu=None, enable_internet=None, dataset_data_sources=None, competition_data_sources=None, kernel_data_sources=None, category_ids=None):  # noqa: E501
+    def __init__(self, id=None, slug=None, new_title=None, text=None, language=None, kernel_type=None, is_private=None, enable_gpu=None, enable_internet=None, dataset_data_sources=None, competition_data_sources=None, kernel_data_sources=None, category_ids=None, docker_image_pinning_type=None):  # noqa: E501
         """KernelPushRequest - a model defined in Swagger"""  # noqa: E501
 
         self._id = None
@@ -94,6 +96,7 @@ class KernelPushRequest(object):
         self._competition_data_sources = None
         self._kernel_data_sources = None
         self._category_ids = None
+        self._docker_image_pinning_type = None
         self.discriminator = None
 
         if id is not None:
@@ -119,6 +122,8 @@ class KernelPushRequest(object):
             self.kernel_data_sources = kernel_data_sources
         if category_ids is not None:
             self.category_ids = category_ids
+        if docker_image_pinning_type is not None:
+            self.docker_image_pinning_type = docker_image_pinning_type
 
     @property
     def id(self):
@@ -418,7 +423,7 @@ class KernelPushRequest(object):
     def category_ids(self):
         """Gets the category_ids of this KernelPushRequest.  # noqa: E501
 
-        A list of tag IDs to associated with the dataset  # noqa: E501
+        A list of tag IDs to associated with the kernel  # noqa: E501
 
         :return: The category_ids of this KernelPushRequest.  # noqa: E501
         :rtype: list[str]
@@ -429,13 +434,42 @@ class KernelPushRequest(object):
     def category_ids(self, category_ids):
         """Sets the category_ids of this KernelPushRequest.
 
-        A list of tag IDs to associated with the dataset  # noqa: E501
+        A list of tag IDs to associated with the kernel  # noqa: E501
 
         :param category_ids: The category_ids of this KernelPushRequest.  # noqa: E501
         :type: list[str]
         """
 
         self._category_ids = category_ids
+
+    @property
+    def docker_image_pinning_type(self):
+        """Gets the docker_image_pinning_type of this KernelPushRequest.  # noqa: E501
+
+        Which docker image to use for executing new versions going forward.  # noqa: E501
+
+        :return: The docker_image_pinning_type of this KernelPushRequest.  # noqa: E501
+        :rtype: str
+        """
+        return self._docker_image_pinning_type
+
+    @docker_image_pinning_type.setter
+    def docker_image_pinning_type(self, docker_image_pinning_type):
+        """Sets the docker_image_pinning_type of this KernelPushRequest.
+
+        Which docker image to use for executing new versions going forward.  # noqa: E501
+
+        :param docker_image_pinning_type: The docker_image_pinning_type of this KernelPushRequest.  # noqa: E501
+        :type: str
+        """
+        allowed_values = ["original", "latest"]  # noqa: E501
+        if docker_image_pinning_type not in allowed_values:
+            raise ValueError(
+                "Invalid value for `docker_image_pinning_type` ({0}), must be one of {1}"  # noqa: E501
+                .format(docker_image_pinning_type, allowed_values)
+            )
+
+        self._docker_image_pinning_type = docker_image_pinning_type
 
     def to_dict(self):
         """Returns the model properties as a dict"""

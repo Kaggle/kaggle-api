@@ -613,10 +613,6 @@ Example:
 
 `kaggle config unset -n competition`
 
-
-## Limitations
-Kernel support is preliminary and may have some issues.
-
 ## License
 
 The Kaggle API is released under the [Apache 2.0 license](LICENSE).

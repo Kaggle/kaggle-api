@@ -19,7 +19,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='kaggle',
-    version='1.5.8',
+    version='1.5.9',
     description='Kaggle API',
     long_description=
     ('Official API for https://www.kaggle.com, accessible using a command line '
@@ -31,9 +31,6 @@ setup(
     keywords=['Kaggle', 'API'],
     entry_points={'console_scripts': ['kaggle = kaggle.cli:main']},
     install_requires=[
-        # Restriction that urllib3's version is less than 1.25 needed to avoid
-        # requests dependency problem.
-        'urllib3 >= 1.21.1, < 1.25',
         'six >= 1.10',
         'certifi',
         'python-dateutil',
@@ -41,6 +38,7 @@ setup(
         'tqdm',
         'python-slugify',
         'slugify',
+        'urllib3',
     ],
     packages=find_packages(),
     license='Apache 2.0')

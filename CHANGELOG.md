@@ -1,6 +1,10 @@
 Changelog
 ====
 
+### 1.5.9
+Release date: 10/21/20
+* Drop version restriction on urllib3 in setup.py.
+
 ### 1.5.8
 Release date: 09/03/20
 * No user-facing changes

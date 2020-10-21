@@ -31,9 +31,6 @@ setup(
     keywords=['Kaggle', 'API'],
     entry_points={'console_scripts': ['kaggle = kaggle.cli:main']},
     install_requires=[
-        # Restriction that urllib3's version is less than 1.25 needed to avoid
-        # requests dependency problem.
-        'urllib3 >= 1.21.1, < 1.25',
         'six >= 1.10',
         'certifi',
         'python-dateutil',
@@ -41,6 +38,7 @@ setup(
         'tqdm',
         'python-slugify',
         'slugify',
+        'urllib3',
     ],
     packages=find_packages(),
     license='Apache 2.0')

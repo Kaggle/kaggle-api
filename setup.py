@@ -37,7 +37,6 @@ setup(
         'requests',
         'tqdm',
         'python-slugify',
-        'slugify',
         'urllib3',
     ],
     packages=find_packages(),

@@ -1,6 +1,10 @@
 Changelog
 ====
 
+### 1.5.10
+Release date: 11/30/20
+* Remove dependency on slugify.
+
 ### 1.5.9
 Release date: 10/21/20
 * Drop version restriction on urllib3 in setup.py.

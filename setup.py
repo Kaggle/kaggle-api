@@ -19,7 +19,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='kaggle',
-    version='1.5.9',
+    version='1.5.10',
     description='Kaggle API',
     long_description=
     ('Official API for https://www.kaggle.com, accessible using a command line '
@@ -37,7 +37,6 @@ setup(
         'requests',
         'tqdm',
         'python-slugify',
-        'slugify',
         'urllib3',
     ],
     packages=find_packages(),

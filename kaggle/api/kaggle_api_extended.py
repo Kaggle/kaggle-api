@@ -2133,7 +2133,8 @@ class KaggleApi(KaggleApi):
             outfiles.append(outfile)
             download_response = requests.get(item['url'])
             if force or self.download_needed(item, outfile, quiet):
-                os.makedirs(os.path.split(outfile)[0], exist_ok=True)
+                if not os.path.exists(os.path.split(outfile)[0]):
+                    os.makedirs(os.path.split(outfile)[0])
                 with open(outfile, 'wb') as out:
                     out.write(download_response.content)
                 if not quiet:

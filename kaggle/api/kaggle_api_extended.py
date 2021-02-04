@@ -34,6 +34,7 @@
 from __future__ import print_function
 import csv
 from datetime import datetime
+import time
 import io
 import json
 import os
@@ -1567,7 +1568,7 @@ class KaggleApi(KaggleApi):
         else:
             print('Dataset creation error: ' + result.error)
 
-    def download_file(self, response, outfile, quiet=True, chunk_size=1048576):
+    def download_file(self, response, outfile, quiet=True, chunk_size=1048576, resume=True):
         """ download a file to an output file based on a chunk size
 
             Parameters
@@ -1576,6 +1577,7 @@ class KaggleApi(KaggleApi):
             outfile: the output file to download to
             quiet: suppress verbose output (default is True)
             chunk_size: the size of the chunk to stream
+            resume: whether to resume an existing download
         """
 
         outpath = os.path.dirname(outfile)
@@ -1583,24 +1585,53 @@ class KaggleApi(KaggleApi):
             os.makedirs(outpath)
         size = int(response.headers['Content-Length'])
         size_read = 0
+        open_mode = 'wb'
+
+        remote_date = datetime.strptime(response.headers['Last-Modified'],
+                                        '%a, %d %b %Y %X %Z')
+        remote_date_timestamp = time.mktime(remote_date.timetuple())
+
         if not quiet:
             print('Downloading ' + os.path.basename(outfile) + ' to ' +
                   outpath)
+
+        file_exists = os.path.isfile(outfile)
+        resumable = 'Accept-Ranges' in response.headers and response.headers['Accept-Ranges'] == 'bytes'
+
+        if resume and resumable and file_exists:
+            size_read = os.path.getsize(outfile)
+            open_mode = 'ab'
+
+            if not quiet:
+                print("... resuming from %d bytes (%d bytes left) ..." % (size_read, size-size_read,))
+
+            request_history = response.retries.history[0]
+            response = self.api_client.request(
+                request_history.method,
+                request_history.redirect_location,
+                headers={'Range': 'bytes=%d-' % (size_read,)},
+                _preload_content=False
+            )
+
         with tqdm(total=size,
+                  initial=size_read,
                   unit='B',
                   unit_scale=True,
                   unit_divisor=1024,
                   disable=quiet) as pbar:
-            with open(outfile, 'wb') as out:
+            with open(outfile, open_mode) as out:
                 while True:
                     data = response.read(chunk_size)
                     if not data:
                         break
                     out.write(data)
+                    os.utime(outfile, times=(remote_date_timestamp - 1, remote_date_timestamp - 1))
                     size_read = min(size, size_read + chunk_size)
                     pbar.update(len(data))
             if not quiet:
                 print('\n', end='')
+
+            os.utime(outfile, times=(remote_date_timestamp, remote_date_timestamp))
 
     def kernels_list(self,
                      page=1,

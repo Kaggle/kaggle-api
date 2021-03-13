@@ -1,6 +1,10 @@
 Changelog
 ====
 
+### 1.5.12
+Release date: 03/12/21
+* No changes
+
 ### 1.5.11
 Release date: 03/12/21
 * Add support for non-ASCII characters for kernels.

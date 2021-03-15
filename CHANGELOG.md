@@ -1,6 +1,14 @@
 Changelog
 ====
 
+### 1.5.12
+Release date: 03/12/21
+* No changes
+
+### 1.5.11
+Release date: 03/12/21
+* Add support for non-ASCII characters for kernels.
+
 ### 1.5.10
 Release date: 11/30/20
 * Remove dependency on slugify.

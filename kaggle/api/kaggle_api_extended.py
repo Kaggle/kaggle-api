@@ -82,7 +82,7 @@ except NameError:
 
 
 class KaggleApi(KaggleApi):
-    __version__ = '1.5.10'
+    __version__ = '1.5.12'
 
     CONFIG_NAME_PROXY = 'proxy'
     CONFIG_NAME_COMPETITION = 'competition'
@@ -2041,7 +2041,7 @@ class KaggleApi(KaggleApi):
             script_path = effective_path
             file_name = os.path.basename(effective_path)
 
-        with open(script_path, 'w') as f:
+        with open(script_path, 'w', encoding="utf-8") as f:
             f.write(blob['source'])
 
         if metadata:

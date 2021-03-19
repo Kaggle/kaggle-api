@@ -1151,7 +1151,8 @@ class KaggleApi(KaggleApi):
                               file_name,
                               path=None,
                               force=False,
-                              quiet=True):
+                              quiet=True,
+                              unzip=False):
         """ download a single file for a dataset
 
             Parameters
@@ -1162,6 +1163,7 @@ class KaggleApi(KaggleApi):
             path: if defined, download to this location
             force: force the download if the file already exists (default False)
             quiet: suppress verbose output (default is True)
+            unzip: if True, unzip files upon download (default is False)
         """
         if '/' in dataset:
             self.validate_dataset_string(dataset)
@@ -1185,12 +1187,27 @@ class KaggleApi(KaggleApi):
                 file_name=file_name,
                 _preload_content=False))
         url = response.retries.history[0].redirect_location.split('?')[0]
+
         outfile = os.path.join(effective_path, url.split('/')[-1])
         if force or self.download_needed(response, outfile, quiet):
             self.download_file(response, outfile, quiet)
-            return True
+            downloaded = True
         else:
-            return False
+            downloaded = False
+
+        if downloaded and unzip:
+            try:
+                with zipfile.ZipFile(outfile) as z:
+                    z.extractall(effective_path)
+            except zipfile.BadZipFile as e:
+                raise ValueError(
+                    'Bad zip file, please report on '
+                    'www.github.com/kaggle/kaggle-api', e)
+
+            try:
+                os.remove(outfile)
+            except OSError as e:
+                print('Could not delete zip file, got %s' % e)
 
     def dataset_download_files(self,
                                dataset,
@@ -1238,21 +1255,19 @@ class KaggleApi(KaggleApi):
         else:
             downloaded = False
 
-        if downloaded:
-            outfile = os.path.join(effective_path, dataset_slug + '.zip')
-            if unzip:
-                try:
-                    with zipfile.ZipFile(outfile) as z:
-                        z.extractall(effective_path)
-                except zipfile.BadZipFile as e:
-                    raise ValueError(
-                        'Bad zip file, please report on '
-                        'www.github.com/kaggle/kaggle-api', e)
+        if downloaded and unzip:
+            try:
+                with zipfile.ZipFile(outfile) as z:
+                    z.extractall(effective_path)
+            except zipfile.BadZipFile as e:
+                raise ValueError(
+                    'Bad zip file, please report on '
+                    'www.github.com/kaggle/kaggle-api', e)
 
-                try:
-                    os.remove(outfile)
-                except OSError as e:
-                    print('Could not delete zip file, got %s' % e)
+            try:
+                os.remove(outfile)
+            except OSError as e:
+                print('Could not delete zip file, got %s' % e)
 
     def dataset_download_cli(self,
                              dataset,
@@ -1289,6 +1304,7 @@ class KaggleApi(KaggleApi):
             self.dataset_download_file(dataset,
                                        file_name,
                                        path=path,
+                                       unzip=unzip,
                                        force=force,
                                        quiet=quiet)
 

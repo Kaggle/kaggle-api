@@ -699,7 +699,7 @@ class KaggleApi(KaggleApi):
         else:
             downloaded = False
 
-        if downloaded and unzip:
+        if downloaded and unzip and os.path.splitext(outfile)[1] == ".zip":
             try:
                 with zipfile.ZipFile(outfile) as z:
                     z.extractall(effective_path)
@@ -1235,7 +1235,7 @@ class KaggleApi(KaggleApi):
         else:
             downloaded = False
 
-        if downloaded and unzip:
+        if downloaded and unzip and os.path.splitext(outfile)[1] == ".zip":
             try:
                 with zipfile.ZipFile(outfile) as z:
                     z.extractall(effective_path)

@@ -1149,6 +1149,7 @@ class KaggleApi(KaggleApi):
     def dataset_download_file(self,
                               dataset,
                               file_name,
+                              version=None,
                               path=None,
                               force=False,
                               quiet=True):
@@ -1168,9 +1169,11 @@ class KaggleApi(KaggleApi):
             dataset_urls = dataset.split('/')
             owner_slug = dataset_urls[0]
             dataset_slug = dataset_urls[1]
+            version_slug = dataset_urls[3] if len(dataset_urls) > 2 else None
         else:
             owner_slug = self.get_config_value(self.CONFIG_NAME_USER)
             dataset_slug = dataset
+            version_slug = None
 
         if path is None:
             effective_path = self.get_default_download_dir(
@@ -1182,6 +1185,7 @@ class KaggleApi(KaggleApi):
             self.datasets_download_file_with_http_info(
                 owner_slug=owner_slug,
                 dataset_slug=dataset_slug,
+                dataset_version_number=version or version_slug,
                 file_name=file_name,
                 _preload_content=False))
         url = response.retries.history[0].redirect_location.split('?')[0]
@@ -1194,6 +1198,7 @@ class KaggleApi(KaggleApi):
 
     def dataset_download_files(self,
                                dataset,
+                               version=None,
                                path=None,
                                force=False,
                                quiet=True,
@@ -1216,9 +1221,11 @@ class KaggleApi(KaggleApi):
             dataset_urls = dataset.split('/')
             owner_slug = dataset_urls[0]
             dataset_slug = dataset_urls[1]
+            version_slug = dataset_urls[3] if len(dataset_urls) > 2 else None
         else:
             owner_slug = self.get_config_value(self.CONFIG_NAME_USER)
             dataset_slug = dataset
+            version_slug = None
 
         if path is None:
             effective_path = self.get_default_download_dir(
@@ -1229,6 +1236,7 @@ class KaggleApi(KaggleApi):
         response = self.process_response(
             self.datasets_download_with_http_info(owner_slug=owner_slug,
                                                   dataset_slug=dataset_slug,
+                                                  dataset_version_number=version or version_slug,
                                                   _preload_content=False))
 
         outfile = os.path.join(effective_path, dataset_slug + '.zip')
@@ -1257,6 +1265,7 @@ class KaggleApi(KaggleApi):
     def dataset_download_cli(self,
                              dataset,
                              dataset_opt=None,
+                             version=None,
                              file_name=None,
                              path=None,
                              unzip=False,
@@ -1281,6 +1290,7 @@ class KaggleApi(KaggleApi):
         dataset = dataset or dataset_opt
         if file_name is None:
             self.dataset_download_files(dataset,
+                                        version=version,
                                         path=path,
                                         unzip=unzip,
                                         force=force,
@@ -1288,6 +1298,7 @@ class KaggleApi(KaggleApi):
         else:
             self.dataset_download_file(dataset,
                                        file_name,
+                                       version=version,
                                        path=path,
                                        force=force,
                                        quiet=quiet)
@@ -2510,11 +2521,13 @@ class KaggleApi(KaggleApi):
         if dataset:
             if '/' not in dataset:
                 raise ValueError('Dataset must be specified in the form of '
-                                 '\'{username}/{dataset-slug}\'')
+                                 '\'{username}/{dataset-slug}[/version/{version-number}]\'')
 
             split = dataset.split('/')
             if not split[0] or not split[1]:
                 raise ValueError('Invalid dataset specification ' + dataset)
+            if len(split) > 2 and (split[2] != "version" or len(split) < 4 or not split[3].isdigit() or int(split[3]) < 1):
+                raise ValueError('Invalid dataset version specification ' + dataset)
 
     def validate_kernel_string(self, kernel):
         """ determine if a kernel string is valid, meaning it is in the format

@@ -449,6 +449,11 @@ def parse_datasets(subparsers):
                                                    dest='dataset_opt',
                                                    required=False,
                                                    help=argparse.SUPPRESS)
+    parser_datasets_download_optional.add_argument('-v',
+                                                   '--version',
+                                                   dest='version',
+                                                   required=False,
+                                                   help=Help.param_dataset_version)
     parser_datasets_download_optional.add_argument(
         '-f',
         '--file',
@@ -1010,8 +1015,10 @@ class Help(object):
 
     # Datasets paramas
     param_dataset = (
-        'Dataset URL suffix in format <owner>/<dataset-name> (use '
+        'Dataset URL suffix in format <owner>/<dataset-name>[/version/<version-number>] (use '
         '"kaggle datasets list" to show options)')
+    param_dataset_version = (
+        'Dataset version number (if not provided, latest will be used)')
     param_dataset_file = (
         'File name, all files downloaded if not provided\n(use '
         '"kaggle datasets files -d <dataset>" to show options)')

@@ -1447,7 +1447,7 @@ class KaggleApi(object):
             path_params['datasetSlug'] = params['dataset_slug']  # noqa: E501
 
         query_params = []
-        if 'dataset_version_number' in params:
+        if 'dataset_version_number' in params and params['dataset_version_number'] is not None:
             query_params.append(('datasetVersionNumber', params['dataset_version_number']))  # noqa: E501
 
         header_params = {}
@@ -1560,7 +1560,7 @@ class KaggleApi(object):
             path_params['fileName'] = params['file_name']  # noqa: E501
 
         query_params = []
-        if 'dataset_version_number' in params:
+        if 'dataset_version_number' in params and params['dataset_version_number'] is not None:
             query_params.append(('datasetVersionNumber', params['dataset_version_number']))  # noqa: E501
 
         header_params = {}

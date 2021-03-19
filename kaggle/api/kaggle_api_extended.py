@@ -1191,6 +1191,8 @@ class KaggleApi(KaggleApi):
         url = response.retries.history[0].redirect_location.split('?')[0]
         outfile = os.path.join(effective_path, url.split('/')[-1])
         if force or self.download_needed(response, outfile, quiet):
+            if not quiet:
+                print(f'Downloading from {owner_slug}/{dataset_slug}, version {version or version_slug or "latest"}')
             self.download_file(response, outfile, quiet)
             return True
         else:
@@ -1241,6 +1243,8 @@ class KaggleApi(KaggleApi):
 
         outfile = os.path.join(effective_path, dataset_slug + '.zip')
         if force or self.download_needed(response, outfile, quiet):
+            if not quiet:
+                print(f'Downloading from {owner_slug}/{dataset_slug}, version {version or version_slug or "latest"}')
             self.download_file(response, outfile, quiet)
             downloaded = True
         else:

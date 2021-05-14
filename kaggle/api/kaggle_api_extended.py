@@ -1044,10 +1044,12 @@ class KaggleApi(KaggleApi):
 
         result = self.process_response(
             self.metadata_get_with_http_info(owner_slug, dataset_slug))
-        if (result['errorMessage']):
+        print(result)
+        print(type(result))
+        if ('errorMessage' in result):
             raise Exception(result['errorMessage'])
 
-        metadata = Metadata(result['info'])
+        metadata = Metadata(result)
 
         meta_file = os.path.join(effective_path, self.DATASET_METADATA_FILE)
         with open(meta_file, 'w') as f:

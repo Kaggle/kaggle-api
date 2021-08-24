@@ -1581,7 +1581,7 @@ class KaggleApi(KaggleApi):
         outpath = os.path.dirname(outfile)
         if not os.path.exists(outpath):
             os.makedirs(outpath)
-        size = int(response.headers['Content-Length'])
+        size = int(response.headers.get('Content-Length', 1))
         size_read = 0
         if not quiet:
             print('Downloading ' + os.path.basename(outfile) + ' to ' +

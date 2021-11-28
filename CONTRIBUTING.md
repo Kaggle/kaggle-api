@@ -15,6 +15,11 @@ You generally only need to submit a CLA once, so if you've already submitted one
 (even if it was for a different project), you probably don't need to do it
 again.
 
+## Reporting issues
+
+All reported issues are reviewed by repository maintainers,
+please do not tag specific maintainers when reporting an issue.
+
 ## Code reviews
 
 All submissions, including submissions by project members, require review. We

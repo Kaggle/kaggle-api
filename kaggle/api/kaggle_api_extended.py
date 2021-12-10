@@ -1046,6 +1046,7 @@ class KaggleApi(KaggleApi):
             self.metadata_get_with_http_info(owner_slug, dataset_slug))
         print(result)
         print(type(result))
+
         if ('errorMessage' in result):
             raise Exception(result['errorMessage'])
 

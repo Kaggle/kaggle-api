@@ -29,7 +29,7 @@ setup(
     author_email='support@kaggle.com',
     url='https://github.com/Kaggle/kaggle-api',
     keywords=['Kaggle', 'API'],
-    entry_points={'console_scripts': ['kaggle = kaggle.cli:main']},
+    entry_points={'console_scripts': ['kaggle = kaggle.__main__:main']},
     install_requires=[
         'six >= 1.10',
         'certifi',

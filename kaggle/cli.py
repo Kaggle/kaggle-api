@@ -1018,7 +1018,7 @@ class Help(object):
     param_dataset_version_notes = 'Message describing the new version'
     param_dataset_upfile = (
         'Folder for upload, containing data files and a '
-        'special datasets-metadata.json file '
+        'special dataset-metadata.json file '
         '(https://github.com/Kaggle/kaggle-api/wiki/Dataset-Metadata). '
         'Defaults to current working directory')
     param_dataset_sort_by = (

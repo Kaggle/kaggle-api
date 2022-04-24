@@ -161,9 +161,9 @@ class KaggleApi(KaggleApi):
             if os.path.exists(self.config):
                 config_data = self.read_config_file(config_data)
             else:
-                raise IOError('Could not find {}. Make sure it\'s located in'
-                              ' {}. Or use the environment method.'.format(
-                                  self.config_file, self.config_dir))
+                raise IOError(f'Could not find {self.config_file}.'
+                              f' Make sure it\'s located in {self.config}.'
+                              ' Or use the environment method.')
 
         # Step 3: load into configuration!
         self._load_config(config_data)

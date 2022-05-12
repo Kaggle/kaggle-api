@@ -148,7 +148,7 @@ class DatasetUpdateSettingsRequest(object):
     def description(self):
         """Gets the description of this DatasetUpdateSettingsRequest.  # noqa: E501
 
-        Decription of the dataset  # noqa: E501
+        Description of the dataset  # noqa: E501
 
         :return: The description of this DatasetUpdateSettingsRequest.  # noqa: E501
         :rtype: str
@@ -159,7 +159,7 @@ class DatasetUpdateSettingsRequest(object):
     def description(self, description):
         """Sets the description of this DatasetUpdateSettingsRequest.
 
-        Decription of the dataset  # noqa: E501
+        Description of the dataset  # noqa: E501
 
         :param description: The description of this DatasetUpdateSettingsRequest.  # noqa: E501
         :type: str

@@ -1173,7 +1173,7 @@ definitions:
         description: Subtitle of the dataset
       description:
         type: string
-        description: Decription of the dataset
+        description: Description of the dataset
       isPrivate:
         type: boolean
         description: Whether or not the dataset should be private

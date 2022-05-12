@@ -118,7 +118,7 @@ class KaggleApi(KaggleApi):
         'scoreAscending', 'scoreDescending', 'viewCount', 'voteCount'
     ]
 
-    # Competitoins valid types
+    # Competitions valid types
     valid_competition_groups = ['general', 'entered', 'inClass']
     valid_competition_categories = [
         'all', 'featured', 'research', 'recruitment', 'gettingStarted',

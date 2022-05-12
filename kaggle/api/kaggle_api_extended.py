@@ -671,8 +671,8 @@ class KaggleApi(KaggleApi):
         """ download a competition file to a designated location, or use
             a default location
 
-            Paramters
-            =========
+            Parameters
+            ==========
             competition: the name of the competition
             file_name: the configuration file name
             path: a path to download the file to

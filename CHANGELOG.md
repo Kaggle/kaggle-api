@@ -59,7 +59,7 @@ Release date: 12/5/18
 #### 1.5.1
 Release date: 12/5/18
 * Allow custom ca_cert files
-* Support uplodaing datasets with subfolders
+* Support uploading datasets with subfolders
 * Fix kaggle.json permissions warning
 
 #### 1.5.0

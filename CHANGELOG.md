@@ -73,7 +73,7 @@ Release date: 8/28/18
 
 #### 1.4.7
 Release date: 8/28/18
-* Make dataset version `-p` argument actually optinal
+* Make dataset version `-p` argument actually optional
 * Don't require the `resources` field when updating a dataset
 * Don't automatically unzip datasets
 * Add an unzip option for dataset downloads

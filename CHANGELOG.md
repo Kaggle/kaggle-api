@@ -36,7 +36,7 @@ Release date: 8/30/19
 * Add vote count and usability rating to datasets listing
 * Add min and max dataset size filters to datasets listing
 * Add additional information to dataset metadata API
-* Allow updating dataset metdata
+* Allow updating dataset metadata
 
 #### 1.5.4
 Release date: 5/28/19

@@ -178,7 +178,7 @@ Release date: 5/18/18
 #### 1.3.6
 Release date: 5/7/18
 * Give the option to add tags to datasets.
-  * Known limitiation - you cannot delete tags through the API.  Those changes must be done through the website.
+  * Known limitation - you cannot delete tags through the API.  Those changes must be done through the website.
 
 #### 1.3.5
 Release date: 5/4/18

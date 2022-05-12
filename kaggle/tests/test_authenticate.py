@@ -51,7 +51,7 @@ class TestAuthenticate(unittest.TestCase):
         api = KaggleApi()
 
         self.assertTrue(api.config_dir.endswith('.kaggle'))
-        self.assertEqual(api.get_config_value('doesntexist'), None)
+        self.assertEqual(api.get_config_value('nonexistent'), None)
 
 
 if __name__ == '__main__':

@@ -788,7 +788,7 @@ class KaggleApi(KaggleApi):
 
             Parameters
             ==========
-            competition: the competition name to view leadboard for
+            competition: the competition name to view leaderboard for
         """
         result = self.process_response(
             self.competition_view_leaderboard_with_http_info(competition))
@@ -802,12 +802,12 @@ class KaggleApi(KaggleApi):
                                     download=False,
                                     csv_display=False,
                                     quiet=False):
-        """ a wrapper for competition_leaderbord_view that will print the
+        """ a wrapper for competition_leaderboard_view that will print the
             results as a table or comma separated values
 
             Parameters
             ==========
-            competition: the competition name to view leadboard for
+            competition: the competition name to view leaderboard for
             competition_opt: an alternative competition option provided by cli
             path: a path to download to, if download is True
             view: if True, show the results in the terminal as csv or table

@@ -1150,6 +1150,11 @@ definitions:
         description: A list of kernel data sources that the kernel should use. Each dataset is specified as `USERNAME/KERNEL-SLUG`
         items:
           type: string
+      modelDataSources:
+        type: array
+        description: A list of model data sources that the kernel should use. Each model is specified as `USERNAME/MODEL-SLUG/FRAMEWORK/VARIATION-SLUG/VERSION-NUMBER`
+        items:
+          type: string
       categoryIds:
         type: array
         description: A list of tag IDs to associated with the kernel

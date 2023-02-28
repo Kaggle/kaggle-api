@@ -1,6 +1,10 @@
 Changelog
 ====
 
+#### 1.5.13
+Release date: 2/27/22
+* Add ability to add a model to a kernel
+
 ### 1.5.12
 Release date: 03/12/21
 * No changes

@@ -1,21 +1,5 @@
 #!/usr/bin/python
 #
-# Copyright 2020 Kaggle Inc
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#      http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
-#!/usr/bin/python
-#
 # Copyright 2019 Kaggle Inc
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -82,7 +66,7 @@ except NameError:
 
 
 class KaggleApi(KaggleApi):
-    __version__ = '1.5.12'
+    __version__ = '1.5.13'
 
     CONFIG_NAME_PROXY = 'proxy'
     CONFIG_NAME_COMPETITION = 'competition'
@@ -1763,6 +1747,7 @@ class KaggleApi(KaggleApi):
             'dataset_sources': [],
             'competition_sources': [],
             'kernel_sources': [],
+            'model_sources': [],
         }
         meta_file = os.path.join(folder, self.KERNEL_METADATA_FILE)
         with open(meta_file, 'w') as f:
@@ -1856,6 +1841,10 @@ class KaggleApi(KaggleApi):
         for source in kernel_sources:
             self.validate_kernel_string(source)
 
+        model_sources = self.get_or_default(meta_data, 'model_sources', [])
+        for source in model_sources:
+            self.validate_model_string(source)
+
         docker_pinning_type = self.get_or_default(meta_data,
                                                   'docker_image_pinning_type',
                                                   None)
@@ -1891,6 +1880,7 @@ class KaggleApi(KaggleApi):
             competition_data_sources=self.get_or_default(
                 meta_data, 'competition_sources', []),
             kernel_data_sources=kernel_sources,
+            model_data_sources=model_sources,
             category_ids=self.get_or_default(meta_data, 'keywords', []),
             docker_image_pinning_type=docker_pinning_type)
 
@@ -2068,6 +2058,8 @@ class KaggleApi(KaggleApi):
                                 'kernel_sources')
             self.set_if_present(server_metadata, 'competitionDataSources',
                                 data, 'competition_sources')
+            self.set_if_present(server_metadata, 'modelDataSources', data,
+                                'model_sources')
             with open(metadata_path, 'w') as f:
                 json.dump(data, f, indent=2)
 
@@ -2537,6 +2529,24 @@ class KaggleApi(KaggleApi):
                 raise ValueError(
                     'Kernel slug must be at least five characters')
 
+    def validate_model_string(self, model):
+        """ determine if a model string is valid, meaning it is in the format
+            of {username}/{model-slug}.
+             Parameters
+            ==========
+            model: the model name to validate
+        """
+        if model:
+            if '/' not in model:
+                raise ValueError(
+                    'Model must be specified in the form of '
+                    '\'{username}/{model-slug}/{framework}/{variation-slug}/{version-number}\''
+                )
+
+            split = model.split('/')
+            if not split[0] or not split[1]:
+                raise ValueError('Invalid model specification ' + model)
+
     def validate_resources(self, folder, resources):
         """ validate resources is a wrapper to validate the existence of files
             and that there are no duplicates for a folder and set of resources.
@@ -2609,6 +2619,7 @@ class KaggleApi(KaggleApi):
 
 
 class TqdmBufferedReader(io.BufferedReader):
+
     def __init__(self, raw, progress_bar):
         """ helper class to implement an io.BufferedReader
              Parameters

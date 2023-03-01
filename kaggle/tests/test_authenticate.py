@@ -23,6 +23,7 @@ import unittest
 
 
 class TestAuthenticate(unittest.TestCase):
+
     def setUp(self):
         print("setup             class:%s" % self)
 

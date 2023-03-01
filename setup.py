@@ -19,7 +19,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='kaggle',
-    version='1.5.12',
+    version='1.5.13',
     description='Kaggle API',
     long_description=
     ('Official API for https://www.kaggle.com, accessible using a command line '

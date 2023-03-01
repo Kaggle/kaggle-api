@@ -28,6 +28,11 @@ setup(
     author='Kaggle',
     author_email='support@kaggle.com',
     url='https://github.com/Kaggle/kaggle-api',
+    project_urls={
+        'Documentation': 'https://www.kaggle.com/docs/api',
+        'GitHub': 'https://github.com/Kaggle/kaggle-api',
+        'Tracker': 'https://github.com/Kaggle/kaggle-api/issues',
+    },
     keywords=['Kaggle', 'API'],
     entry_points={'console_scripts': ['kaggle = kaggle.cli:main']},
     install_requires=[

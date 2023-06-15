@@ -1,8 +1,18 @@
 Changelog
 ====
 
+#### 1.6.0a2
+Release date: 6/12/23
+* Add endpoint to get a modelInstance
+* Simplify the modelInstanceVersion creation
+* Fix Model files zipping
+
+#### 1.6.0a0
+Release date: 6/07/23
+* Add Models endpoints
+
 #### 1.5.13
-Release date: 2/27/22
+Release date: 2/27/23
 * Add ability to add a model to a kernel
 
 ### 1.5.12

@@ -1,5 +1,21 @@
 #!/usr/bin/python
 #
+# Copyright 2023 Kaggle Inc
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+#!/usr/bin/python
+#
 # Copyright 2019 Kaggle Inc
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,6 +41,7 @@ from os.path import expanduser
 from os.path import isfile
 import sys
 import shutil
+import tarfile
 import zipfile
 import tempfile
 from ..api_client import ApiClient
@@ -35,7 +52,6 @@ from ..models.dataset_column import DatasetColumn
 from ..models.dataset_new_request import DatasetNewRequest
 from ..models.dataset_new_version_request import DatasetNewVersionRequest
 from ..models.dataset_update_settings_request import DatasetUpdateSettingsRequest
-from ..models.dataset_upload_file import DatasetUploadFile
 from ..models.kaggle_models_extended import Competition
 from ..models.kaggle_models_extended import Dataset
 from ..models.kaggle_models_extended import DatasetNewResponse
@@ -47,10 +63,19 @@ from ..models.kaggle_models_extended import KernelPushResponse
 from ..models.kaggle_models_extended import LeaderboardEntry
 from ..models.kaggle_models_extended import ListFilesResult
 from ..models.kaggle_models_extended import Metadata
+from ..models.kaggle_models_extended import Model
+from ..models.kaggle_models_extended import ModelNewResponse
+from ..models.kaggle_models_extended import ModelDeleteResponse
 from ..models.kaggle_models_extended import Submission
 from ..models.kaggle_models_extended import SubmitResult
 from ..models.kernel_push_request import KernelPushRequest
 from ..models.license import License
+from ..models.model_new_request import ModelNewRequest
+from ..models.model_new_instance_request import ModelNewInstanceRequest
+from ..models.model_instance_new_version_request import ModelInstanceNewVersionRequest
+from ..models.model_update_request import ModelUpdateRequest
+from ..models.model_instance_update_request import ModelInstanceUpdateRequest
+from ..models.upload_file import UploadFile
 import requests
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
@@ -58,6 +83,7 @@ from ..rest import ApiException
 import six
 from slugify import slugify
 from tqdm import tqdm
+import bleach
 
 try:
     unicode  # Python 2
@@ -66,7 +92,7 @@ except NameError:
 
 
 class KaggleApi(KaggleApi):
-    __version__ = '1.5.13'
+    __version__ = '1.6.0a2'
 
     CONFIG_NAME_PROXY = 'proxy'
     CONFIG_NAME_COMPETITION = 'competition'
@@ -79,6 +105,8 @@ class KaggleApi(KaggleApi):
     DATASET_METADATA_FILE = 'dataset-metadata.json'
     OLD_DATASET_METADATA_FILE = 'datapackage.json'
     KERNEL_METADATA_FILE = 'kernel-metadata.json'
+    MODEL_METADATA_FILE = 'model-metadata.json'
+    MODEL_INSTANCE_METADATA_FILE = 'model-instance-metadata.json'
 
     config_dir = os.environ.get('KAGGLE_CONFIG_DIR') or os.path.join(
         expanduser('~'), '.kaggle')
@@ -102,7 +130,7 @@ class KaggleApi(KaggleApi):
         'scoreAscending', 'scoreDescending', 'viewCount', 'voteCount'
     ]
 
-    # Competitoins valid types
+    # Competitions valid types
     valid_competition_groups = ['general', 'entered', 'inClass']
     valid_competition_categories = [
         'all', 'featured', 'research', 'recruitment', 'gettingStarted',
@@ -118,6 +146,11 @@ class KaggleApi(KaggleApi):
     valid_dataset_license_names = ['all', 'cc', 'gpl', 'odb', 'other']
     valid_dataset_sort_bys = [
         'hottest', 'votes', 'updated', 'active', 'published'
+    ]
+
+    # Models valid types
+    valid_model_sort_bys = [
+        'hotness', 'downloadCount', 'voteCount', 'notebookCount', 'createTime'
     ]
 
     # Hack for https://github.com/Kaggle/kaggle-api/issues/22 / b/78194015
@@ -918,7 +951,7 @@ class KaggleApi(KaggleApi):
                          csv_display=False,
                          max_size=None,
                          min_size=None):
-        """ a wrapper to datasets_list for the client. Additional parameters
+        """ a wrapper to dataset_list for the client. Additional parameters
             are described here, see dataset_list for others.
 
             Parameters
@@ -1260,7 +1293,6 @@ class KaggleApi(KaggleApi):
             force: force the download if the file already exists (default False)
             quiet: suppress verbose output (default is False)
             unzip: if True, unzip files upon download (default is False)
-            path: the path to download the dataset to
         """
         dataset = dataset or dataset_opt
         if file_name is None:
@@ -1276,21 +1308,33 @@ class KaggleApi(KaggleApi):
                                        force=force,
                                        quiet=quiet)
 
-    def dataset_upload_file(self, path, quiet):
-        """ upload a dataset file
+    def upload_file(self, path, quiet, entity='dataset'):
+        """ upload a file
 
             Parameters
             ==========
             path: the complete path to upload
             quiet: suppress verbose output (default is False)
+            dataset: whether is a dataset file, otherwise it's a model file
+            entity: dataset or model
         """
         file_name = os.path.basename(path)
         content_length = os.path.getsize(path)
         last_modified_date_utc = int(os.path.getmtime(path))
-        result = FileUploadInfo(
-            self.process_response(
-                self.datasets_upload_file_with_http_info(
-                    file_name, content_length, last_modified_date_utc)))
+        result = None
+
+        if entity == 'dataset':
+            result = FileUploadInfo(
+                self.process_response(
+                    self.datasets_upload_file_with_http_info(
+                        file_name, content_length, last_modified_date_utc)))
+        elif entity == 'model':
+            result = FileUploadInfo(
+                self.process_response(
+                    self.models_upload_file_with_http_info(
+                        file_name, content_length, last_modified_date_utc)))
+        else:
+            raise ValueError('Invalid entity to upload: ' + entity)
 
         success = self.upload_complete(path, result.createUrl, quiet)
 
@@ -1348,7 +1392,8 @@ class KaggleApi(KaggleApi):
             convert_to_csv=convert_to_csv,
             category_ids=keywords,
             delete_old_versions=delete_old_versions)
-        self.upload_files(request, resources, folder, quiet, dir_mode)
+        self.upload_files(request, resources, folder, 'dataset', quiet,
+                          dir_mode)
 
         if id_no:
             result = DatasetNewVersionResponse(
@@ -1451,7 +1496,7 @@ class KaggleApi(KaggleApi):
             with extra metadata like license and user/owner.
              Parameters
             ==========
-            folder: the folder to initialize the metadata file in
+            folder: the folder to get the metadata file from
             public: should the dataset be public?
             quiet: suppress verbose output (default is False)
             convert_to_csv: if True, convert data to comma separated value
@@ -1512,8 +1557,8 @@ class KaggleApi(KaggleApi):
                                     is_private=not public,
                                     convert_to_csv=convert_to_csv,
                                     category_ids=keywords)
-        resources = meta_data.get('resources')
-        self.upload_files(request, resources, folder, quiet, dir_mode)
+        self.upload_files(request, resources, folder, 'dataset', quiet,
+                          dir_mode)
         result = DatasetNewResponse(
             self.process_response(
                 self.datasets_create_new_with_http_info(request)))
@@ -1529,7 +1574,7 @@ class KaggleApi(KaggleApi):
         """ client wrapper for creating a new dataset
              Parameters
             ==========
-            folder: the folder to initialize the metadata file in
+            folder: the folder to get the metadata file from
             public: should the dataset be public?
             quiet: suppress verbose output (default is False)
             convert_to_csv: if True, convert data to comma separated value
@@ -2193,6 +2238,841 @@ class KaggleApi(KaggleApi):
         else:
             print('%s has status "%s"' % (kernel, status))
 
+    def model_get(self, model):
+        """ call to get a model from the API
+             Parameters
+            ==========
+            model: the string identified of the model
+                     should be in format [owner]/[model-name]
+        """
+        if model is None:
+            raise ValueError('A model must be specified')
+        owner_slug, model_slug = self.split_model_string(model)
+
+        model_get_result = self.process_response(
+            self.get_model_with_http_info(owner_slug, model_slug))
+        return model_get_result
+
+    def model_get_cli(self, model, folder=None, model_opt=None):
+        """ wrapper for client for model_get, with additional
+            model_opt to get a model from the API
+             Parameters
+            ==========
+            folder: the folder to download the model metadata file
+            model_opt: an alternative to model
+        """
+        m = model or model_opt
+        model = self.model_get(m)
+        if folder is None:
+            self.print_obj(model)
+        else:
+            meta_file = os.path.join(folder, self.MODEL_METADATA_FILE)
+
+            data = {}
+            data['id'] = model['id']
+            model_ref_split = model['ref'].split('/')
+            data['ownerSlug'] = model_ref_split[0]
+            data['slug'] = model_ref_split[1]
+            data['title'] = model['title']
+            data['subtitle'] = model['subtitle']
+            data['isPrivate'] = model['isPrivate']
+            data['description'] = model['description']
+            data['publishTime'] = model['publishTime']
+
+            with open(meta_file, 'w') as f:
+                json.dump(data, f, indent=2)
+            print('Metadata file written to {}'.format(meta_file))
+
+    def model_list(self,
+                   sort_by=None,
+                   search=None,
+                   owner=None,
+                   page_size=20,
+                   page_token=None):
+        """ return a list of models!
+
+            Parameters
+            ==========
+            sort_by: how to sort the result, see valid_model_sort_bys for options
+            search: a search term to use (default is empty string)
+            owner: username or organization slug to filter the search to
+            page_size: the page size to return (default is 20)
+            page_token: the page token for pagination
+        """
+        if sort_by and sort_by not in self.valid_model_sort_bys:
+            raise ValueError('Invalid sort by specified. Valid options are ' +
+                             str(self.valid_model_sort_bys))
+
+        if int(page_size) <= 0:
+            raise ValueError('Page size must be >= 1')
+
+        models_list_result = self.process_response(
+            self.models_list_with_http_info(sort_by=sort_by or 'hotness',
+                                            search=search or '',
+                                            owner=owner or '',
+                                            page_size=page_size,
+                                            page_token=page_token))
+
+        next_page_token = models_list_result['nextPageToken']
+        if next_page_token != '':
+            print('Next Page Token = {}'.format(next_page_token))
+
+        return [Model(m) for m in models_list_result['models']]
+
+    def model_list_cli(self,
+                       sort_by=None,
+                       search=None,
+                       owner=None,
+                       page_size=20,
+                       page_token=None,
+                       csv_display=False):
+        """ a wrapper to model_list for the client. Additional parameters
+            are described here, see model_list for others.
+
+            Parameters
+            ==========
+            sort_by: how to sort the result, see valid_model_sort_bys for options
+            search: a search term to use (default is empty string)
+            owner: username or organization slug to filter the search to
+            page_size: the page size to return (default is 20)
+            page_token: the page token for pagination
+            csv_display: if True, print comma separated values instead of table
+        """
+        models = self.model_list(sort_by, search, owner, page_size, page_token)
+        fields = ['id', 'ref', 'title', 'subtitle', 'author']
+        if models:
+            if csv_display:
+                self.print_csv(models, fields)
+            else:
+                self.print_table(models, fields)
+        else:
+            print('No models found')
+
+    def model_initialize(self, folder):
+        """ initialize a folder with a model configuration (metadata) file
+            Parameters
+            ==========
+            folder: the folder to initialize the metadata file in
+        """
+        if not os.path.isdir(folder):
+            raise ValueError('Invalid folder: ' + folder)
+
+        meta_data = {
+            'ownerSlug': 'INSERT_OWNER_SLUG_HERE',
+            'title': 'INSERT_TITLE_HERE',
+            'slug': 'INSERT_SLUG_HERE',
+            'subtitle': '',
+            'isPrivate': True,
+            'description': '''# Model Summary
+
+# Model Characteristics
+
+# Data Overview
+
+# Evaluation Results
+''',
+            'publishTime': '',
+            'provenanceSources': ''
+        }
+        meta_file = os.path.join(folder, self.MODEL_METADATA_FILE)
+        with open(meta_file, 'w') as f:
+            json.dump(meta_data, f, indent=2)
+
+        print('Model template written to: ' + meta_file)
+        return meta_file
+
+    def model_initialize_cli(self, folder=None):
+        folder = folder or os.getcwd()
+        self.model_initialize(folder)
+
+    def model_create_new(self, folder):
+        """ create a new model.
+             Parameters
+            ==========
+            folder: the folder to get the metadata file from
+        """
+        if not os.path.isdir(folder):
+            raise ValueError('Invalid folder: ' + folder)
+
+        meta_file = self.get_model_metadata_file(folder)
+
+        # read json
+        with open(meta_file) as f:
+            meta_data = json.load(f)
+        owner_slug = self.get_or_fail(meta_data, 'ownerSlug')
+        slug = self.get_or_fail(meta_data, 'slug')
+        title = self.get_or_fail(meta_data, 'title')
+        subtitle = meta_data.get('subtitle')
+        is_private = self.get_or_fail(meta_data, 'isPrivate')
+        description = self.sanitize_markdown(
+            self.get_or_fail(meta_data, 'description'))
+        publish_time = meta_data.get('publishTime')
+        provenance_sources = meta_data.get('provenanceSources')
+
+        # validations
+        if owner_slug == 'INSERT_OWNER_SLUG_HERE':
+            raise ValueError(
+                'Default ownerSlug detected, please change values before uploading'
+            )
+        if title == 'INSERT_TITLE_HERE':
+            raise ValueError(
+                'Default title detected, please change values before uploading'
+            )
+        if slug == 'INSERT_SLUG_HERE':
+            raise ValueError(
+                'Default slug detected, please change values before uploading')
+        if not isinstance(is_private, bool):
+            raise ValueError('model.isPrivate must be a boolean')
+
+        request = ModelNewRequest(owner_slug=owner_slug,
+                                  slug=slug,
+                                  title=title,
+                                  subtitle=subtitle,
+                                  is_private=is_private,
+                                  description=description,
+                                  publish_time=publish_time,
+                                  provenance_sources=provenance_sources)
+        result = ModelNewResponse(
+            self.process_response(
+                self.models_create_new_with_http_info(request)))
+
+        return result
+
+    def model_create_new_cli(self, folder=None):
+        """ client wrapper for creating a new model
+             Parameters
+            ==========
+            folder: the folder to get the metadata file from
+        """
+        folder = folder or os.getcwd()
+        result = self.model_create_new(folder)
+
+        if result.hasId:
+            print('Your model was created. Id={}. Url={}'.format(
+                result.id, result.url))
+        else:
+            print('Model creation error: ' + result.error)
+
+    def model_delete(self, model):
+        """ call to delete a model from the API
+             Parameters
+            ==========
+            model: the string identified of the model
+                     should be in format [owner]/[model-name]
+        """
+        if model is None:
+            raise ValueError('A model must be specified')
+        owner_slug, model_slug = self.split_model_string(model)
+
+        res = ModelDeleteResponse(
+            self.process_response(
+                self.delete_model_with_http_info(owner_slug, model_slug)))
+        return res
+
+    def model_delete_cli(self, model, model_opt=None):
+        """ wrapper for client for model_delete, with additional
+            model_opt to get a model from the API
+             Parameters
+            ==========
+            model_opt: an alternative to model
+        """
+        m = model or model_opt
+        result = self.model_delete(m)
+
+        if result.hasError:
+            print('Model deletion error: ' + result.error)
+        else:
+            print('The model was deleted.')
+
+    def model_update(self, folder):
+        """ update a model.
+             Parameters
+            ==========
+            folder: the folder to get the metadata file from
+        """
+        if not os.path.isdir(folder):
+            raise ValueError('Invalid folder: ' + folder)
+
+        meta_file = self.get_model_metadata_file(folder)
+
+        # read json
+        with open(meta_file) as f:
+            meta_data = json.load(f)
+        owner_slug = self.get_or_fail(meta_data, 'ownerSlug')
+        slug = self.get_or_fail(meta_data, 'slug')
+        title = self.get_or_default(meta_data, 'title', None)
+        subtitle = self.get_or_default(meta_data, 'subtitle', None)
+        is_private = self.get_or_default(meta_data, 'isPrivate', None)
+        description = self.get_or_default(meta_data, 'description', None)
+        publish_time = self.get_or_default(meta_data, 'publishTime', None)
+        provenance_sources = self.get_or_default(meta_data,
+                                                 'provenanceSources', None)
+
+        # validations
+        if owner_slug == 'INSERT_OWNER_SLUG_HERE':
+            raise ValueError(
+                'Default ownerSlug detected, please change values before uploading'
+            )
+        if slug == 'INSERT_SLUG_HERE':
+            raise ValueError(
+                'Default slug detected, please change values before uploading')
+        if is_private != None and not isinstance(is_private, bool):
+            raise ValueError('model.isPrivate must be a boolean')
+
+        # mask
+        update_mask = {'paths': []}
+        if title != None:
+            update_mask['paths'].append('title')
+        if subtitle != None:
+            update_mask['paths'].append('subtitle')
+        if is_private != None:
+            update_mask['paths'].append('is_private')
+        else:
+            is_private = True  # default value, not updated
+        if description != None:
+            description = self.sanitize_markdown(description)
+            update_mask['paths'].append('description')
+        if publish_time != None:
+            update_mask['paths'].append('publish_time')
+        if provenance_sources != None:
+            update_mask['paths'].append('provenance_sources')
+
+        request = ModelUpdateRequest(title=title,
+                                     subtitle=subtitle,
+                                     is_private=is_private,
+                                     description=description,
+                                     publish_time=publish_time,
+                                     provenance_sources=provenance_sources,
+                                     update_mask=update_mask)
+        result = ModelNewResponse(
+            self.process_response(
+                self.update_model_with_http_info(owner_slug, slug, request)))
+
+        return result
+
+    def model_update_cli(self, folder=None):
+        """ client wrapper for updating a model
+             Parameters
+            ==========
+            folder: the folder to get the metadata file from
+        """
+        folder = folder or os.getcwd()
+        result = self.model_update(folder)
+
+        if result.hasId:
+            print('Your model was updated. Id={}. Url={}'.format(
+                result.id, result.url))
+        else:
+            print('Model update error: ' + result.error)
+
+    def model_instance_get(self, model_instance):
+        """ call to get a model instance from the API
+             Parameters
+            ==========
+            model_instance: the string identified of the model instance
+                     should be in format [owner]/[model-name]/[framework]/[instance-slug]
+        """
+        if model_instance is None:
+            raise ValueError('A model instance must be specified')
+        owner_slug, model_slug, framework, instance_slug = self.split_model_instance_string(
+            model_instance)
+
+        mi = self.process_response(
+            self.get_model_instance_with_http_info(owner_slug, model_slug,
+                                                   framework, instance_slug))
+        return mi
+
+    def model_instance_get_cli(self,
+                               model_instance,
+                               folder=None,
+                               model_instance_opt=None):
+        """ wrapper for client for model_instance_get, with additional
+            model_instance_opt to get a model instance from the API
+             Parameters
+            ==========
+            model_instance: the string identified of the model instance
+                     should be in format [owner]/[model-name]/[framework]/[instance-slug]
+            folder: the folder to download the model metadata file
+            model_instance_opt: an alternative to model_instance
+        """
+        m = model_instance or model_instance_opt
+        mi = self.model_instance_get(m)
+        if folder is None:
+            self.print_obj(mi)
+        else:
+            meta_file = os.path.join(folder, self.MODEL_INSTANCE_METADATA_FILE)
+
+            owner_slug, model_slug, framework, instance_slug = self.split_model_instance_string(
+                model_instance)
+
+            data = {}
+            data['id'] = mi['id']
+            data['ownerSlug'] = owner_slug
+            data['modelSlug'] = model_slug
+            data['instanceSlug'] = mi['slug']
+            data['framework'] = mi['framework']
+            data['overview'] = mi['overview']
+            data['usage'] = mi['usage']
+            data['licenseName'] = mi['licenseName']
+            data['fineTunable'] = mi['fineTunable']
+            data['trainingData'] = mi['trainingData']
+
+            with open(meta_file, 'w') as f:
+                json.dump(data, f, indent=2)
+            print('Metadata file written to {}'.format(meta_file))
+
+    def model_instance_initialize(self, folder):
+        """ initialize a folder with a model instance configuration (metadata) file
+             Parameters
+            ==========
+            folder: the folder to initialize the metadata file in
+        """
+        if not os.path.isdir(folder):
+            raise ValueError('Invalid folder: ' + folder)
+
+        meta_data = {
+            'ownerSlug': 'INSERT_OWNER_SLUG_HERE',
+            'modelSlug': 'INSERT_EXISTING_MODEL_SLUG_HERE',
+            'instanceSlug': 'INSERT_INSTANCE_SLUG_HERE',
+            'framework': 'INSERT_FRAMEWORK_HERE',
+            'overview': '',
+            'usage': '''# Model Format
+
+# Training Data
+
+# Model Inputs
+
+# Model Outputs
+
+# Model Usage
+
+# Fine-tuning
+
+# Changelog
+''',
+            'licenseName': 'Apache 2.0',
+            'fineTunable': False,
+            'trainingData': []
+        }
+        meta_file = os.path.join(folder, self.MODEL_INSTANCE_METADATA_FILE)
+        with open(meta_file, 'w') as f:
+            json.dump(meta_data, f, indent=2)
+
+        print('Model Instance template written to: ' + meta_file)
+        return meta_file
+
+    def model_instance_initialize_cli(self, folder):
+        folder = folder or os.getcwd()
+        self.model_instance_initialize(folder)
+
+    def model_instance_create(self, folder, quiet=False, dir_mode='skip'):
+        """ create a new model instance.
+             Parameters
+            ==========
+            folder: the folder to get the metadata file from
+            quiet: suppress verbose output (default is False)
+            dir_mode: what to do with directories: "skip" - ignore; "zip" - compress and upload
+        """
+        if not os.path.isdir(folder):
+            raise ValueError('Invalid folder: ' + folder)
+
+        meta_file = self.get_model_instance_metadata_file(folder)
+
+        # read json
+        with open(meta_file) as f:
+            meta_data = json.load(f)
+        owner_slug = self.get_or_fail(meta_data, 'ownerSlug')
+        model_slug = self.get_or_fail(meta_data, 'modelSlug')
+        instance_slug = self.get_or_fail(meta_data, 'instanceSlug')
+        framework = self.get_or_fail(meta_data, 'framework')
+        overview = self.sanitize_markdown(
+            self.get_or_default(meta_data, 'overview', ''))
+        usage = self.sanitize_markdown(
+            self.get_or_default(meta_data, 'usage', ''))
+        license_name = self.get_or_fail(meta_data, 'licenseName')
+        fine_tunable = self.get_or_default(meta_data, 'fineTunable', False)
+        training_data = self.get_or_default(meta_data, 'trainingData', [])
+
+        # validations
+        if owner_slug == 'INSERT_OWNER_SLUG_HERE':
+            raise ValueError(
+                'Default ownerSlug detected, please change values before uploading'
+            )
+        if model_slug == 'INSERT_EXISTING_MODEL_SLUG_HERE':
+            raise ValueError(
+                'Default modelSlug detected, please change values before uploading'
+            )
+        if instance_slug == 'INSERT_INSTANCE_SLUG_HERE':
+            raise ValueError(
+                'Default instanceSlug detected, please change values before uploading'
+            )
+        if framework == 'INSERT_FRAMEWORK_HERE':
+            raise ValueError(
+                'Default framework detected, please change values before uploading'
+            )
+        if license_name == '':
+            raise ValueError('Please specify a license')
+        if not isinstance(fine_tunable, bool):
+            raise ValueError('modelInstance.fineTunable must be a boolean')
+        if not isinstance(training_data, list):
+            raise ValueError('modelInstance.trainingData must be a list')
+
+        request = ModelNewInstanceRequest(instance_slug=instance_slug,
+                                          framework=framework,
+                                          overview=overview,
+                                          usage=usage,
+                                          license_name=license_name,
+                                          fine_tunable=fine_tunable,
+                                          training_data=training_data,
+                                          files=[])
+        self.upload_files(request, None, folder, 'model', quiet, dir_mode)
+        result = ModelNewResponse(
+            self.process_response(
+                self.models_create_instance_with_http_info(
+                    owner_slug, model_slug, request)))
+
+        return result
+
+    def model_instance_create_cli(self, folder, quiet=False, dir_mode='skip'):
+        """ client wrapper for creating a new model instance
+             Parameters
+            ==========
+            folder: the folder to get the metadata file from
+            quiet: suppress verbose output (default is False)
+            dir_mode: what to do with directories: "skip" - ignore; "zip" - compress and upload
+        """
+        folder = folder or os.getcwd()
+        result = self.model_instance_create(folder, quiet, dir_mode)
+
+        if result.hasId:
+            print('Your model instance was created. Id={}. Url={}'.format(
+                result.id, result.url))
+        else:
+            print('Model instance creation error: ' + result.error)
+
+    def model_instance_delete(self, model_instance):
+        """ call to delete a model instance from the API
+             Parameters
+            ==========
+            model_instance: the string identified of the model instance
+                     should be in format [owner]/[model-name]/[framework]/[instance-slug]
+        """
+        if model_instance is None:
+            raise ValueError('A model instance must be specified')
+        owner_slug, model_slug, framework, instance_slug = self.split_model_instance_string(
+            model_instance)
+
+        res = ModelDeleteResponse(
+            self.process_response(
+                self.delete_model_instance_with_http_info(
+                    owner_slug, model_slug, framework, instance_slug)))
+        return res
+
+    def model_instance_delete_cli(self,
+                                  model_instance,
+                                  model_instance_opt=None):
+        """ wrapper for client for model_instance_delete, with additional
+            model_instance_opt to get a model instance from the API
+             Parameters
+            ==========
+            model_instance_opt: an alternative to model instance
+        """
+        mi = model_instance or model_instance_opt
+        result = self.model_instance_delete(mi)
+
+        if result.hasError:
+            print('Model instance deletion error: ' + result.error)
+        else:
+            print('The model instance was deleted.')
+
+    def model_instance_update(self, folder):
+        """ update a model instance.
+             Parameters
+            ==========
+            folder: the folder to get the metadata file from
+        """
+        if not os.path.isdir(folder):
+            raise ValueError('Invalid folder: ' + folder)
+
+        meta_file = self.get_model_instance_metadata_file(folder)
+
+        # read json
+        with open(meta_file) as f:
+            meta_data = json.load(f)
+        owner_slug = self.get_or_fail(meta_data, 'ownerSlug')
+        model_slug = self.get_or_fail(meta_data, 'modelSlug')
+        framework = self.get_or_fail(meta_data, 'framework')
+        instance_slug = self.get_or_fail(meta_data, 'instanceSlug')
+        overview = self.get_or_default(meta_data, 'overview', None)
+        usage = self.get_or_default(meta_data, 'usage', None)
+        license_name = self.get_or_default(meta_data, 'licenseName', None)
+        fine_tunable = self.get_or_default(meta_data, 'fineTunable', None)
+        training_data = self.get_or_default(meta_data, 'trainingData', None)
+
+        # validations
+        if owner_slug == 'INSERT_OWNER_SLUG_HERE':
+            raise ValueError(
+                'Default ownerSlug detected, please change values before uploading'
+            )
+        if model_slug == 'INSERT_SLUG_HERE':
+            raise ValueError(
+                'Default model slug detected, please change values before uploading'
+            )
+        if instance_slug == 'INSERT_INSTANCE_SLUG_HERE':
+            raise ValueError(
+                'Default instance slug detected, please change values before uploading'
+            )
+        if framework == 'INSERT_FRAMEWORK_HERE':
+            raise ValueError(
+                'Default framework detected, please change values before uploading'
+            )
+        if fine_tunable != None and not isinstance(fine_tunable, bool):
+            raise ValueError('modelInstance.fineTunable must be a boolean')
+        if training_data != None and not isinstance(training_data, list):
+            raise ValueError('modelInstance.trainingData must be a list')
+
+        # mask
+        update_mask = {'paths': []}
+        if overview != None:
+            overview = self.sanitize_markdown(overview)
+            update_mask['paths'].append('overview')
+        if usage != None:
+            usage = self.sanitize_markdown(usage)
+            update_mask['paths'].append('usage')
+        if license_name != None:
+            update_mask['paths'].append('license_name')
+        else:
+            license_name = "Apache 2.0"  # default value even if not updated
+        if fine_tunable != None:
+            update_mask['paths'].append('fine_tunable')
+        if training_data != None:
+            update_mask['paths'].append('training_data')
+
+        request = ModelInstanceUpdateRequest(overview=overview,
+                                             usage=usage,
+                                             license_name=license_name,
+                                             fine_tunable=fine_tunable,
+                                             training_data=training_data,
+                                             update_mask=update_mask)
+        result = ModelNewResponse(
+            self.process_response(
+                self.update_model_instance_with_http_info(
+                    owner_slug, model_slug, framework, instance_slug,
+                    request)))
+
+        return result
+
+    def model_instance_update_cli(self, folder=None):
+        """ client wrapper for updating a model instance
+             Parameters
+            ==========
+            folder: the folder to get the metadata file from
+        """
+        folder = folder or os.getcwd()
+        result = self.model_instance_update(folder)
+
+        if result.hasId:
+            print('Your model instance was updated. Id={}. Url={}'.format(
+                result.id, result.url))
+        else:
+            print('Model update error: ' + result.error)
+
+    def model_instance_version_create(self,
+                                      model_instance,
+                                      folder,
+                                      version_notes='',
+                                      quiet=False,
+                                      dir_mode='skip'):
+        """ create a new model instance version.
+             Parameters
+            ==========
+            model_instance: the string identified of the model instance
+                     should be in format [owner]/[model-name]/[framework]/[instance-slug]
+            folder: the folder to get the metadata file from
+            version_notes: the version notes to record for this new version
+            quiet: suppress verbose output (default is False)
+            dir_mode: what to do with directories: "skip" - ignore; "zip" - compress and upload
+        """
+        if model_instance is None:
+            raise ValueError('A model instance must be specified')
+        owner_slug, model_slug, framework, instance_slug = self.split_model_instance_string(
+            model_instance)
+
+        request = ModelInstanceNewVersionRequest(version_notes=version_notes,
+                                                 files=[])
+        self.upload_files(request, None, folder, 'model', quiet, dir_mode)
+        result = ModelNewResponse(
+            self.process_response(
+                self.models_create_instance_version_with_http_info(
+                    owner_slug, model_slug, framework, instance_slug,
+                    request)))
+
+        return result
+
+    def model_instance_version_create_cli(self,
+                                          model_instance,
+                                          folder,
+                                          version_notes='',
+                                          quiet=False,
+                                          dir_mode='skip'):
+        """ client wrapper for creating a new model instance version
+             Parameters
+            ==========
+            model_instance: the string identified of the model instance
+                     should be in format [owner]/[model-name]/[framework]/[instance-slug]
+            folder: the folder to get the metadata file from
+            version_notes: the version notes to record for this new version
+            quiet: suppress verbose output (default is False)
+            dir_mode: what to do with directories: "skip" - ignore; "zip" - compress and upload
+        """
+        result = self.model_instance_version_create(model_instance, folder,
+                                                    version_notes, quiet,
+                                                    dir_mode)
+
+        if result.hasId:
+            print('Your model instance version was created. Url={}'.format(
+                result.url))
+        else:
+            print('Model instance version creation error: ' + result.error)
+
+    def model_instance_version_download(self,
+                                        model_instance_version,
+                                        path=None,
+                                        force=False,
+                                        quiet=True,
+                                        untar=False):
+        """ download all files for a model instance version
+
+            Parameters
+            ==========
+            model_instance_version: the string identified of the model instance version
+                    should be in format [owner]/[model-name]/[framework]/[instance-slug]/[version-number]
+            path: the path to download the model instance version to
+            force: force the download if the file already exists (default False)
+            quiet: suppress verbose output (default is True)
+            untar: if True, untar files upon download (default is False)
+        """
+        if model_instance_version is None:
+            raise ValueError('A model_instance_version must be specified')
+
+        self.validate_model_instance_version_string(model_instance_version)
+        urls = model_instance_version.split('/')
+        owner_slug = urls[0]
+        model_slug = urls[1]
+        framework = urls[2]
+        instance_slug = urls[3]
+        version_number = urls[4]
+
+        if path is None:
+            effective_path = self.get_default_download_dir(
+                'models', owner_slug, model_slug, framework, instance_slug,
+                version_number)
+        else:
+            effective_path = path
+
+        response = self.process_response(
+            self.model_instance_versions_download_with_http_info(
+                owner_slug=owner_slug,
+                model_slug=model_slug,
+                framework=framework,
+                instance_slug=instance_slug,
+                version_number=version_number,
+                _preload_content=False))
+
+        outfile = os.path.join(effective_path, model_slug + '.tar.gz')
+        if force or self.download_needed(response, outfile, quiet):
+            self.download_file(response, outfile, quiet)
+            downloaded = True
+        else:
+            downloaded = False
+
+        if downloaded:
+            if untar:
+                try:
+                    with tarfile.open(outfile, mode='r:gz') as t:
+                        t.extractall(effective_path)
+                except Exception as e:
+                    raise ValueError(
+                        'Error extracting the tar.gz file, please report on '
+                        'www.github.com/kaggle/kaggle-api', e)
+
+                try:
+                    os.remove(outfile)
+                except OSError as e:
+                    print('Could not delete tar file, got %s' % e)
+
+    def model_instance_version_download_cli(self,
+                                            model_instance_version,
+                                            model_instance_version_opt=None,
+                                            path=None,
+                                            untar=False,
+                                            force=False,
+                                            quiet=False):
+        """ client wrapper for model_instance_version_download.
+
+            Parameters
+            ==========
+            model_instance_version: the string identified of the model instance version
+                    should be in format [owner]/[model-name]/[framework]/[instance-slug]/[version-number]
+            model_instance_version_opt: an alternative option to providing a model instance version
+            path: the path to download the model instance version to
+            force: force the download if the file already exists (default False)
+            quiet: suppress verbose output (default is False)
+            untar: if True, untar files upon download (default is False)
+        """
+        miv = model_instance_version or model_instance_version_opt
+        self.model_instance_version_download(model_instance_version,
+                                             path=path,
+                                             untar=untar,
+                                             force=force,
+                                             quiet=quiet)
+
+    def model_instance_version_delete(self, model_instance_version):
+        """ call to delete a model instance version from the API
+             Parameters
+            ==========
+            model_instance_version: the string identified of the model instance version
+                     should be in format [owner]/[model-name]/[framework]/[instance-slug]/[version-number]
+        """
+        if model_instance_version is None:
+            raise ValueError('A model instance version must be specified')
+
+        self.validate_model_instance_version_string(model_instance_version)
+        urls = model_instance_version.split('/')
+        owner_slug = urls[0]
+        model_slug = urls[1]
+        framework = urls[2]
+        instance_slug = urls[3]
+        version_number = urls[4]
+
+        res = ModelDeleteResponse(
+            self.process_response(
+                self.delete_model_instance_version_with_http_info(
+                    owner_slug, model_slug, framework, instance_slug,
+                    version_number)))
+        return res
+
+    def model_instance_version_delete_cli(self,
+                                          model_instance_version,
+                                          model_instance_version_opt=None):
+        """ wrapper for client for model_instance_version_delete, with additional
+            model_instance_version_opt to get a model instance version from the API
+             Parameters
+            ==========
+            model_instance_version_opt: an alternative to model instance version
+        """
+        miv = model_instance_version or model_instance_version_opt
+        result = self.model_instance_version_delete(miv)
+
+        if result.hasError:
+            print('Model instance version deletion error: ' + result.error)
+        else:
+            print('The model instance version was deleted.')
+
+    def print_obj(self, obj, indent=2):
+        pretty = json.dumps(obj, indent=indent)
+        print(pretty)
+
     def download_needed(self, response, outfile, quiet=True):
         """ determine if a download is needed based on timestamp. Return True
             if needed (remote is newer) or False if local is newest.
@@ -2286,6 +3166,20 @@ class KaggleApi(KaggleApi):
                                  self.DATASET_METADATA_FILE)
         return meta_file
 
+    def get_model_metadata_file(self, folder):
+        meta_file = os.path.join(folder, self.MODEL_METADATA_FILE)
+        if not os.path.isfile(meta_file):
+            raise ValueError('Metadata file not found: ' +
+                             self.MODEL_METADATA_FILE)
+        return meta_file
+
+    def get_model_instance_metadata_file(self, folder):
+        meta_file = os.path.join(folder, self.MODEL_INSTANCE_METADATA_FILE)
+        if not os.path.isfile(meta_file):
+            raise ValueError('Metadata file not found: ' +
+                             self.MODEL_INSTANCE_METADATA_FILE)
+        return meta_file
+
     def process_response(self, result):
         """ process a response from the API. We check the API version against
             the client's to see if it's old, and give them a warning (once)
@@ -2328,8 +3222,8 @@ class KaggleApi(KaggleApi):
             server_split.append('0')
 
         for i in range(0, client_len):
-            if 'b' in client_split[i]:
-                # Using a beta version, don't check
+            if 'a' in client_split[i] or 'b' in client_split[i]:
+                # Using a alpha/beta version, don't check
                 return True
             client = int(client_split[i])
             server = int(server_split[i])
@@ -2344,6 +3238,7 @@ class KaggleApi(KaggleApi):
                      request,
                      resources,
                      folder,
+                     entity='dataset',
                      quiet=False,
                      dir_mode='skip'):
         """ upload files in a folder
@@ -2352,18 +3247,21 @@ class KaggleApi(KaggleApi):
             request: the prepared request
             resources: the files to upload
             folder: the folder to upload from
+            entity: dataset or model
             quiet: suppress verbose output (default is False)
         """
         for file_name in os.listdir(folder):
-            if (file_name == self.DATASET_METADATA_FILE
-                    or file_name == self.OLD_DATASET_METADATA_FILE
-                    or file_name == self.KERNEL_METADATA_FILE):
+            if (file_name in [
+                    self.DATASET_METADATA_FILE, self.OLD_DATASET_METADATA_FILE,
+                    self.KERNEL_METADATA_FILE, self.MODEL_METADATA_FILE,
+                    self.MODEL_INSTANCE_METADATA_FILE
+            ]):
                 continue
             full_path = os.path.join(folder, file_name)
 
             if os.path.isfile(full_path):
                 exitcode = self._upload_file(file_name, full_path, quiet,
-                                             request, resources)
+                                             request, resources, entity)
                 if exitcode:
                     return
             elif os.path.isdir(full_path):
@@ -2377,7 +3275,8 @@ class KaggleApi(KaggleApi):
                         _, archive_name = os.path.split(archive_path)
                         exitcode = self._upload_file(archive_name,
                                                      archive_path, quiet,
-                                                     request, resources)
+                                                     request, resources,
+                                                     entity)
                     finally:
                         shutil.rmtree(temp_dir)
                     if exitcode:
@@ -2389,15 +3288,22 @@ class KaggleApi(KaggleApi):
                 if not quiet:
                     print('Skipping: ' + file_name)
 
-    def _upload_file(self, file_name, full_path, quiet, request, resources):
+    def _upload_file(self,
+                     file_name,
+                     full_path,
+                     quiet,
+                     request,
+                     resources,
+                     entity='dataset'):
         """ Helper function to upload a single file
             Parameters
             ==========
             file_name: name of the file to upload
             full_path: path to the file to upload
+            quiet: suppress verbose output
             request: the prepared request
             resources: optional file metadata
-            quiet: suppress verbose output
+            entity: dataset or model
             :return: True - upload unsuccessful; False - upload successful
         """
 
@@ -2405,7 +3311,7 @@ class KaggleApi(KaggleApi):
             print('Starting upload for file ' + file_name)
 
         content_length = os.path.getsize(full_path)
-        token = self.dataset_upload_file(full_path, quiet)
+        token = self.upload_file(full_path, quiet, entity)
         if token is None:
             if not quiet:
                 print('Upload unsuccessful: ' + file_name)
@@ -2413,7 +3319,7 @@ class KaggleApi(KaggleApi):
         if not quiet:
             print('Upload successful: ' + file_name + ' (' +
                   File.get_size(content_length) + ')')
-        upload_file = DatasetUploadFile()
+        upload_file = UploadFile()
         upload_file.token = token
         if resources:
             for item in resources:
@@ -2508,6 +3414,92 @@ class KaggleApi(KaggleApi):
             if not split[0] or not split[1]:
                 raise ValueError('Invalid dataset specification ' + dataset)
 
+    def validate_model_string(self, model):
+        """ determine if a model string is valid, meaning it is in the format
+            of {owner}/{model-slug}.
+             Parameters
+            ==========
+            model: the model name to validate
+        """
+        if model:
+            if model.count('/') != 1:
+                raise ValueError('Model must be specified in the form of '
+                                 '\'{owner}/{model-slug}\'')
+
+            split = model.split('/')
+            if not split[0] or not split[1]:
+                raise ValueError('Invalid model specification ' + model)
+
+    def split_model_string(self, model):
+        """ split a model string into owner_slug, model_slug
+             Parameters
+            ==========
+            model: the model name to split
+        """
+        if '/' in model:
+            self.validate_model_string(model)
+            model_urls = model.split('/')
+            return model_urls[0], model_urls[1]
+        else:
+            return self.get_config_value(self.CONFIG_NAME_USER), model
+
+    def validate_model_instance_string(self, model_instance):
+        """ determine if a model instance string is valid, meaning it is in the format
+            of {owner}/{model-slug}/{framework}/{instance-slug}.
+             Parameters
+            ==========
+            model_instance: the model instance name to validate
+        """
+        if model_instance:
+            if model_instance.count('/') != 3:
+                raise ValueError(
+                    'Model instance must be specified in the form of '
+                    '\'{owner}/{model-slug}/{framework}/{instance-slug}\'')
+
+            split = model_instance.split('/')
+            if not split[0] or not split[1] or not split[2] or not split[3]:
+                raise ValueError('Invalid model instance specification ' +
+                                 model_instance)
+
+    def split_model_instance_string(self, model_instance):
+        """ split a model instance string into owner_slug, model_slug, 
+            framework, instance_slug
+             Parameters
+            ==========
+            model_instance: the model instance name to validate
+        """
+        self.validate_model_instance_string(model_instance)
+        urls = model_instance.split('/')
+        return urls[0], urls[1], urls[2], urls[3]
+
+    def validate_model_instance_version_string(self, model_instance_version):
+        """ determine if a model instance version string is valid, meaning it is in the format
+            of {owner}/{model-slug}/{framework}/{instance-slug}/{version-number}.
+             Parameters
+            ==========
+            model_instance_version: the model instance version name to validate
+        """
+        if model_instance_version:
+            if model_instance_version.count('/') != 4:
+                raise ValueError(
+                    'Model instance version must be specified in the form of '
+                    '\'{owner}/{model-slug}/{framework}/{instance-slug}/{version-number}\''
+                )
+
+            split = model_instance_version.split('/')
+            if not split[0] or not split[1] or not split[2] or not split[
+                    3] or not split[4]:
+                raise ValueError(
+                    'Invalid model instance version specification ' +
+                    model_instance_version)
+
+            try:
+                version_number = int(split[4])
+            except:
+                raise ValueError(
+                    'Model instance version\'s version-number must be an integer'
+                )
+
     def validate_kernel_string(self, kernel):
         """ determine if a kernel string is valid, meaning it is in the format
             of {username}/{kernel-slug}.
@@ -2531,7 +3523,7 @@ class KaggleApi(KaggleApi):
 
     def validate_model_string(self, model):
         """ determine if a model string is valid, meaning it is in the format
-            of {username}/{model-slug}.
+            of {username}/{model-slug}/{framework}/{variation-slug}/{version-number}.
              Parameters
             ==========
             model: the model name to validate
@@ -2616,6 +3608,12 @@ class KaggleApi(KaggleApi):
         as_metadata['schema'] = schema
 
         return as_metadata
+
+    def validate_date(self, date):
+        datetime.strptime(date, "%Y-%m-%d")
+
+    def sanitize_markdown(self, markdown):
+        return bleach.clean(markdown)
 
 
 class TqdmBufferedReader(io.BufferedReader):

@@ -1,6 +1,6 @@
 #!/usr/bin/python
 #
-# Copyright 2020 Kaggle Inc
+# Copyright 2023 Kaggle Inc
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -32,7 +32,7 @@ import re  # noqa: F401
 
 import six
 
-from kaggle.models.dataset_upload_file import DatasetUploadFile  # noqa: F401,E501
+from kaggle.models.upload_file import UploadFile  # noqa: F401,E501
 
 
 class DatasetNewVersionRequest(object):
@@ -52,7 +52,7 @@ class DatasetNewVersionRequest(object):
         'version_notes': 'str',
         'subtitle': 'str',
         'description': 'str',
-        'files': 'list[DatasetUploadFile]',
+        'files': 'list[UploadFile]',
         'convert_to_csv': 'bool',
         'category_ids': 'list[str]',
         'delete_old_versions': 'bool'
@@ -171,7 +171,7 @@ class DatasetNewVersionRequest(object):
         A list of files that should be associated with the dataset  # noqa: E501
 
         :return: The files of this DatasetNewVersionRequest.  # noqa: E501
-        :rtype: list[DatasetUploadFile]
+        :rtype: list[UploadFile]
         """
         return self._files
 
@@ -182,7 +182,7 @@ class DatasetNewVersionRequest(object):
         A list of files that should be associated with the dataset  # noqa: E501
 
         :param files: The files of this DatasetNewVersionRequest.  # noqa: E501
-        :type: list[DatasetUploadFile]
+        :type: list[UploadFile]
         """
         if files is None:
             raise ValueError("Invalid value for `files`, must not be `None`")  # noqa: E501

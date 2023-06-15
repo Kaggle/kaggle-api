@@ -1,6 +1,6 @@
 #!/usr/bin/python
 #
-# Copyright 2020 Kaggle Inc
+# Copyright 2023 Kaggle Inc
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='kaggle',
-    version='1.5.13',
+    version='1.6.0a2',
     description='Kaggle API',
     long_description=
     ('Official API for https://www.kaggle.com, accessible using a command line '
@@ -43,6 +43,7 @@ setup(
         'tqdm',
         'python-slugify',
         'urllib3',
+        'bleach',
     ],
     packages=find_packages(),
     license='Apache 2.0')

@@ -1,6 +1,6 @@
 #!/usr/bin/python
 #
-# Copyright 2020 Kaggle Inc
+# Copyright 2023 Kaggle Inc
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -2137,6 +2137,583 @@ class KaggleApi(object):
             _request_timeout=params.get('_request_timeout'),
             collection_formats=collection_formats)
 
+    def delete_model(self, owner_slug, model_slug, **kwargs):  # noqa: E501
+        """Delete a model  # noqa: E501
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.delete_model(owner_slug, model_slug, async_req=True)
+        >>> result = thread.get()
+
+        :param async_req bool
+        :param str owner_slug: Model owner (required)
+        :param str model_slug: Model name (required)
+        :return: Result
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+        kwargs['_return_http_data_only'] = True
+        if kwargs.get('async_req'):
+            return self.delete_model_with_http_info(owner_slug, model_slug, **kwargs)  # noqa: E501
+        else:
+            (data) = self.delete_model_with_http_info(owner_slug, model_slug, **kwargs)  # noqa: E501
+            return data
+
+    def delete_model_with_http_info(self, owner_slug, model_slug, **kwargs):  # noqa: E501
+        """Delete a model  # noqa: E501
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.delete_model_with_http_info(owner_slug, model_slug, async_req=True)
+        >>> result = thread.get()
+
+        :param async_req bool
+        :param str owner_slug: Model owner (required)
+        :param str model_slug: Model name (required)
+        :return: Result
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+
+        all_params = ['owner_slug', 'model_slug']  # noqa: E501
+        all_params.append('async_req')
+        all_params.append('_return_http_data_only')
+        all_params.append('_preload_content')
+        all_params.append('_request_timeout')
+
+        params = locals()
+        for key, val in six.iteritems(params['kwargs']):
+            if key not in all_params:
+                raise TypeError(
+                    "Got an unexpected keyword argument '%s'"
+                    " to method delete_model" % key
+                )
+            params[key] = val
+        del params['kwargs']
+        # verify the required parameter 'owner_slug' is set
+        if ('owner_slug' not in params or
+                params['owner_slug'] is None):
+            raise ValueError("Missing the required parameter `owner_slug` when calling `delete_model`")  # noqa: E501
+        # verify the required parameter 'model_slug' is set
+        if ('model_slug' not in params or
+                params['model_slug'] is None):
+            raise ValueError("Missing the required parameter `model_slug` when calling `delete_model`")  # noqa: E501
+
+        collection_formats = {}
+
+        path_params = {}
+        if 'owner_slug' in params:
+            path_params['ownerSlug'] = params['owner_slug']  # noqa: E501
+        if 'model_slug' in params:
+            path_params['modelSlug'] = params['model_slug']  # noqa: E501
+
+        query_params = []
+
+        header_params = {}
+
+        form_params = []
+        local_var_files = {}
+
+        body_params = None
+        # HTTP header `Accept`
+        header_params['Accept'] = self.api_client.select_header_accept(
+            ['application/json'])  # noqa: E501
+
+        # HTTP header `Content-Type`
+        header_params['Content-Type'] = self.api_client.select_header_content_type(  # noqa: E501
+            ['application/json'])  # noqa: E501
+
+        # Authentication setting
+        auth_settings = ['basicAuth']  # noqa: E501
+
+        return self.api_client.call_api(
+            '/models/{ownerSlug}/{modelSlug}/delete', 'POST',
+            path_params,
+            query_params,
+            header_params,
+            body=body_params,
+            post_params=form_params,
+            files=local_var_files,
+            response_type='Result',  # noqa: E501
+            auth_settings=auth_settings,
+            async_req=params.get('async_req'),
+            _return_http_data_only=params.get('_return_http_data_only'),
+            _preload_content=params.get('_preload_content', True),
+            _request_timeout=params.get('_request_timeout'),
+            collection_formats=collection_formats)
+
+    def delete_model_instance(self, owner_slug, model_slug, framework, instance_slug, **kwargs):  # noqa: E501
+        """Delete a model instance  # noqa: E501
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.delete_model_instance(owner_slug, model_slug, framework, instance_slug, async_req=True)
+        >>> result = thread.get()
+
+        :param async_req bool
+        :param str owner_slug: Model owner (required)
+        :param str model_slug: Model name (required)
+        :param str framework: Model instance framework (required)
+        :param str instance_slug: Model instance slug (required)
+        :return: Result
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+        kwargs['_return_http_data_only'] = True
+        if kwargs.get('async_req'):
+            return self.delete_model_instance_with_http_info(owner_slug, model_slug, framework, instance_slug, **kwargs)  # noqa: E501
+        else:
+            (data) = self.delete_model_instance_with_http_info(owner_slug, model_slug, framework, instance_slug, **kwargs)  # noqa: E501
+            return data
+
+    def delete_model_instance_with_http_info(self, owner_slug, model_slug, framework, instance_slug, **kwargs):  # noqa: E501
+        """Delete a model instance  # noqa: E501
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.delete_model_instance_with_http_info(owner_slug, model_slug, framework, instance_slug, async_req=True)
+        >>> result = thread.get()
+
+        :param async_req bool
+        :param str owner_slug: Model owner (required)
+        :param str model_slug: Model name (required)
+        :param str framework: Model instance framework (required)
+        :param str instance_slug: Model instance slug (required)
+        :return: Result
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+
+        all_params = ['owner_slug', 'model_slug', 'framework', 'instance_slug']  # noqa: E501
+        all_params.append('async_req')
+        all_params.append('_return_http_data_only')
+        all_params.append('_preload_content')
+        all_params.append('_request_timeout')
+
+        params = locals()
+        for key, val in six.iteritems(params['kwargs']):
+            if key not in all_params:
+                raise TypeError(
+                    "Got an unexpected keyword argument '%s'"
+                    " to method delete_model_instance" % key
+                )
+            params[key] = val
+        del params['kwargs']
+        # verify the required parameter 'owner_slug' is set
+        if ('owner_slug' not in params or
+                params['owner_slug'] is None):
+            raise ValueError("Missing the required parameter `owner_slug` when calling `delete_model_instance`")  # noqa: E501
+        # verify the required parameter 'model_slug' is set
+        if ('model_slug' not in params or
+                params['model_slug'] is None):
+            raise ValueError("Missing the required parameter `model_slug` when calling `delete_model_instance`")  # noqa: E501
+        # verify the required parameter 'framework' is set
+        if ('framework' not in params or
+                params['framework'] is None):
+            raise ValueError("Missing the required parameter `framework` when calling `delete_model_instance`")  # noqa: E501
+        # verify the required parameter 'instance_slug' is set
+        if ('instance_slug' not in params or
+                params['instance_slug'] is None):
+            raise ValueError("Missing the required parameter `instance_slug` when calling `delete_model_instance`")  # noqa: E501
+
+        collection_formats = {}
+
+        path_params = {}
+        if 'owner_slug' in params:
+            path_params['ownerSlug'] = params['owner_slug']  # noqa: E501
+        if 'model_slug' in params:
+            path_params['modelSlug'] = params['model_slug']  # noqa: E501
+        if 'framework' in params:
+            path_params['framework'] = params['framework']  # noqa: E501
+        if 'instance_slug' in params:
+            path_params['instanceSlug'] = params['instance_slug']  # noqa: E501
+
+        query_params = []
+
+        header_params = {}
+
+        form_params = []
+        local_var_files = {}
+
+        body_params = None
+        # HTTP header `Accept`
+        header_params['Accept'] = self.api_client.select_header_accept(
+            ['application/json'])  # noqa: E501
+
+        # HTTP header `Content-Type`
+        header_params['Content-Type'] = self.api_client.select_header_content_type(  # noqa: E501
+            ['application/json'])  # noqa: E501
+
+        # Authentication setting
+        auth_settings = ['basicAuth']  # noqa: E501
+
+        return self.api_client.call_api(
+            '/models/{ownerSlug}/{modelSlug}/{framework}/{instanceSlug}/delete', 'POST',
+            path_params,
+            query_params,
+            header_params,
+            body=body_params,
+            post_params=form_params,
+            files=local_var_files,
+            response_type='Result',  # noqa: E501
+            auth_settings=auth_settings,
+            async_req=params.get('async_req'),
+            _return_http_data_only=params.get('_return_http_data_only'),
+            _preload_content=params.get('_preload_content', True),
+            _request_timeout=params.get('_request_timeout'),
+            collection_formats=collection_formats)
+
+    def delete_model_instance_version(self, owner_slug, model_slug, framework, instance_slug, version_number, **kwargs):  # noqa: E501
+        """Delete a model instance version  # noqa: E501
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.delete_model_instance_version(owner_slug, model_slug, framework, instance_slug, version_number, async_req=True)
+        >>> result = thread.get()
+
+        :param async_req bool
+        :param str owner_slug: Model owner (required)
+        :param str model_slug: Model name (required)
+        :param str framework: Model instance framework (required)
+        :param str instance_slug: Model instance slug (required)
+        :param str version_number: Model instance version number (required)
+        :return: Result
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+        kwargs['_return_http_data_only'] = True
+        if kwargs.get('async_req'):
+            return self.delete_model_instance_version_with_http_info(owner_slug, model_slug, framework, instance_slug, version_number, **kwargs)  # noqa: E501
+        else:
+            (data) = self.delete_model_instance_version_with_http_info(owner_slug, model_slug, framework, instance_slug, version_number, **kwargs)  # noqa: E501
+            return data
+
+    def delete_model_instance_version_with_http_info(self, owner_slug, model_slug, framework, instance_slug, version_number, **kwargs):  # noqa: E501
+        """Delete a model instance version  # noqa: E501
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.delete_model_instance_version_with_http_info(owner_slug, model_slug, framework, instance_slug, version_number, async_req=True)
+        >>> result = thread.get()
+
+        :param async_req bool
+        :param str owner_slug: Model owner (required)
+        :param str model_slug: Model name (required)
+        :param str framework: Model instance framework (required)
+        :param str instance_slug: Model instance slug (required)
+        :param str version_number: Model instance version number (required)
+        :return: Result
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+
+        all_params = ['owner_slug', 'model_slug', 'framework', 'instance_slug', 'version_number']  # noqa: E501
+        all_params.append('async_req')
+        all_params.append('_return_http_data_only')
+        all_params.append('_preload_content')
+        all_params.append('_request_timeout')
+
+        params = locals()
+        for key, val in six.iteritems(params['kwargs']):
+            if key not in all_params:
+                raise TypeError(
+                    "Got an unexpected keyword argument '%s'"
+                    " to method delete_model_instance_version" % key
+                )
+            params[key] = val
+        del params['kwargs']
+        # verify the required parameter 'owner_slug' is set
+        if ('owner_slug' not in params or
+                params['owner_slug'] is None):
+            raise ValueError("Missing the required parameter `owner_slug` when calling `delete_model_instance_version`")  # noqa: E501
+        # verify the required parameter 'model_slug' is set
+        if ('model_slug' not in params or
+                params['model_slug'] is None):
+            raise ValueError("Missing the required parameter `model_slug` when calling `delete_model_instance_version`")  # noqa: E501
+        # verify the required parameter 'framework' is set
+        if ('framework' not in params or
+                params['framework'] is None):
+            raise ValueError("Missing the required parameter `framework` when calling `delete_model_instance_version`")  # noqa: E501
+        # verify the required parameter 'instance_slug' is set
+        if ('instance_slug' not in params or
+                params['instance_slug'] is None):
+            raise ValueError("Missing the required parameter `instance_slug` when calling `delete_model_instance_version`")  # noqa: E501
+        # verify the required parameter 'version_number' is set
+        if ('version_number' not in params or
+                params['version_number'] is None):
+            raise ValueError("Missing the required parameter `version_number` when calling `delete_model_instance_version`")  # noqa: E501
+
+        collection_formats = {}
+
+        path_params = {}
+        if 'owner_slug' in params:
+            path_params['ownerSlug'] = params['owner_slug']  # noqa: E501
+        if 'model_slug' in params:
+            path_params['modelSlug'] = params['model_slug']  # noqa: E501
+        if 'framework' in params:
+            path_params['framework'] = params['framework']  # noqa: E501
+        if 'instance_slug' in params:
+            path_params['instanceSlug'] = params['instance_slug']  # noqa: E501
+        if 'version_number' in params:
+            path_params['versionNumber'] = params['version_number']  # noqa: E501
+
+        query_params = []
+
+        header_params = {}
+
+        form_params = []
+        local_var_files = {}
+
+        body_params = None
+        # HTTP header `Accept`
+        header_params['Accept'] = self.api_client.select_header_accept(
+            ['application/json'])  # noqa: E501
+
+        # HTTP header `Content-Type`
+        header_params['Content-Type'] = self.api_client.select_header_content_type(  # noqa: E501
+            ['application/json'])  # noqa: E501
+
+        # Authentication setting
+        auth_settings = ['basicAuth']  # noqa: E501
+
+        return self.api_client.call_api(
+            '/models/{ownerSlug}/{modelSlug}/{framework}/{instanceSlug}/{versionNumber}/delete', 'POST',
+            path_params,
+            query_params,
+            header_params,
+            body=body_params,
+            post_params=form_params,
+            files=local_var_files,
+            response_type='Result',  # noqa: E501
+            auth_settings=auth_settings,
+            async_req=params.get('async_req'),
+            _return_http_data_only=params.get('_return_http_data_only'),
+            _preload_content=params.get('_preload_content', True),
+            _request_timeout=params.get('_request_timeout'),
+            collection_formats=collection_formats)
+
+    def get_model(self, owner_slug, model_slug, **kwargs):  # noqa: E501
+        """Get a model  # noqa: E501
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.get_model(owner_slug, model_slug, async_req=True)
+        >>> result = thread.get()
+
+        :param async_req bool
+        :param str owner_slug: Model owner (required)
+        :param str model_slug: Model name (required)
+        :return: Result
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+        kwargs['_return_http_data_only'] = True
+        if kwargs.get('async_req'):
+            return self.get_model_with_http_info(owner_slug, model_slug, **kwargs)  # noqa: E501
+        else:
+            (data) = self.get_model_with_http_info(owner_slug, model_slug, **kwargs)  # noqa: E501
+            return data
+
+    def get_model_with_http_info(self, owner_slug, model_slug, **kwargs):  # noqa: E501
+        """Get a model  # noqa: E501
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.get_model_with_http_info(owner_slug, model_slug, async_req=True)
+        >>> result = thread.get()
+
+        :param async_req bool
+        :param str owner_slug: Model owner (required)
+        :param str model_slug: Model name (required)
+        :return: Result
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+
+        all_params = ['owner_slug', 'model_slug']  # noqa: E501
+        all_params.append('async_req')
+        all_params.append('_return_http_data_only')
+        all_params.append('_preload_content')
+        all_params.append('_request_timeout')
+
+        params = locals()
+        for key, val in six.iteritems(params['kwargs']):
+            if key not in all_params:
+                raise TypeError(
+                    "Got an unexpected keyword argument '%s'"
+                    " to method get_model" % key
+                )
+            params[key] = val
+        del params['kwargs']
+        # verify the required parameter 'owner_slug' is set
+        if ('owner_slug' not in params or
+                params['owner_slug'] is None):
+            raise ValueError("Missing the required parameter `owner_slug` when calling `get_model`")  # noqa: E501
+        # verify the required parameter 'model_slug' is set
+        if ('model_slug' not in params or
+                params['model_slug'] is None):
+            raise ValueError("Missing the required parameter `model_slug` when calling `get_model`")  # noqa: E501
+
+        collection_formats = {}
+
+        path_params = {}
+        if 'owner_slug' in params:
+            path_params['ownerSlug'] = params['owner_slug']  # noqa: E501
+        if 'model_slug' in params:
+            path_params['modelSlug'] = params['model_slug']  # noqa: E501
+
+        query_params = []
+
+        header_params = {}
+
+        form_params = []
+        local_var_files = {}
+
+        body_params = None
+        # HTTP header `Accept`
+        header_params['Accept'] = self.api_client.select_header_accept(
+            ['application/json'])  # noqa: E501
+
+        # Authentication setting
+        auth_settings = ['basicAuth']  # noqa: E501
+
+        return self.api_client.call_api(
+            '/models/{ownerSlug}/{modelSlug}/get', 'GET',
+            path_params,
+            query_params,
+            header_params,
+            body=body_params,
+            post_params=form_params,
+            files=local_var_files,
+            response_type='Result',  # noqa: E501
+            auth_settings=auth_settings,
+            async_req=params.get('async_req'),
+            _return_http_data_only=params.get('_return_http_data_only'),
+            _preload_content=params.get('_preload_content', True),
+            _request_timeout=params.get('_request_timeout'),
+            collection_formats=collection_formats)
+
+    def get_model_instance(self, owner_slug, model_slug, framework, instance_slug, **kwargs):  # noqa: E501
+        """Get a model instance  # noqa: E501
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.get_model_instance(owner_slug, model_slug, framework, instance_slug, async_req=True)
+        >>> result = thread.get()
+
+        :param async_req bool
+        :param str owner_slug: Model owner (required)
+        :param str model_slug: Model name (required)
+        :param str framework: Model instance framework (required)
+        :param str instance_slug: Model instance slug (required)
+        :return: Result
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+        kwargs['_return_http_data_only'] = True
+        if kwargs.get('async_req'):
+            return self.get_model_instance_with_http_info(owner_slug, model_slug, framework, instance_slug, **kwargs)  # noqa: E501
+        else:
+            (data) = self.get_model_instance_with_http_info(owner_slug, model_slug, framework, instance_slug, **kwargs)  # noqa: E501
+            return data
+
+    def get_model_instance_with_http_info(self, owner_slug, model_slug, framework, instance_slug, **kwargs):  # noqa: E501
+        """Get a model instance  # noqa: E501
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.get_model_instance_with_http_info(owner_slug, model_slug, framework, instance_slug, async_req=True)
+        >>> result = thread.get()
+
+        :param async_req bool
+        :param str owner_slug: Model owner (required)
+        :param str model_slug: Model name (required)
+        :param str framework: Model instance framework (required)
+        :param str instance_slug: Model instance slug (required)
+        :return: Result
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+
+        all_params = ['owner_slug', 'model_slug', 'framework', 'instance_slug']  # noqa: E501
+        all_params.append('async_req')
+        all_params.append('_return_http_data_only')
+        all_params.append('_preload_content')
+        all_params.append('_request_timeout')
+
+        params = locals()
+        for key, val in six.iteritems(params['kwargs']):
+            if key not in all_params:
+                raise TypeError(
+                    "Got an unexpected keyword argument '%s'"
+                    " to method get_model_instance" % key
+                )
+            params[key] = val
+        del params['kwargs']
+        # verify the required parameter 'owner_slug' is set
+        if ('owner_slug' not in params or
+                params['owner_slug'] is None):
+            raise ValueError("Missing the required parameter `owner_slug` when calling `get_model_instance`")  # noqa: E501
+        # verify the required parameter 'model_slug' is set
+        if ('model_slug' not in params or
+                params['model_slug'] is None):
+            raise ValueError("Missing the required parameter `model_slug` when calling `get_model_instance`")  # noqa: E501
+        # verify the required parameter 'framework' is set
+        if ('framework' not in params or
+                params['framework'] is None):
+            raise ValueError("Missing the required parameter `framework` when calling `get_model_instance`")  # noqa: E501
+        # verify the required parameter 'instance_slug' is set
+        if ('instance_slug' not in params or
+                params['instance_slug'] is None):
+            raise ValueError("Missing the required parameter `instance_slug` when calling `get_model_instance`")  # noqa: E501
+
+        collection_formats = {}
+
+        path_params = {}
+        if 'owner_slug' in params:
+            path_params['ownerSlug'] = params['owner_slug']  # noqa: E501
+        if 'model_slug' in params:
+            path_params['modelSlug'] = params['model_slug']  # noqa: E501
+        if 'framework' in params:
+            path_params['framework'] = params['framework']  # noqa: E501
+        if 'instance_slug' in params:
+            path_params['instanceSlug'] = params['instance_slug']  # noqa: E501
+
+        query_params = []
+
+        header_params = {}
+
+        form_params = []
+        local_var_files = {}
+
+        body_params = None
+        # HTTP header `Accept`
+        header_params['Accept'] = self.api_client.select_header_accept(
+            ['application/json'])  # noqa: E501
+
+        # HTTP header `Content-Type`
+        header_params['Content-Type'] = self.api_client.select_header_content_type(  # noqa: E501
+            ['application/json'])  # noqa: E501
+
+        # Authentication setting
+        auth_settings = ['basicAuth']  # noqa: E501
+
+        return self.api_client.call_api(
+            '/models/{ownerSlug}/{modelSlug}/{framework}/{instanceSlug}/get', 'GET',
+            path_params,
+            query_params,
+            header_params,
+            body=body_params,
+            post_params=form_params,
+            files=local_var_files,
+            response_type='Result',  # noqa: E501
+            auth_settings=auth_settings,
+            async_req=params.get('async_req'),
+            _return_http_data_only=params.get('_return_http_data_only'),
+            _preload_content=params.get('_preload_content', True),
+            _request_timeout=params.get('_request_timeout'),
+            collection_formats=collection_formats)
+
     def kernel_output(self, user_name, kernel_slug, **kwargs):  # noqa: E501
         """Download the latest output from a kernel  # noqa: E501
 
@@ -2870,6 +3447,930 @@ class KaggleApi(object):
 
         return self.api_client.call_api(
             '/datasets/metadata/{ownerSlug}/{datasetSlug}', 'POST',
+            path_params,
+            query_params,
+            header_params,
+            body=body_params,
+            post_params=form_params,
+            files=local_var_files,
+            response_type='Result',  # noqa: E501
+            auth_settings=auth_settings,
+            async_req=params.get('async_req'),
+            _return_http_data_only=params.get('_return_http_data_only'),
+            _preload_content=params.get('_preload_content', True),
+            _request_timeout=params.get('_request_timeout'),
+            collection_formats=collection_formats)
+
+    def model_instance_versions_download(self, owner_slug, model_slug, framework, instance_slug, version_number, **kwargs):  # noqa: E501
+        """Download model instance version files  # noqa: E501
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.model_instance_versions_download(owner_slug, model_slug, framework, instance_slug, version_number, async_req=True)
+        >>> result = thread.get()
+
+        :param async_req bool
+        :param str owner_slug: Model owner (required)
+        :param str model_slug: Model name (required)
+        :param str framework: Model instance framework (required)
+        :param str instance_slug: Model instance slug (required)
+        :param str version_number: Model instance version number (required)
+        :return: Result
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+        kwargs['_return_http_data_only'] = True
+        if kwargs.get('async_req'):
+            return self.model_instance_versions_download_with_http_info(owner_slug, model_slug, framework, instance_slug, version_number, **kwargs)  # noqa: E501
+        else:
+            (data) = self.model_instance_versions_download_with_http_info(owner_slug, model_slug, framework, instance_slug, version_number, **kwargs)  # noqa: E501
+            return data
+
+    def model_instance_versions_download_with_http_info(self, owner_slug, model_slug, framework, instance_slug, version_number, **kwargs):  # noqa: E501
+        """Download model instance version files  # noqa: E501
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.model_instance_versions_download_with_http_info(owner_slug, model_slug, framework, instance_slug, version_number, async_req=True)
+        >>> result = thread.get()
+
+        :param async_req bool
+        :param str owner_slug: Model owner (required)
+        :param str model_slug: Model name (required)
+        :param str framework: Model instance framework (required)
+        :param str instance_slug: Model instance slug (required)
+        :param str version_number: Model instance version number (required)
+        :return: Result
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+
+        all_params = ['owner_slug', 'model_slug', 'framework', 'instance_slug', 'version_number']  # noqa: E501
+        all_params.append('async_req')
+        all_params.append('_return_http_data_only')
+        all_params.append('_preload_content')
+        all_params.append('_request_timeout')
+
+        params = locals()
+        for key, val in six.iteritems(params['kwargs']):
+            if key not in all_params:
+                raise TypeError(
+                    "Got an unexpected keyword argument '%s'"
+                    " to method model_instance_versions_download" % key
+                )
+            params[key] = val
+        del params['kwargs']
+        # verify the required parameter 'owner_slug' is set
+        if ('owner_slug' not in params or
+                params['owner_slug'] is None):
+            raise ValueError("Missing the required parameter `owner_slug` when calling `model_instance_versions_download`")  # noqa: E501
+        # verify the required parameter 'model_slug' is set
+        if ('model_slug' not in params or
+                params['model_slug'] is None):
+            raise ValueError("Missing the required parameter `model_slug` when calling `model_instance_versions_download`")  # noqa: E501
+        # verify the required parameter 'framework' is set
+        if ('framework' not in params or
+                params['framework'] is None):
+            raise ValueError("Missing the required parameter `framework` when calling `model_instance_versions_download`")  # noqa: E501
+        # verify the required parameter 'instance_slug' is set
+        if ('instance_slug' not in params or
+                params['instance_slug'] is None):
+            raise ValueError("Missing the required parameter `instance_slug` when calling `model_instance_versions_download`")  # noqa: E501
+        # verify the required parameter 'version_number' is set
+        if ('version_number' not in params or
+                params['version_number'] is None):
+            raise ValueError("Missing the required parameter `version_number` when calling `model_instance_versions_download`")  # noqa: E501
+
+        collection_formats = {}
+
+        path_params = {}
+        if 'owner_slug' in params:
+            path_params['ownerSlug'] = params['owner_slug']  # noqa: E501
+        if 'model_slug' in params:
+            path_params['modelSlug'] = params['model_slug']  # noqa: E501
+        if 'framework' in params:
+            path_params['framework'] = params['framework']  # noqa: E501
+        if 'instance_slug' in params:
+            path_params['instanceSlug'] = params['instance_slug']  # noqa: E501
+        if 'version_number' in params:
+            path_params['versionNumber'] = params['version_number']  # noqa: E501
+
+        query_params = []
+
+        header_params = {}
+
+        form_params = []
+        local_var_files = {}
+
+        body_params = None
+        # HTTP header `Accept`
+        header_params['Accept'] = self.api_client.select_header_accept(
+            ['file'])  # noqa: E501
+
+        # Authentication setting
+        auth_settings = ['basicAuth']  # noqa: E501
+
+        return self.api_client.call_api(
+            '/models/{ownerSlug}/{modelSlug}/{framework}/{instanceSlug}/{versionNumber}/download', 'GET',
+            path_params,
+            query_params,
+            header_params,
+            body=body_params,
+            post_params=form_params,
+            files=local_var_files,
+            response_type='Result',  # noqa: E501
+            auth_settings=auth_settings,
+            async_req=params.get('async_req'),
+            _return_http_data_only=params.get('_return_http_data_only'),
+            _preload_content=params.get('_preload_content', True),
+            _request_timeout=params.get('_request_timeout'),
+            collection_formats=collection_formats)
+
+    def models_create_instance(self, owner_slug, model_slug, model_new_instance_request, **kwargs):  # noqa: E501
+        """Create a new model instance  # noqa: E501
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.models_create_instance(owner_slug, model_slug, model_new_instance_request, async_req=True)
+        >>> result = thread.get()
+
+        :param async_req bool
+        :param str owner_slug: Model owner (required)
+        :param str model_slug: Model slug (required)
+        :param ModelNewInstanceRequest model_new_instance_request: Information for creating a new model instance (required)
+        :return: Result
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+        kwargs['_return_http_data_only'] = True
+        if kwargs.get('async_req'):
+            return self.models_create_instance_with_http_info(owner_slug, model_slug, model_new_instance_request, **kwargs)  # noqa: E501
+        else:
+            (data) = self.models_create_instance_with_http_info(owner_slug, model_slug, model_new_instance_request, **kwargs)  # noqa: E501
+            return data
+
+    def models_create_instance_with_http_info(self, owner_slug, model_slug, model_new_instance_request, **kwargs):  # noqa: E501
+        """Create a new model instance  # noqa: E501
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.models_create_instance_with_http_info(owner_slug, model_slug, model_new_instance_request, async_req=True)
+        >>> result = thread.get()
+
+        :param async_req bool
+        :param str owner_slug: Model owner (required)
+        :param str model_slug: Model slug (required)
+        :param ModelNewInstanceRequest model_new_instance_request: Information for creating a new model instance (required)
+        :return: Result
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+
+        all_params = ['owner_slug', 'model_slug', 'model_new_instance_request']  # noqa: E501
+        all_params.append('async_req')
+        all_params.append('_return_http_data_only')
+        all_params.append('_preload_content')
+        all_params.append('_request_timeout')
+
+        params = locals()
+        for key, val in six.iteritems(params['kwargs']):
+            if key not in all_params:
+                raise TypeError(
+                    "Got an unexpected keyword argument '%s'"
+                    " to method models_create_instance" % key
+                )
+            params[key] = val
+        del params['kwargs']
+        # verify the required parameter 'owner_slug' is set
+        if ('owner_slug' not in params or
+                params['owner_slug'] is None):
+            raise ValueError("Missing the required parameter `owner_slug` when calling `models_create_instance`")  # noqa: E501
+        # verify the required parameter 'model_slug' is set
+        if ('model_slug' not in params or
+                params['model_slug'] is None):
+            raise ValueError("Missing the required parameter `model_slug` when calling `models_create_instance`")  # noqa: E501
+        # verify the required parameter 'model_new_instance_request' is set
+        if ('model_new_instance_request' not in params or
+                params['model_new_instance_request'] is None):
+            raise ValueError("Missing the required parameter `model_new_instance_request` when calling `models_create_instance`")  # noqa: E501
+
+        collection_formats = {}
+
+        path_params = {}
+        if 'owner_slug' in params:
+            path_params['ownerSlug'] = params['owner_slug']  # noqa: E501
+        if 'model_slug' in params:
+            path_params['modelSlug'] = params['model_slug']  # noqa: E501
+
+        query_params = []
+
+        header_params = {}
+
+        form_params = []
+        local_var_files = {}
+
+        body_params = None
+        if 'model_new_instance_request' in params:
+            body_params = params['model_new_instance_request']
+        # HTTP header `Accept`
+        header_params['Accept'] = self.api_client.select_header_accept(
+            ['application/json'])  # noqa: E501
+
+        # HTTP header `Content-Type`
+        header_params['Content-Type'] = self.api_client.select_header_content_type(  # noqa: E501
+            ['application/json'])  # noqa: E501
+
+        # Authentication setting
+        auth_settings = ['basicAuth']  # noqa: E501
+
+        return self.api_client.call_api(
+            '/models/{ownerSlug}/{modelSlug}/create/instance', 'POST',
+            path_params,
+            query_params,
+            header_params,
+            body=body_params,
+            post_params=form_params,
+            files=local_var_files,
+            response_type='Result',  # noqa: E501
+            auth_settings=auth_settings,
+            async_req=params.get('async_req'),
+            _return_http_data_only=params.get('_return_http_data_only'),
+            _preload_content=params.get('_preload_content', True),
+            _request_timeout=params.get('_request_timeout'),
+            collection_formats=collection_formats)
+
+    def models_create_instance_version(self, owner_slug, model_slug, framework, instance_slug, model_instance_new_version_request, **kwargs):  # noqa: E501
+        """Create a new model instance version  # noqa: E501
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.models_create_instance_version(owner_slug, model_slug, framework, instance_slug, model_instance_new_version_request, async_req=True)
+        >>> result = thread.get()
+
+        :param async_req bool
+        :param str owner_slug: Model owner (required)
+        :param str model_slug: Model slug (required)
+        :param str framework: Model instance framework (required)
+        :param str instance_slug: Model instance slug (required)
+        :param ModelInstanceNewVersionRequest model_instance_new_version_request: Information for creating a new model instance version (required)
+        :return: Result
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+        kwargs['_return_http_data_only'] = True
+        if kwargs.get('async_req'):
+            return self.models_create_instance_version_with_http_info(owner_slug, model_slug, framework, instance_slug, model_instance_new_version_request, **kwargs)  # noqa: E501
+        else:
+            (data) = self.models_create_instance_version_with_http_info(owner_slug, model_slug, framework, instance_slug, model_instance_new_version_request, **kwargs)  # noqa: E501
+            return data
+
+    def models_create_instance_version_with_http_info(self, owner_slug, model_slug, framework, instance_slug, model_instance_new_version_request, **kwargs):  # noqa: E501
+        """Create a new model instance version  # noqa: E501
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.models_create_instance_version_with_http_info(owner_slug, model_slug, framework, instance_slug, model_instance_new_version_request, async_req=True)
+        >>> result = thread.get()
+
+        :param async_req bool
+        :param str owner_slug: Model owner (required)
+        :param str model_slug: Model slug (required)
+        :param str framework: Model instance framework (required)
+        :param str instance_slug: Model instance slug (required)
+        :param ModelInstanceNewVersionRequest model_instance_new_version_request: Information for creating a new model instance version (required)
+        :return: Result
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+
+        all_params = ['owner_slug', 'model_slug', 'framework', 'instance_slug', 'model_instance_new_version_request']  # noqa: E501
+        all_params.append('async_req')
+        all_params.append('_return_http_data_only')
+        all_params.append('_preload_content')
+        all_params.append('_request_timeout')
+
+        params = locals()
+        for key, val in six.iteritems(params['kwargs']):
+            if key not in all_params:
+                raise TypeError(
+                    "Got an unexpected keyword argument '%s'"
+                    " to method models_create_instance_version" % key
+                )
+            params[key] = val
+        del params['kwargs']
+        # verify the required parameter 'owner_slug' is set
+        if ('owner_slug' not in params or
+                params['owner_slug'] is None):
+            raise ValueError("Missing the required parameter `owner_slug` when calling `models_create_instance_version`")  # noqa: E501
+        # verify the required parameter 'model_slug' is set
+        if ('model_slug' not in params or
+                params['model_slug'] is None):
+            raise ValueError("Missing the required parameter `model_slug` when calling `models_create_instance_version`")  # noqa: E501
+        # verify the required parameter 'framework' is set
+        if ('framework' not in params or
+                params['framework'] is None):
+            raise ValueError("Missing the required parameter `framework` when calling `models_create_instance_version`")  # noqa: E501
+        # verify the required parameter 'instance_slug' is set
+        if ('instance_slug' not in params or
+                params['instance_slug'] is None):
+            raise ValueError("Missing the required parameter `instance_slug` when calling `models_create_instance_version`")  # noqa: E501
+        # verify the required parameter 'model_instance_new_version_request' is set
+        if ('model_instance_new_version_request' not in params or
+                params['model_instance_new_version_request'] is None):
+            raise ValueError("Missing the required parameter `model_instance_new_version_request` when calling `models_create_instance_version`")  # noqa: E501
+
+        collection_formats = {}
+
+        path_params = {}
+        if 'owner_slug' in params:
+            path_params['ownerSlug'] = params['owner_slug']  # noqa: E501
+        if 'model_slug' in params:
+            path_params['modelSlug'] = params['model_slug']  # noqa: E501
+        if 'framework' in params:
+            path_params['framework'] = params['framework']  # noqa: E501
+        if 'instance_slug' in params:
+            path_params['instanceSlug'] = params['instance_slug']  # noqa: E501
+
+        query_params = []
+
+        header_params = {}
+
+        form_params = []
+        local_var_files = {}
+
+        body_params = None
+        if 'model_instance_new_version_request' in params:
+            body_params = params['model_instance_new_version_request']
+        # HTTP header `Accept`
+        header_params['Accept'] = self.api_client.select_header_accept(
+            ['application/json'])  # noqa: E501
+
+        # HTTP header `Content-Type`
+        header_params['Content-Type'] = self.api_client.select_header_content_type(  # noqa: E501
+            ['application/json'])  # noqa: E501
+
+        # Authentication setting
+        auth_settings = ['basicAuth']  # noqa: E501
+
+        return self.api_client.call_api(
+            '/models/{ownerSlug}/{modelSlug}/{framework}/{instanceSlug}/create/version', 'POST',
+            path_params,
+            query_params,
+            header_params,
+            body=body_params,
+            post_params=form_params,
+            files=local_var_files,
+            response_type='Result',  # noqa: E501
+            auth_settings=auth_settings,
+            async_req=params.get('async_req'),
+            _return_http_data_only=params.get('_return_http_data_only'),
+            _preload_content=params.get('_preload_content', True),
+            _request_timeout=params.get('_request_timeout'),
+            collection_formats=collection_formats)
+
+    def models_create_new(self, model_new_request, **kwargs):  # noqa: E501
+        """Create a new model  # noqa: E501
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.models_create_new(model_new_request, async_req=True)
+        >>> result = thread.get()
+
+        :param async_req bool
+        :param ModelNewRequest model_new_request: Information for creating a new model (required)
+        :return: Result
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+        kwargs['_return_http_data_only'] = True
+        if kwargs.get('async_req'):
+            return self.models_create_new_with_http_info(model_new_request, **kwargs)  # noqa: E501
+        else:
+            (data) = self.models_create_new_with_http_info(model_new_request, **kwargs)  # noqa: E501
+            return data
+
+    def models_create_new_with_http_info(self, model_new_request, **kwargs):  # noqa: E501
+        """Create a new model  # noqa: E501
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.models_create_new_with_http_info(model_new_request, async_req=True)
+        >>> result = thread.get()
+
+        :param async_req bool
+        :param ModelNewRequest model_new_request: Information for creating a new model (required)
+        :return: Result
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+
+        all_params = ['model_new_request']  # noqa: E501
+        all_params.append('async_req')
+        all_params.append('_return_http_data_only')
+        all_params.append('_preload_content')
+        all_params.append('_request_timeout')
+
+        params = locals()
+        for key, val in six.iteritems(params['kwargs']):
+            if key not in all_params:
+                raise TypeError(
+                    "Got an unexpected keyword argument '%s'"
+                    " to method models_create_new" % key
+                )
+            params[key] = val
+        del params['kwargs']
+        # verify the required parameter 'model_new_request' is set
+        if ('model_new_request' not in params or
+                params['model_new_request'] is None):
+            raise ValueError("Missing the required parameter `model_new_request` when calling `models_create_new`")  # noqa: E501
+
+        collection_formats = {}
+
+        path_params = {}
+
+        query_params = []
+
+        header_params = {}
+
+        form_params = []
+        local_var_files = {}
+
+        body_params = None
+        if 'model_new_request' in params:
+            body_params = params['model_new_request']
+        # HTTP header `Accept`
+        header_params['Accept'] = self.api_client.select_header_accept(
+            ['application/json'])  # noqa: E501
+
+        # HTTP header `Content-Type`
+        header_params['Content-Type'] = self.api_client.select_header_content_type(  # noqa: E501
+            ['application/json'])  # noqa: E501
+
+        # Authentication setting
+        auth_settings = ['basicAuth']  # noqa: E501
+
+        return self.api_client.call_api(
+            '/models/create/new', 'POST',
+            path_params,
+            query_params,
+            header_params,
+            body=body_params,
+            post_params=form_params,
+            files=local_var_files,
+            response_type='Result',  # noqa: E501
+            auth_settings=auth_settings,
+            async_req=params.get('async_req'),
+            _return_http_data_only=params.get('_return_http_data_only'),
+            _preload_content=params.get('_preload_content', True),
+            _request_timeout=params.get('_request_timeout'),
+            collection_formats=collection_formats)
+
+    def models_list(self, **kwargs):  # noqa: E501
+        """Lists models  # noqa: E501
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.models_list(async_req=True)
+        >>> result = thread.get()
+
+        :param async_req bool
+        :param str search: Search terms
+        :param str sort_by: Sort the results
+        :param str owner: Display models by a specific user or organization
+        :param int page_size: Page size
+        :param str page_token: Page token for pagination
+        :return: Result
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+        kwargs['_return_http_data_only'] = True
+        if kwargs.get('async_req'):
+            return self.models_list_with_http_info(**kwargs)  # noqa: E501
+        else:
+            (data) = self.models_list_with_http_info(**kwargs)  # noqa: E501
+            return data
+
+    def models_list_with_http_info(self, **kwargs):  # noqa: E501
+        """Lists models  # noqa: E501
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.models_list_with_http_info(async_req=True)
+        >>> result = thread.get()
+
+        :param async_req bool
+        :param str search: Search terms
+        :param str sort_by: Sort the results
+        :param str owner: Display models by a specific user or organization
+        :param int page_size: Page size
+        :param str page_token: Page token for pagination
+        :return: Result
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+
+        all_params = ['search', 'sort_by', 'owner', 'page_size', 'page_token']  # noqa: E501
+        all_params.append('async_req')
+        all_params.append('_return_http_data_only')
+        all_params.append('_preload_content')
+        all_params.append('_request_timeout')
+
+        params = locals()
+        for key, val in six.iteritems(params['kwargs']):
+            if key not in all_params:
+                raise TypeError(
+                    "Got an unexpected keyword argument '%s'"
+                    " to method models_list" % key
+                )
+            params[key] = val
+        del params['kwargs']
+
+        collection_formats = {}
+
+        path_params = {}
+
+        query_params = []
+        if 'search' in params:
+            query_params.append(('search', params['search']))  # noqa: E501
+        if 'sort_by' in params:
+            query_params.append(('sortBy', params['sort_by']))  # noqa: E501
+        if 'owner' in params:
+            query_params.append(('owner', params['owner']))  # noqa: E501
+        if 'page_size' in params:
+            query_params.append(('pageSize', params['page_size']))  # noqa: E501
+        if 'page_token' in params:
+            query_params.append(('pageToken', params['page_token']))  # noqa: E501
+
+        header_params = {}
+
+        form_params = []
+        local_var_files = {}
+
+        body_params = None
+        # HTTP header `Accept`
+        header_params['Accept'] = self.api_client.select_header_accept(
+            ['application/json'])  # noqa: E501
+
+        # Authentication setting
+        auth_settings = ['basicAuth']  # noqa: E501
+
+        return self.api_client.call_api(
+            '/models/list', 'GET',
+            path_params,
+            query_params,
+            header_params,
+            body=body_params,
+            post_params=form_params,
+            files=local_var_files,
+            response_type='Result',  # noqa: E501
+            auth_settings=auth_settings,
+            async_req=params.get('async_req'),
+            _return_http_data_only=params.get('_return_http_data_only'),
+            _preload_content=params.get('_preload_content', True),
+            _request_timeout=params.get('_request_timeout'),
+            collection_formats=collection_formats)
+
+    def models_upload_file(self, file_name, content_length, last_modified_date_utc, **kwargs):  # noqa: E501
+        """Get URL and token to start uploading a model file  # noqa: E501
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.models_upload_file(file_name, content_length, last_modified_date_utc, async_req=True)
+        >>> result = thread.get()
+
+        :param async_req bool
+        :param str file_name: Model file name (required)
+        :param int content_length: Content length of file in bytes (required)
+        :param int last_modified_date_utc: Last modified date of file in milliseconds since epoch in UTC (required)
+        :return: Result
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+        kwargs['_return_http_data_only'] = True
+        if kwargs.get('async_req'):
+            return self.models_upload_file_with_http_info(file_name, content_length, last_modified_date_utc, **kwargs)  # noqa: E501
+        else:
+            (data) = self.models_upload_file_with_http_info(file_name, content_length, last_modified_date_utc, **kwargs)  # noqa: E501
+            return data
+
+    def models_upload_file_with_http_info(self, file_name, content_length, last_modified_date_utc, **kwargs):  # noqa: E501
+        """Get URL and token to start uploading a model file  # noqa: E501
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.models_upload_file_with_http_info(file_name, content_length, last_modified_date_utc, async_req=True)
+        >>> result = thread.get()
+
+        :param async_req bool
+        :param str file_name: Model file name (required)
+        :param int content_length: Content length of file in bytes (required)
+        :param int last_modified_date_utc: Last modified date of file in milliseconds since epoch in UTC (required)
+        :return: Result
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+
+        all_params = ['file_name', 'content_length', 'last_modified_date_utc']  # noqa: E501
+        all_params.append('async_req')
+        all_params.append('_return_http_data_only')
+        all_params.append('_preload_content')
+        all_params.append('_request_timeout')
+
+        params = locals()
+        for key, val in six.iteritems(params['kwargs']):
+            if key not in all_params:
+                raise TypeError(
+                    "Got an unexpected keyword argument '%s'"
+                    " to method models_upload_file" % key
+                )
+            params[key] = val
+        del params['kwargs']
+        # verify the required parameter 'file_name' is set
+        if ('file_name' not in params or
+                params['file_name'] is None):
+            raise ValueError("Missing the required parameter `file_name` when calling `models_upload_file`")  # noqa: E501
+        # verify the required parameter 'content_length' is set
+        if ('content_length' not in params or
+                params['content_length'] is None):
+            raise ValueError("Missing the required parameter `content_length` when calling `models_upload_file`")  # noqa: E501
+        # verify the required parameter 'last_modified_date_utc' is set
+        if ('last_modified_date_utc' not in params or
+                params['last_modified_date_utc'] is None):
+            raise ValueError("Missing the required parameter `last_modified_date_utc` when calling `models_upload_file`")  # noqa: E501
+
+        collection_formats = {}
+
+        path_params = {}
+        if 'content_length' in params:
+            path_params['contentLength'] = params['content_length']  # noqa: E501
+        if 'last_modified_date_utc' in params:
+            path_params['lastModifiedDateUtc'] = params['last_modified_date_utc']  # noqa: E501
+
+        query_params = []
+
+        header_params = {}
+
+        form_params = []
+        local_var_files = {}
+        if 'file_name' in params:
+            form_params.append(('fileName', params['file_name']))  # noqa: E501
+
+        body_params = None
+        # HTTP header `Accept`
+        header_params['Accept'] = self.api_client.select_header_accept(
+            ['application/json'])  # noqa: E501
+
+        # HTTP header `Content-Type`
+        header_params['Content-Type'] = self.api_client.select_header_content_type(  # noqa: E501
+            ['multipart/form-data'])  # noqa: E501
+
+        # Authentication setting
+        auth_settings = ['basicAuth']  # noqa: E501
+
+        return self.api_client.call_api(
+            '/models/upload/file/{contentLength}/{lastModifiedDateUtc}', 'POST',
+            path_params,
+            query_params,
+            header_params,
+            body=body_params,
+            post_params=form_params,
+            files=local_var_files,
+            response_type='Result',  # noqa: E501
+            auth_settings=auth_settings,
+            async_req=params.get('async_req'),
+            _return_http_data_only=params.get('_return_http_data_only'),
+            _preload_content=params.get('_preload_content', True),
+            _request_timeout=params.get('_request_timeout'),
+            collection_formats=collection_formats)
+
+    def update_model(self, owner_slug, model_slug, model_update_request, **kwargs):  # noqa: E501
+        """Update a model  # noqa: E501
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.update_model(owner_slug, model_slug, model_update_request, async_req=True)
+        >>> result = thread.get()
+
+        :param async_req bool
+        :param str owner_slug: Model owner (required)
+        :param str model_slug: Model name (required)
+        :param ModelUpdateRequest model_update_request: Information for updating a model (required)
+        :return: Result
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+        kwargs['_return_http_data_only'] = True
+        if kwargs.get('async_req'):
+            return self.update_model_with_http_info(owner_slug, model_slug, model_update_request, **kwargs)  # noqa: E501
+        else:
+            (data) = self.update_model_with_http_info(owner_slug, model_slug, model_update_request, **kwargs)  # noqa: E501
+            return data
+
+    def update_model_with_http_info(self, owner_slug, model_slug, model_update_request, **kwargs):  # noqa: E501
+        """Update a model  # noqa: E501
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.update_model_with_http_info(owner_slug, model_slug, model_update_request, async_req=True)
+        >>> result = thread.get()
+
+        :param async_req bool
+        :param str owner_slug: Model owner (required)
+        :param str model_slug: Model name (required)
+        :param ModelUpdateRequest model_update_request: Information for updating a model (required)
+        :return: Result
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+
+        all_params = ['owner_slug', 'model_slug', 'model_update_request']  # noqa: E501
+        all_params.append('async_req')
+        all_params.append('_return_http_data_only')
+        all_params.append('_preload_content')
+        all_params.append('_request_timeout')
+
+        params = locals()
+        for key, val in six.iteritems(params['kwargs']):
+            if key not in all_params:
+                raise TypeError(
+                    "Got an unexpected keyword argument '%s'"
+                    " to method update_model" % key
+                )
+            params[key] = val
+        del params['kwargs']
+        # verify the required parameter 'owner_slug' is set
+        if ('owner_slug' not in params or
+                params['owner_slug'] is None):
+            raise ValueError("Missing the required parameter `owner_slug` when calling `update_model`")  # noqa: E501
+        # verify the required parameter 'model_slug' is set
+        if ('model_slug' not in params or
+                params['model_slug'] is None):
+            raise ValueError("Missing the required parameter `model_slug` when calling `update_model`")  # noqa: E501
+        # verify the required parameter 'model_update_request' is set
+        if ('model_update_request' not in params or
+                params['model_update_request'] is None):
+            raise ValueError("Missing the required parameter `model_update_request` when calling `update_model`")  # noqa: E501
+
+        collection_formats = {}
+
+        path_params = {}
+        if 'owner_slug' in params:
+            path_params['ownerSlug'] = params['owner_slug']  # noqa: E501
+        if 'model_slug' in params:
+            path_params['modelSlug'] = params['model_slug']  # noqa: E501
+
+        query_params = []
+
+        header_params = {}
+
+        form_params = []
+        local_var_files = {}
+
+        body_params = None
+        if 'model_update_request' in params:
+            body_params = params['model_update_request']
+        # HTTP header `Accept`
+        header_params['Accept'] = self.api_client.select_header_accept(
+            ['application/json'])  # noqa: E501
+
+        # HTTP header `Content-Type`
+        header_params['Content-Type'] = self.api_client.select_header_content_type(  # noqa: E501
+            ['application/json'])  # noqa: E501
+
+        # Authentication setting
+        auth_settings = ['basicAuth']  # noqa: E501
+
+        return self.api_client.call_api(
+            '/models/{ownerSlug}/{modelSlug}/update', 'POST',
+            path_params,
+            query_params,
+            header_params,
+            body=body_params,
+            post_params=form_params,
+            files=local_var_files,
+            response_type='Result',  # noqa: E501
+            auth_settings=auth_settings,
+            async_req=params.get('async_req'),
+            _return_http_data_only=params.get('_return_http_data_only'),
+            _preload_content=params.get('_preload_content', True),
+            _request_timeout=params.get('_request_timeout'),
+            collection_formats=collection_formats)
+
+    def update_model_instance(self, owner_slug, model_slug, framework, instance_slug, model_instance_update_request, **kwargs):  # noqa: E501
+        """Update a model  # noqa: E501
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.update_model_instance(owner_slug, model_slug, framework, instance_slug, model_instance_update_request, async_req=True)
+        >>> result = thread.get()
+
+        :param async_req bool
+        :param str owner_slug: Model owner (required)
+        :param str model_slug: Model name (required)
+        :param str framework: Model instance framework (required)
+        :param str instance_slug: Model instance slug (required)
+        :param ModelInstanceUpdateRequest model_instance_update_request: Information for updating a model instance (required)
+        :return: Result
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+        kwargs['_return_http_data_only'] = True
+        if kwargs.get('async_req'):
+            return self.update_model_instance_with_http_info(owner_slug, model_slug, framework, instance_slug, model_instance_update_request, **kwargs)  # noqa: E501
+        else:
+            (data) = self.update_model_instance_with_http_info(owner_slug, model_slug, framework, instance_slug, model_instance_update_request, **kwargs)  # noqa: E501
+            return data
+
+    def update_model_instance_with_http_info(self, owner_slug, model_slug, framework, instance_slug, model_instance_update_request, **kwargs):  # noqa: E501
+        """Update a model  # noqa: E501
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.update_model_instance_with_http_info(owner_slug, model_slug, framework, instance_slug, model_instance_update_request, async_req=True)
+        >>> result = thread.get()
+
+        :param async_req bool
+        :param str owner_slug: Model owner (required)
+        :param str model_slug: Model name (required)
+        :param str framework: Model instance framework (required)
+        :param str instance_slug: Model instance slug (required)
+        :param ModelInstanceUpdateRequest model_instance_update_request: Information for updating a model instance (required)
+        :return: Result
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+
+        all_params = ['owner_slug', 'model_slug', 'framework', 'instance_slug', 'model_instance_update_request']  # noqa: E501
+        all_params.append('async_req')
+        all_params.append('_return_http_data_only')
+        all_params.append('_preload_content')
+        all_params.append('_request_timeout')
+
+        params = locals()
+        for key, val in six.iteritems(params['kwargs']):
+            if key not in all_params:
+                raise TypeError(
+                    "Got an unexpected keyword argument '%s'"
+                    " to method update_model_instance" % key
+                )
+            params[key] = val
+        del params['kwargs']
+        # verify the required parameter 'owner_slug' is set
+        if ('owner_slug' not in params or
+                params['owner_slug'] is None):
+            raise ValueError("Missing the required parameter `owner_slug` when calling `update_model_instance`")  # noqa: E501
+        # verify the required parameter 'model_slug' is set
+        if ('model_slug' not in params or
+                params['model_slug'] is None):
+            raise ValueError("Missing the required parameter `model_slug` when calling `update_model_instance`")  # noqa: E501
+        # verify the required parameter 'framework' is set
+        if ('framework' not in params or
+                params['framework'] is None):
+            raise ValueError("Missing the required parameter `framework` when calling `update_model_instance`")  # noqa: E501
+        # verify the required parameter 'instance_slug' is set
+        if ('instance_slug' not in params or
+                params['instance_slug'] is None):
+            raise ValueError("Missing the required parameter `instance_slug` when calling `update_model_instance`")  # noqa: E501
+        # verify the required parameter 'model_instance_update_request' is set
+        if ('model_instance_update_request' not in params or
+                params['model_instance_update_request'] is None):
+            raise ValueError("Missing the required parameter `model_instance_update_request` when calling `update_model_instance`")  # noqa: E501
+
+        collection_formats = {}
+
+        path_params = {}
+        if 'owner_slug' in params:
+            path_params['ownerSlug'] = params['owner_slug']  # noqa: E501
+        if 'model_slug' in params:
+            path_params['modelSlug'] = params['model_slug']  # noqa: E501
+        if 'framework' in params:
+            path_params['framework'] = params['framework']  # noqa: E501
+        if 'instance_slug' in params:
+            path_params['instanceSlug'] = params['instance_slug']  # noqa: E501
+
+        query_params = []
+
+        header_params = {}
+
+        form_params = []
+        local_var_files = {}
+
+        body_params = None
+        if 'model_instance_update_request' in params:
+            body_params = params['model_instance_update_request']
+        # HTTP header `Accept`
+        header_params['Accept'] = self.api_client.select_header_accept(
+            ['application/json'])  # noqa: E501
+
+        # HTTP header `Content-Type`
+        header_params['Content-Type'] = self.api_client.select_header_content_type(  # noqa: E501
+            ['application/json'])  # noqa: E501
+
+        # Authentication setting
+        auth_settings = ['basicAuth']  # noqa: E501
+
+        return self.api_client.call_api(
+            '/models/{ownerSlug}/{modelSlug}/{framework}/{instanceSlug}/update', 'POST',
             path_params,
             query_params,
             header_params,

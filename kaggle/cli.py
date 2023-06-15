@@ -1,6 +1,6 @@
 #!/usr/bin/python
 #
-# Copyright 2020 Kaggle Inc
+# Copyright 2023 Kaggle Inc
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -56,6 +56,7 @@ def main():
     parse_competitions(subparsers)
     parse_datasets(subparsers)
     parse_kernels(subparsers)
+    parse_models(subparsers)
     parse_config(subparsers)
     args = parser.parse_args()
     command_args = {}
@@ -842,6 +843,391 @@ def parse_kernels(subparsers):
     parser_kernels_status.set_defaults(func=api.kernels_status_cli)
 
 
+def parse_models(subparsers):
+    parser_models = subparsers.add_parser(
+        'models',
+        formatter_class=argparse.RawTextHelpFormatter,
+        help=Help.group_models,
+        aliases=['m'])
+
+    subparsers_models = parser_models.add_subparsers(title='commands',
+                                                     dest='command')
+    subparsers_models.required = True
+    subparsers_models.choices = Help.models_choices
+
+    # Models Instances.
+    parse_model_instances(subparsers_models)
+
+    # Models get
+    parser_models_get = subparsers_models.add_parser(
+        'get',
+        formatter_class=argparse.RawTextHelpFormatter,
+        help=Help.command_models_get)
+    parser_models_get_optional = parser_models_get._action_groups.pop()
+    parser_models_get_optional.add_argument('model',
+                                            nargs='?',
+                                            default=None,
+                                            help=Help.param_model)
+    parser_models_get_optional.add_argument('-m',
+                                            '--model',
+                                            dest='model',
+                                            required=False,
+                                            help=argparse.SUPPRESS)
+    parser_models_get_optional.add_argument('-p',
+                                            '--path',
+                                            dest='folder',
+                                            required=False,
+                                            help=Help.param_model_downfile)
+    parser_models_get._action_groups.append(parser_models_get_optional)
+    parser_models_get.set_defaults(func=api.model_get_cli)
+
+    # Models list
+    parser_models_list = subparsers_models.add_parser(
+        'list',
+        formatter_class=argparse.RawTextHelpFormatter,
+        help=Help.command_models_list)
+    parser_models_list_optional = parser_models_list._action_groups.pop()
+    parser_models_list.add_argument('--sort-by',
+                                    dest='sort_by',
+                                    required=False,
+                                    help=Help.param_model_sort_by)
+    parser_models_list.add_argument('-s',
+                                    '--search',
+                                    dest='search',
+                                    required=False,
+                                    help=Help.param_search)
+    parser_models_list.add_argument('--owner',
+                                    dest='owner',
+                                    required=False,
+                                    help=Help.param_model_owner)
+    parser_models_list.add_argument('--page-size',
+                                    dest='page_size',
+                                    default=20,
+                                    help=Help.param_page_size)
+    parser_models_list.add_argument('--page-token',
+                                    dest='page_token',
+                                    required=False,
+                                    help=Help.param_page_token)
+    parser_models_list.add_argument('-v',
+                                    '--csv',
+                                    dest='csv_display',
+                                    action='store_true',
+                                    help=Help.param_csv)
+    parser_models_list._action_groups.append(parser_models_list_optional)
+    parser_models_list.set_defaults(func=api.model_list_cli)
+
+    # Models init
+    parser_models_init = subparsers_models.add_parser(
+        'init',
+        formatter_class=argparse.RawTextHelpFormatter,
+        help=Help.command_models_init)
+    parser_models_init_optional = parser_models_init._action_groups.pop()
+    parser_models_init_optional.add_argument('-p',
+                                             '--path',
+                                             dest='folder',
+                                             required=False,
+                                             help=Help.param_model_upfile)
+    parser_models_init._action_groups.append(parser_models_init_optional)
+    parser_models_init.set_defaults(func=api.model_initialize_cli)
+
+    # Models create
+    parser_models_create = subparsers_models.add_parser(
+        'create',
+        formatter_class=argparse.RawTextHelpFormatter,
+        help=Help.command_models_new)
+    parser_models_create_optional = parser_models_create._action_groups.pop()
+    parser_models_create_optional.add_argument('-p',
+                                               '--path',
+                                               dest='folder',
+                                               required=False,
+                                               help=Help.param_model_upfile)
+    parser_models_create._action_groups.append(parser_models_create_optional)
+    parser_models_create.set_defaults(func=api.model_create_new_cli)
+
+    # Models delete
+    parser_models_delete = subparsers_models.add_parser(
+        'delete',
+        formatter_class=argparse.RawTextHelpFormatter,
+        help=Help.command_models_delete)
+    parser_models_delete_optional = parser_models_delete._action_groups.pop()
+    parser_models_delete_optional.add_argument('model',
+                                               nargs='?',
+                                               default=None,
+                                               help=Help.param_model)
+    parser_models_delete_optional.add_argument('-m',
+                                               '--model',
+                                               dest='model',
+                                               required=False,
+                                               help=argparse.SUPPRESS)
+    parser_models_delete._action_groups.append(parser_models_delete_optional)
+    parser_models_delete.set_defaults(func=api.model_delete_cli)
+
+    # Models update
+    parser_models_update = subparsers_models.add_parser(
+        'update',
+        formatter_class=argparse.RawTextHelpFormatter,
+        help=Help.command_models_update)
+    parser_models_update_optional = parser_models_update._action_groups.pop()
+    parser_models_update_optional.add_argument('-p',
+                                               '--path',
+                                               dest='folder',
+                                               required=False,
+                                               help=Help.param_model_upfile)
+    parser_models_update._action_groups.append(parser_models_update_optional)
+    parser_models_update.set_defaults(func=api.model_update_cli)
+
+
+def parse_model_instances(subparsers):
+    parser_model_instances = subparsers.add_parser(
+        'instances',
+        formatter_class=argparse.RawTextHelpFormatter,
+        help=Help.group_model_instances,
+        aliases=['mi'])
+
+    subparsers_model_intances = parser_model_instances.add_subparsers(
+        title='commands', dest='command')
+    subparsers_model_intances.required = True
+    subparsers_model_intances.choices = Help.model_instances_choices
+
+    # Models Instances Versions.
+    parse_model_instance_versions(subparsers_model_intances)
+
+    # Models Instances get
+    parser_model_instance_get = subparsers_model_intances.add_parser(
+        'get',
+        formatter_class=argparse.RawTextHelpFormatter,
+        help=Help.command_model_instances_get)
+    parser_model_instance_get_optional = parser_model_instance_get._action_groups.pop(
+    )
+    parser_model_instance_get_optional.add_argument(
+        'model_instance',
+        nargs='?',
+        default=None,
+        help=Help.param_model_instance)
+    parser_model_instance_get_optional.add_argument('-m',
+                                                    '--modelInstance',
+                                                    dest='model_instance',
+                                                    required=False,
+                                                    help=argparse.SUPPRESS)
+    parser_model_instance_get_optional.add_argument(
+        '-p',
+        '--path',
+        dest='folder',
+        required=False,
+        help=Help.param_model_instance_downfile)
+    parser_model_instance_get._action_groups.append(
+        parser_model_instance_get_optional)
+    parser_model_instance_get.set_defaults(func=api.model_instance_get_cli)
+
+    # Model Instances init
+    parser_model_instances_init = subparsers_model_intances.add_parser(
+        'init',
+        formatter_class=argparse.RawTextHelpFormatter,
+        help=Help.command_model_instances_init)
+    parser_model_instances_init_optional = parser_model_instances_init._action_groups.pop(
+    )
+    parser_model_instances_init_optional.add_argument(
+        '-p',
+        '--path',
+        dest='folder',
+        required=False,
+        help=Help.param_model_instance_upfile)
+    parser_model_instances_init._action_groups.append(
+        parser_model_instances_init_optional)
+    parser_model_instances_init.set_defaults(
+        func=api.model_instance_initialize_cli)
+
+    # Model Instances create
+    parser_model_instances_create = subparsers_model_intances.add_parser(
+        'create',
+        formatter_class=argparse.RawTextHelpFormatter,
+        help=Help.command_model_instances_new)
+    parser_model_instances_create_optional = parser_model_instances_create._action_groups.pop(
+    )
+    parser_model_instances_create_optional.add_argument(
+        '-p',
+        '--path',
+        dest='folder',
+        required=False,
+        help=Help.param_model_instance_upfile)
+    parser_model_instances_create_optional.add_argument('-q',
+                                                        '--quiet',
+                                                        dest='quiet',
+                                                        action='store_true',
+                                                        help=Help.param_quiet)
+    parser_model_instances_create_optional.add_argument(
+        '-r',
+        '--dir-mode',
+        dest='dir_mode',
+        choices=['skip', 'zip', 'tar'],
+        default='skip',
+        help=Help.param_dir_mode)
+    parser_model_instances_create._action_groups.append(
+        parser_model_instances_create_optional)
+    parser_model_instances_create.set_defaults(
+        func=api.model_instance_create_cli)
+
+    # Models Instances delete
+    parser_model_instances_delete = subparsers_model_intances.add_parser(
+        'delete',
+        formatter_class=argparse.RawTextHelpFormatter,
+        help=Help.command_model_instances_delete)
+    parser_model_instances_delete_optional = parser_model_instances_delete._action_groups.pop(
+    )
+    parser_model_instances_delete_optional.add_argument(
+        'model_instance',
+        nargs='?',
+        default=None,
+        help=Help.param_model_instance)
+    parser_model_instances_delete_optional.add_argument('-mi',
+                                                        '--modelInstance',
+                                                        dest='model_instance',
+                                                        required=False,
+                                                        help=argparse.SUPPRESS)
+    parser_model_instances_delete._action_groups.append(
+        parser_model_instances_delete_optional)
+    parser_model_instances_delete.set_defaults(
+        func=api.model_instance_delete_cli)
+
+    # Models Instances update
+    parser_model_instances_update = subparsers_model_intances.add_parser(
+        'update',
+        formatter_class=argparse.RawTextHelpFormatter,
+        help=Help.command_model_instances_update)
+    parser_model_instances_update_optional = parser_model_instances_update._action_groups.pop(
+    )
+    parser_model_instances_update_optional.add_argument(
+        '-p',
+        '--path',
+        dest='folder',
+        required=False,
+        help=Help.param_model_instance_upfile)
+    parser_model_instances_update._action_groups.append(
+        parser_model_instances_update_optional)
+    parser_model_instances_update.set_defaults(
+        func=api.model_instance_update_cli)
+
+
+def parse_model_instance_versions(subparsers):
+    parser_model_instance_versions = subparsers.add_parser(
+        'versions',
+        formatter_class=argparse.RawTextHelpFormatter,
+        help=Help.group_model_instance_versions,
+        aliases=['miv'])
+
+    subparsers_model_intance_versions = parser_model_instance_versions.add_subparsers(
+        title='commands', dest='command')
+    subparsers_model_intance_versions.required = True
+    subparsers_model_intance_versions.choices = Help.model_instance_versions_choices
+
+    # Model Instance Versions create
+    parser_model_instance_versions_create = subparsers_model_intance_versions.add_parser(
+        'create',
+        formatter_class=argparse.RawTextHelpFormatter,
+        help=Help.command_model_instance_versions_new)
+    parser_model_instance_versions_create_optional = parser_model_instance_versions_create._action_groups.pop(
+    )
+    parser_model_instance_versions_create_optional.add_argument(
+        'model_instance',
+        nargs='?',
+        default=None,
+        help=Help.param_model_instance)
+    parser_model_instance_versions_create_optional.add_argument(
+        '-p',
+        '--path',
+        dest='folder',
+        required=False,
+        help=Help.param_model_instance_version_upfile)
+    parser_model_instance_versions_create_optional.add_argument(
+        '-n',
+        '--version-notes',
+        dest='version_notes',
+        required=False,
+        help=Help.param_model_instance_version_upfile)
+    parser_model_instance_versions_create_optional.add_argument(
+        '-q',
+        '--quiet',
+        dest='quiet',
+        action='store_true',
+        help=Help.param_quiet)
+    parser_model_instance_versions_create_optional.add_argument(
+        '-r',
+        '--dir-mode',
+        dest='dir_mode',
+        choices=['skip', 'zip', 'tar'],
+        default='skip',
+        help=Help.param_dir_mode)
+    parser_model_instance_versions_create._action_groups.append(
+        parser_model_instance_versions_create_optional)
+    parser_model_instance_versions_create.set_defaults(
+        func=api.model_instance_version_create_cli)
+
+    # Models Instance Versions download
+    parser_model_instance_versions_download = subparsers_model_intance_versions.add_parser(
+        'download',
+        formatter_class=argparse.RawTextHelpFormatter,
+        help=Help.command_model_instance_versions_download)
+    parser_model_instance_versions_download_optional = parser_model_instance_versions_download._action_groups.pop(
+    )
+    parser_model_instance_versions_download_optional.add_argument(
+        'model_instance_version',
+        nargs='?',
+        help=Help.param_model_instance_version)
+    parser_model_instance_versions_download_optional.add_argument(
+        '-miv',
+        '--modelInstanceVersion',
+        dest='model_instance_version_opt',
+        required=False,
+        help=argparse.SUPPRESS)
+    parser_model_instance_versions_download_optional.add_argument(
+        '-p',
+        '--path',
+        dest='path',
+        required=False,
+        help=Help.param_downfolder)
+    parser_model_instance_versions_download_optional.add_argument(
+        '--untar', dest='untar', action='store_true', help=Help.param_untar)
+    parser_model_instance_versions_download_optional.add_argument(
+        '-f',
+        '--force',
+        dest='force',
+        action='store_true',
+        help=Help.param_force)
+    parser_model_instance_versions_download_optional.add_argument(
+        '-q',
+        '--quiet',
+        dest='quiet',
+        action='store_true',
+        help=Help.param_quiet)
+    parser_model_instance_versions_download._action_groups.append(
+        parser_model_instance_versions_download_optional)
+    parser_model_instance_versions_download.set_defaults(
+        func=api.model_instance_version_download_cli)
+
+    # Models Instance Versions delete
+    parser_model_instance_versions_delete = subparsers_model_intance_versions.add_parser(
+        'delete',
+        formatter_class=argparse.RawTextHelpFormatter,
+        help=Help.command_model_instance_versions_delete)
+    parser_model_instance_versions_delete_optional = parser_model_instance_versions_delete._action_groups.pop(
+    )
+    parser_model_instance_versions_delete_optional.add_argument(
+        'model_instance_version',
+        nargs='?',
+        default=None,
+        help=Help.param_model_instance_version)
+    parser_model_instance_versions_delete_optional.add_argument(
+        '-miv',
+        '--modelInstanceVersion',
+        dest='model_instance_version',
+        required=False,
+        help=argparse.SUPPRESS)
+    parser_model_instance_versions_delete._action_groups.append(
+        parser_model_instance_versions_delete_optional)
+    parser_model_instance_versions_delete.set_defaults(
+        func=api.model_instance_version_delete_cli)
+
+
 def parse_config(subparsers):
     parser_config = subparsers.add_parser(
         'config',
@@ -894,7 +1280,8 @@ def parse_config(subparsers):
 
 class Help(object):
     kaggle_choices = [
-        'competitions', 'c', 'datasets', 'd', 'kernels', 'k', 'config'
+        'competitions', 'c', 'datasets', 'd', 'kernels', 'k', 'models', 'm',
+        'config'
     ]
     competitions_choices = [
         'list', 'files', 'download', 'submit', 'submissions', 'leaderboard'
@@ -904,15 +1291,30 @@ class Help(object):
         'status'
     ]
     kernels_choices = ['list', 'init', 'push', 'pull', 'output', 'status']
+    models_choices = [
+        'instances', 'get', 'list', 'init', 'create', 'delete', 'update'
+    ]
+    model_instances_choices = [
+        'versions', 'get', 'init', 'create', 'delete', 'update'
+    ]
+    model_instance_versions_choices = ['init', 'create', 'download', 'delete']
     config_choices = ['view', 'set', 'unset']
 
     kaggle = 'Use one of:\ncompetitions {' + ', '.join(
         competitions_choices) + '}\ndatasets {' + ', '.join(
-            datasets_choices) + '}\nconfig {' + ', '.join(config_choices) + '}'
+            datasets_choices) + '}\nmodels {' + ', '.join(
+                models_choices) + '}\nmodels instances {' + ', '.join(
+                    model_instances_choices
+                ) + '}\nmodels instances versions {' + ', '.join(
+                    model_instance_versions_choices
+                ) + '}\nconfig {' + ', '.join(config_choices) + '}'
 
     group_competitions = 'Commands related to Kaggle competitions'
     group_datasets = 'Commands related to Kaggle datasets'
     group_kernels = 'Commands related to Kaggle kernels'
+    group_models = 'Commands related to Kaggle models'
+    group_model_instances = 'Commands related to Kaggle model instances'
+    group_model_instance_versions = 'Commands related to Kaggle model instance versions'
     group_config = 'Configuration settings'
 
     # Competitions commands
@@ -942,6 +1344,14 @@ class Help(object):
     command_kernels_pull = 'Pull down code from a kernel'
     command_kernels_output = 'Get data output from the latest kernel run'
     command_kernels_status = 'Display the status of the latest kernel run'
+
+    # Models commands
+    command_models_get = 'Get a model'
+    command_models_list = 'List models'
+    command_models_init = 'Initialize metadata file for model creation'
+    command_models_new = 'Create a new model'
+    command_models_delete = 'Delete a model'
+    command_models_update = 'Update a model'
 
     # Config commands
     command_config_path = (
@@ -977,10 +1387,13 @@ class Help(object):
     param_page_size = (
         'Number of items to show on a page. Default size is 20, '
         'max is 100')
+    param_page_token = 'Page token for results paging.'
     param_search = 'Term(s) to search for'
     param_mine = 'Display only my items'
     param_unzip = (
         'Unzip the downloaded file. Will delete the zip file when completed.')
+    param_untar = (
+        'Untar the downloaded file. Will delete the tar file when completed.')
 
     # Competitions params
     param_competition = (
@@ -1008,7 +1421,7 @@ class Help(object):
         '\'grouped\', \'prize\', \'earliestDeadline\', \'latestDeadline\', '
         '\'numberOfTeams\', and \'recentlyCreated\'')
 
-    # Datasets paramas
+    # Datasets params
     param_dataset = (
         'Dataset URL suffix in format <owner>/<dataset-name> (use '
         '"kaggle datasets list" to show options)')
@@ -1085,6 +1498,56 @@ class Help(object):
         '\'viewCount\', and \'voteCount\'. \'relevance\' '
         'is only applicable if a search term is specified.')
     param_kernel_pull_metadata = 'Generate metadata when pulling kernel'
+
+    # Models params
+    param_model = ('Model URL suffix in format <owner>/<model-name>')
+    param_model_sort_by = (
+        'Sort list results. Default is \'hotness\'. Valid options are '
+        '\'hotness\', \'downloadCount\', \'voteCount\', \'notebookCount\' and \'createTime\''
+    )
+    param_model_owner = (
+        'Find public models owned by a specific user or organization')
+    param_model_downfile = (
+        'Folder containing the special model-metadata.json file '
+        '(https://github.com/Kaggle/kaggle-api/wiki/Model-Metadata).')
+    param_model_upfile = (
+        'Folder containing the special model-metadata.json file '
+        '(https://github.com/Kaggle/kaggle-api/wiki/Model-Metadata). '
+        'Defaults to current working directory')
+
+    # Model Instances params
+    param_model_instance = (
+        'Model Instance URL suffix in format <owner>/<model-name>/<framework>/<instance-slug>'
+    )
+    command_model_instances_get = 'Get a model instance'
+    command_model_instances_init = 'Initialize metadata file for model instance creation'
+    command_model_instances_new = 'Create a new model instance'
+    param_model_instance_downfile = (
+        'Folder for downloading the special model-instance-metadata.json file '
+        '(https://github.com/Kaggle/kaggle-api/wiki/ModelInstance-Metadata). ')
+    param_model_instance_upfile = (
+        'Folder for upload, containing data files and a '
+        'special model-instance-metadata.json file '
+        '(https://github.com/Kaggle/kaggle-api/wiki/ModelInstance-Metadata). '
+        'Defaults to current working directory')
+    command_model_instances_delete = 'Delete a model instance'
+    command_model_instances_update = 'Update a model instance'
+
+    # Model Instance Versions params
+    param_model_instance_version = (
+        'Model Instance Version URL suffix in format <owner>/<model-name>/<framework>/<instance-slug>/<version-number>'
+    )
+
+    # Model Instance Versions params
+    command_model_instance_versions_new = 'Create a new model instance version'
+    param_model_instance_version_upfile = (
+        'Folder for upload, containing data files and a '
+        'special model-instance_version-metadata.json file '
+        '(https://github.com/Kaggle/kaggle-api/wiki/ModelInstanceVersion-Metadata). '
+        'Defaults to current working directory')
+    command_model_instance_versions_delete = 'Delete a model instance version'
+    command_model_instance_versions_download = 'Download model instance version files'
+    param_model_instance_version_notes = 'Version notes to record for the new model instance version'
 
     # Config params
     param_config_name = ('Name of the configuration parameter\n(one of '

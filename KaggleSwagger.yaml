@@ -957,6 +957,499 @@ paths:
           description: Error
           schema:
             $ref: '#/definitions/Error'
+  /models/{ownerSlug}/{modelSlug}/get:
+    get:
+      tags:
+      - kaggle
+      summary: Get a model
+      operationId: GetModel
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        name: ownerSlug
+        required: true
+        type: string
+        description: Model owner
+      - in: path
+        name: modelSlug
+        required: true
+        type: string
+        description: Model name
+      responses:
+        200:
+          description: Result
+          schema:
+            $ref: '#/definitions/Result'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/Error'
+  /models/list:
+    get:
+      tags:
+      - kaggle
+      summary: Lists models
+      operationId: ModelsList
+      produces:
+      - application/json
+      parameters:
+        - in: query
+          name: search
+          default: ''
+          type: string
+          description: Search terms
+        - in: query
+          name: sortBy
+          type: string
+          enum: [hotness, downloadCount, voteCount, notebookCount, publishTime, createTime, updateTime]
+          default: hotness
+          description: Sort the results
+        - in: query
+          name: owner
+          type: string
+          description: Display models by a specific user or organization
+        - in: query
+          name: pageSize
+          type: integer
+          default: 1
+          description: Page size
+        - in: query
+          name: pageToken
+          type: string
+          description: Page token for pagination
+      responses:
+        200:
+          description: Result
+          schema:
+            $ref: '#/definitions/Result'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/Error'
+  /models/create/new:
+    post:
+      tags:
+      - kaggle
+      summary: Create a new model
+      operationId: ModelsCreateNew
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: modelNewRequest
+          required: true
+          schema:
+            $ref: '#/definitions/modelNewRequest'
+          description: Information for creating a new model
+      responses:
+        200:
+          description: Result
+          schema:
+            $ref: '#/definitions/Result'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/Error'
+  /models/{ownerSlug}/{modelSlug}/{framework}/{instanceSlug}/get:
+    get:
+      tags:
+      - kaggle
+      summary: Get a model instance
+      operationId: GetModelInstance
+      produces:
+      - application/json
+      consumes:
+      - application/json
+      parameters:
+      - in: path
+        name: ownerSlug
+        required: true
+        type: string
+        description: Model owner
+      - in: path
+        name: modelSlug
+        required: true
+        type: string
+        description: Model name
+      - in: path
+        name: framework
+        required: true
+        type: string
+        description: Model instance framework
+      - in: path
+        name: instanceSlug
+        required: true
+        type: string
+        description: Model instance slug
+      responses:
+        200:
+          description: Result
+          schema:
+            $ref: '#/definitions/Result'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/Error'
+  /models/{ownerSlug}/{modelSlug}/create/instance:
+    post:
+      tags:
+      - kaggle
+      summary: Create a new model instance
+      operationId: ModelsCreateInstance
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - in: path
+          name: ownerSlug
+          required: true
+          type: string
+          description: Model owner
+        - in: path
+          name: modelSlug
+          required: true
+          type: string
+          description: Model slug
+        - in: body
+          name: ModelNewInstanceRequest
+          required: true
+          schema:
+            $ref: '#/definitions/ModelNewInstanceRequest'
+          description: Information for creating a new model instance
+      responses:
+        200:
+          description: Result
+          schema:
+            $ref: '#/definitions/Result'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/Error'
+  /models/{ownerSlug}/{modelSlug}/{framework}/{instanceSlug}/create/version:
+    post:
+      tags:
+      - kaggle
+      summary: Create a new model instance version
+      operationId: ModelsCreateInstanceVersion
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - in: path
+          name: ownerSlug
+          required: true
+          type: string
+          description: Model owner
+        - in: path
+          name: modelSlug
+          required: true
+          type: string
+          description: Model slug
+        - in: path
+          name: framework
+          required: true
+          type: string
+          description: Model instance framework
+        - in: path
+          name: instanceSlug
+          required: true
+          type: string
+          description: Model instance slug
+        - in: body
+          name: ModelInstanceNewVersionRequest
+          required: true
+          schema:
+            $ref: '#/definitions/ModelInstanceNewVersionRequest'
+          description: Information for creating a new model instance version
+      responses:
+        200:
+          description: Result
+          schema:
+            $ref: '#/definitions/Result'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/Error'
+  /models/{ownerSlug}/{modelSlug}/delete:
+    post:
+      tags:
+      - kaggle
+      summary: Delete a model
+      operationId: DeleteModel
+      produces:
+      - application/json
+      consumes:
+      - application/json
+      parameters:
+      - in: path
+        name: ownerSlug
+        required: true
+        type: string
+        description: Model owner
+      - in: path
+        name: modelSlug
+        required: true
+        type: string
+        description: Model name
+      responses:
+        200:
+          description: Result
+          schema:
+            $ref: '#/definitions/Result'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/Error'
+  /models/{ownerSlug}/{modelSlug}/{framework}/{instanceSlug}/delete:
+    post:
+      tags:
+      - kaggle
+      summary: Delete a model instance
+      operationId: DeleteModelInstance
+      produces:
+      - application/json
+      consumes:
+      - application/json
+      parameters:
+      - in: path
+        name: ownerSlug
+        required: true
+        type: string
+        description: Model owner
+      - in: path
+        name: modelSlug
+        required: true
+        type: string
+        description: Model name
+      - in: path
+        name: framework
+        required: true
+        type: string
+        description: Model instance framework
+      - in: path
+        name: instanceSlug
+        required: true
+        type: string
+        description: Model instance slug
+      responses:
+        200:
+          description: Result
+          schema:
+            $ref: '#/definitions/Result'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/Error'
+  /models/{ownerSlug}/{modelSlug}/{framework}/{instanceSlug}/{versionNumber}/delete:
+    post:
+      tags:
+      - kaggle
+      summary: Delete a model instance version
+      operationId: DeleteModelInstanceVersion
+      produces:
+      - application/json
+      consumes:
+      - application/json
+      parameters:
+      - in: path
+        name: ownerSlug
+        required: true
+        type: string
+        description: Model owner
+      - in: path
+        name: modelSlug
+        required: true
+        type: string
+        description: Model name
+      - in: path
+        name: framework
+        required: true
+        type: string
+        description: Model instance framework
+      - in: path
+        name: instanceSlug
+        required: true
+        type: string
+        description: Model instance slug
+      - in: path
+        name: versionNumber
+        required: true
+        type: string
+        description: Model instance version number
+      responses:
+        200:
+          description: Result
+          schema:
+            $ref: '#/definitions/Result'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/Error'
+  /models/{ownerSlug}/{modelSlug}/update:
+    post:
+      tags:
+      - kaggle
+      summary: Update a model
+      operationId: UpdateModel
+      produces:
+      - application/json
+      consumes:
+      - application/json
+      parameters:
+      - in: path
+        name: ownerSlug
+        required: true
+        type: string
+        description: Model owner
+      - in: path
+        name: modelSlug
+        required: true
+        type: string
+        description: Model name
+      - in: body
+        name: modelUpdateRequest
+        required: true
+        schema:
+          $ref: '#/definitions/modelUpdateRequest'
+        description: Information for updating a model
+      responses:
+        200:
+          description: Result
+          schema:
+            $ref: '#/definitions/Result'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/Error'
+  /models/{ownerSlug}/{modelSlug}/{framework}/{instanceSlug}/update:
+    post:
+      tags:
+      - kaggle
+      summary: Update a model
+      operationId: UpdateModelInstance
+      produces:
+      - application/json
+      consumes:
+      - application/json
+      parameters:
+      - in: path
+        name: ownerSlug
+        required: true
+        type: string
+        description: Model owner
+      - in: path
+        name: modelSlug
+        required: true
+        type: string
+        description: Model name
+      - in: path
+        name: framework
+        required: true
+        type: string
+        description: Model instance framework
+      - in: path
+        name: instanceSlug
+        required: true
+        type: string
+        description: Model instance slug
+      - in: body
+        name: modelInstanceUpdateRequest
+        required: true
+        schema:
+          $ref: '#/definitions/modelInstanceUpdateRequest'
+        description: Information for updating a model instance
+      responses:
+        200:
+          description: Result
+          schema:
+            $ref: '#/definitions/Result'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/Error'
+  /models/{ownerSlug}/{modelSlug}/{framework}/{instanceSlug}/{versionNumber}/download:
+    get:
+      tags:
+      - kaggle
+      summary: Download model instance version files
+      operationId: ModelInstanceVersionsDownload
+      produces:
+        - file
+      parameters:
+      - in: path
+        name: ownerSlug
+        required: true
+        type: string
+        description: Model owner
+      - in: path
+        name: modelSlug
+        required: true
+        type: string
+        description: Model name
+      - in: path
+        name: framework
+        required: true
+        type: string
+        description: Model instance framework
+      - in: path
+        name: instanceSlug
+        required: true
+        type: string
+        description: Model instance slug
+      - in: path
+        name: versionNumber
+        required: true
+        type: string
+        description: Model instance version number
+      responses:
+        200:
+          description: Result
+          schema:
+            $ref: '#/definitions/Result'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/Error'
+  /models/upload/file/{contentLength}/{lastModifiedDateUtc}:
+    post:
+      tags:
+      - kaggle
+      summary: Get URL and token to start uploading a model file
+      operationId: ModelsUploadFile
+      produces:
+        - application/json
+      consumes:
+        - multipart/form-data
+      parameters:
+        - in: formData
+          name: fileName
+          required: true
+          type: string
+          description: Model file name
+        - in: path
+          name: contentLength
+          required: true
+          type: integer
+          description: Content length of file in bytes
+        - in: path
+          name: lastModifiedDateUtc
+          required: true
+          type: integer
+          description: Last modified date of file in milliseconds since epoch in UTC
+      responses:
+        200:
+          description: Result
+          schema:
+            $ref: '#/definitions/Result'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/Error'
 definitions:
   Result:
     type: object
@@ -989,7 +1482,7 @@ definitions:
       description:
         type: string
         description: The description of the column
-  DatasetUploadFile:
+  UploadFile:
     type: object
     properties:
       token:
@@ -1022,7 +1515,7 @@ definitions:
         type: array
         description: A list of files that should be associated with the dataset
         items:
-          $ref: '#/definitions/DatasetUploadFile'
+          $ref: '#/definitions/UploadFile'
       convertToCsv:
         type: boolean
         description: Whether or not a tabular dataset should be converted to csv
@@ -1080,7 +1573,7 @@ definitions:
         type: array
         description: A list of files that should be associated with the dataset
         items:
-          $ref: '#/definitions/DatasetUploadFile'
+          $ref: '#/definitions/UploadFile'
       isPrivate:
         type: boolean
         description: Whether or not the dataset should be private
@@ -1242,3 +1735,202 @@ definitions:
         enum:
         - reader
         - writer
+  ModelNewRequest:
+    type: object
+    required:
+    - ownerSlug
+    - slug
+    - title
+    - isPrivate
+    properties:
+      ownerSlug:
+        type: string
+        description: The owner's slug
+      slug:
+        type: string
+        description: The slug that the model should be created with
+      title:
+        type: string
+        description: The title of the new model
+      subtitle:
+        type: string
+        description: The subtitle of the new model
+      isPrivate:
+        type: boolean
+        description: Whether or not the model should be private
+        default: true
+      description:
+        type: string
+        description: The description to be set on the model
+        default: ''
+      publishTime:
+        type: string
+        format: date
+        description: When the model was initially published
+      provenanceSources:
+        type: string
+        description: The provenance sources to be set on the model
+        default: ''
+  ModelUpdateRequest:
+    type: object
+    properties:
+      title:
+        type: string
+        description: The title of the new model
+      subtitle:
+        type: string
+        description: The subtitle of the new model
+      isPrivate:
+        type: boolean
+        description: Whether or not the model should be private
+        default: true
+      description:
+        type: string
+        description: The description to be set on the model
+        default: ''
+      publishTime:
+        type: string
+        format: date
+        description: When the model was initially published
+      provenanceSources:
+        type: string
+        description: The provenance sources to be set on the model
+        default: ''
+      updateMask:
+        type: string
+        description: Describes which fields to update
+  ModelNewInstanceRequest:
+    type: object
+    required:
+    - instanceSlug
+    - framework
+    - licenseName
+    properties:
+      instanceSlug:
+        type: string
+        description: The slug that the model instance should be created with
+      framework:
+        type: string
+        description: The framework of the model instance
+        default: 
+        enum:
+        - tensorFlow1
+        - tensorFlow2
+        - tfLite
+        - tfJs
+        - pyTorch
+        - jax
+        - coral
+        - scikitLearn
+        - mxnet
+        - onnx
+      overview:
+        type: string
+        description: The overview of the model instance (markdown)
+      usage:
+        type: string
+        description: The description of how to use the model instance (markdown)
+      licenseName:
+        type: string
+        description: The license that should be associated with the model
+        default: Apache 2.0
+        enum:
+        - CC0: Public Domain
+        - CC BY-NC-SA 4.0
+        - CC BY-SA 4.0
+        - GPL 2
+        - CC BY-SA 3.0
+        - Attribution 4.0 International (CC BY 4.0)
+        - Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)
+        - ODC Public Domain Dedication and Licence (PDDL)
+        - Attribution 3.0 Unported (CC BY 3.0)
+        - Attribution 3.0 IGO (CC BY 3.0 IGO)
+        - Attribution-NonCommercial-ShareAlike 3.0 IGO (CC BY-NC-SA 3.0 IGO)
+        - Community Data License Agreement - Permissive - Version 1.0
+        - Community Data License Agreement - Sharing - Version 1.0
+        - Attribution-NoDerivatives 4.0 International (CC BY-ND 4.0)
+        - Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)
+        - ODC Attribution License (ODC-By)
+        - GNU Lesser General Public License 3.0
+        - GNU Affero General Public License 3.0
+        - GNU Free Documentation License 1.3
+        - Apache 2.0
+        - MIT
+        - BSD-3-Clause
+      fineTunable:
+        type: boolean
+        description: Whether the model instance is fine tunable
+        default: true
+      trainingData:
+        type: array
+        description: A list of training data (urls or names)
+        items:
+          type: string
+      files:
+        type: array
+        description: A list of files that should be associated with the model instance version
+        items:
+          $ref: '#/definitions/UploadFile'
+  ModelInstanceUpdateRequest:
+    type: object
+    required:
+    - updateMask
+    properties:
+      overview:
+        type: string
+        description: The overview of the model instance (markdown)
+      usage:
+        type: string
+        description: The description of how to use the model instance (markdown)
+      licenseName:
+        type: string
+        description: The license that should be associated with the model
+        default: Apache 2.0
+        enum:
+        - CC0: Public Domain
+        - CC BY-NC-SA 4.0
+        - CC BY-SA 4.0
+        - GPL 2
+        - CC BY-SA 3.0
+        - Attribution 4.0 International (CC BY 4.0)
+        - Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)
+        - ODC Public Domain Dedication and Licence (PDDL)
+        - Attribution 3.0 Unported (CC BY 3.0)
+        - Attribution 3.0 IGO (CC BY 3.0 IGO)
+        - Attribution-NonCommercial-ShareAlike 3.0 IGO (CC BY-NC-SA 3.0 IGO)
+        - Community Data License Agreement - Permissive - Version 1.0
+        - Community Data License Agreement - Sharing - Version 1.0
+        - Attribution-NoDerivatives 4.0 International (CC BY-ND 4.0)
+        - Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)
+        - ODC Attribution License (ODC-By)
+        - GNU Lesser General Public License 3.0
+        - GNU Affero General Public License 3.0
+        - GNU Free Documentation License 1.3
+        - Apache 2.0
+        - MIT
+        - BSD-3-Clause
+      fineTunable:
+        type: boolean
+        description: Whether the model instance is fine tunable
+        default: true
+      trainingData:
+        type: array
+        description: A list of training data (urls or names)
+        items:
+          type: string
+      updateMask:
+        type: string
+        description: Describes which fields to update
+  ModelInstanceNewVersionRequest:
+    type: object
+    required:
+    - files
+    properties:
+      versionNotes:
+        type: string
+        description: The version notes for the model instance version
+      files:
+        type: array
+        description: A list of files that should be associated with the model instance version
+        items:
+          $ref: '#/definitions/UploadFile'

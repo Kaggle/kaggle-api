@@ -1,6 +1,6 @@
 #!/usr/bin/python
 #
-# Copyright 2020 Kaggle Inc
+# Copyright 2023 Kaggle Inc
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -59,6 +59,7 @@ class KernelPushRequest(object):
         'dataset_data_sources': 'list[str]',
         'competition_data_sources': 'list[str]',
         'kernel_data_sources': 'list[str]',
+        'model_data_sources': 'list[str]',
         'category_ids': 'list[str]',
         'docker_image_pinning_type': 'str'
     }
@@ -76,11 +77,12 @@ class KernelPushRequest(object):
         'dataset_data_sources': 'datasetDataSources',
         'competition_data_sources': 'competitionDataSources',
         'kernel_data_sources': 'kernelDataSources',
+        'model_data_sources': 'modelDataSources',
         'category_ids': 'categoryIds',
         'docker_image_pinning_type': 'dockerImagePinningType'
     }
 
-    def __init__(self, id=None, slug=None, new_title=None, text=None, language=None, kernel_type=None, is_private=None, enable_gpu=None, enable_internet=None, dataset_data_sources=None, competition_data_sources=None, kernel_data_sources=None, category_ids=None, docker_image_pinning_type=None):  # noqa: E501
+    def __init__(self, id=None, slug=None, new_title=None, text=None, language=None, kernel_type=None, is_private=None, enable_gpu=None, enable_internet=None, dataset_data_sources=None, competition_data_sources=None, kernel_data_sources=None, model_data_sources=None, category_ids=None, docker_image_pinning_type=None):  # noqa: E501
         """KernelPushRequest - a model defined in Swagger"""  # noqa: E501
 
         self._id = None
@@ -95,6 +97,7 @@ class KernelPushRequest(object):
         self._dataset_data_sources = None
         self._competition_data_sources = None
         self._kernel_data_sources = None
+        self._model_data_sources = None
         self._category_ids = None
         self._docker_image_pinning_type = None
         self.discriminator = None
@@ -120,6 +123,8 @@ class KernelPushRequest(object):
             self.competition_data_sources = competition_data_sources
         if kernel_data_sources is not None:
             self.kernel_data_sources = kernel_data_sources
+        if model_data_sources is not None:
+            self.model_data_sources = model_data_sources
         if category_ids is not None:
             self.category_ids = category_ids
         if docker_image_pinning_type is not None:
@@ -418,6 +423,29 @@ class KernelPushRequest(object):
         """
 
         self._kernel_data_sources = kernel_data_sources
+
+    @property
+    def model_data_sources(self):
+        """Gets the model_data_sources of this KernelPushRequest.  # noqa: E501
+
+        A list of model data sources that the kernel should use. Each model is specified as `USERNAME/MODEL-SLUG/FRAMEWORK/VARIATION-SLUG/VERSION-NUMBER`  # noqa: E501
+
+        :return: The model_data_sources of this KernelPushRequest.  # noqa: E501
+        :rtype: list[str]
+        """
+        return self._model_data_sources
+
+    @model_data_sources.setter
+    def model_data_sources(self, model_data_sources):
+        """Sets the model_data_sources of this KernelPushRequest.
+
+        A list of model data sources that the kernel should use. Each model is specified as `USERNAME/MODEL-SLUG/FRAMEWORK/VARIATION-SLUG/VERSION-NUMBER`  # noqa: E501
+
+        :param model_data_sources: The model_data_sources of this KernelPushRequest.  # noqa: E501
+        :type: list[str]
+        """
+
+        self._model_data_sources = model_data_sources
 
     @property
     def category_ids(self):

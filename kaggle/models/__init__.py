@@ -1,6 +1,6 @@
 #!/usr/bin/python
 #
-# Copyright 2020 Kaggle Inc
+# Copyright 2023 Kaggle Inc
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -36,8 +36,13 @@ from kaggle.models.dataset_column import DatasetColumn
 from kaggle.models.dataset_new_request import DatasetNewRequest
 from kaggle.models.dataset_new_version_request import DatasetNewVersionRequest
 from kaggle.models.dataset_update_settings_request import DatasetUpdateSettingsRequest
-from kaggle.models.dataset_upload_file import DatasetUploadFile
 from kaggle.models.error import Error
 from kaggle.models.kernel_push_request import KernelPushRequest
 from kaggle.models.license import License
+from kaggle.models.model_instance_new_version_request import ModelInstanceNewVersionRequest
+from kaggle.models.model_instance_update_request import ModelInstanceUpdateRequest
+from kaggle.models.model_new_instance_request import ModelNewInstanceRequest
+from kaggle.models.model_new_request import ModelNewRequest
+from kaggle.models.model_update_request import ModelUpdateRequest
 from kaggle.models.result import Result
+from kaggle.models.upload_file import UploadFile

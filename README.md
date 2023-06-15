@@ -48,6 +48,10 @@ The command line tool supports the following commands:
 kaggle competitions {list, files, download, submit, submissions, leaderboard}
 kaggle datasets {list, files, download, create, version, init}
 kaggle kernels {list, init, push, pull, output, status}
+kaggle models {get, list, init, create, delete, update}
+kaggle models instances {get, init, create, delete, update}
+kaggle models instances versions {init, create, download, delete}
+kaggle models instances {get, init, create, delete, update}
 kaggle config {view, set, unset}
 ```
 
@@ -533,6 +537,303 @@ optional arguments:
 Example:
 
 `kaggle kernels status mrisdal/exploring-survival-on-the-titanic`
+
+### Models
+
+The API supports the following commands for Kaggle Models.
+
+```
+usage: kaggle models [-h]
+                     {get, list, init, create} ...
+
+optional arguments:
+  -h, --help            show this help message and exit
+
+commands:
+  {get, list, init, create}
+    get                 Get the model
+    list                List models
+    init                Initialize metadata file for model creation
+    create              Create a new model
+```
+
+##### Get model
+
+```
+usage: kaggle models get [-h] [-p FOLDER] [model]
+
+required arguments:
+  model                 Model URL suffix in format <owner>/<model-name>
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -p PATH, --path PATH  Folder where the special model-metadata.json file (https://github.com/Kaggle/kaggle-api/wiki/Model-Metadata) will be downloaded (if specified).
+```
+
+Example:
+
+`kaggle models get tensorflow/toxicity`
+
+##### List models
+
+```
+usage: kaggle models list [--sort-by SORT_BY] [-s SEARCH] [--owner OWNER] [--page-token PAGE_TOKEN] [--page-size PAGE_SIZE] [--csv]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --sort-by SORT_BY     Sort list results. Default is 'hotness'. Valid options are 'hotness', 'downloadCount', 'voteCount', 'notebookCount' and 'createTime'
+  -s SEARCH, --search SEARCH
+                        Term(s) to search for
+  --owner OWNER         Find models owned by a specific user or organization
+  --page-token PAGE_TOKEN  
+                        Page token for pagination
+  --page-size PAGE_SIZE Number of items to show on a page. Default size is 20, max is 50
+  -v, --csv             Print results in CSV format (if not set print in table format)
+```
+
+Example:
+
+`kaggle models list -s llm`
+
+`kaggle models list --sort-by downloadCount`
+
+##### Initialize metadata file for a model
+
+```
+usage: kaggle models init [-h] [-p FOLDER]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -p FOLDER, --path FOLDER
+                        Folder to create the model-metadata.json file (https://github.com/Kaggle/kaggle-api/wiki/Model-Metadata). Defaults to current working directory
+```
+
+Example:
+
+`kaggle models init -p /path/to/model`
+
+##### Create a new model
+
+If you want to create a new model, you need to initiate metadata file at first. You could fulfill this by running `kaggle models init` as describe above.
+
+```
+usage: kaggle models create [-h] [-p FOLDER]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -p FOLDER, --path FOLDER
+                        Folder containing the special model-metadata.json file (https://github.com/Kaggle/kaggle-api/wiki/Model-Metadata). Defaults to current working directory
+```
+
+Example:
+
+`kaggle models create -p /path/to/model`
+
+##### Delete model
+
+```
+usage: kaggle models delete [-h] [model]
+
+optional arguments:
+  -h, --help  show this help message and exit
+  model       Model URL suffix in format <owner>/<model-name>
+```
+
+Example:
+
+`kaggle models delete tensorflow/toxicity`
+
+##### Update a model
+
+If you want to update a model, you need a metadata file at first. You can fetch the data by running `kaggle models get owner/slug -p folder`.
+
+```
+usage: kaggle models update [-h] [-p FOLDER]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -p FOLDER, --path FOLDER
+                        Folder containing the special model-metadata.json file (https://github.com/Kaggle/kaggle-api/wiki/Model-Metadata). Defaults to current working directory
+```
+
+Example:
+
+`kaggle models update -p /path/to/model`
+
+#### Model Instances
+
+The API supports the following commands for Kaggle Model Instances.
+
+```
+usage: kaggle models instances [-h]
+                             {init, create, delete, update} ...
+
+optional arguments:
+  -h, --help            show this help message and exit
+
+commands:
+  {get, init, create, delete}
+    get                 Get a model instance
+    init                Initialize metadata file for model instance creation
+    create              Create a new model instance
+    delete              Delete a model instance
+    update              Update a model instance
+```
+
+##### Get model instance
+
+```
+usage: kaggle models instances get [-h] [-p FOLDER] [modelInstance]
+
+required arguments:
+  modelInstance         Model Instance URL suffix in format <owner>/<model-name>/<framework>/<instance-slug>
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -p PATH, --path PATH  Folder where the special model-instance-metadata.json file (https://github.com/Kaggle/kaggle-api/wiki/Model-Metadata) will be downloaded (if specified).
+```
+
+Example:
+
+`kaggle models instances get tensorflow/toxicity/tfjs/default`
+
+##### Initialize metadata file for a model instance
+
+```
+usage: kaggle models instances init [-h] [-p FOLDER]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -p FOLDER, --path FOLDER
+                        Folder to create the model-instance-metadata.json file (https://github.com/Kaggle/kaggle-api/wiki/Model-Metadata). Defaults to current working directory
+```
+
+Example:
+
+`kaggle models instances init -p /path/to/modelinstance`
+
+##### Create a new model instance
+
+If you want to create a new model instance, you need to initiate metadata file at first. You could fulfill this by running `kaggle models instances init` as describe above.
+
+```
+usage: kaggle models instances create [-h] [-p FOLDER]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -p FOLDER, --path FOLDER
+                        Folder containing the special model-instance-metadata.json file (https://github.com/Kaggle/kaggle-api/wiki/Model-Metadata). Defaults to current working directory
+  -q, --quiet           Suppress printing information about the upload progress
+  -r {skip,zip,tar}, --dir-mode {skip,zip,tar}
+                        What to do with directories: "skip" - ignore; "zip" - compressed upload; "tar" - uncompressed upload
+```
+
+Example:
+
+`kaggle models instances create -p /path/to/modelinstance`
+
+##### Delete model instance
+
+```
+usage: kaggle models instances delete [-h] [modelInstance]
+
+optional arguments:
+  -h, --help     show this help message and exit
+  modelInstance  Model Instance URL suffix in format <owner>/<model-name>/<framework>/<instance-slug>
+```
+
+Example:
+
+`kaggle models instances delete tensorflow/toxicity/tfjs/default`
+
+##### Update a model instance
+
+If you want to update a model instance, you need a metadata file at first. You can fetch the data by running `kaggle models instances get owner-slug/model-slug/framework/instance-slug -p folder`.
+
+```
+usage: kaggle models instances update [-h] [-p FOLDER]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -p FOLDER, --path FOLDER
+                        Folder containing the special model-instance-metadata.json file (https://github.com/Kaggle/kaggle-api/wiki/Model-Metadata). Defaults to current working directory
+```
+
+Example:
+
+`kaggle models instances update -p /path/to/model`
+
+#### Model Instance Versions
+
+The API supports the following commands for Kaggle Model Instance Versions.
+
+```
+usage: kaggle models instances versions [-h]
+                             {init, create, download, delete} ...
+
+optional arguments:
+  -h, --help            show this help message and exit
+
+commands:
+  {create, download, delete}
+    create              Create a new model instance version
+    download            Download a model instance version
+    delete              Delete a model instance version
+```
+
+##### Create a new model instance version
+
+```
+usage: kaggle models instances versions create [-h] [modelInstance] [-p FOLDER] [-n NOTES]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  modelInstance         Model Instance URL suffix in format <owner>/<model-name>/<framework>/<instance-slug>
+  -p FOLDER, --path FOLDER
+                        Folder containing the model files to upload
+  -n, --version-notes NOTES
+                        Version notes to record for this new version
+  -q, --quiet           Suppress printing information about the upload progress
+  -r {skip,zip,tar}, --dir-mode {skip,zip,tar}
+                        What to do with directories: "skip" - ignore; "zip" - compressed upload; "tar" - uncompressed upload
+```
+
+Example:
+
+`kaggle models instances versions create tensorflow/toxicity/tfjs/default -p /path/to/files -n "updated weights"`
+
+##### Download a model instance version
+
+```
+usage: kaggle models instances versions download [-h] [-p PATH] [--untar] [-f] [-q] [modelInstanceVersion]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  modelInstanceVersion  Model Instance version URL suffix in format <owner>/<model-name>/<framework>/<instance-slug>/<version_number>
+  -p PATH, --path PATH  Folder where file(s) will be downloaded, defaults to current working directory
+  --untar               Untar the downloaded file. Will delete the tar file when completed.
+  -f, --force           Skip check whether local version of file is up to date, force file download
+  -q, --quiet           Suppress printing information about the download progress
+```
+
+
+Examples:
+
+`kaggle models instances versions download tensorflow/toxicity/tfjs/default/1`
+
+##### Delete model instance
+
+```
+usage: kaggle models instances versions delete [-h] [modelInstanceVersion]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  modelInstanceVersion  Model Instance version URL suffix in format <owner>/<model-name>/<framework>/<instance-slug>/<version_number>
+```
+
+Example:
+
+`kaggle models instances versions delete tensorflow/toxicity/tfjs/default/1`
 
 ### Config
 

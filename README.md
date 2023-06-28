@@ -235,22 +235,25 @@ commands:
 ##### List datasets
 
 ```
-usage: kaggle datasets list [-h] [--sort-by SORT_BY] [--size SIZE] [--file-type FILE_TYPE] [--license LICENSE_NAME] [--tags TaG_IDS] [-s SEARCH] [-m] [--user USER] [-p PAGE] [-v]
+usage: kaggle datasets list [-h] [--sort-by SORT_BY] [--size SIZE] [--file-type FILE_TYPE] [--license LICENSE_NAME] [--tags TAG_IDS] [-s SEARCH] [-m] [--user USER] [-p PAGE] [-v] [--max-size MAX_SIZE] [--min-size MIN_SIZE]
 
-optional arguments:
+options:
   -h, --help            show this help message and exit
   --sort-by SORT_BY     Sort list results. Default is 'hottest'. Valid options are 'hottest', 'votes', 'updated', and 'active'
-  --size SIZE           Search for datasets of a specific size. Default is 'all'. Valid options are 'all', 'small', 'medium', and 'large'
-  --file-type FILE_TYPE Search for datasets with a specific file type. Default is 'all'. Valid options are 'all', 'csv', 'sqlite', 'json', and 'bigQuery'. Please note that bigQuery datasets cannot be downloaded
-  --license LICENSE_NAME 
+  --size SIZE           DEPRECATED. Please use --max-size and --min-size to filter dataset sizes.
+  --file-type FILE_TYPE
+                        Search for datasets with a specific file type. Default is 'all'. Valid options are 'all', 'csv', 'sqlite', 'json', and 'bigQuery'. Please note that bigQuery datasets cannot be downloaded
+  --license LICENSE_NAME
                         Search for datasets with a specific license. Default is 'all'. Valid options are 'all', 'cc', 'gpl', 'odb', and 'other'
-  --tags TAG_IDS        Search for datasets that have specific tags. Tag list should be comma separated                      
+  --tags TAG_IDS        Search for datasets that have specific tags. Tag list should be comma separated
   -s SEARCH, --search SEARCH
                         Term(s) to search for
   -m, --mine            Display only my items
   --user USER           Find public datasets owned by a specific user or organization
   -p PAGE, --page PAGE  Page number for results paging. Page size is 20 by default
   -v, --csv             Print results in CSV format (if not set print in table format)
+  --max-size MAX_SIZE   Specify the maximum size of the dataset to return (bytes)
+  --min-size MIN_SIZE   Specify the minimum size of the dataset to return (bytes)
 ```
 
 Example:

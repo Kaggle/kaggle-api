@@ -1397,10 +1397,7 @@ class KaggleApi(KaggleApi):
             convert_to_csv=convert_to_csv,
             delete_old_versions=delete_old_versions,
             dir_mode=dir_mode)
-        if result.invalidTags:
-            print(
-                ('The following are not valid tags and could not be added to '
-                 'the dataset: ') + str(result.invalidTags))
+        
         if result is None:
             print('Dataset version creation error: See previous output')
         elif result.status.lower() == 'ok':
@@ -1409,6 +1406,11 @@ class KaggleApi(KaggleApi):
                 result.url)
         else:
             print('Dataset version creation error: ' + result.error)
+        
+        if result.invalidTags:
+            print(
+                ('The following are not valid tags and could not be added to '
+                 'the dataset: ') + str(result.invalidTags))
 
     def dataset_initialize(self, folder):
         """ initialize a folder with a a dataset configuration (metadata) file

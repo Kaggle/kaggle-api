@@ -63,7 +63,7 @@ class Configuration(six.with_metaclass(TypeWithDefault, object)):
     def __init__(self):
         """Constructor"""
         # Default Base url
-        self.host = "https://www.kaggle.com/api/v1"
+        self.host = _get_endpoint_from_env() or "https://www.kaggle.com/api/v1"
         # Temp file folder for downloading files
         self.temp_folder_path = None
 
@@ -261,3 +261,14 @@ class Configuration(six.with_metaclass(TypeWithDefault, object)):
                "Version of the API: 1\n"\
                "SDK Package Version: 1".\
                format(env=sys.platform, pyversion=sys.version)
+
+
+def _get_endpoint_from_env():
+    import os
+    endpoint = os.environ.get("KAGGLE_API_ENDPOINT")
+    if endpoint is None:
+        return None
+    endpoint = endpoint.rstrip("/")
+    if endpoint.endswith("/api/v1"):
+        return endpoint
+    return endpoint + "/api/v1"    

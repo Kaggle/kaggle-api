@@ -239,12 +239,13 @@ commands:
 ##### List datasets
 
 ```
-usage: kaggle datasets list [-h] [--sort-by SORT_BY] [--size SIZE] [--file-type FILE_TYPE] [--license LICENSE_NAME] [--tags TaG_IDS] [-s SEARCH] [-m] [--user USER] [-p PAGE] [-v]
+usage: kaggle datasets list [-h] [--sort-by SORT_BY] [--min-size MIN_SIZE] [--max-size MAX_SIZE] [--file-type FILE_TYPE] [--license LICENSE_NAME] [--tags TAG_IDS] [-s SEARCH] [-m] [--user USER] [-p PAGE] [-v]
 
 optional arguments:
   -h, --help            show this help message and exit
   --sort-by SORT_BY     Sort list results. Default is 'hottest'. Valid options are 'hottest', 'votes', 'updated', and 'active'
-  --size SIZE           Search for datasets of a specific size. Default is 'all'. Valid options are 'all', 'small', 'medium', and 'large'
+  --max-size MAX_SIZE   Specify the maximum size of the dataset to return (bytes)
+  --min-size MIN_SIZE   Specify the minimum size of the dataset to return (bytes)
   --file-type FILE_TYPE Search for datasets with a specific file type. Default is 'all'. Valid options are 'all', 'csv', 'sqlite', 'json', and 'bigQuery'. Please note that bigQuery datasets cannot be downloaded
   --license LICENSE_NAME 
                         Search for datasets with a specific license. Default is 'all'. Valid options are 'all', 'cc', 'gpl', 'odb', and 'other'
@@ -268,9 +269,11 @@ Example:
 ```
 usage: kaggle datasets files [-h] [-v] [dataset]
 
+required arguments:
+  dataset               Dataset URL suffix in format <owner>/<dataset-name> (use "kaggle datasets list" to show options)
+
 optional arguments:
   -h, --help  show this help message and exit
-  dataset     Dataset URL suffix in format <owner>/<dataset-name> (use "kaggle datasets list" to show options)
   -v, --csv   Print results in CSV format (if not set print in table format)
 ```
 
@@ -285,9 +288,11 @@ usage: kaggle datasets download [-h] [-f FILE_NAME] [-p PATH] [-w] [--unzip]
                                 [-o] [-q]
                                 [dataset]
 
+required arguments:
+  dataset               Dataset URL suffix in format <owner>/<dataset-name> (use "kaggle datasets list" to show options)
+
 optional arguments:
   -h, --help            show this help message and exit
-  dataset               Dataset URL suffix in format <owner>/<dataset-name> (use "kaggle datasets list" to show options)
   -f FILE_NAME, --file FILE_NAME
                         File name, all files downloaded if not provided
                         (use "kaggle datasets files -d <dataset>" to show options)
@@ -315,7 +320,7 @@ usage: kaggle datasets init [-h] [-p FOLDER]
 optional arguments:
   -h, --help            show this help message and exit
   -p FOLDER, --path FOLDER
-                        Folder for upload, containing data files and a special dataset-metadata.json file (https://github.com/Kaggle/kaggle-api/wiki/Dataset-Metadata). Defaults to current working directory
+                        Folder where the special dataset-metadata.json file (https://github.com/Kaggle/kaggle-api/wiki/Dataset-Metadata) will be created. Defaults to current working directory
 ```
 
 Example:
@@ -376,9 +381,11 @@ Example:
 ```
 usage: kaggle datasets metadata [-h] [-p PATH] [dataset]
 
+required arguments:
+  dataset               Dataset URL suffix in format <owner>/<dataset-name> (use "kaggle datasets list" to show options)
+
 optional arguments:
   -h, --help            show this help message and exit
-  dataset               Dataset URL suffix in format <owner>/<dataset-name> (use "kaggle datasets list" to show options)
   -p PATH, --path PATH  Location to download dataset metadata to. Defaults to current working directory
 ```
 
@@ -392,9 +399,11 @@ Example:
 ```
 usage: kaggle datasets status [-h] [dataset]
 
+required arguments:
+  dataset     Dataset URL suffix in format <owner>/<dataset-name> (use "kaggle datasets list" to show options)
+
 optional arguments:
   -h, --help  show this help message and exit
-  dataset     Dataset URL suffix in format <owner>/<dataset-name> (use "kaggle datasets list" to show options)
 ```
 
 Example:
@@ -467,7 +476,7 @@ usage: kaggle kernels init [-h] [-p FOLDER]
 optional arguments:
   -h, --help            show this help message and exit
   -p FOLDER, --path FOLDER
-                        Folder for upload, containing data files and a special kernel-metadata.json file (https://github.com/Kaggle/kaggle-api/wiki/Kernel-Metadata). Defaults to current working directory
+                        Folder where the special kernel-metadata.json file (https://github.com/Kaggle/kaggle-api/wiki/Kernel-Metadata) will be created. Defaults to current working directory
 ```
 
 Example:
@@ -511,9 +520,11 @@ Example:
 ```
 usage: kaggle kernels output [-h] [-p PATH] [-w] [-o] [-q] [kernel]
 
+required arguments:
+  kernel      Kernel URL suffix in format <owner>/<kernel-name> (use "kaggle kernels list" to show options)
+
 optional arguments:
   -h, --help            show this help message and exit
-  kernel                Kernel URL suffix in format <owner>/<kernel-name> (use "kaggle kernels list" to show options)
   -p PATH, --path PATH  Folder where file(s) will be downloaded, defaults to current working directory
   -w, --wp              Download files to current working path
   -o, --force           Skip check whether local version of file is up to date, force file download
@@ -529,9 +540,11 @@ Example:
 ```
 usage: kaggle kernels status [-h] [kernel]
 
+required arguments:
+  kernel      Kernel URL suffix in format <owner>/<kernel-name> (use "kaggle kernels list" to show options)
+
 optional arguments:
   -h, --help  show this help message and exit
-  kernel      Kernel URL suffix in format <owner>/<kernel-name> (use "kaggle kernels list" to show options)
 ```
 
 Example:
@@ -634,9 +647,11 @@ Example:
 ```
 usage: kaggle models delete [-h] [model]
 
+required arguments:
+  model       Model URL suffix in format <owner>/<model-name>
+
 optional arguments:
   -h, --help  show this help message and exit
-  model       Model URL suffix in format <owner>/<model-name>
 ```
 
 Example:
@@ -737,9 +752,11 @@ Example:
 ```
 usage: kaggle models instances delete [-h] [modelInstance]
 
+required arguments:
+  modelInstance         Model Instance URL suffix in format <owner>/<model-name>/<framework>/<instance-slug>
+
 optional arguments:
   -h, --help     show this help message and exit
-  modelInstance  Model Instance URL suffix in format <owner>/<model-name>/<framework>/<instance-slug>
 ```
 
 Example:
@@ -786,9 +803,11 @@ commands:
 ```
 usage: kaggle models instances versions create [-h] [modelInstance] [-p FOLDER] [-n NOTES]
 
+required arguments:
+  modelInstance         Model Instance URL suffix in format <owner>/<model-name>/<framework>/<instance-slug>
+
 optional arguments:
   -h, --help            show this help message and exit
-  modelInstance         Model Instance URL suffix in format <owner>/<model-name>/<framework>/<instance-slug>
   -p FOLDER, --path FOLDER
                         Folder containing the model files to upload
   -n, --version-notes NOTES
@@ -807,9 +826,11 @@ Example:
 ```
 usage: kaggle models instances versions download [-h] [-p PATH] [--untar] [-f] [-q] [modelInstanceVersion]
 
+required arguments:
+  modelInstanceVersion  Model Instance version URL suffix in format <owner>/<model-name>/<framework>/<instance-slug>/<version_number>
+
 optional arguments:
   -h, --help            show this help message and exit
-  modelInstanceVersion  Model Instance version URL suffix in format <owner>/<model-name>/<framework>/<instance-slug>/<version_number>
   -p PATH, --path PATH  Folder where file(s) will be downloaded, defaults to current working directory
   --untar               Untar the downloaded file. Will delete the tar file when completed.
   -f, --force           Skip check whether local version of file is up to date, force file download
@@ -826,9 +847,11 @@ Examples:
 ```
 usage: kaggle models instances versions delete [-h] [modelInstanceVersion]
 
+required arguments:
+  modelInstanceVersion  Model Instance version URL suffix in format <owner>/<model-name>/<framework>/<instance-slug>/<version_number>
+
 optional arguments:
   -h, --help            show this help message and exit
-  modelInstanceVersion  Model Instance version URL suffix in format <owner>/<model-name>/<framework>/<instance-slug>/<version_number>
 ```
 
 Example:

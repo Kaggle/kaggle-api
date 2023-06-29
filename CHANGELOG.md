@@ -1,6 +1,16 @@
 Changelog
 ====
 
+#### 1.5.14
+Release date: 6/29/23
+* Show the full error message from the API
+* Improve and fix documentation
+* Fix kernel's data sources bug, and add the model data source to push/pull
+* Implement resumable downloads
+* Fix unreachable code bug
+* Make some arguments required
+* Add enable_tpu to kernel's push/pull
+
 #### 1.6.0a2
 Release date: 6/12/23
 * Add endpoint to get a modelInstance

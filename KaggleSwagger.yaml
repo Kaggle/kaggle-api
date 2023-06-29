@@ -1625,6 +1625,9 @@ definitions:
       enableGpu:
         type: boolean
         description: Whether or not the kernel should run on a GPU
+      enableTpu:
+        type: boolean
+        description: Whether or not the kernel should run on a TPU
       enableInternet:
         type: boolean
         description: Whether or not the kernel should be able to access the internet

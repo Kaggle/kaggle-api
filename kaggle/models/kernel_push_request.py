@@ -14,6 +14,198 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+#!/usr/bin/python
+#
+# Copyright 2023 Kaggle Inc
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+#!/usr/bin/python
+#
+# Copyright 2023 Kaggle Inc
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+#!/usr/bin/python
+#
+# Copyright 2023 Kaggle Inc
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+#!/usr/bin/python
+#
+# Copyright 2023 Kaggle Inc
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+#!/usr/bin/python
+#
+# Copyright 2023 Kaggle Inc
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+#!/usr/bin/python
+#
+# Copyright 2023 Kaggle Inc
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+#!/usr/bin/python
+#
+# Copyright 2023 Kaggle Inc
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+#!/usr/bin/python
+#
+# Copyright 2023 Kaggle Inc
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+#!/usr/bin/python
+#
+# Copyright 2023 Kaggle Inc
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+#!/usr/bin/python
+#
+# Copyright 2023 Kaggle Inc
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+#!/usr/bin/python
+#
+# Copyright 2023 Kaggle Inc
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+#!/usr/bin/python
+#
+# Copyright 2023 Kaggle Inc
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 # coding: utf-8
 
 """
@@ -55,6 +247,7 @@ class KernelPushRequest(object):
         'kernel_type': 'str',
         'is_private': 'bool',
         'enable_gpu': 'bool',
+        'enable_tpu': 'bool',
         'enable_internet': 'bool',
         'dataset_data_sources': 'list[str]',
         'competition_data_sources': 'list[str]',
@@ -73,6 +266,7 @@ class KernelPushRequest(object):
         'kernel_type': 'kernelType',
         'is_private': 'isPrivate',
         'enable_gpu': 'enableGpu',
+        'enable_tpu': 'enableTpu',
         'enable_internet': 'enableInternet',
         'dataset_data_sources': 'datasetDataSources',
         'competition_data_sources': 'competitionDataSources',
@@ -82,7 +276,7 @@ class KernelPushRequest(object):
         'docker_image_pinning_type': 'dockerImagePinningType'
     }
 
-    def __init__(self, id=None, slug=None, new_title=None, text=None, language=None, kernel_type=None, is_private=None, enable_gpu=None, enable_internet=None, dataset_data_sources=None, competition_data_sources=None, kernel_data_sources=None, model_data_sources=None, category_ids=None, docker_image_pinning_type=None):  # noqa: E501
+    def __init__(self, id=None, slug=None, new_title=None, text=None, language=None, kernel_type=None, is_private=None, enable_gpu=None, enable_tpu=None, enable_internet=None, dataset_data_sources=None, competition_data_sources=None, kernel_data_sources=None, model_data_sources=None, category_ids=None, docker_image_pinning_type=None):  # noqa: E501
         """KernelPushRequest - a model defined in Swagger"""  # noqa: E501
 
         self._id = None
@@ -93,6 +287,7 @@ class KernelPushRequest(object):
         self._kernel_type = None
         self._is_private = None
         self._enable_gpu = None
+        self._enable_tpu = None
         self._enable_internet = None
         self._dataset_data_sources = None
         self._competition_data_sources = None
@@ -115,6 +310,8 @@ class KernelPushRequest(object):
             self.is_private = is_private
         if enable_gpu is not None:
             self.enable_gpu = enable_gpu
+        if enable_tpu is not None:
+            self.enable_tpu = enable_tpu
         if enable_internet is not None:
             self.enable_internet = enable_internet
         if dataset_data_sources is not None:
@@ -331,6 +528,29 @@ class KernelPushRequest(object):
         """
 
         self._enable_gpu = enable_gpu
+
+    @property
+    def enable_tpu(self):
+        """Gets the enable_tpu of this KernelPushRequest.  # noqa: E501
+
+        Whether or not the kernel should run on a TPU  # noqa: E501
+
+        :return: The enable_tpu of this KernelPushRequest.  # noqa: E501
+        :rtype: bool
+        """
+        return self._enable_tpu
+
+    @enable_tpu.setter
+    def enable_tpu(self, enable_tpu):
+        """Sets the enable_tpu of this KernelPushRequest.
+
+        Whether or not the kernel should run on a TPU  # noqa: E501
+
+        :param enable_tpu: The enable_tpu of this KernelPushRequest.  # noqa: E501
+        :type: bool
+        """
+
+        self._enable_tpu = enable_tpu
 
     @property
     def enable_internet(self):

@@ -1,6 +1,13 @@
 Changelog
 ====
 
+#### 1.5.15
+Release date: 6/30/23
+* Add missing licenses for datasets
+* Re-add option to pass dataset with `-d`
+* Download / list files for a specific version of a dataset
+* Documentation improvements
+
 #### 1.5.14
 Release date: 6/29/23
 * Show the full error message from the API

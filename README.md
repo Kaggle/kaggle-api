@@ -46,7 +46,7 @@ The command line tool supports the following commands:
 
 ``` 
 kaggle competitions {list, files, download, submit, submissions, leaderboard}
-kaggle datasets {list, files, download, create, version, init}
+kaggle datasets {list, files, download, create, version, init, metadata, status}
 kaggle kernels {list, init, push, pull, output, status}
 kaggle models {get, list, init, create, delete, update}
 kaggle models instances {get, init, create, delete, update}
@@ -270,7 +270,7 @@ Example:
 usage: kaggle datasets files [-h] [-v] [dataset]
 
 required arguments:
-  dataset               Dataset URL suffix in format <owner>/<dataset-name> (use "kaggle datasets list" to show options)
+  dataset               Dataset URL suffix in format <owner>/<dataset-name> (use "kaggle datasets list" to show options), or <owner>/<dataset-name>/<version-number> for a specific version
 
 optional arguments:
   -h, --help  show this help message and exit
@@ -281,6 +281,8 @@ Example:
 
 `kaggle datasets files zillow/zecon`
 
+`kaggle datasets files zillow/zecon/3`
+
 ##### Download dataset files
 
 ```
@@ -289,7 +291,7 @@ usage: kaggle datasets download [-h] [-f FILE_NAME] [-p PATH] [-w] [--unzip]
                                 [dataset]
 
 required arguments:
-  dataset               Dataset URL suffix in format <owner>/<dataset-name> (use "kaggle datasets list" to show options)
+  dataset               Dataset URL suffix in format <owner>/<dataset-name> (use "kaggle datasets list" to show options), or <owner>/<dataset-name>/<version-number> for a specific version
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -307,6 +309,8 @@ optional arguments:
 Examples:
 
 `kaggle datasets download zillow/zecon`
+
+`kaggle datasets download zillow/zecon/3`
 
 `kaggle datasets download zillow/zecon -f State_time_series.csv`
 
@@ -481,7 +485,7 @@ optional arguments:
 
 Example:
 
-`kaggle kernels init -p /path/to/kernel`
+`kaggle kernels init -p /path/to/folder`
   
 ##### Push a kernel
 
@@ -496,7 +500,7 @@ optional arguments:
 
 Example:
 
-`kaggle kernels push -p /path/to/kernel`
+`kaggle kernels push -p /path/to/folder`
 
 ##### Pull a kernel
 

@@ -440,6 +440,11 @@ paths:
           required: true
           type: string
           description: Dataset name
+        - in: query
+          name: datasetVersionNumber
+          required: false
+          type: string
+          description: Dataset version number
       responses:
         200:
           description: Result
@@ -468,34 +473,6 @@ paths:
         required: true
         type: string
         description: Dataset name
-      responses:
-        200:
-          description: Result
-          schema:
-            $ref: '#/definitions/Result'
-        default:
-          description: Error
-          schema:
-            $ref: '#/definitions/Error'
-  /datasets/view/{ownerSlug}/{datasetSlug}:
-    get:
-      tags:
-      - kaggle
-      summary: Show details about a dataset
-      operationId: DatasetsView
-      produces:
-        - application/json
-      parameters:
-        - in: path
-          name: ownerSlug
-          required: true
-          type: string
-          description: Dataset owner
-        - in: path
-          name: datasetSlug
-          required: true
-          type: string
-          description: Dataset name
       responses:
         200:
           description: Result
@@ -1562,6 +1539,23 @@ definitions:
         - other
         - reddit-api
         - world-bank
+        - CC-BY-4.0
+        - CC-BY-NC-4.0
+        - PDDL
+        - CC-BY-3.0
+        - CC-BY-3.0-IGO
+        - US-Government-Works
+        - CC-BY-NC-SA-3.0-IGO
+        - CDLA-Permissive-1.0
+        - CDLA-Sharing-1.0
+        - CC-BY-ND-4.0
+        - CC-BY-NC-ND-4.0
+        - ODC-BY-1.0
+        - LGPL-3.0
+        - AGPL-3.0
+        - FDL-1.3
+        - EU-ODP-Legal-Notice
+        - apache-2.0 
       subtitle:
         type: string
         description: The subtitle to be set on the dataset
@@ -1723,6 +1717,23 @@ definitions:
         - other
         - reddit-api
         - world-bank
+        - CC-BY-4.0
+        - CC-BY-NC-4.0
+        - PDDL
+        - CC-BY-3.0
+        - CC-BY-3.0-IGO
+        - US-Government-Works
+        - CC-BY-NC-SA-3.0-IGO
+        - CDLA-Permissive-1.0
+        - CDLA-Sharing-1.0
+        - CC-BY-ND-4.0
+        - CC-BY-NC-ND-4.0
+        - ODC-BY-1.0
+        - LGPL-3.0
+        - AGPL-3.0
+        - FDL-1.3
+        - EU-ODP-Legal-Notice
+        - apache-2.0 
   Collaborator:
     type: object
     required:

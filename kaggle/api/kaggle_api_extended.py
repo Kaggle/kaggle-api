@@ -92,7 +92,7 @@ except NameError:
 
 
 class KaggleApi(KaggleApi):
-    __version__ = '1.5.14'
+    __version__ = '1.6.0a2'
 
     CONFIG_NAME_PROXY = 'proxy'
     CONFIG_NAME_COMPETITION = 'competition'
@@ -986,27 +986,6 @@ class KaggleApi(KaggleApi):
         else:
             print('No datasets found')
 
-    def dataset_view(self, dataset):
-        """ view metadata for a dataset.
-
-            Parameters
-            ==========
-            dataset: the string identified of the dataset
-                     should be in format [owner]/[dataset-name]
-        """
-        if '/' in dataset:
-            self.validate_dataset_string(dataset)
-            dataset_urls = dataset.split('/')
-            owner_slug = dataset_urls[0]
-            dataset_slug = dataset_urls[1]
-        else:
-            owner_slug = self.get_config_value(self.CONFIG_NAME_USER)
-            dataset_slug = dataset
-
-        result = self.process_response(
-            self.datasets_view_with_http_info(owner_slug, dataset_slug))
-        return Dataset(result)
-
     def dataset_metadata_prep(self, dataset, path):
         if dataset is None:
             raise ValueError('A dataset must be specified')
@@ -1091,17 +1070,16 @@ class KaggleApi(KaggleApi):
             dataset: the string identified of the dataset
                      should be in format [owner]/[dataset-name]
         """
-        if '/' in dataset:
-            self.validate_dataset_string(dataset)
-            dataset_urls = dataset.split('/')
-            owner_slug = dataset_urls[0]
-            dataset_slug = dataset_urls[1]
-        else:
-            owner_slug = self.get_config_value(self.CONFIG_NAME_USER)
-            dataset_slug = dataset
+        if dataset is None:
+            raise ValueError('A dataset must be specified')
+        owner_slug, dataset_slug, dataset_version_number = self.split_dataset_string(
+            dataset)
+
         dataset_list_files_result = self.process_response(
             self.datasets_list_files_with_http_info(
-                owner_slug=owner_slug, dataset_slug=dataset_slug))
+                owner_slug=owner_slug,
+                dataset_slug=dataset_slug,
+                dataset_version_number=dataset_version_number))
         return ListFilesResult(dataset_list_files_result)
 
     def dataset_list_files_cli(self,
@@ -1138,6 +1116,8 @@ class KaggleApi(KaggleApi):
             dataset: the string identified of the dataset
                      should be in format [owner]/[dataset-name]
         """
+        if dataset is None:
+            raise ValueError('A dataset must be specified')
         if '/' in dataset:
             self.validate_dataset_string(dataset)
             dataset_urls = dataset.split('/')
@@ -1224,15 +1204,10 @@ class KaggleApi(KaggleApi):
             quiet: suppress verbose output (default is True)
             unzip: if True, unzip files upon download (default is False)
         """
-        if '/' in dataset:
-            self.validate_dataset_string(dataset)
-            dataset_urls = dataset.split('/')
-            owner_slug = dataset_urls[0]
-            dataset_slug = dataset_urls[1]
-        else:
-            owner_slug = self.get_config_value(self.CONFIG_NAME_USER)
-            dataset_slug = dataset
-
+        if dataset is None:
+            raise ValueError('A dataset must be specified')
+        owner_slug, dataset_slug, dataset_version_number = self.split_dataset_string(
+            dataset)
         if path is None:
             effective_path = self.get_default_download_dir(
                 'datasets', owner_slug, dataset_slug)
@@ -1243,6 +1218,7 @@ class KaggleApi(KaggleApi):
             self.datasets_download_with_http_info(
                 owner_slug=owner_slug,
                 dataset_slug=dataset_slug,
+                dataset_version_number=dataset_version_number,
                 _preload_content=False))
 
         outfile = os.path.join(effective_path, dataset_slug + '.zip')
@@ -2176,6 +2152,8 @@ class KaggleApi(KaggleApi):
             force: if output already exists, force overwrite (default False)
             quiet: suppress verbosity (default is True)
         """
+        if kernel is None:
+            raise ValueError('A kernel must be specified')
         if '/' in kernel:
             self.validate_kernel_string(kernel)
             kernel_url_list = kernel.split('/')
@@ -2244,6 +2222,8 @@ class KaggleApi(KaggleApi):
             ==========
             kernel: the kernel to get the status for
         """
+        if kernel is None:
+            raise ValueError('A kernel must be specified')
         if '/' in kernel:
             self.validate_kernel_string(kernel)
             kernel_url_list = kernel.split('/')
@@ -3442,7 +3422,7 @@ class KaggleApi(KaggleApi):
 
     def validate_dataset_string(self, dataset):
         """ determine if a dataset string is valid, meaning it is in the format
-            of {username}/{dataset-slug}.
+            of {username}/{dataset-slug} or {username}/{dataset-slug}/{version-number}.
              Parameters
             ==========
             dataset: the dataset name to validate
@@ -3453,8 +3433,25 @@ class KaggleApi(KaggleApi):
                                  '\'{username}/{dataset-slug}\'')
 
             split = dataset.split('/')
-            if not split[0] or not split[1]:
+            if not split[0] or not split[1] or len(split) > 3:
                 raise ValueError('Invalid dataset specification ' + dataset)
+
+    def split_dataset_string(self, dataset):
+        """ split a dataset string into owner_slug, dataset_slug,
+            and optional version_number
+             Parameters
+            ==========
+            dataset: the dataset name to split
+        """
+        if '/' in dataset:
+            self.validate_dataset_string(dataset)
+            urls = dataset.split('/')
+            if len(urls) == 3:
+                return urls[0], urls[1], urls[2]
+            else:
+                return urls[0], urls[1], None
+        else:
+            return self.get_config_value(self.CONFIG_NAME_USER), dataset
 
     def validate_model_string(self, model):
         """ determine if a model string is valid, meaning it is in the format

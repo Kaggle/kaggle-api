@@ -57,7 +57,6 @@ def main():
     parse_competitions(subparsers)
     parse_datasets(subparsers)
     parse_kernels(subparsers)
-    parse_models(subparsers)
     parse_config(subparsers)
     args = parser.parse_args()
     command_args = {}
@@ -445,11 +444,11 @@ def parse_datasets(subparsers):
         help=Help.command_datasets_files)
     parser_datasets_files_optional = parser_datasets_files._action_groups.pop()
     parser_datasets_files_optional.add_argument(
-        'dataset', help=Help.param_dataset)
+        'dataset', nargs='?', default=None, help=Help.param_dataset)
     parser_datasets_files_optional.add_argument(
         '-d',
         '--dataset',
-        dest='dataset',
+        dest='dataset_opt',
         required=False,
         help=argparse.SUPPRESS)
     parser_datasets_files_optional.add_argument(
@@ -469,7 +468,7 @@ def parse_datasets(subparsers):
     parser_datasets_download_optional = parser_datasets_download._action_groups.pop(
     )
     parser_datasets_download_optional.add_argument(
-        'dataset', help=Help.param_dataset)
+        'dataset', nargs='?', default=None, help=Help.param_dataset)
     parser_datasets_download_optional.add_argument(
         '-d',
         '--dataset',
@@ -629,11 +628,11 @@ def parse_datasets(subparsers):
     parser_datasets_metadata_optional = parser_datasets_metadata._action_groups.pop(
     )
     parser_datasets_metadata_optional.add_argument(
-        'dataset', help=Help.param_dataset)
+        'dataset', nargs='?', default=None, help=Help.param_dataset)
     parser_datasets_metadata_optional.add_argument(
         '-d',
         '--dataset',
-        dest='dataset',
+        dest='dataset_opt',
         required=False,
         help=argparse.SUPPRESS)
     parser_datasets_metadata_optional.add_argument(
@@ -655,11 +654,11 @@ def parse_datasets(subparsers):
     parser_datasets_status_optional = parser_datasets_status._action_groups.pop(
     )
     parser_datasets_status_optional.add_argument(
-        'dataset', help=Help.param_dataset)
+        'dataset', nargs='?', default=None, help=Help.param_dataset)
     parser_datasets_status_optional.add_argument(
         '-d',
         '--dataset',
-        dest='dataset',
+        dest='dataset_opt',
         required=False,
         help=argparse.SUPPRESS)
     parser_datasets_status._action_groups.append(
@@ -818,11 +817,11 @@ def parse_kernels(subparsers):
         help=Help.command_kernels_output)
     parser_kernels_output_optional = parser_kernels_output._action_groups.pop()
     parser_kernels_output_optional.add_argument(
-        'kernel', help=Help.param_kernel)
+        'kernel', nargs='?', default=None, help=Help.param_kernel)
     parser_kernels_output_optional.add_argument(
         '-k',
         '--kernel',
-        dest='kernel',
+        dest='kernel_opt',
         required=False,
         help=argparse.SUPPRESS)
     parser_kernels_output_optional.add_argument(
@@ -863,11 +862,11 @@ def parse_kernels(subparsers):
         help=Help.command_kernels_status)
     parser_kernels_status_optional = parser_kernels_status._action_groups.pop()
     parser_kernels_status_optional.add_argument(
-        'kernel', help=Help.param_kernel)
+        'kernel', nargs='?', default=None, help=Help.param_kernel)
     parser_kernels_status_optional.add_argument(
         '-k',
         '--kernel',
-        dest='kernel',
+        dest='kernel_opt',
         required=False,
         help=argparse.SUPPRESS)
     parser_kernels_status._action_groups.append(parser_kernels_status_optional)
@@ -1289,12 +1288,7 @@ class Help(object):
 
     kaggle = 'Use one of:\ncompetitions {' + ', '.join(
         competitions_choices) + '}\ndatasets {' + ', '.join(
-            datasets_choices) + '}\nmodels {' + ', '.join(
-                models_choices) + '}\nmodels instances {' + ', '.join(
-                    model_instances_choices
-                ) + '}\nmodels instances versions {' + ', '.join(
-                    model_instance_versions_choices
-                ) + '}\nconfig {' + ', '.join(config_choices) + '}'
+            datasets_choices) + '}\nconfig {' + ', '.join(config_choices) + '}'
 
     group_competitions = 'Commands related to Kaggle competitions'
     group_datasets = 'Commands related to Kaggle datasets'

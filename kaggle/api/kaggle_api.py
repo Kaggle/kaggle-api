@@ -14,6 +14,214 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+#!/usr/bin/python
+#
+# Copyright 2023 Kaggle Inc
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+#!/usr/bin/python
+#
+# Copyright 2023 Kaggle Inc
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+#!/usr/bin/python
+#
+# Copyright 2023 Kaggle Inc
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+#!/usr/bin/python
+#
+# Copyright 2023 Kaggle Inc
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+#!/usr/bin/python
+#
+# Copyright 2023 Kaggle Inc
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+#!/usr/bin/python
+#
+# Copyright 2023 Kaggle Inc
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+#!/usr/bin/python
+#
+# Copyright 2023 Kaggle Inc
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+#!/usr/bin/python
+#
+# Copyright 2023 Kaggle Inc
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+#!/usr/bin/python
+#
+# Copyright 2023 Kaggle Inc
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+#!/usr/bin/python
+#
+# Copyright 2023 Kaggle Inc
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+#!/usr/bin/python
+#
+# Copyright 2023 Kaggle Inc
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+#!/usr/bin/python
+#
+# Copyright 2023 Kaggle Inc
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+#!/usr/bin/python
+#
+# Copyright 2023 Kaggle Inc
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 # coding: utf-8
 
 """
@@ -833,7 +1041,7 @@ class KaggleApi(object):
         :param file file: Competition submission file (required)
         :param str guid: Location where submission should be uploaded (required)
         :param int content_length: Content length of file in bytes (required)
-        :param int last_modified_date_utc: Last modified date of file in milliseconds since epoch in UTC (required)
+        :param int last_modified_date_utc: Last modified date of file in seconds since epoch in UTC (required)
         :return: Result
                  If the method is called asynchronously,
                  returns the request thread.
@@ -857,7 +1065,7 @@ class KaggleApi(object):
         :param file file: Competition submission file (required)
         :param str guid: Location where submission should be uploaded (required)
         :param int content_length: Content length of file in bytes (required)
-        :param int last_modified_date_utc: Last modified date of file in milliseconds since epoch in UTC (required)
+        :param int last_modified_date_utc: Last modified date of file in seconds since epoch in UTC (required)
         :return: Result
                  If the method is called asynchronously,
                  returns the request thread.
@@ -953,7 +1161,7 @@ class KaggleApi(object):
         :param async_req bool
         :param str id: Competition name, as it appears in the competition's URL (required)
         :param int content_length: Content length of file in bytes (required)
-        :param int last_modified_date_utc: Last modified date of file in milliseconds since epoch in UTC (required)
+        :param int last_modified_date_utc: Last modified date of file in seconds since epoch in UTC (required)
         :param str file_name: Competition submission file name
         :return: Result
                  If the method is called asynchronously,
@@ -977,7 +1185,7 @@ class KaggleApi(object):
         :param async_req bool
         :param str id: Competition name, as it appears in the competition's URL (required)
         :param int content_length: Content length of file in bytes (required)
-        :param int last_modified_date_utc: Last modified date of file in milliseconds since epoch in UTC (required)
+        :param int last_modified_date_utc: Last modified date of file in seconds since epoch in UTC (required)
         :param str file_name: Competition submission file name
         :return: Result
                  If the method is called asynchronously,
@@ -1045,6 +1253,103 @@ class KaggleApi(object):
 
         return self.api_client.call_api(
             '/competitions/{id}/submissions/url/{contentLength}/{lastModifiedDateUtc}', 'POST',
+            path_params,
+            query_params,
+            header_params,
+            body=body_params,
+            post_params=form_params,
+            files=local_var_files,
+            response_type='Result',  # noqa: E501
+            auth_settings=auth_settings,
+            async_req=params.get('async_req'),
+            _return_http_data_only=params.get('_return_http_data_only'),
+            _preload_content=params.get('_preload_content', True),
+            _request_timeout=params.get('_request_timeout'),
+            collection_formats=collection_formats)
+
+    def create_inbox_file(self, create_inbox_file_request, **kwargs):  # noqa: E501
+        """Creates (aka \&quot;drops\&quot;) a new file into the inbox.  # noqa: E501
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.create_inbox_file(create_inbox_file_request, async_req=True)
+        >>> result = thread.get()
+
+        :param async_req bool
+        :param CreateInboxFileRequest create_inbox_file_request: (required)
+        :return: Result
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+        kwargs['_return_http_data_only'] = True
+        if kwargs.get('async_req'):
+            return self.create_inbox_file_with_http_info(create_inbox_file_request, **kwargs)  # noqa: E501
+        else:
+            (data) = self.create_inbox_file_with_http_info(create_inbox_file_request, **kwargs)  # noqa: E501
+            return data
+
+    def create_inbox_file_with_http_info(self, create_inbox_file_request, **kwargs):  # noqa: E501
+        """Creates (aka \&quot;drops\&quot;) a new file into the inbox.  # noqa: E501
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.create_inbox_file_with_http_info(create_inbox_file_request, async_req=True)
+        >>> result = thread.get()
+
+        :param async_req bool
+        :param CreateInboxFileRequest create_inbox_file_request: (required)
+        :return: Result
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+
+        all_params = ['create_inbox_file_request']  # noqa: E501
+        all_params.append('async_req')
+        all_params.append('_return_http_data_only')
+        all_params.append('_preload_content')
+        all_params.append('_request_timeout')
+
+        params = locals()
+        for key, val in six.iteritems(params['kwargs']):
+            if key not in all_params:
+                raise TypeError(
+                    "Got an unexpected keyword argument '%s'"
+                    " to method create_inbox_file" % key
+                )
+            params[key] = val
+        del params['kwargs']
+        # verify the required parameter 'create_inbox_file_request' is set
+        if ('create_inbox_file_request' not in params or
+                params['create_inbox_file_request'] is None):
+            raise ValueError("Missing the required parameter `create_inbox_file_request` when calling `create_inbox_file`")  # noqa: E501
+
+        collection_formats = {}
+
+        path_params = {}
+
+        query_params = []
+
+        header_params = {}
+
+        form_params = []
+        local_var_files = {}
+
+        body_params = None
+        if 'create_inbox_file_request' in params:
+            body_params = params['create_inbox_file_request']
+        # HTTP header `Accept`
+        header_params['Accept'] = self.api_client.select_header_accept(
+            ['application/json'])  # noqa: E501
+
+        # HTTP header `Content-Type`
+        header_params['Content-Type'] = self.api_client.select_header_content_type(  # noqa: E501
+            ['application/json'])  # noqa: E501
+
+        # Authentication setting
+        auth_settings = ['basicAuth']  # noqa: E501
+
+        return self.api_client.call_api(
+            '/inbox/files/create', 'POST',
             path_params,
             query_params,
             header_params,
@@ -1913,119 +2218,6 @@ class KaggleApi(object):
 
         return self.api_client.call_api(
             '/datasets/status/{ownerSlug}/{datasetSlug}', 'GET',
-            path_params,
-            query_params,
-            header_params,
-            body=body_params,
-            post_params=form_params,
-            files=local_var_files,
-            response_type='Result',  # noqa: E501
-            auth_settings=auth_settings,
-            async_req=params.get('async_req'),
-            _return_http_data_only=params.get('_return_http_data_only'),
-            _preload_content=params.get('_preload_content', True),
-            _request_timeout=params.get('_request_timeout'),
-            collection_formats=collection_formats)
-
-    def datasets_upload_file(self, file_name, content_length, last_modified_date_utc, **kwargs):  # noqa: E501
-        """Get URL and token to start uploading a data file  # noqa: E501
-
-        This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async_req=True
-        >>> thread = api.datasets_upload_file(file_name, content_length, last_modified_date_utc, async_req=True)
-        >>> result = thread.get()
-
-        :param async_req bool
-        :param str file_name: Dataset file name (required)
-        :param int content_length: Content length of file in bytes (required)
-        :param int last_modified_date_utc: Last modified date of file in milliseconds since epoch in UTC (required)
-        :return: Result
-                 If the method is called asynchronously,
-                 returns the request thread.
-        """
-        kwargs['_return_http_data_only'] = True
-        if kwargs.get('async_req'):
-            return self.datasets_upload_file_with_http_info(file_name, content_length, last_modified_date_utc, **kwargs)  # noqa: E501
-        else:
-            (data) = self.datasets_upload_file_with_http_info(file_name, content_length, last_modified_date_utc, **kwargs)  # noqa: E501
-            return data
-
-    def datasets_upload_file_with_http_info(self, file_name, content_length, last_modified_date_utc, **kwargs):  # noqa: E501
-        """Get URL and token to start uploading a data file  # noqa: E501
-
-        This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async_req=True
-        >>> thread = api.datasets_upload_file_with_http_info(file_name, content_length, last_modified_date_utc, async_req=True)
-        >>> result = thread.get()
-
-        :param async_req bool
-        :param str file_name: Dataset file name (required)
-        :param int content_length: Content length of file in bytes (required)
-        :param int last_modified_date_utc: Last modified date of file in milliseconds since epoch in UTC (required)
-        :return: Result
-                 If the method is called asynchronously,
-                 returns the request thread.
-        """
-
-        all_params = ['file_name', 'content_length', 'last_modified_date_utc']  # noqa: E501
-        all_params.append('async_req')
-        all_params.append('_return_http_data_only')
-        all_params.append('_preload_content')
-        all_params.append('_request_timeout')
-
-        params = locals()
-        for key, val in six.iteritems(params['kwargs']):
-            if key not in all_params:
-                raise TypeError(
-                    "Got an unexpected keyword argument '%s'"
-                    " to method datasets_upload_file" % key
-                )
-            params[key] = val
-        del params['kwargs']
-        # verify the required parameter 'file_name' is set
-        if ('file_name' not in params or
-                params['file_name'] is None):
-            raise ValueError("Missing the required parameter `file_name` when calling `datasets_upload_file`")  # noqa: E501
-        # verify the required parameter 'content_length' is set
-        if ('content_length' not in params or
-                params['content_length'] is None):
-            raise ValueError("Missing the required parameter `content_length` when calling `datasets_upload_file`")  # noqa: E501
-        # verify the required parameter 'last_modified_date_utc' is set
-        if ('last_modified_date_utc' not in params or
-                params['last_modified_date_utc'] is None):
-            raise ValueError("Missing the required parameter `last_modified_date_utc` when calling `datasets_upload_file`")  # noqa: E501
-
-        collection_formats = {}
-
-        path_params = {}
-        if 'content_length' in params:
-            path_params['contentLength'] = params['content_length']  # noqa: E501
-        if 'last_modified_date_utc' in params:
-            path_params['lastModifiedDateUtc'] = params['last_modified_date_utc']  # noqa: E501
-
-        query_params = []
-
-        header_params = {}
-
-        form_params = []
-        local_var_files = {}
-        if 'file_name' in params:
-            form_params.append(('fileName', params['file_name']))  # noqa: E501
-
-        body_params = None
-        # HTTP header `Accept`
-        header_params['Accept'] = self.api_client.select_header_accept(
-            ['application/json'])  # noqa: E501
-
-        # HTTP header `Content-Type`
-        header_params['Content-Type'] = self.api_client.select_header_content_type(  # noqa: E501
-            ['multipart/form-data'])  # noqa: E501
-
-        # Authentication setting
-        auth_settings = ['basicAuth']  # noqa: E501
-
-        return self.api_client.call_api(
-            '/datasets/upload/file/{contentLength}/{lastModifiedDateUtc}', 'POST',
             path_params,
             query_params,
             header_params,
@@ -3933,119 +4125,6 @@ class KaggleApi(object):
             _request_timeout=params.get('_request_timeout'),
             collection_formats=collection_formats)
 
-    def models_upload_file(self, file_name, content_length, last_modified_date_utc, **kwargs):  # noqa: E501
-        """Get URL and token to start uploading a model file  # noqa: E501
-
-        This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async_req=True
-        >>> thread = api.models_upload_file(file_name, content_length, last_modified_date_utc, async_req=True)
-        >>> result = thread.get()
-
-        :param async_req bool
-        :param str file_name: Model file name (required)
-        :param int content_length: Content length of file in bytes (required)
-        :param int last_modified_date_utc: Last modified date of file in milliseconds since epoch in UTC (required)
-        :return: Result
-                 If the method is called asynchronously,
-                 returns the request thread.
-        """
-        kwargs['_return_http_data_only'] = True
-        if kwargs.get('async_req'):
-            return self.models_upload_file_with_http_info(file_name, content_length, last_modified_date_utc, **kwargs)  # noqa: E501
-        else:
-            (data) = self.models_upload_file_with_http_info(file_name, content_length, last_modified_date_utc, **kwargs)  # noqa: E501
-            return data
-
-    def models_upload_file_with_http_info(self, file_name, content_length, last_modified_date_utc, **kwargs):  # noqa: E501
-        """Get URL and token to start uploading a model file  # noqa: E501
-
-        This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async_req=True
-        >>> thread = api.models_upload_file_with_http_info(file_name, content_length, last_modified_date_utc, async_req=True)
-        >>> result = thread.get()
-
-        :param async_req bool
-        :param str file_name: Model file name (required)
-        :param int content_length: Content length of file in bytes (required)
-        :param int last_modified_date_utc: Last modified date of file in milliseconds since epoch in UTC (required)
-        :return: Result
-                 If the method is called asynchronously,
-                 returns the request thread.
-        """
-
-        all_params = ['file_name', 'content_length', 'last_modified_date_utc']  # noqa: E501
-        all_params.append('async_req')
-        all_params.append('_return_http_data_only')
-        all_params.append('_preload_content')
-        all_params.append('_request_timeout')
-
-        params = locals()
-        for key, val in six.iteritems(params['kwargs']):
-            if key not in all_params:
-                raise TypeError(
-                    "Got an unexpected keyword argument '%s'"
-                    " to method models_upload_file" % key
-                )
-            params[key] = val
-        del params['kwargs']
-        # verify the required parameter 'file_name' is set
-        if ('file_name' not in params or
-                params['file_name'] is None):
-            raise ValueError("Missing the required parameter `file_name` when calling `models_upload_file`")  # noqa: E501
-        # verify the required parameter 'content_length' is set
-        if ('content_length' not in params or
-                params['content_length'] is None):
-            raise ValueError("Missing the required parameter `content_length` when calling `models_upload_file`")  # noqa: E501
-        # verify the required parameter 'last_modified_date_utc' is set
-        if ('last_modified_date_utc' not in params or
-                params['last_modified_date_utc'] is None):
-            raise ValueError("Missing the required parameter `last_modified_date_utc` when calling `models_upload_file`")  # noqa: E501
-
-        collection_formats = {}
-
-        path_params = {}
-        if 'content_length' in params:
-            path_params['contentLength'] = params['content_length']  # noqa: E501
-        if 'last_modified_date_utc' in params:
-            path_params['lastModifiedDateUtc'] = params['last_modified_date_utc']  # noqa: E501
-
-        query_params = []
-
-        header_params = {}
-
-        form_params = []
-        local_var_files = {}
-        if 'file_name' in params:
-            form_params.append(('fileName', params['file_name']))  # noqa: E501
-
-        body_params = None
-        # HTTP header `Accept`
-        header_params['Accept'] = self.api_client.select_header_accept(
-            ['application/json'])  # noqa: E501
-
-        # HTTP header `Content-Type`
-        header_params['Content-Type'] = self.api_client.select_header_content_type(  # noqa: E501
-            ['multipart/form-data'])  # noqa: E501
-
-        # Authentication setting
-        auth_settings = ['basicAuth']  # noqa: E501
-
-        return self.api_client.call_api(
-            '/models/upload/file/{contentLength}/{lastModifiedDateUtc}', 'POST',
-            path_params,
-            query_params,
-            header_params,
-            body=body_params,
-            post_params=form_params,
-            files=local_var_files,
-            response_type='Result',  # noqa: E501
-            auth_settings=auth_settings,
-            async_req=params.get('async_req'),
-            _return_http_data_only=params.get('_return_http_data_only'),
-            _preload_content=params.get('_preload_content', True),
-            _request_timeout=params.get('_request_timeout'),
-            collection_formats=collection_formats)
-
     def update_model(self, owner_slug, model_slug, model_update_request, **kwargs):  # noqa: E501
         """Update a model  # noqa: E501
 
@@ -4281,6 +4360,103 @@ class KaggleApi(object):
             post_params=form_params,
             files=local_var_files,
             response_type='Result',  # noqa: E501
+            auth_settings=auth_settings,
+            async_req=params.get('async_req'),
+            _return_http_data_only=params.get('_return_http_data_only'),
+            _preload_content=params.get('_preload_content', True),
+            _request_timeout=params.get('_request_timeout'),
+            collection_formats=collection_formats)
+
+    def upload_file(self, start_blob_upload_request, **kwargs):  # noqa: E501
+        """Start uploading a file  # noqa: E501
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.upload_file(start_blob_upload_request, async_req=True)
+        >>> result = thread.get()
+
+        :param async_req bool
+        :param StartBlobUploadRequest start_blob_upload_request: (required)
+        :return: StartBlobUploadResponse
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+        kwargs['_return_http_data_only'] = True
+        if kwargs.get('async_req'):
+            return self.upload_file_with_http_info(start_blob_upload_request, **kwargs)  # noqa: E501
+        else:
+            (data) = self.upload_file_with_http_info(start_blob_upload_request, **kwargs)  # noqa: E501
+            return data
+
+    def upload_file_with_http_info(self, start_blob_upload_request, **kwargs):  # noqa: E501
+        """Start uploading a file  # noqa: E501
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.upload_file_with_http_info(start_blob_upload_request, async_req=True)
+        >>> result = thread.get()
+
+        :param async_req bool
+        :param StartBlobUploadRequest start_blob_upload_request: (required)
+        :return: StartBlobUploadResponse
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+
+        all_params = ['start_blob_upload_request']  # noqa: E501
+        all_params.append('async_req')
+        all_params.append('_return_http_data_only')
+        all_params.append('_preload_content')
+        all_params.append('_request_timeout')
+
+        params = locals()
+        for key, val in six.iteritems(params['kwargs']):
+            if key not in all_params:
+                raise TypeError(
+                    "Got an unexpected keyword argument '%s'"
+                    " to method upload_file" % key
+                )
+            params[key] = val
+        del params['kwargs']
+        # verify the required parameter 'start_blob_upload_request' is set
+        if ('start_blob_upload_request' not in params or
+                params['start_blob_upload_request'] is None):
+            raise ValueError("Missing the required parameter `start_blob_upload_request` when calling `upload_file`")  # noqa: E501
+
+        collection_formats = {}
+
+        path_params = {}
+
+        query_params = []
+
+        header_params = {}
+
+        form_params = []
+        local_var_files = {}
+
+        body_params = None
+        if 'start_blob_upload_request' in params:
+            body_params = params['start_blob_upload_request']
+        # HTTP header `Accept`
+        header_params['Accept'] = self.api_client.select_header_accept(
+            ['application/json'])  # noqa: E501
+
+        # HTTP header `Content-Type`
+        header_params['Content-Type'] = self.api_client.select_header_content_type(  # noqa: E501
+            ['application/json'])  # noqa: E501
+
+        # Authentication setting
+        auth_settings = ['basicAuth']  # noqa: E501
+
+        return self.api_client.call_api(
+            '/blobs/upload', 'POST',
+            path_params,
+            query_params,
+            header_params,
+            body=body_params,
+            post_params=form_params,
+            files=local_var_files,
+            response_type='StartBlobUploadResponse',  # noqa: E501
             auth_settings=auth_settings,
             async_req=params.get('async_req'),
             _return_http_data_only=params.get('_return_http_data_only'),

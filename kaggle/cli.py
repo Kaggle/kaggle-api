@@ -57,6 +57,8 @@ def main():
     parse_competitions(subparsers)
     parse_datasets(subparsers)
     parse_kernels(subparsers)
+    parse_models(subparsers)
+    parse_files(subparsers)
     parse_config(subparsers)
     args = parser.parse_args()
     command_args = {}
@@ -1002,16 +1004,16 @@ def parse_model_instances(subparsers):
         help=Help.group_model_instances,
         aliases=['mi'])
 
-    subparsers_model_intances = parser_model_instances.add_subparsers(
+    subparsers_model_instances = parser_model_instances.add_subparsers(
         title='commands', dest='command')
-    subparsers_model_intances.required = True
-    subparsers_model_intances.choices = Help.model_instances_choices
+    subparsers_model_instances.required = True
+    subparsers_model_instances.choices = Help.model_instances_choices
 
     # Models Instances Versions.
-    parse_model_instance_versions(subparsers_model_intances)
+    parse_model_instance_versions(subparsers_model_instances)
 
     # Models Instances get
-    parser_model_instance_get = subparsers_model_intances.add_parser(
+    parser_model_instance_get = subparsers_model_instances.add_parser(
         'get',
         formatter_class=argparse.RawTextHelpFormatter,
         help=Help.command_model_instances_get)
@@ -1030,7 +1032,7 @@ def parse_model_instances(subparsers):
     parser_model_instance_get.set_defaults(func=api.model_instance_get_cli)
 
     # Model Instances init
-    parser_model_instances_init = subparsers_model_intances.add_parser(
+    parser_model_instances_init = subparsers_model_instances.add_parser(
         'init',
         formatter_class=argparse.RawTextHelpFormatter,
         help=Help.command_model_instances_init)
@@ -1048,7 +1050,7 @@ def parse_model_instances(subparsers):
         func=api.model_instance_initialize_cli)
 
     # Model Instances create
-    parser_model_instances_create = subparsers_model_intances.add_parser(
+    parser_model_instances_create = subparsers_model_instances.add_parser(
         'create',
         formatter_class=argparse.RawTextHelpFormatter,
         help=Help.command_model_instances_new)
@@ -1079,7 +1081,7 @@ def parse_model_instances(subparsers):
         func=api.model_instance_create_cli)
 
     # Models Instances delete
-    parser_model_instances_delete = subparsers_model_intances.add_parser(
+    parser_model_instances_delete = subparsers_model_instances.add_parser(
         'delete',
         formatter_class=argparse.RawTextHelpFormatter,
         help=Help.command_model_instances_delete)
@@ -1093,7 +1095,7 @@ def parse_model_instances(subparsers):
         func=api.model_instance_delete_cli)
 
     # Models Instances update
-    parser_model_instances_update = subparsers_model_intances.add_parser(
+    parser_model_instances_update = subparsers_model_instances.add_parser(
         'update',
         formatter_class=argparse.RawTextHelpFormatter,
         help=Help.command_model_instances_update)
@@ -1211,6 +1213,40 @@ def parse_model_instance_versions(subparsers):
         func=api.model_instance_version_delete_cli)
 
 
+def parse_files(subparsers):
+    parser_files = subparsers.add_parser(
+        'files',
+        formatter_class=argparse.RawTextHelpFormatter,
+        help=Help.group_files,
+        aliases=['f'])
+
+    subparsers_files = parser_files.add_subparsers(
+        title='commands', dest='command')
+    subparsers_files.required = True
+    subparsers_files.choices = Help.files_choices
+
+    # Files upload
+    parser_files_upload = subparsers_files.add_parser(
+        'upload',
+        formatter_class=argparse.RawTextHelpFormatter,
+        help=Help.command_files_upload,
+        aliases=['u'])
+    parser_files_upload_optional = parser_files_upload._action_groups.pop()
+    parser_files_upload_optional.add_argument(
+        '-i',
+        '--inbox-path',
+        dest='inbox_path',
+        required=False,
+        help=Help.param_files_upload_inbox_path)
+    parser_files_upload_optional.add_argument(
+        'local_paths',
+        metavar='local-path',
+        nargs='+',
+        help=Help.param_files_upload_local_paths)
+    parser_files_upload._action_groups.append(parser_files_upload_optional)
+    parser_files_upload.set_defaults(func=api.files_upload_cli)
+
+
 def parse_config(subparsers):
     parser_config = subparsers.add_parser(
         'config',
@@ -1267,7 +1303,7 @@ def parse_config(subparsers):
 class Help(object):
     kaggle_choices = [
         'competitions', 'c', 'datasets', 'd', 'kernels', 'k', 'models', 'm',
-        'config'
+        'files', 'f', 'config'
     ]
     competitions_choices = [
         'list', 'files', 'download', 'submit', 'submissions', 'leaderboard'
@@ -1284,11 +1320,17 @@ class Help(object):
         'versions', 'get', 'init', 'create', 'delete', 'update'
     ]
     model_instance_versions_choices = ['init', 'create', 'download', 'delete']
+    files_choices = ['upload']
     config_choices = ['view', 'set', 'unset']
 
     kaggle = 'Use one of:\ncompetitions {' + ', '.join(
         competitions_choices) + '}\ndatasets {' + ', '.join(
-            datasets_choices) + '}\nconfig {' + ', '.join(config_choices) + '}'
+            datasets_choices) + '}\nmodels {' + ', '.join(
+                models_choices) + '}\nmodels instances {' + ', '.join(
+                    model_instances_choices
+                ) + '}\nmodels instances versions {' + ', '.join(
+                    model_instance_versions_choices
+                ) + '}\nconfig {' + ', '.join(config_choices) + '}'
 
     group_competitions = 'Commands related to Kaggle competitions'
     group_datasets = 'Commands related to Kaggle datasets'
@@ -1296,6 +1338,7 @@ class Help(object):
     group_models = 'Commands related to Kaggle models'
     group_model_instances = 'Commands related to Kaggle model instances'
     group_model_instance_versions = 'Commands related to Kaggle model instance versions'
+    group_files = 'Commands related files'
     group_config = 'Configuration settings'
 
     # Competitions commands
@@ -1333,6 +1376,9 @@ class Help(object):
     command_models_new = 'Create a new model'
     command_models_delete = 'Delete a model'
     command_models_update = 'Update a model'
+
+    # Files commands
+    command_files_upload = 'Upload files'
 
     # Config commands
     command_config_path = (
@@ -1529,6 +1575,13 @@ class Help(object):
     command_model_instance_versions_delete = 'Delete a model instance version'
     command_model_instance_versions_download = 'Download model instance version files'
     param_model_instance_version_notes = 'Version notes to record for the new model instance version'
+
+    # Files params
+    param_files_upload_inbox_path = 'Virtual path on the server where the uploaded files will be stored'
+    param_files_upload_local_paths = (
+        'List of local filesystem paths. Each path creates a separate file on the server. '
+        'Directories are uploaded as zip archives (e.g., a directory called "data" will be uploaded as "data.zip")'
+    )
 
     # Config params
     param_config_name = ('Name of the configuration parameter\n(one of '

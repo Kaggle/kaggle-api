@@ -31,7 +31,9 @@
 from __future__ import absolute_import
 
 # import models into model package
+from kaggle.models.api_blob_type import ApiBlobType
 from kaggle.models.collaborator import Collaborator
+from kaggle.models.create_inbox_file_request import CreateInboxFileRequest
 from kaggle.models.dataset_column import DatasetColumn
 from kaggle.models.dataset_new_request import DatasetNewRequest
 from kaggle.models.dataset_new_version_request import DatasetNewVersionRequest
@@ -45,4 +47,6 @@ from kaggle.models.model_new_instance_request import ModelNewInstanceRequest
 from kaggle.models.model_new_request import ModelNewRequest
 from kaggle.models.model_update_request import ModelUpdateRequest
 from kaggle.models.result import Result
+from kaggle.models.start_blob_upload_request import StartBlobUploadRequest
+from kaggle.models.start_blob_upload_response import StartBlobUploadResponse
 from kaggle.models.upload_file import UploadFile

@@ -148,7 +148,7 @@ paths:
           name: lastModifiedDateUtc
           required: true
           type: integer
-          description: Last modified date of file in milliseconds since epoch in UTC
+          description: Last modified date of file in seconds since epoch in UTC
       responses:
         200:
           description: Result
@@ -188,7 +188,7 @@ paths:
           name: lastModifiedDateUtc
           required: true
           type: integer
-          description: Last modified date of file in milliseconds since epoch in UTC
+          description: Last modified date of file in seconds since epoch in UTC
       responses:
         200:
           description: Result
@@ -544,41 +544,6 @@ paths:
           required: false
           type: string
           description: Dataset version number
-      responses:
-        200:
-          description: Result
-          schema:
-            $ref: '#/definitions/Result'
-        default:
-          description: Error
-          schema:
-            $ref: '#/definitions/Error'
-  /datasets/upload/file/{contentLength}/{lastModifiedDateUtc}:
-    post:
-      tags:
-      - kaggle
-      summary: Get URL and token to start uploading a data file
-      operationId: DatasetsUploadFile
-      produces:
-        - application/json
-      consumes:
-        - multipart/form-data
-      parameters:
-        - in: formData
-          name: fileName
-          required: true
-          type: string
-          description: Dataset file name
-        - in: path
-          name: contentLength
-          required: true
-          type: integer
-          description: Content length of file in bytes
-        - in: path
-          name: lastModifiedDateUtc
-          required: true
-          type: integer
-          description: Last modified date of file in milliseconds since epoch in UTC
       responses:
         200:
           description: Result
@@ -1392,32 +1357,47 @@ paths:
           description: Error
           schema:
             $ref: '#/definitions/Error'
-  /models/upload/file/{contentLength}/{lastModifiedDateUtc}:
+  /blobs/upload:
     post:
       tags:
-      - kaggle
-      summary: Get URL and token to start uploading a model file
-      operationId: ModelsUploadFile
+        - kaggle
+      summary: Start uploading a file
+      operationId: UploadFile
       produces:
         - application/json
       consumes:
-        - multipart/form-data
+        - application/json
       parameters:
-        - in: formData
-          name: fileName
+        - in: body
+          name: startBlobUploadRequest
           required: true
-          type: string
-          description: Model file name
-        - in: path
-          name: contentLength
+          schema:
+            $ref: '#/definitions/StartBlobUploadRequest'
+      responses:
+        200:
+          description: StartBlobUploadResponse
+          schema:
+            $ref: '#/definitions/StartBlobUploadResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/Error'
+  /inbox/files/create:
+    post:
+      tags:
+        - kaggle
+      summary: Creates (aka "drops") a new file into the inbox.
+      operationId: CreateInboxFile
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: createInboxFileRequest
           required: true
-          type: integer
-          description: Content length of file in bytes
-        - in: path
-          name: lastModifiedDateUtc
-          required: true
-          type: integer
-          description: Last modified date of file in milliseconds since epoch in UTC
+          schema:
+            $ref: '#/definitions/CreateInboxFileRequest'
       responses:
         200:
           description: Result
@@ -1948,3 +1928,59 @@ definitions:
         description: A list of files that should be associated with the model instance version
         items:
           $ref: '#/definitions/UploadFile'
+  StartBlobUploadRequest:
+    type: object
+    required:
+    - bucket
+    - name
+    - contentLength
+    - lastUpdateTime
+    properties:
+      type:
+        type: object
+        description: The type of the blob (one of "dataset", "model", "inbox")
+        schema:
+          $ref: '#definitions/ApiBlobType'
+      name:
+        type: string
+        description: Name of the file
+      contentLength:
+        type: integer
+        description: Content length of the file in bytes
+      contentType:
+        type: string
+        description: Content/MIME type (e.g. "text/plain") of the file
+      lastModifiedEpochSeconds:
+        type: integer
+        description: Last modified date of file in seconds since epoch in UTC
+  ApiBlobType:
+    type: string
+    description: To which entity this blob refers
+    enum:
+    - dataset
+    - model
+    - inbox
+  StartBlobUploadResponse:
+    type: object
+    required:
+    - token
+    - createUrl
+    properties:
+      token:
+        type: string
+        description: Opaque string token used to reference the new blob/file.
+      createUrl:
+        type: string
+        description: URL to use to start the upload.
+  CreateInboxFileRequest:
+    type: object
+    required:
+    - virtualDirectory
+    - blobFileToken
+    properties:
+      virtualDirectory:
+        type: string
+        description: Directory name used for tagging the uploaded file
+      blobFileToken:
+        type: string
+        description: Token representing the uploaded file

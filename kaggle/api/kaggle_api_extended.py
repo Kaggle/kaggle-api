@@ -46,7 +46,9 @@ import tempfile
 from ..api_client import ApiClient
 from kaggle.configuration import Configuration
 from .kaggle_api import KaggleApi
+from ..models.api_blob_type import ApiBlobType
 from ..models.collaborator import Collaborator
+from ..models.create_inbox_file_request import CreateInboxFileRequest
 from ..models.dataset_column import DatasetColumn
 from ..models.dataset_new_request import DatasetNewRequest
 from ..models.dataset_new_version_request import DatasetNewVersionRequest
@@ -56,7 +58,6 @@ from ..models.kaggle_models_extended import Dataset
 from ..models.kaggle_models_extended import DatasetNewResponse
 from ..models.kaggle_models_extended import DatasetNewVersionResponse
 from ..models.kaggle_models_extended import File
-from ..models.kaggle_models_extended import FileUploadInfo
 from ..models.kaggle_models_extended import Kernel
 from ..models.kaggle_models_extended import KernelPushResponse
 from ..models.kaggle_models_extended import LeaderboardEntry
@@ -74,6 +75,7 @@ from ..models.model_new_instance_request import ModelNewInstanceRequest
 from ..models.model_instance_new_version_request import ModelInstanceNewVersionRequest
 from ..models.model_update_request import ModelUpdateRequest
 from ..models.model_instance_update_request import ModelInstanceUpdateRequest
+from ..models.start_blob_upload_request import StartBlobUploadRequest
 from ..models.upload_file import UploadFile
 import requests
 from requests.adapters import HTTPAdapter
@@ -91,8 +93,27 @@ except NameError:
     unicode = str  # Python 3
 
 
+class DirectoryArchive(object):
+    def __init__(self, fullpath, format):
+        self._fullpath = fullpath
+        self._format = format
+        self.name = None
+        self.path = None
+
+    def __enter__(self):
+        self._temp_dir = tempfile.mkdtemp()
+        _, dir_name = os.path.split(self._fullpath)
+        self.path = shutil.make_archive(
+            os.path.join(self._temp_dir, dir_name), self._format,
+            self._fullpath)
+        _, self.name = os.path.split(self.path)
+
+    def __exit__(self, *args):
+        shutil.rmtree(self._temp_dir)
+
+
 class KaggleApi(KaggleApi):
-    __version__ = '1.5.15'
+    __version__ = '1.6.0a3'
 
     CONFIG_NAME_PROXY = 'proxy'
     CONFIG_NAME_COMPETITION = 'competition'
@@ -107,6 +128,7 @@ class KaggleApi(KaggleApi):
     KERNEL_METADATA_FILE = 'kernel-metadata.json'
     MODEL_METADATA_FILE = 'model-metadata.json'
     MODEL_INSTANCE_METADATA_FILE = 'model-instance-metadata.json'
+    MAX_NUM_INBOX_FILES_TO_UPLOAD = 1000
 
     config_dir = os.environ.get('KAGGLE_CONFIG_DIR') or os.path.join(
         expanduser('~'), '.kaggle')
@@ -1275,38 +1297,30 @@ class KaggleApi(KaggleApi):
             self.dataset_download_file(
                 dataset, file_name, path=path, force=force, quiet=quiet)
 
-    def upload_file(self, path, quiet, entity='dataset'):
+    def _upload_blob(self, path, quiet, blob_type):
         """ upload a file
 
             Parameters
             ==========
             path: the complete path to upload
             quiet: suppress verbose output (default is False)
-            dataset: whether is a dataset file, otherwise it's a model file
-            entity: dataset or model
+            blob_type (ApiBlobType): To which entity the file/blob refers
         """
         file_name = os.path.basename(path)
         content_length = os.path.getsize(path)
-        last_modified_date_utc = int(os.path.getmtime(path))
-        result = None
+        last_modified_epoch_seconds = int(os.path.getmtime(path))
 
-        if entity == 'dataset':
-            result = FileUploadInfo(
-                self.process_response(
-                    self.datasets_upload_file_with_http_info(
-                        file_name, content_length, last_modified_date_utc)))
-        elif entity == 'model':
-            result = FileUploadInfo(
-                self.process_response(
-                    self.models_upload_file_with_http_info(
-                        file_name, content_length, last_modified_date_utc)))
-        else:
-            raise ValueError('Invalid entity to upload: ' + entity)
-
-        success = self.upload_complete(path, result.createUrl, quiet)
+        request = StartBlobUploadRequest(
+            blob_type,
+            file_name,
+            content_length,
+            last_modified_epoch_seconds=last_modified_epoch_seconds)
+        response = self.process_response(
+            self.upload_file_with_http_info(request))
+        success = self.upload_complete(path, response.create_url, quiet)
 
         if success:
-            return result.token
+            return response.token
         return None
 
     def dataset_create_version(self,
@@ -1359,8 +1373,8 @@ class KaggleApi(KaggleApi):
             convert_to_csv=convert_to_csv,
             category_ids=keywords,
             delete_old_versions=delete_old_versions)
-        self.upload_files(request, resources, folder, 'dataset', quiet,
-                          dir_mode)
+        self.upload_files(request, resources, folder, ApiBlobType.DATASET,
+                          quiet, dir_mode)
 
         if id_no:
             result = DatasetNewVersionResponse(
@@ -1525,8 +1539,8 @@ class KaggleApi(KaggleApi):
             is_private=not public,
             convert_to_csv=convert_to_csv,
             category_ids=keywords)
-        self.upload_files(request, resources, folder, 'dataset', quiet,
-                          dir_mode)
+        self.upload_files(request, resources, folder, ApiBlobType.DATASET,
+                          quiet, dir_mode)
         result = DatasetNewResponse(
             self.process_response(
                 self.datasets_create_new_with_http_info(request)))
@@ -2486,6 +2500,10 @@ class KaggleApi(KaggleApi):
         """
         owner_slug, model_slug = self.split_model_string(model)
 
+        if not self.confirmation():
+            print('Deletion cancelled')
+            exit(0)
+
         res = ModelDeleteResponse(
             self.process_response(
                 self.delete_model_with_http_info(owner_slug, model_slug)))
@@ -2752,7 +2770,8 @@ class KaggleApi(KaggleApi):
             fine_tunable=fine_tunable,
             training_data=training_data,
             files=[])
-        self.upload_files(request, None, folder, 'model', quiet, dir_mode)
+        self.upload_files(request, None, folder, ApiBlobType.MODEL, quiet,
+                          dir_mode)
         result = ModelNewResponse(
             self.process_response(
                 self.models_create_instance_with_http_info(
@@ -2788,6 +2807,10 @@ class KaggleApi(KaggleApi):
             raise ValueError('A model instance must be specified')
         owner_slug, model_slug, framework, instance_slug = self.split_model_instance_string(
             model_instance)
+
+        if not self.confirmation():
+            print('Deletion cancelled')
+            exit(0)
 
         res = ModelDeleteResponse(
             self.process_response(
@@ -2923,7 +2946,8 @@ class KaggleApi(KaggleApi):
 
         request = ModelInstanceNewVersionRequest(
             version_notes=version_notes, files=[])
-        self.upload_files(request, None, folder, 'model', quiet, dir_mode)
+        self.upload_files(request, None, folder, ApiBlobType.MODEL, quiet,
+                          dir_mode)
         result = ModelNewResponse(
             self.process_response(
                 self.models_create_instance_version_with_http_info(
@@ -3065,6 +3089,10 @@ class KaggleApi(KaggleApi):
         instance_slug = urls[3]
         version_number = urls[4]
 
+        if not self.confirmation():
+            print('Deletion cancelled')
+            exit(0)
+
         res = ModelDeleteResponse(
             self.process_response(
                 self.delete_model_instance_version_with_http_info(
@@ -3085,6 +3113,32 @@ class KaggleApi(KaggleApi):
             print('Model instance version deletion error: ' + result.error)
         else:
             print('The model instance version was deleted.')
+
+    def files_upload_cli(self, local_paths, inbox_path=None):
+        if len(local_paths) > self.MAX_NUM_INBOX_FILES_TO_UPLOAD:
+            print('Cannot upload more than',
+                  self.MAX_NUM_INBOX_FILES_TO_UPLOAD, 'files!')
+            return
+
+        for local_path in local_paths:
+            self.file_upload_cli(local_path, inbox_path)
+
+    def file_upload_cli(self, local_path, inbox_path=None):
+        full_path = os.path.abspath(local_path)
+        parent_path = os.path.dirname(full_path)
+        file_or_folder_name = os.path.basename(full_path)
+
+        upload_file = self._upload_file_or_folder(
+            parent_path, file_or_folder_name, ApiBlobType.INBOX, 'zip')
+        if upload_file is None:
+            return
+
+        inbox_path = inbox_path or ''
+        create_inbox_file_request = CreateInboxFileRequest(
+            virtual_directory=inbox_path, blob_file_token=upload_file.token)
+        self.process_response(
+            self.create_inbox_file(create_inbox_file_request))
+        print('Upload complete:', file_or_folder_name)
 
     def print_obj(self, obj, indent=2):
         pretty = json.dumps(obj, indent=indent)
@@ -3260,7 +3314,7 @@ class KaggleApi(KaggleApi):
                      request,
                      resources,
                      folder,
-                     entity='dataset',
+                     blob_type,
                      quiet=False,
                      dir_mode='skip'):
         """ upload files in a folder
@@ -3269,7 +3323,7 @@ class KaggleApi(KaggleApi):
             request: the prepared request
             resources: the files to upload
             folder: the folder to upload from
-            entity: dataset or model
+            blob_type (ApiBlobType): To which entity the file/blob refers
             quiet: suppress verbose output (default is False)
         """
         for file_name in os.listdir(folder):
@@ -3279,64 +3333,58 @@ class KaggleApi(KaggleApi):
                     self.MODEL_INSTANCE_METADATA_FILE
             ]):
                 continue
-            full_path = os.path.join(folder, file_name)
+            upload_file = self._upload_file_or_folder(
+                folder, file_name, blob_type, dir_mode, quiet, resources)
+            if upload_file is not None:
+                request.files.append(upload_file)
 
-            if os.path.isfile(full_path):
-                exitcode = self._upload_file(file_name, full_path, quiet,
-                                             request, resources, entity)
-                if exitcode:
-                    return
-            elif os.path.isdir(full_path):
-                if dir_mode in ['zip', 'tar']:
-                    temp_dir = tempfile.mkdtemp()
-                    try:
-                        _, dir_name = os.path.split(full_path)
-                        archive_path = shutil.make_archive(
-                            os.path.join(temp_dir, dir_name), dir_mode,
-                            full_path)
-                        _, archive_name = os.path.split(archive_path)
-                        exitcode = self._upload_file(
-                            archive_name, archive_path, quiet, request,
-                            resources, entity)
-                    finally:
-                        shutil.rmtree(temp_dir)
-                    if exitcode:
-                        return
-                elif not quiet:
-                    print("Skipping folder: " + file_name +
-                          "; use '--dir-mode' to upload folders")
-            else:
-                if not quiet:
-                    print('Skipping: ' + file_name)
+    def _upload_file_or_folder(self,
+                               parent_path,
+                               file_or_folder_name,
+                               blob_type,
+                               dir_mode,
+                               quiet=False,
+                               resources=None):
+        full_path = os.path.join(parent_path, file_or_folder_name)
+        if os.path.isfile(full_path):
+            return self._upload_file(file_or_folder_name, full_path, blob_type,
+                                     quiet, resources)
 
-    def _upload_file(self,
-                     file_name,
-                     full_path,
-                     quiet,
-                     request,
-                     resources,
-                     entity='dataset'):
+        elif os.path.isdir(full_path):
+            if dir_mode in ['zip', 'tar']:
+                archive = DirectoryArchive(full_path, dir_mode)
+                with archive:
+                    return self._upload_file(archive.name, archive.path,
+                                             blob_type, quiet, resources)
+            elif not quiet:
+                print("Skipping folder: " + file_or_folder_name +
+                      "; use '--dir-mode' to upload folders")
+        else:
+            if not quiet:
+                print('Skipping: ' + file_or_folder_name)
+        return None
+
+    def _upload_file(self, file_name, full_path, blob_type, quiet, resources):
         """ Helper function to upload a single file
             Parameters
             ==========
             file_name: name of the file to upload
             full_path: path to the file to upload
+            blob_type (ApiBlobType): To which entity the file/blob refers
             quiet: suppress verbose output
-            request: the prepared request
             resources: optional file metadata
-            entity: dataset or model
-            :return: True - upload unsuccessful; False - upload successful
+            :return: None - upload unsuccessful; instance of UploadFile - upload successful
         """
 
         if not quiet:
             print('Starting upload for file ' + file_name)
 
         content_length = os.path.getsize(full_path)
-        token = self.upload_file(full_path, quiet, entity)
+        token = self._upload_blob(full_path, quiet, blob_type)
         if token is None:
             if not quiet:
                 print('Upload unsuccessful: ' + file_name)
-            return True
+            return None
         if not quiet:
             print('Upload successful: ' + file_name + ' (' +
                   File.get_size(content_length) + ')')
@@ -3356,8 +3404,7 @@ class KaggleApi(KaggleApi):
                             processed[count].order = count
                             count += 1
                         upload_file.columns = processed
-        request.files.append(upload_file)
-        return False
+        return upload_file
 
     def process_column(self, column):
         """ process a column, check for the type, and return the processed
@@ -3653,6 +3700,19 @@ class KaggleApi(KaggleApi):
 
     def sanitize_markdown(self, markdown):
         return bleach.clean(markdown)
+
+    def confirmation(self):
+        question = "Are you sure?"
+        prompt = "[yes/no]"
+        options = {"yes": True, "no": False}
+        while True:
+            sys.stdout.write('{} {} '.format(question, prompt))
+            choice = input().lower()
+            if choice in options:
+                return options[choice]
+            else:
+                sys.stdout.write("Please respond with 'yes' or 'no'.\n")
+                return False
 
 
 class TqdmBufferedReader(io.BufferedReader):

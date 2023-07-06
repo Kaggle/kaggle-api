@@ -1,6 +1,11 @@
 Changelog
 ====
 
+#### 1.6.0a3
+Release date: 7/06/23
+* Confirmation for deleting a model, instance or version
+* Merge changes from 1.5.14 and 1.5.15
+
 #### 1.5.15
 Release date: 6/30/23
 * Add missing licenses for datasets

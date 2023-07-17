@@ -1,6 +1,16 @@
 Changelog
 ====
 
+#### 1.5.16
+Release date: 7/17/23
+* Fix dataset download bug with locale
+
+#### 1.6.0a4
+Release date: 7/07/23
+* Resumable uploads
+* Retry some failed requests
+* Flag `-y` to delete model/instance/version without confirmation
+
 #### 1.6.0a3
 Release date: 7/06/23
 * Confirmation for deleting a model, instance or version

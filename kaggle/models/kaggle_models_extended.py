@@ -32,6 +32,7 @@
 
 # coding=utf-8
 import os
+import time
 from datetime import datetime
 
 
@@ -226,3 +227,33 @@ def parse(string):
         except:
             pass
     return string
+
+
+class ResumableUploadResult(object):
+    # Upload was complete, i.e., all bytes were received by the server.
+    COMPLETE = 1
+
+    # There was a non-transient error during the upload or the upload expired.
+    # The upload cannot be resumed so it should be restarted from scratch
+    # (i.e., call /api/v1/files/upload to initiate the upload and get the
+    # create/upload url and token).
+    FAILED = 2
+
+    # Upload was interrupted due to some (transient) failure but it can be
+    # safely resumed.
+    INCOMPLETE = 3
+
+    def __init__(self, result, bytes_uploaded=None):
+        self.result = result
+        self.bytes_uploaded = bytes_uploaded
+        self.start_at = 0 if bytes_uploaded is None else bytes_uploaded + 1
+
+    def Complete():
+        return ResumableUploadResult(ResumableUploadResult.COMPLETE)
+
+    def Failed():
+        return ResumableUploadResult(ResumableUploadResult.FAILED)
+
+    def Incomplete(bytes_uploaded=None):
+        return ResumableUploadResult(ResumableUploadResult.INCOMPLETE,
+                                     bytes_uploaded)

@@ -57,7 +57,7 @@ def main():
     parse_competitions(subparsers)
     parse_datasets(subparsers)
     parse_kernels(subparsers)
-    parse_models(subparsers)
+    # parse_models(subparsers)
     parse_files(subparsers)
     parse_config(subparsers)
     args = parser.parse_args()
@@ -978,6 +978,8 @@ def parse_models(subparsers):
         help=Help.command_models_delete)
     parser_models_delete_optional = parser_models_delete._action_groups.pop()
     parser_models_delete_optional.add_argument('model', help=Help.param_model)
+    parser_models_delete_optional.add_argument(
+        '-y', '--yes', dest='yes', action='store_true', help=Help.param_yes)
     parser_models_delete._action_groups.append(parser_models_delete_optional)
     parser_models_delete.set_defaults(func=api.model_delete_cli)
 
@@ -1089,6 +1091,8 @@ def parse_model_instances(subparsers):
     )
     parser_model_instances_delete_optional.add_argument(
         'model_instance', help=Help.param_model_instance)
+    parser_model_instances_delete_optional.add_argument(
+        '-y', '--yes', dest='yes', action='store_true', help=Help.param_yes)
     parser_model_instances_delete._action_groups.append(
         parser_model_instances_delete_optional)
     parser_model_instances_delete.set_defaults(
@@ -1207,6 +1211,8 @@ def parse_model_instance_versions(subparsers):
     )
     parser_model_instance_versions_delete_optional.add_argument(
         'model_instance_version', help=Help.param_model_instance_version)
+    parser_model_instance_versions_delete_optional.add_argument(
+        '-y', '--yes', dest='yes', action='store_true', help=Help.param_yes)
     parser_model_instance_versions_delete._action_groups.append(
         parser_model_instance_versions_delete_optional)
     parser_model_instance_versions_delete.set_defaults(
@@ -1237,12 +1243,27 @@ def parse_files(subparsers):
         '--inbox-path',
         dest='inbox_path',
         required=False,
+        default='',
         help=Help.param_files_upload_inbox_path)
     parser_files_upload_optional.add_argument(
         'local_paths',
         metavar='local-path',
         nargs='+',
         help=Help.param_files_upload_local_paths)
+    parser_files_upload_optional.add_argument(
+        '--no-resume',
+        dest='no_resume',
+        action='store_true',
+        required=False,
+        default=False,
+        help=Help.param_files_upload_no_resume)
+    parser_files_upload_optional.add_argument(
+        '--no-compress',
+        dest='no_compress',
+        action='store_true',
+        required=False,
+        default=False,
+        help=Help.param_files_upload_no_compress)
     parser_files_upload._action_groups.append(parser_files_upload_optional)
     parser_files_upload.set_defaults(func=api.files_upload_cli)
 
@@ -1325,12 +1346,9 @@ class Help(object):
 
     kaggle = 'Use one of:\ncompetitions {' + ', '.join(
         competitions_choices) + '}\ndatasets {' + ', '.join(
-            datasets_choices) + '}\nmodels {' + ', '.join(
-                models_choices) + '}\nmodels instances {' + ', '.join(
-                    model_instances_choices
-                ) + '}\nmodels instances versions {' + ', '.join(
-                    model_instance_versions_choices
-                ) + '}\nconfig {' + ', '.join(config_choices) + '}'
+            datasets_choices) + '}\nkernels {' + ', '.join(
+                kernels_choices) + '}\nconfig {' + ', '.join(
+                    config_choices) + '}'
 
     group_competitions = 'Commands related to Kaggle competitions'
     group_datasets = 'Commands related to Kaggle datasets'
@@ -1421,6 +1439,9 @@ class Help(object):
         'Unzip the downloaded file. Will delete the zip file when completed.')
     param_untar = (
         'Untar the downloaded file. Will delete the tar file when completed.')
+    param_yes = (
+        'Sets any confirmation values to "yes" automatically. Users will not be asked to confirm.'
+    )
 
     # Competitions params
     param_competition = (
@@ -1580,8 +1601,10 @@ class Help(object):
     param_files_upload_inbox_path = 'Virtual path on the server where the uploaded files will be stored'
     param_files_upload_local_paths = (
         'List of local filesystem paths. Each path creates a separate file on the server. '
-        'Directories are uploaded as zip archives (e.g., a directory called "data" will be uploaded as "data.zip")'
-    )
+        'Directories are uploaded as zip archives by default (e.g., a directory called '
+        '"data" will be uploaded as "data.zip")')
+    param_files_upload_no_compress = 'Whether to compress directories (zip) or not (tar)'
+    param_files_upload_no_resume = 'Whether to skip resumable uploads.'
 
     # Config params
     param_config_name = ('Name of the configuration parameter\n(one of '

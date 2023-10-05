@@ -1,6 +1,10 @@
 Changelog
 ====
 
+#### 1.5.17
+Release date: 10/5/23
+* Fix dataset enum bug from `all` --> `unspecified`
+
 #### 1.5.16
 Release date: 7/17/23
 * Fix dataset download bug with locale

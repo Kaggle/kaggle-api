@@ -246,9 +246,9 @@ optional arguments:
   --sort-by SORT_BY     Sort list results. Default is 'hottest'. Valid options are 'hottest', 'votes', 'updated', and 'active'
   --max-size MAX_SIZE   Specify the maximum size of the dataset to return (bytes)
   --min-size MIN_SIZE   Specify the minimum size of the dataset to return (bytes)
-  --file-type FILE_TYPE Search for datasets with a specific file type. Default is 'all'. Valid options are 'all', 'csv', 'sqlite', 'json', and 'bigQuery'. Please note that bigQuery datasets cannot be downloaded
+  --file-type FILE_TYPE Search for datasets with a specific file type. Default is 'unspecified'. Valid options are 'unspecified', 'csv', 'sqlite', 'json', and 'bigQuery'. Please note that bigQuery datasets cannot be downloaded
   --license LICENSE_NAME 
-                        Search for datasets with a specific license. Default is 'all'. Valid options are 'all', 'cc', 'gpl', 'odb', and 'other'
+                        Search for datasets with a specific license. Default is 'unspecified'. Valid options are 'unspecified', 'cc', 'gpl', 'odb', and 'other'
   --tags TAG_IDS        Search for datasets that have specific tags. Tag list should be comma separated                      
   -s SEARCH, --search SEARCH
                         Term(s) to search for

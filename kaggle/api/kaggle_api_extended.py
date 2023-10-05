@@ -271,7 +271,7 @@ class ResumableFileUpload(object):
 
 
 class KaggleApi(KaggleApi):
-    __version__ = '1.5.16'
+    __version__ = '1.5.17'
 
     CONFIG_NAME_PROXY = 'proxy'
     CONFIG_NAME_COMPETITION = 'competition'
@@ -323,8 +323,8 @@ class KaggleApi(KaggleApi):
     ]
 
     # Datasets valid types
-    valid_dataset_file_types = ['all', 'csv', 'sqlite', 'json', 'bigQuery']
-    valid_dataset_license_names = ['all', 'cc', 'gpl', 'odb', 'other']
+    valid_dataset_file_types = ['unspecified', 'csv', 'sqlite', 'json', 'bigQuery']
+    valid_dataset_license_names = ['unspecified', 'cc', 'gpl', 'odb', 'other']
     valid_dataset_sort_bys = [
         'hottest', 'votes', 'updated', 'active', 'published'
     ]
@@ -1149,8 +1149,8 @@ class KaggleApi(KaggleApi):
                 group=group,
                 sort_by=sort_by or 'hottest',
                 size=size,
-                filetype=file_type or 'all',
-                license=license_name or 'all',
+                filetype=file_type or 'unspecified',
+                license=license_name or 'unspecified',
                 tagids=tag_ids or '',
                 search=search or '',
                 user=user or '',

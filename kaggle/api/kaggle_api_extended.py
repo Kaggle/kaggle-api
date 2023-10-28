@@ -1826,7 +1826,7 @@ class KaggleApi(KaggleApi):
         size = int(response.headers['Content-Length'])
         size_read = 0
         open_mode = 'wb'
-        remote_date = datetime.strptime(response.headers['Last-Modified'],
+        remote_date = datetime.strptime(response.headers['Date'],
                                         '%a, %d %b %Y %H:%M:%S %Z')
         remote_date_timestamp = time.mktime(remote_date.timetuple())
 

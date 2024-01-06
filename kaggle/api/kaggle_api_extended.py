@@ -3528,6 +3528,8 @@ class KaggleApi(KaggleApi):
                           'Version, please consider updating (server ' +
                           api_version + ' / client ' + self.__version__ + ')')
                     self.already_printed_version_warning = True
+            if type(data) == dict and 'code' in data and data['code'] != 200:  # to prevent error: StartBlobUploadResponse is not iterable
+                raise Exception(data['message'])
             return data
         return result
 

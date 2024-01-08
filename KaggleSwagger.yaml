@@ -1536,6 +1536,7 @@ definitions:
         - FDL-1.3
         - EU-ODP-Legal-Notice
         - apache-2.0 
+        - GPL-3.0
       subtitle:
         type: string
         description: The subtitle to be set on the dataset
@@ -1713,7 +1714,8 @@ definitions:
         - AGPL-3.0
         - FDL-1.3
         - EU-ODP-Legal-Notice
-        - apache-2.0 
+        - apache-2.0
+        - GPL-3.0
   Collaborator:
     type: object
     required:
@@ -1818,6 +1820,7 @@ definitions:
         - scikitLearn
         - mxnet
         - onnx
+        - keras
       overview:
         type: string
         description: The overview of the model instance (markdown)
@@ -1826,7 +1829,7 @@ definitions:
         description: The description of how to use the model instance (markdown)
       licenseName:
         type: string
-        description: The license that should be associated with the model
+        description: The license that should be associated with the model instance
         default: Apache 2.0
         enum:
         - CC0: Public Domain
@@ -1851,6 +1854,7 @@ definitions:
         - Apache 2.0
         - MIT
         - BSD-3-Clause
+        - GPL 3
       fineTunable:
         type: boolean
         description: Whether the model instance is fine tunable
@@ -1860,6 +1864,20 @@ definitions:
         description: A list of training data (urls or names)
         items:
           type: string
+      modelInstanceType:
+        type: string
+        description: Whether the model instance is a base model, external variant, internal variant, or unspecified
+        enum:
+        - Unspecified
+        - BaseModel
+        - KaggleVariant
+        - ExternalVariant
+      baseModelInstance:
+        type: string
+        description: If this is an internal variant, the `{owner-slug}/{model-slug}/{framework}/{instance-slug}` of the base model instance
+      externalBaseModelUrl:
+        type: integer
+        description: If this is an external variant, a URL to the base model
       files:
         type: array
         description: A list of files that should be associated with the model instance version
@@ -1878,7 +1896,7 @@ definitions:
         description: The description of how to use the model instance (markdown)
       licenseName:
         type: string
-        description: The license that should be associated with the model
+        description: The license that should be associated with the model instance
         default: Apache 2.0
         enum:
         - CC0: Public Domain
@@ -1903,6 +1921,7 @@ definitions:
         - Apache 2.0
         - MIT
         - BSD-3-Clause
+        - GPL 3
       fineTunable:
         type: boolean
         description: Whether the model instance is fine tunable
@@ -1912,6 +1931,20 @@ definitions:
         description: A list of training data (urls or names)
         items:
           type: string
+      modelInstanceType:
+        type: string
+        description: Whether the model instance is a base model, external variant, internal variant, or unspecified
+        enum:
+        - Unspecified
+        - BaseModel
+        - KaggleVariant
+        - ExternalVariant
+      baseModelInstance:
+        type: string
+        description: If this is an internal variant, the `{owner-slug}/{model-slug}/{framework}/{instance-slug}` of the base model instance
+      externalBaseModelUrl:
+        type: integer
+        description: If this is an external variant, a URL to the base model
       updateMask:
         type: string
         description: Describes which fields to update

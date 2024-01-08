@@ -1,9 +1,31 @@
 Changelog
 ====
 
+### 1.6.1
+Release date: 01/08/24
+* Fix dataset/model upload.
+
+### 1.6.0
+Release date: 01/04/24
+* Release the pre-release branch with models endpoints.
+
+#### 1.6.0a7
+Release date: 11/22/23
+* Add model_instance_type and base_model_instance_id to ModelInstance
+
+#### 1.6.0a6
+Release date: 9/19/23
+* Include version_number and version_id in the model-instance-metadata.json file
+
+#### 1.6.0a5
+Release date: 8/02/23
+* Add Keras framework
+
 #### 1.5.16
 Release date: 7/17/23
 * Fix dataset download bug with locale
+* Resumable uploads
+* Retry some failed requests
 
 #### 1.6.0a4
 Release date: 7/07/23

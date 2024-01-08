@@ -1,6 +1,6 @@
 #!/usr/bin/python
 #
-# Copyright 2023 Kaggle Inc
+# Copyright 2024 Kaggle Inc
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -57,7 +57,7 @@ def main():
     parse_competitions(subparsers)
     parse_datasets(subparsers)
     parse_kernels(subparsers)
-    # parse_models(subparsers)
+    parse_models(subparsers)
     parse_files(subparsers)
     parse_config(subparsers)
     args = parser.parse_args()
@@ -1347,8 +1347,12 @@ class Help(object):
     kaggle = 'Use one of:\ncompetitions {' + ', '.join(
         competitions_choices) + '}\ndatasets {' + ', '.join(
             datasets_choices) + '}\nkernels {' + ', '.join(
-                kernels_choices) + '}\nconfig {' + ', '.join(
-                    config_choices) + '}'
+                kernels_choices) + '}\nmodels {' + ', '.join(
+                    models_choices) + '}\nmodels instances {' + ', '.join(
+                        model_instances_choices
+                    ) + '}\nmodels instances versions {' + ', '.join(
+                        model_instance_versions_choices
+                    ) + '}\nconfig {' + ', '.join(config_choices) + '}'
 
     group_competitions = 'Commands related to Kaggle competitions'
     group_datasets = 'Commands related to Kaggle datasets'

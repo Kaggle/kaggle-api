@@ -1,6 +1,6 @@
 #!/usr/bin/python
 #
-# Copyright 2023 Kaggle Inc
+# Copyright 2024 Kaggle Inc
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -271,7 +271,7 @@ class ResumableFileUpload(object):
 
 
 class KaggleApi(KaggleApi):
-    __version__ = '1.5.16'
+    __version__ = '1.6.1'
 
     CONFIG_NAME_PROXY = 'proxy'
     CONFIG_NAME_COMPETITION = 'competition'
@@ -909,7 +909,7 @@ class KaggleApi(KaggleApi):
         """ download a competition file to a designated location, or use
             a default location
 
-            Paramters
+            Parameters
             =========
             competition: the name of the competition
             file_name: the configuration file name
@@ -2880,6 +2880,16 @@ class KaggleApi(KaggleApi):
             data['licenseName'] = mi['licenseName']
             data['fineTunable'] = mi['fineTunable']
             data['trainingData'] = mi['trainingData']
+            data['versionId'] = mi['versionId']
+            data['versionNumber'] = mi['versionNumber']
+            data['modelInstanceType'] = mi['modelInstanceType']
+            if mi['baseModelInstanceInformation'] is not None:
+                data['baseModelInstance'] = '{}/{}/{}/{}'.format(
+                    mi['baseModelInstanceInformation']['owner']['slug'],
+                    mi['baseModelInstanceInformation']['modelSlug'],
+                    mi['baseModelInstanceInformation']['framework'],
+                    mi['baseModelInstanceInformation']['instanceSlug'])
+            data['externalBaseModelUrl'] = mi['externalBaseModelUrl']
 
             with open(meta_file, 'w') as f:
                 json.dump(data, f, indent=2)
@@ -2924,7 +2934,13 @@ class KaggleApi(KaggleApi):
             'Apache 2.0',
             'fineTunable':
             False,
-            'trainingData': []
+            'trainingData': [],
+            'modelInstanceType':
+            'Unspecified',
+            'baseModelInstanceId':
+            0,
+            'externalBaseModelUrl':
+            ''
         }
         meta_file = os.path.join(folder, self.MODEL_INSTANCE_METADATA_FILE)
         with open(meta_file, 'w') as f:
@@ -2964,6 +2980,12 @@ class KaggleApi(KaggleApi):
         license_name = self.get_or_fail(meta_data, 'licenseName')
         fine_tunable = self.get_or_default(meta_data, 'fineTunable', False)
         training_data = self.get_or_default(meta_data, 'trainingData', [])
+        model_instance_type = self.get_or_default(
+            meta_data, 'modelInstanceType', 'Unspecified')
+        base_model_instance = self.get_or_default(meta_data,
+                                                  'baseModelInstance', '')
+        external_base_model_url = self.get_or_default(
+            meta_data, 'externalBaseModelUrl', '')
 
         # validations
         if owner_slug == 'INSERT_OWNER_SLUG_HERE':
@@ -2997,6 +3019,9 @@ class KaggleApi(KaggleApi):
             license_name=license_name,
             fine_tunable=fine_tunable,
             training_data=training_data,
+            model_instance_type=model_instance_type,
+            base_model_instance=base_model_instance,
+            external_base_model_url=external_base_model_url,
             files=[])
 
         with ResumableUploadContext() as upload_context:
@@ -3089,6 +3114,12 @@ class KaggleApi(KaggleApi):
         license_name = self.get_or_default(meta_data, 'licenseName', None)
         fine_tunable = self.get_or_default(meta_data, 'fineTunable', None)
         training_data = self.get_or_default(meta_data, 'trainingData', None)
+        model_instance_type = self.get_or_default(meta_data,
+                                                  'modelInstanceType', None)
+        base_model_instance = self.get_or_default(meta_data,
+                                                  'baseModelInstance', None)
+        external_base_model_url = self.get_or_default(
+            meta_data, 'externalBaseModelUrl', None)
 
         # validations
         if owner_slug == 'INSERT_OWNER_SLUG_HERE':
@@ -3128,6 +3159,12 @@ class KaggleApi(KaggleApi):
             update_mask['paths'].append('fine_tunable')
         if training_data != None:
             update_mask['paths'].append('training_data')
+        if model_instance_type != None:
+            update_mask['paths'].append('model_instance_type')
+        if base_model_instance != None:
+            update_mask['paths'].append('base_model_instance')
+        if external_base_model_url != None:
+            update_mask['paths'].append('external_base_model_url')
 
         request = ModelInstanceUpdateRequest(
             overview=overview,
@@ -3135,6 +3172,9 @@ class KaggleApi(KaggleApi):
             license_name=license_name,
             fine_tunable=fine_tunable,
             training_data=training_data,
+            model_instance_type=model_instance_type,
+            base_model_instance=base_model_instance,
+            external_base_model_url=external_base_model_url,
             update_mask=update_mask)
         result = ModelNewResponse(
             self.process_response(
@@ -3283,6 +3323,7 @@ class KaggleApi(KaggleApi):
                     os.remove(outfile)
                 except OSError as e:
                     print('Could not delete tar file, got %s' % e)
+        return outfile
 
     def model_instance_version_download_cli(self,
                                             model_instance_version,
@@ -3301,7 +3342,7 @@ class KaggleApi(KaggleApi):
             quiet: suppress verbose output (default is False)
             untar: if True, untar files upon download (default is False)
         """
-        self.model_instance_version_download(
+        return self.model_instance_version_download(
             model_instance_version,
             path=path,
             untar=untar,
@@ -3528,6 +3569,9 @@ class KaggleApi(KaggleApi):
                           'Version, please consider updating (server ' +
                           api_version + ' / client ' + self.__version__ + ')')
                     self.already_printed_version_warning = True
+            if isinstance(data,
+                          dict) and 'code' in data and data['code'] != 200:
+                raise Exception(data['message'])
             return data
         return result
 

@@ -1,6 +1,6 @@
 #!/usr/bin/python
 #
-# Copyright 2023 Kaggle Inc
+# Copyright 2024 Kaggle Inc
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -56,6 +56,9 @@ class ModelNewInstanceRequest(object):
         'license_name': 'str',
         'fine_tunable': 'bool',
         'training_data': 'list[str]',
+        'model_instance_type': 'str',
+        'base_model_instance': 'str',
+        'external_base_model_url': 'int',
         'files': 'list[UploadFile]'
     }
 
@@ -67,10 +70,13 @@ class ModelNewInstanceRequest(object):
         'license_name': 'licenseName',
         'fine_tunable': 'fineTunable',
         'training_data': 'trainingData',
+        'model_instance_type': 'modelInstanceType',
+        'base_model_instance': 'baseModelInstance',
+        'external_base_model_url': 'externalBaseModelUrl',
         'files': 'files'
     }
 
-    def __init__(self, instance_slug=None, framework=None, overview=None, usage=None, license_name='Apache 2.0', fine_tunable=True, training_data=None, files=None):  # noqa: E501
+    def __init__(self, instance_slug=None, framework=None, overview=None, usage=None, license_name='Apache 2.0', fine_tunable=True, training_data=None, model_instance_type=None, base_model_instance=None, external_base_model_url=None, files=None):  # noqa: E501
         """ModelNewInstanceRequest - a model defined in Swagger"""  # noqa: E501
 
         self._instance_slug = None
@@ -80,6 +86,9 @@ class ModelNewInstanceRequest(object):
         self._license_name = None
         self._fine_tunable = None
         self._training_data = None
+        self._model_instance_type = None
+        self._base_model_instance = None
+        self._external_base_model_url = None
         self._files = None
         self.discriminator = None
 
@@ -94,6 +103,12 @@ class ModelNewInstanceRequest(object):
             self.fine_tunable = fine_tunable
         if training_data is not None:
             self.training_data = training_data
+        if model_instance_type is not None:
+            self.model_instance_type = model_instance_type
+        if base_model_instance is not None:
+            self.base_model_instance = base_model_instance
+        if external_base_model_url is not None:
+            self.external_base_model_url = external_base_model_url
         if files is not None:
             self.files = files
 
@@ -144,7 +159,7 @@ class ModelNewInstanceRequest(object):
         """
         if framework is None:
             raise ValueError("Invalid value for `framework`, must not be `None`")  # noqa: E501
-        allowed_values = ["tensorFlow1", "tensorFlow2", "tfLite", "tfJs", "pyTorch", "jax", "coral", "scikitLearn", "mxnet", "onnx"]  # noqa: E501
+        allowed_values = ["tensorFlow1", "tensorFlow2", "tfLite", "tfJs", "pyTorch", "jax", "coral", "scikitLearn", "mxnet", "onnx", "keras"]  # noqa: E501
         if framework not in allowed_values:
             raise ValueError(
                 "Invalid value for `framework` ({0}), must be one of {1}"  # noqa: E501
@@ -203,7 +218,7 @@ class ModelNewInstanceRequest(object):
     def license_name(self):
         """Gets the license_name of this ModelNewInstanceRequest.  # noqa: E501
 
-        The license that should be associated with the model  # noqa: E501
+        The license that should be associated with the model instance  # noqa: E501
 
         :return: The license_name of this ModelNewInstanceRequest.  # noqa: E501
         :rtype: str
@@ -214,14 +229,14 @@ class ModelNewInstanceRequest(object):
     def license_name(self, license_name):
         """Sets the license_name of this ModelNewInstanceRequest.
 
-        The license that should be associated with the model  # noqa: E501
+        The license that should be associated with the model instance  # noqa: E501
 
         :param license_name: The license_name of this ModelNewInstanceRequest.  # noqa: E501
         :type: str
         """
         if license_name is None:
             raise ValueError("Invalid value for `license_name`, must not be `None`")  # noqa: E501
-        allowed_values = ["CC BY-NC-SA 4.0", "CC BY-SA 4.0", "GPL 2", "CC BY-SA 3.0", "Attribution 4.0 International (CC BY 4.0)", "Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)", "ODC Public Domain Dedication and Licence (PDDL)", "Attribution 3.0 Unported (CC BY 3.0)", "Attribution 3.0 IGO (CC BY 3.0 IGO)", "Attribution-NonCommercial-ShareAlike 3.0 IGO (CC BY-NC-SA 3.0 IGO)", "Community Data License Agreement - Permissive - Version 1.0", "Community Data License Agreement - Sharing - Version 1.0", "Attribution-NoDerivatives 4.0 International (CC BY-ND 4.0)", "Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)", "ODC Attribution License (ODC-By)", "GNU Lesser General Public License 3.0", "GNU Affero General Public License 3.0", "GNU Free Documentation License 1.3", "Apache 2.0", "MIT", "BSD-3-Clause"]  # noqa: E501
+        allowed_values = ["CC BY-NC-SA 4.0", "CC BY-SA 4.0", "GPL 2", "CC BY-SA 3.0", "Attribution 4.0 International (CC BY 4.0)", "Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)", "ODC Public Domain Dedication and Licence (PDDL)", "Attribution 3.0 Unported (CC BY 3.0)", "Attribution 3.0 IGO (CC BY 3.0 IGO)", "Attribution-NonCommercial-ShareAlike 3.0 IGO (CC BY-NC-SA 3.0 IGO)", "Community Data License Agreement - Permissive - Version 1.0", "Community Data License Agreement - Sharing - Version 1.0", "Attribution-NoDerivatives 4.0 International (CC BY-ND 4.0)", "Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)", "ODC Attribution License (ODC-By)", "GNU Lesser General Public License 3.0", "GNU Affero General Public License 3.0", "GNU Free Documentation License 1.3", "Apache 2.0", "MIT", "BSD-3-Clause", "GPL 3"]  # noqa: E501
         if license_name not in allowed_values:
             raise ValueError(
                 "Invalid value for `license_name` ({0}), must be one of {1}"  # noqa: E501
@@ -275,6 +290,81 @@ class ModelNewInstanceRequest(object):
         """
 
         self._training_data = training_data
+
+    @property
+    def model_instance_type(self):
+        """Gets the model_instance_type of this ModelNewInstanceRequest.  # noqa: E501
+
+        Whether the model instance is a base model, external variant, internal variant, or unspecified  # noqa: E501
+
+        :return: The model_instance_type of this ModelNewInstanceRequest.  # noqa: E501
+        :rtype: str
+        """
+        return self._model_instance_type
+
+    @model_instance_type.setter
+    def model_instance_type(self, model_instance_type):
+        """Sets the model_instance_type of this ModelNewInstanceRequest.
+
+        Whether the model instance is a base model, external variant, internal variant, or unspecified  # noqa: E501
+
+        :param model_instance_type: The model_instance_type of this ModelNewInstanceRequest.  # noqa: E501
+        :type: str
+        """
+        allowed_values = ["Unspecified", "BaseModel", "KaggleVariant", "ExternalVariant"]  # noqa: E501
+        if model_instance_type not in allowed_values:
+            raise ValueError(
+                "Invalid value for `model_instance_type` ({0}), must be one of {1}"  # noqa: E501
+                .format(model_instance_type, allowed_values)
+            )
+
+        self._model_instance_type = model_instance_type
+
+    @property
+    def base_model_instance(self):
+        """Gets the base_model_instance of this ModelNewInstanceRequest.  # noqa: E501
+
+        If this is an internal variant, the `{owner-slug}/{model-slug}/{framework}/{instance-slug}` of the base model instance  # noqa: E501
+
+        :return: The base_model_instance of this ModelNewInstanceRequest.  # noqa: E501
+        :rtype: str
+        """
+        return self._base_model_instance
+
+    @base_model_instance.setter
+    def base_model_instance(self, base_model_instance):
+        """Sets the base_model_instance of this ModelNewInstanceRequest.
+
+        If this is an internal variant, the `{owner-slug}/{model-slug}/{framework}/{instance-slug}` of the base model instance  # noqa: E501
+
+        :param base_model_instance: The base_model_instance of this ModelNewInstanceRequest.  # noqa: E501
+        :type: str
+        """
+
+        self._base_model_instance = base_model_instance
+
+    @property
+    def external_base_model_url(self):
+        """Gets the external_base_model_url of this ModelNewInstanceRequest.  # noqa: E501
+
+        If this is an external variant, a URL to the base model  # noqa: E501
+
+        :return: The external_base_model_url of this ModelNewInstanceRequest.  # noqa: E501
+        :rtype: int
+        """
+        return self._external_base_model_url
+
+    @external_base_model_url.setter
+    def external_base_model_url(self, external_base_model_url):
+        """Sets the external_base_model_url of this ModelNewInstanceRequest.
+
+        If this is an external variant, a URL to the base model  # noqa: E501
+
+        :param external_base_model_url: The external_base_model_url of this ModelNewInstanceRequest.  # noqa: E501
+        :type: int
+        """
+
+        self._external_base_model_url = external_base_model_url
 
     @property
     def files(self):

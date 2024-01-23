@@ -1,5 +1,21 @@
 #!/usr/bin/python
 #
+# Copyright 2024 Kaggle Inc
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+#!/usr/bin/python
+#
 # Copyright 2019 Kaggle Inc
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -3553,7 +3569,8 @@ class KaggleApi(KaggleApi):
                           'Version, please consider updating (server ' +
                           api_version + ' / client ' + self.__version__ + ')')
                     self.already_printed_version_warning = True
-            if isinstance(data, dict) and 'code' in data and data['code'] != 200:
+            if isinstance(data,
+                          dict) and 'code' in data and data['code'] != 200:
                 raise Exception(data['message'])
             return data
         return result

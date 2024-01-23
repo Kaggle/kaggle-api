@@ -1,6 +1,16 @@
 Changelog
 ====
 
+### 1.6.3
+
+Release date: 01/11/24
+* Add "Flax" and "Pax" frameworks
+
+### 1.6.2
+
+Release date: 01/09/24
+* Add "Other" framework
+
 ### 1.6.1
 Release date: 01/08/24
 * Fix dataset/model upload.

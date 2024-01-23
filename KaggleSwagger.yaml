@@ -1816,11 +1816,14 @@ definitions:
         - tfJs
         - pyTorch
         - jax
+        - flax
+        - pax
         - coral
         - scikitLearn
         - mxnet
         - onnx
         - keras
+        - other
       overview:
         type: string
         description: The overview of the model instance (markdown)

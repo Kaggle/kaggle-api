@@ -19,7 +19,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='kaggle',
-    version='1.6.3',
+    version='1.6.7',
     description='Kaggle API',
     long_description=
     ('Official API for https://www.kaggle.com, accessible using a command line '
@@ -37,7 +37,7 @@ setup(
     entry_points={'console_scripts': ['kaggle = kaggle.cli:main']},
     install_requires=[
         'six >= 1.10',
-        'certifi',
+        'certifi >= 2023.7.22',
         'python-dateutil',
         'requests',
         'tqdm',

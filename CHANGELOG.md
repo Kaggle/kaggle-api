@@ -1,15 +1,31 @@
 Changelog
 ====
 
+### 1.6.7
+
+* Add "TensorRtLlm" model framework.
+
+### 1.6.6
+
+* Add "GemmaCpp" and "GGML" model frameworks.
+
+### 1.6.5
+
+* Add "MaxText" model framework.
+
+### 1.6.4
+
+* Add "Transformers" model framework.
+
 ### 1.6.3
 
 Release date: 01/11/24
-* Add "Flax" and "Pax" frameworks
+* Add "Flax" and "Pax" model frameworks.
 
 ### 1.6.2
 
 Release date: 01/09/24
-* Add "Other" framework
+* Add "Other" model framework.
 
 ### 1.6.1
 Release date: 01/08/24
@@ -29,7 +45,7 @@ Release date: 9/19/23
 
 #### 1.6.0a5
 Release date: 8/02/23
-* Add Keras framework
+* Add Keras model framework.
 
 #### 1.5.16
 Release date: 7/17/23

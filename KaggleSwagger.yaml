@@ -1859,6 +1859,7 @@ definitions:
           - gemmaCpp
           - tensorRtLlm
           - ggml
+          - gguf
           - coral
           - scikitLearn
           - mxnet

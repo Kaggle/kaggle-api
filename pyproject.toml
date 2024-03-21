@@ -1,0 +1,36 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "kaggle-api"
+dynamic = [
+    "version"
+]
+description = "Access Kaggle resources anywhere"
+authors = [
+    { name = "Kaggle", email = "support@kaggle.com" },
+]
+license = { file = "LICENSE" }
+readme = "README.md"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+]
+keywords = ["Kaggle", "API"]
+requires-python = ">=3.7"
+dependencies = [
+  "requests", 
+  "tqdm"
+]
+
+[project.urls]
+"Homepage" = "https://github.com/Kaggle/kaggle-api"
+"Bug Tracker" = "https://github.com/Kaggle/kaggle-api/issues"
+
+[tool.hatch.version]
+path = "src/__init__.py"
+
+[tool.hatch.envs.default.scripts]
+generate = "./tools/GeneratePythonLibrary.sh"

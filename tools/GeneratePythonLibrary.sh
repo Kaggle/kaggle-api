@@ -138,9 +138,9 @@ END
 }
 
 function copy-template {
-  cp ./src/*.py .
-  cp ./src/*.cfg .
-  cp ./src/*.txt .
+  cp ./src/setup.py .
+  cp ./src/setup.cfg .
+  cp ./src/requirements.txt .
 }
 
 function run-autogen {

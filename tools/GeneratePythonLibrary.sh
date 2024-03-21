@@ -138,8 +138,9 @@ END
 }
 
 function copy-template {
-  # cp -r ./src/* ./
-  echo "TODO"
+  cp ./src/*.py .
+  cp ./src/*.cfg .
+  cp ./src/*.txt .
 }
 
 function run-autogen {

@@ -139,7 +139,7 @@ END
 
 function copy-template {
   cp $SWAGGER_YAML $SWAGGER_CONFIG ./
-  cp -r ../src/* ./
+  cp -r ./src/* ./
 }
 
 function run-autogen {
@@ -175,13 +175,12 @@ function install-package {
 }
 
 function cleanup {
-  cd $SELF_DIR/python
+  cd $SELF_DIR
   rm -rf .swagger-codegen-ignore \
     tox.ini \
     requirements.txt \
     test-requirements.txt \
     test \
-    docs \
     .swagger-codegen \
     .travis.yml \
     git_push.sh \

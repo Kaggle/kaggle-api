@@ -138,12 +138,12 @@ END
 }
 
 function copy-template {
-  cp $SWAGGER_YAML $SWAGGER_CONFIG ./
-  cp -r ./src/* ./
+  # cp -r ./src/* ./
+  echo "TODO"
 }
 
 function run-autogen {
-  find . -type f -name \*.py -exec autogen --no-code --no-top-level-comment --in-place --copyright "Kaggle Inc" --license apache {} \;
+  find kaggle/ -type f -name \*.py -exec autogen --no-code --no-top-level-comment --in-place --copyright "Kaggle Inc" --license apache {} \;
 }
 
 function run-tests {
@@ -207,7 +207,7 @@ function run {
 WATCHED_EVENTS="-e create -e modify -e delete"
 
 function watch-swagger {
-  local watched_paths="$SELF_DIR/KaggleSwagger.yaml $SELF_DIR/KaggleSwaggerConfig.json"
+  local watched_paths="$SWAGGER_YAML $SWAGGER_CONFIG"
 
   echo "Watching for changes to Swagger config..."
   while inotifywait -q -r $WATCHED_EVENTS --format "%e %w%f" $watched_paths; do

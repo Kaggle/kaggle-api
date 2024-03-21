@@ -1,5 +1,5 @@
 [build-system]
-requires = ["hatchling"]
+requires = ["hatchling", "hatch-build-scripts"]
 build-backend = "hatchling.build"
 
 [project]
@@ -20,10 +20,6 @@ classifiers = [
 ]
 keywords = ["Kaggle", "API"]
 requires-python = ">=3.7"
-dependencies = [
-  "requests", 
-  "tqdm"
-]
 
 [project.urls]
 "Homepage" = "https://github.com/Kaggle/kaggle-api"
@@ -33,4 +29,15 @@ dependencies = [
 path = "src/__init__.py"
 
 [tool.hatch.envs.default.scripts]
-generate = "./tools/GeneratePythonLibrary.sh"
+install-yapf = "sudo apt-get install -y yapf3 python3-yapf"
+install-autogen = """curl -fsSL --output /tmp/autogen.zip "https://github.com/mbrukman/autogen/archive/refs/heads/master.zip" && 
+  sudo mkdir -p /usr/lib/autogen && sudo unzip -qo /tmp/autogen.zip -d /usr/lib/autogen && 
+  sudo mv /usr/lib/autogen/autogen-*/* /usr/lib/autogen && sudo rm -rf /usr/lib/autogen/autogen-* && 
+  sudo chmod a+rx /usr/lib/autogen/autogen.sh && 
+  sudo ln -s /usr/lib/autogen/autogen.sh /usr/bin/autogen"""
+compile = "./tools/GeneratePythonLibrary.sh"
+
+[[tool.hatch.build.hooks.build-scripts.scripts]]
+commands = [
+    "echo 'Hello, world!'",
+]

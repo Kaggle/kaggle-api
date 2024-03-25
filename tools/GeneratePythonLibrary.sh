@@ -10,7 +10,7 @@ function usage {
   echo
   echo "         --install (-i): Install the package locally."
   echo "         --editable (-e): Make the installed package always reference your latest"
-  echo "                          source code. Implies \"-i|--install\". Be aware that changes to the \"template\""
+  echo "                          source code. Implies \"-i|--install\". Be aware that changes to the \"src\""
   echo "                          directory won't be reflected. See the README for details."
   echo "         --test (-t) [$LOCAL_ENV|$PROD_ENV]: Run tests (python_api_tests.py) against http://localhost" 
   echo "                                   or https://www.kaggle.com."

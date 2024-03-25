@@ -1,5 +1,5 @@
 [build-system]
-requires = ["hatchling"]
+requires = ["hatchling", "hatch-requirements-txt"]
 build-backend = "hatchling.build"
 
 [project]
@@ -20,10 +20,14 @@ classifiers = [
 ]
 keywords = ["Kaggle", "API"]
 requires-python = ">=3.7"
+dynamic = ["dependencies"]
 
 [project.urls]
 "Homepage" = "https://github.com/Kaggle/kaggle-api"
 "Bug Tracker" = "https://github.com/Kaggle/kaggle-api/issues"
+
+[tool.hatch.metadata.hooks.requirements_txt]
+files = ["requirements.txt"]
 
 [tool.hatch.version]
 path = "src/__init__.py"
@@ -39,3 +43,4 @@ install-deps = "hatch run install-yapf && hatch run install-autogen"
 
 compile = "./tools/GeneratePythonLibrary.sh"
 install = "./tools/GeneratePythonLibrary.sh --install"
+watch = "./tools/GeneratePythonLibrary.sh --watch"

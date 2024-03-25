@@ -137,9 +137,10 @@ END
   fi
 }
 
-function copy-template {
+function copy-src {
   cp ./src/setup.py .
   cp ./src/setup.cfg .
+  cp -r ./src/kaggle/* ./kaggle/
 }
 
 function run-autogen {
@@ -195,7 +196,7 @@ function run {
   reset
 
   generate-from-swagger
-  copy-template
+  copy-src
   run-autogen
   install-package
   run-tests
@@ -214,7 +215,7 @@ function watch-swagger {
     rm -rf $SELF_DIR/kaggle/*
     generate-from-swagger
     run-autogen
-    copy-template
+    copy-src
     echo -e "\nWatching for changes to Swagger config..."
   done
 }
@@ -228,7 +229,7 @@ function watch-src {
     # having to run generate-from-swagger for each small code change as Swagger code
     # generation is a bit slow (can take 2-3 seconds).
     echo "Copying changes..."
-    copy-template
+    copy-src
     echo "Done!"
     echo -e "\nWatching for changes under \"src\"..."
   done

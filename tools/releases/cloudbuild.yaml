@@ -32,7 +32,6 @@ steps:
       - |
         mkdir -p ~/.kaggle/dev # Directory expected by following script
         ./GeneratePythonLibrary.sh
-        cd python
         python3 setup.py develop
         python3 setup.py sdist
         # Move the built CLI to a volume that will survive to next steps.

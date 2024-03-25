@@ -177,8 +177,7 @@ function install-package {
 
 function cleanup {
   cd $SELF_DIR
-  rm -rf .swagger-codegen-ignore \
-    tox.ini \
+  rm -rf tox.ini \
     requirements.txt \
     test-requirements.txt \
     test \

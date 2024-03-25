@@ -25,7 +25,7 @@ Follow these [instructions](https://hatch.pypa.io/latest/install/) to install it
 ### Dependencies
 
 ```sh
-hatch run install
+hatch run install-deps
 ```
 
 ### Compile
@@ -33,6 +33,8 @@ hatch run install
 ```sh
 hatch run compile
 ```
+
+The compiled files are generated in the 'kaggle/' directory and the root directory of this repository.
 
 ## License
 

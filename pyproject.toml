@@ -1,11 +1,11 @@
 [build-system]
-requires = ["hatchling", "hatch-requirements-txt"]
+requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
 name = "kaggle-api"
 dynamic = [
-    "version"
+    "version",
 ]
 description = "Access Kaggle resources anywhere"
 authors = [
@@ -20,14 +20,25 @@ classifiers = [
 ]
 keywords = ["Kaggle", "API"]
 requires-python = ">=3.7"
-dynamic = ["dependencies"]
+dependencies = [
+  "bleach", 
+  "certifi>=14.05.14",
+  "charset-normalizer",
+  "idna",
+  "python-dateutil>=2.5.3",
+  "python-slugify",
+  "requests",
+  "setuptools>=21.0.0",
+  "six>=1.10",
+  "text-unidecode",
+  "tqdm",
+  "urllib3>=1.15.1",
+  "webencodings"
+]
 
 [project.urls]
 "Homepage" = "https://github.com/Kaggle/kaggle-api"
 "Bug Tracker" = "https://github.com/Kaggle/kaggle-api/issues"
-
-[tool.hatch.metadata.hooks.requirements_txt]
-files = ["requirements.txt"]
 
 [tool.hatch.version]
 path = "src/__init__.py"

@@ -140,7 +140,6 @@ END
 function copy-template {
   cp ./src/setup.py .
   cp ./src/setup.cfg .
-  cp ./src/requirements.txt .
 }
 
 function run-autogen {

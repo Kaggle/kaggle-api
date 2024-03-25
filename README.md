@@ -57,7 +57,6 @@ Next Page Token = [...]
 
 ```
 
-
 ## License
 
 The Kaggle API is released under the [Apache 2.0 license](LICENSE).

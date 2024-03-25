@@ -168,9 +168,9 @@ function run-tests {
 function install-package {
   pip3 install --break-system-packages --require-hashes -r requirements.txt 
   if [[ "$INSTALL_EDITABLE" == "yes" ]];  then
-    pip3 install --break-system-packages --upgrade --no-deps --no-index --editable .
+    pip3 install --break-system-packages --upgrade --editable .
   elif [[ "$INSTALL" == "yes" ]];  then
-    pip3 install --break-system-packages --upgrade --no-deps --no-index .
+    pip3 install --break-system-packages --upgrade .
   fi
 }
 
@@ -246,7 +246,7 @@ function watch {
   echo
   watch-swagger &
   local pid=$!
-  watch-template
+  watch-src
   wait $pid
 }
 

@@ -34,7 +34,9 @@ hatch run install-deps
 hatch run compile
 ```
 
-The compiled files are generated in the 'kaggle/' directory and the root directory of this repository.
+The compiled files are generated in the 'kaggle/' directory from the `src/` directory.
+
+All the changes must be done in the `src/` directory.
 
 ### Run
 

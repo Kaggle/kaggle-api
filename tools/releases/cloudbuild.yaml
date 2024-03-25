@@ -13,7 +13,7 @@ steps:
   # release the Kaggle CLI.
   # Use the previous built image as cache.
   - name: "gcr.io/cloud-builders/docker"
-    dir: "releases"
+    dir: "tools/releases"
     args:
       - build
       - -f
@@ -31,7 +31,7 @@ steps:
       - "-c"
       - |
         mkdir -p ~/.kaggle/dev # Directory expected by following script
-        ./GeneratePythonLibrary.sh
+        ./tools/GeneratePythonLibrary.sh
         python3 setup.py develop
         python3 setup.py sdist
         # Move the built CLI to a volume that will survive to next steps.

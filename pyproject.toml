@@ -35,6 +35,8 @@ install-autogen = """curl -fsSL --output /tmp/autogen.zip "https://github.com/mb
   sudo mv /usr/lib/autogen/autogen-*/* /usr/lib/autogen && sudo rm -rf /usr/lib/autogen/autogen-* && 
   sudo chmod a+rx /usr/lib/autogen/autogen.sh && 
   sudo ln -s /usr/lib/autogen/autogen.sh /usr/bin/autogen"""
+install = "hatch run install-yapf && hatch run install-autogen"
+
 compile = "./tools/GeneratePythonLibrary.sh"
 
 [[tool.hatch.build.hooks.build-scripts.scripts]]

@@ -1,4 +1,4 @@
-# Source this file to run Kaggle Api V1 against http://localhost (a local webtier).
+# Source this file to run Kaggle Api V1 against http://localhost.
 
 if [[ "$0" == "$BASH_SOURCE" ]]; then
   echo -e "Source this file to run kaggle api cli against localhost:\n"

@@ -51,7 +51,6 @@ kaggle kernels {list, init, push, pull, output, status}
 kaggle models {get, list, init, create, delete, update}
 kaggle models instances {get, init, create, delete, update}
 kaggle models instances versions {init, create, download, delete}
-kaggle models instances {get, init, create, delete, update}
 kaggle config {view, set, unset}
 ```
 
@@ -93,7 +92,7 @@ optional arguments:
   -s SEARCH, --search SEARCH
                         Term(s) to search for
   -v, --csv             Print results in CSV format
-                        (if not set print in table format)
+                        (if not set then print in table format)
 ```
 
 Example: 
@@ -111,7 +110,7 @@ optional arguments:
   -h, --help   show this help message and exit
   competition  Competition URL suffix (use "kaggle competitions list" to show options)
                If empty, the default competition will be used (use "kaggle config set competition")"
-  -v, --csv    Print results in CSV format (if not set print in table format)
+  -v, --csv    Print results in CSV format (if not set then print in table format)
   -q, --quiet  Suppress printing information about the upload/download progress
 ```
 
@@ -181,7 +180,7 @@ optional arguments:
   -h, --help   show this help message and exit
   competition  Competition URL suffix (use "kaggle competitions list" to show options)
                If empty, the default competition will be used (use "kaggle config set competition")"
-  -v, --csv    Print results in CSV format (if not set print in table format)
+  -v, --csv    Print results in CSV format (if not set then print in table format)
   -q, --quiet  Suppress printing information about the upload/download progress
 ```
  
@@ -204,7 +203,7 @@ optional arguments:
   -s, --show            Show the top of the leaderboard
   -d, --download        Download entire leaderboard
   -p PATH, --path PATH  Folder where file(s) will be downloaded, defaults to current working directory
-  -v, --csv             Print results in CSV format (if not set print in table format)
+  -v, --csv             Print results in CSV format (if not set then print in table format)
   -q, --quiet           Suppress printing information about the upload/download progress
 ```
 
@@ -255,7 +254,7 @@ optional arguments:
   -m, --mine            Display only my items
   --user USER           Find public datasets owned by a specific user or organization
   -p PAGE, --page PAGE  Page number for results paging. Page size is 20 by default
-  -v, --csv             Print results in CSV format (if not set print in table format)
+  -v, --csv             Print results in CSV format (if not set then print in table format)
 ```
 
 Example:
@@ -274,7 +273,7 @@ required arguments:
 
 optional arguments:
   -h, --help  show this help message and exit
-  -v, --csv   Print results in CSV format (if not set print in table format)
+  -v, --csv   Print results in CSV format (if not set then print in table format)
 ```
 
 Example:
@@ -333,7 +332,7 @@ Example:
 
 ##### Create a new dataset
 
-If you want to create a new dataset, you need to initiate metadata file at first. You could fulfill this by running `kaggle datasets init` as describe above.
+If you want to create a new dataset, you need to initialize metadata file at first. You could fulfill this by running `kaggle datasets init` as describe above.
 
 ```
 usage: kaggle datasets create [-h] [-p FOLDER] [-u] [-q] [-t] [-r {skip,zip,tar}]
@@ -452,7 +451,7 @@ optional arguments:
   --page-size PAGE_SIZE Number of items to show on a page. Default size is 20, max is 100
   -s SEARCH, --search SEARCH
                         Term(s) to search for
-  -v, --csv             Print results in CSV format (if not set print in table format)
+  -v, --csv             Print results in CSV format (if not set then print in table format)
   --parent PARENT       Find children of the specified parent kernel
   --competition COMPETITION
                         Find kernels for a given competition
@@ -605,7 +604,7 @@ optional arguments:
   --page-token PAGE_TOKEN  
                         Page token for pagination
   --page-size PAGE_SIZE Number of items to show on a page. Default size is 20, max is 50
-  -v, --csv             Print results in CSV format (if not set print in table format)
+  -v, --csv             Print results in CSV format (if not set then print in table format)
 ```
 
 Example:
@@ -733,7 +732,7 @@ Example:
 
 ##### Create a new model instance
 
-If you want to create a new model instance, you need to initiate metadata file at first. You could fulfill this by running `kaggle models instances init` as describe above.
+If you want to create a new model instance, you need to initialize metadata file at first. You could fulfill this by running `kaggle models instances init` as describe above.
 
 ```
 usage: kaggle models instances create [-h] [-p FOLDER]

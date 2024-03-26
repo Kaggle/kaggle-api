@@ -16,7 +16,7 @@ pip install kaggle
 
 ## Development
 
-### Prequisites
+### Prerequisites
 
 We use [hatch](https://hatch.pypa.io) to manage this project.
 
@@ -34,7 +34,7 @@ hatch run install-deps
 hatch run compile
 ```
 
-The compiled files are generated in the 'kaggle/' directory from the `src/` directory.
+The compiled files are generated in the `kaggle/` directory from the `src/` directory.
 
 All the changes must be done in the `src/` directory.
 

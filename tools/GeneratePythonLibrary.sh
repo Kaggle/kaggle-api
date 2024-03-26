@@ -65,7 +65,7 @@ cd $SELF_DIR
 
 SWAGGER_YAML=$SELF_DIR/src/KaggleSwagger.yaml
 SWAGGER_CONFIG=$SELF_DIR/src/KaggleSwaggerConfig.json
-KAGGLE_DEV_CONFIG_DIR=$(realpath ~/.kaggle/dev)
+KAGGLE_DEV_CONFIG_DIR=$(realpath ~/.kaggle)
 
 trap cleanup EXIT
 
@@ -87,7 +87,9 @@ function reset {
   rm -rf kaggle/*
 
   echo "yapf3 -ir src/"
-  yapf3 -ir src/
+  if [ -x "$(command -v yapf3)" ]; then
+    yapf3 -ir src/
+  fi
 }
 
 function create-local-creds {
@@ -144,7 +146,7 @@ function copy-src {
 }
 
 function run-autogen {
-  find kaggle/ -type f -name \*.py -exec autogen --no-code --no-top-level-comment --in-place --copyright "Kaggle Inc" --license apache {} \;
+  find kaggle/ -type f -name \*.py -exec /tmp/autogen/autogen.sh --no-code --no-top-level-comment --in-place --copyright "Kaggle Inc" --license apache {} \;
 }
 
 function run-tests {

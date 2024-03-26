@@ -44,13 +44,13 @@ dependencies = [
 path = "src/__init__.py"
 
 [tool.hatch.envs.default.scripts]
-install-yapf = "sudo apt-get install -y yapf3 python3-yapf"
 install-autogen = """curl -fsSL --output /tmp/autogen.zip "https://github.com/mbrukman/autogen/archive/refs/heads/master.zip" && 
-  sudo mkdir -p /usr/lib/autogen && sudo unzip -qo /tmp/autogen.zip -d /usr/lib/autogen && 
-  sudo mv /usr/lib/autogen/autogen-*/* /usr/lib/autogen && sudo rm -rf /usr/lib/autogen/autogen-* && 
-  sudo chmod a+rx /usr/lib/autogen/autogen.sh && 
-  sudo ln -s /usr/lib/autogen/autogen.sh /usr/bin/autogen"""
-install-deps = "hatch run install-yapf && hatch run install-autogen"
+  rm -rf /tmp/autogen && mkdir -p /tmp/autogen && unzip -qo /tmp/autogen.zip -d /tmp/autogen && 
+  mv /tmp/autogen/autogen-*/* /tmp/autogen && rm -rf /tmp/autogen/autogen-* && 
+  sudo chmod a+rx /tmp/autogen/autogen.sh"""
+# TODO: install in Mac/Windows
+install-yapf = """sudo apt-get install -y yapf3 python3-yapf || echo 'yapf could not be installed'"""
+install-deps = "hatch run install-autogen && hatch run install-yapf"
 
 compile = "./tools/GeneratePythonLibrary.sh"
 install = "./tools/GeneratePythonLibrary.sh --install"

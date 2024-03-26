@@ -47,16 +47,40 @@ hatch run python
 ```
 
 ```python
-Python 3.11.7 (main, Dec  8 2023, 14:22:46) [GCC 13.2.0] on linux
-Type "help", "copyright", "credits" or "license" for more information.
->>> import kaggle
->>> from kaggle.api.kaggle_api_extended import KaggleApi
->>> api = KaggleApi()
->>> api.authenticate()
->>> api.model_list_cli()
+import kaggle
+from kaggle.api.kaggle_api_extended import KaggleApi
+api = KaggleApi()
+api.authenticate()
+api.model_list_cli()
+
 Next Page Token = [...]
 [...]
 
+```
+
+Or in a single command:
+
+```sh
+hatch run python -c "import kaggle; from kaggle.api.kaggle_api_extended import KaggleApi; api = KaggleApi(); api.authenticate(); api.model_list_cli()"
+```
+
+### Example
+
+Let's change the `model_list_cli` method in the source file: 
+
+```sh
+❯ git diff src/kaggle/api/kaggle_api_extended.py
+[...]
++        print('hello Kaggle CLI update')^M
+         models = self.model_list(sort_by, search, owner, page_size, page_token)
+[...]
+
+❯ hatch run compile
+[...]
+
+❯ hatch run python -c "import kaggle; from kaggle.api.kaggle_api_extended import KaggleApi; api = KaggleApi(); api.authenticate(); api.model_list_cli()"
+hello Kaggle CLI update
+Next Page Token = [...]
 ```
 
 ## License

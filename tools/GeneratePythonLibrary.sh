@@ -65,7 +65,8 @@ cd $SELF_DIR
 
 SWAGGER_YAML=$SELF_DIR/src/KaggleSwagger.yaml
 SWAGGER_CONFIG=$SELF_DIR/src/KaggleSwaggerConfig.json
-KAGGLE_DEV_CONFIG_DIR=$(realpath ~/.kaggle)
+mkdir -p ~/.kaggle/dev
+KAGGLE_DEV_CONFIG_DIR=$(realpath ~/.kaggle/dev)
 
 trap cleanup EXIT
 

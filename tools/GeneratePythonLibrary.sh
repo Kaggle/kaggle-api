@@ -89,6 +89,8 @@ function reset {
   echo "yapf3 -ir src/"
   if [ -x "$(command -v yapf3)" ]; then
     yapf3 -ir src/
+  else
+    echo "yapf3 is not installed on your system"
   fi
 }
 
@@ -115,7 +117,7 @@ function generate-from-swagger {
   if [[ -f "kaggle/configuration.py" ]]; then
     # Replace the hard-coded endpoint URL with an environment variable in configuration.py
     # to allow talking to localhost, staging, prod etc.
-    sed -i 's|self.host = "http|self.host = _get_endpoint_from_env() or "http|g' kaggle/configuration.py
+    sed -i .bak 's|self.host = "http|self.host = _get_endpoint_from_env() or "http|g' kaggle/configuration.py
     echo -e "\n" >> kaggle/configuration.py
     cat <<-END >> kaggle/configuration.py
 def _get_endpoint_from_env():
@@ -191,7 +193,10 @@ function cleanup {
     ds_salaries.csv \
     test.csv \
     house-prices-advanced-regression-techniques.zip \
-    data-science-salaries-2023.zip
+    data-science-salaries-2023.zip \
+    kaggle/*.py-e \
+    kaggle/api/*.py-e \
+    kaggle/*.py.bak
 }
 
 function run {

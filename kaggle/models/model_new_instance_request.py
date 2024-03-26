@@ -159,7 +159,7 @@ class ModelNewInstanceRequest(object):
         """
         if framework is None:
             raise ValueError("Invalid value for `framework`, must not be `None`")  # noqa: E501
-        allowed_values = ["tensorFlow1", "tensorFlow2", "tfLite", "tfJs", "pyTorch", "jax", "flax", "pax", "maxText", "gemmaCpp", "tensorRtLlm", "ggml", "coral", "scikitLearn", "mxnet", "onnx", "keras", "transformers", "other"]  # noqa: E501
+        allowed_values = ["tensorFlow1", "tensorFlow2", "tfLite", "tfJs", "pyTorch", "jax", "flax", "pax", "maxText", "gemmaCpp", "tensorRtLlm", "ggml", "gguf", "coral", "scikitLearn", "mxnet", "onnx", "keras", "transformers", "other"]  # noqa: E501
         if framework not in allowed_values:
             raise ValueError(
                 "Invalid value for `framework` ({0}), must be one of {1}"  # noqa: E501

@@ -43,6 +43,11 @@ dependencies = [
 [tool.hatch.version]
 path = "src/__init__.py"
 
+[tool.hatch.envs.default]
+dependencies = [
+  "pytest",
+]
+
 [tool.hatch.envs.default.scripts]
 install-autogen = """curl -fsSL --output /tmp/autogen.zip "https://github.com/mbrukman/autogen/archive/refs/heads/master.zip" && 
   rm -rf /tmp/autogen && mkdir -p /tmp/autogen && unzip -qo /tmp/autogen.zip -d /tmp/autogen && 
@@ -51,6 +56,8 @@ install-autogen = """curl -fsSL --output /tmp/autogen.zip "https://github.com/mb
 # TODO: install in Mac/Windows
 install-yapf = """sudo apt-get install -y yapf3 python3-yapf || echo 'yapf could not be installed'"""
 install-deps = "hatch run install-autogen && hatch run install-yapf"
+
+integration-test = "pytest {args:integration_tests}"
 
 compile = "./tools/GeneratePythonLibrary.sh"
 install = "./tools/GeneratePythonLibrary.sh --install"

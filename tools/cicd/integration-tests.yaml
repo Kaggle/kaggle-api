@@ -1,0 +1,28 @@
+steps:
+   # Access and store the secret in a file on a shared volume
+  - name: 'gcr.io/cloud-builders/gcloud'
+    id: 'download-secrets'
+    script: |
+      #!/usr/bin/env bash
+      gcloud secrets versions access latest --secret=integration-tests --project=464139560241 > /root/secrets.sh
+    volumes:
+    - name: 'root'
+      path: /root
+
+
+  # Source the secrets and run integration tests using the built Python image
+  - name: us-docker.pkg.dev/$PROJECT_ID/tools/hatch:$_PYTHON_VERSION
+    id: integration-tests
+    waitFor: ['download-secrets']
+    script: |
+      #!/usr/bin/env bash
+      export KAGGLE_USERNAME
+      export KAGGLE_KEY
+      source /root/secrets.sh
+      hatch run integration-test
+    volumes:
+    - name: 'root'
+      path: /root
+
+substitutions:
+  _PYTHON_VERSION: '3.11'

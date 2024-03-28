@@ -83,6 +83,19 @@ hello Kaggle CLI update
 Next Page Token = [...]
 ```
 
+### Integration Tests
+
+To run integration tests on your local machine, you need to set up your Kaggle API credentials. You can do this in one of these two ways described in the earlier sections of this document. Refer to the sections: 
+- [Using environment variables](#option-2-read-credentials-from-environment-variables)
+- [Using credentials file](#option-3-read-credentials-from-kagglejson)
+
+After setting up your credentials by any of these methods, you can run the integration tests as follows:
+
+```sh
+# Run all tests
+hatch run integration-test
+```
+
 ## License
 
 The Kaggle API is released under the [Apache 2.0 license](LICENSE).

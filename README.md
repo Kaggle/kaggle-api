@@ -85,9 +85,9 @@ Next Page Token = [...]
 
 ### Integration Tests
 
-To run integration tests on your local machine, you need to set up your Kaggle API credentials. You can do this in one of these two ways described in the earlier sections of this document. Refer to the sections: 
-- [Using environment variables](#option-2-read-credentials-from-environment-variables)
-- [Using credentials file](#option-3-read-credentials-from-kagglejson)
+To run integration tests on your local machine, you need to set up your Kaggle API credentials. You can do this in one of these two ways described [this doc](docs/README.md). Refer to the sections: 
+- Using environment variables
+- Using credentials file
 
 After setting up your credentials by any of these methods, you can run the integration tests as follows:
 

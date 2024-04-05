@@ -1484,7 +1484,8 @@ class KaggleApi(KaggleApi):
     def _print_dataset_url_and_license(self, owner_slug, dataset_slug,
                                        dataset_version_number, licenses):
         if dataset_version_number is None:
-            print('Dataset URL: https://www.kaggle.com/%s/%s' %
+            print('Dataset URL: https://www.kaggle.com/datasets/%s/%s' %
+
                   (owner_slug, dataset_slug))
         else:
             print('Dataset URL: https://www.kaggle.com/%s/%s/versions/%s' %

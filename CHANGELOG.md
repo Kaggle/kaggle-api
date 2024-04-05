@@ -1,12 +1,21 @@
 Changelog
 ====
-### 1.6.9
+### 1.6.11
 
 * Allow unauthenticated usage of "datasets download", "datasets files".
   * This will only work after April 8th, 2024. More more details, see:
     <https://www.kaggle.com/discussions/product-feedback/485439>
 * Allow "help" and "version" to be used for all commands, unauthenticated.
 * Fix: "dataset download -f" can accept a specific dataset version.
+
+### 1.6.10
+
+Repackage of 1.6.8 as a new release, to fix the problematic 1.6.9 release.
+
+### 1.6.9
+
+* Do not use. Problematic release that causes an error:
+  `ModuleNotFoundError: No module named 'kaggle.api'`
 
 ### 1.6.8
 

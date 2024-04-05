@@ -256,7 +256,7 @@ class ResumableFileUpload(object):
 
 
 class KaggleApi(KaggleApi):
-    __version__ = '1.6.8'
+    __version__ = '1.6.9'
 
     CONFIG_NAME_PROXY = 'proxy'
     CONFIG_NAME_COMPETITION = 'competition'
@@ -319,6 +319,10 @@ class KaggleApi(KaggleApi):
         'hotness', 'downloadCount', 'voteCount', 'notebookCount', 'createTime'
     ]
 
+    # Commands that are valid without authentication.
+    commands_allowing_anonymous_access = ('datasets download',
+                                          'datasets files')
+
     # Hack for https://github.com/Kaggle/kaggle-api/issues/22 / b/78194015
     if six.PY2:
         reload(sys)
@@ -374,6 +378,8 @@ class KaggleApi(KaggleApi):
         """
 
         config_data = {}
+        # Ex: 'datasets list', 'competitions files', 'models instances get', etc.
+        api_command = ' '.join(sys.argv[1:])
 
         # Step 1: try getting username/password from environment
         config_data = self.read_config_environment(config_data)
@@ -383,6 +389,11 @@ class KaggleApi(KaggleApi):
                 or self.CONFIG_NAME_KEY not in config_data:
             if os.path.exists(self.config):
                 config_data = self.read_config_file(config_data)
+            elif self._is_help_or_version_command(api_command) or (len(
+                    sys.argv) > 2 and api_command.startswith(
+                        self.commands_allowing_anonymous_access)):
+                # Some API commands should be allowed without authentication.
+                return
             else:
                 raise IOError('Could not find {}. Make sure it\'s located in'
                               ' {}. Or use the environment method.'.format(
@@ -390,6 +401,16 @@ class KaggleApi(KaggleApi):
 
         # Step 3: load into configuration!
         self._load_config(config_data)
+
+    def _is_help_or_version_command(self, api_command):
+        """determines if the string command passed in is for a help or version
+           command.
+           Parameters
+           ==========
+           api_command: a string, 'datasets list', 'competitions files',
+                        'models instances get', etc.
+        """
+        return api_command.endswith(('-h', '--help', '-v', '--version'))
 
     def read_config_environment(self, config_data=None, quiet=False):
         """read_config_environment is the second effort to get a username
@@ -1351,7 +1372,8 @@ class KaggleApi(KaggleApi):
                               file_name,
                               path=None,
                               force=False,
-                              quiet=True):
+                              quiet=True,
+                              licenses=[]):
         """ download a single file for a dataset
 
             Parameters
@@ -1362,15 +1384,16 @@ class KaggleApi(KaggleApi):
             path: if defined, download to this location
             force: force the download if the file already exists (default False)
             quiet: suppress verbose output (default is True)
+            licenses: a list of license names, e.g. ['CC0-1.0']
         """
         if '/' in dataset:
             self.validate_dataset_string(dataset)
-            dataset_urls = dataset.split('/')
-            owner_slug = dataset_urls[0]
-            dataset_slug = dataset_urls[1]
+            owner_slug, dataset_slug, dataset_version_number = self.split_dataset_string(
+                dataset)
         else:
             owner_slug = self.get_config_value(self.CONFIG_NAME_USER)
             dataset_slug = dataset
+            dataset_version_number = None
 
         if path is None:
             effective_path = self.get_default_download_dir(
@@ -1378,10 +1401,14 @@ class KaggleApi(KaggleApi):
         else:
             effective_path = path
 
+        self._print_dataset_url_and_license(owner_slug, dataset_slug,
+                                            dataset_version_number, licenses)
+
         response = self.process_response(
             self.datasets_download_file_with_http_info(
                 owner_slug=owner_slug,
                 dataset_slug=dataset_slug,
+                dataset_version_number=dataset_version_number,
                 file_name=file_name,
                 _preload_content=False))
         url = response.retries.history[0].redirect_location.split('?')[0]
@@ -1397,7 +1424,8 @@ class KaggleApi(KaggleApi):
                                path=None,
                                force=False,
                                quiet=True,
-                               unzip=False):
+                               unzip=False,
+                               licenses=[]):
         """ download all files for a dataset
 
             Parameters
@@ -1408,6 +1436,7 @@ class KaggleApi(KaggleApi):
             force: force the download if the file already exists (default False)
             quiet: suppress verbose output (default is True)
             unzip: if True, unzip files upon download (default is False)
+            licenses: a list of license names, e.g. ['CC0-1.0']
         """
         if dataset is None:
             raise ValueError('A dataset must be specified')
@@ -1418,6 +1447,9 @@ class KaggleApi(KaggleApi):
                 'datasets', owner_slug, dataset_slug)
         else:
             effective_path = path
+
+        self._print_dataset_url_and_license(owner_slug, dataset_slug,
+                                            dataset_version_number, licenses)
 
         response = self.process_response(
             self.datasets_download_with_http_info(
@@ -1449,6 +1481,18 @@ class KaggleApi(KaggleApi):
                 except OSError as e:
                     print('Could not delete zip file, got %s' % e)
 
+    def _print_dataset_url_and_license(self, owner_slug, dataset_slug,
+                                       dataset_version_number, licenses):
+        if dataset_version_number is None:
+            print('Dataset URL: https://www.kaggle.com/%s/%s' %
+                  (owner_slug, dataset_slug))
+        else:
+            print('Dataset URL: https://www.kaggle.com/%s/%s/versions/%s' %
+                  (owner_slug, dataset_slug, dataset_version_number))
+
+        if len(licenses) > 0:
+            print('License(s): %s' % (','.join(licenses)))
+
     def dataset_download_cli(self,
                              dataset,
                              dataset_opt=None,
@@ -1473,18 +1517,37 @@ class KaggleApi(KaggleApi):
             unzip: if True, unzip files upon download (default is False)
         """
         dataset = dataset or dataset_opt
+
+        owner_slug, dataset_slug, _ = self.split_dataset_string(dataset)
+        metadata = self.process_response(
+            self.metadata_get_with_http_info(owner_slug, dataset_slug))
+
+        if 'info' in metadata and 'licenses' in metadata['info']:
+            # license_objs format is like: [{ 'name': 'CC0-1.0' }]
+            license_objs = metadata['info']['licenses']
+            licenses = [
+                license_obj['name'] for license_obj in license_objs
+                if 'name' in license_obj
+            ]
+        else:
+            licenses = [
+                'Error retrieving license. Please visit the Dataset URL to view license information.'
+            ]
+
         if file_name is None:
             self.dataset_download_files(dataset,
                                         path=path,
                                         unzip=unzip,
                                         force=force,
-                                        quiet=quiet)
+                                        quiet=quiet,
+                                        licenses=licenses)
         else:
             self.dataset_download_file(dataset,
                                        file_name,
                                        path=path,
                                        force=force,
-                                       quiet=quiet)
+                                       quiet=quiet,
+                                       licenses=licenses)
 
     def _upload_blob(self, path, quiet, blob_type, upload_context):
         """ upload a file

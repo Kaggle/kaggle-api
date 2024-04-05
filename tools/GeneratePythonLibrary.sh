@@ -118,7 +118,7 @@ function generate-from-swagger {
   if [[ -f "kaggle/configuration.py" ]]; then
     # Replace the hard-coded endpoint URL with an environment variable in configuration.py
     # to allow talking to localhost, staging, prod etc.
-    sed -i .bak 's|self.host = "http|self.host = _get_endpoint_from_env() or "http|g' kaggle/configuration.py
+    sed -i 's|self.host = "http|self.host = _get_endpoint_from_env() or "http|g' kaggle/configuration.py
     echo -e "\n" >> kaggle/configuration.py
     cat <<-END >> kaggle/configuration.py
 def _get_endpoint_from_env():

@@ -335,9 +335,9 @@ class KaggleApi(KaggleApi):
         'hotness', 'downloadCount', 'voteCount', 'notebookCount', 'createTime'
     ]
 
-    # Commands that are valid without authentication.
-    commands_allowing_anonymous_access = ('datasets download',
-                                          'datasets files')
+    # Command prefixes that are valid without authentication.
+    command_prefixes_allowing_anonymous_access = ('datasets download',
+                                                  'datasets files')
 
     # Hack for https://github.com/Kaggle/kaggle-api/issues/22 / b/78194015
     if six.PY2:
@@ -407,7 +407,7 @@ class KaggleApi(KaggleApi):
                 config_data = self.read_config_file(config_data)
             elif self._is_help_or_version_command(api_command) or (len(
                     sys.argv) > 2 and api_command.startswith(
-                        self.commands_allowing_anonymous_access)):
+                        self.command_prefixes_allowing_anonymous_access)):
                 # Some API commands should be allowed without authentication.
                 return
             else:

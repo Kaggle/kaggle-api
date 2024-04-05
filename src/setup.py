@@ -1,9 +1,12 @@
 # coding=utf-8
 from setuptools import setup, find_packages
 
+# Note: pyproject.toml seems to be chosen by pip install over setup.py, so this
+# file is likely not being used anymore. We should verify and merge this into
+# pyproject.toml instead of maintaining both flows.
 setup(
     name='kaggle',
-    version='1.6.9',
+    version='1.6.8',
     description='Kaggle API',
     long_description=
     ('Official API for https://www.kaggle.com, accessible using a command line '

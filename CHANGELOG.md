@@ -1,13 +1,5 @@
 Changelog
 ====
-### 1.6.9
-
-* Allow unauthenticated usage of "datasets download", "datasets files".
-  * This will only work after April 8th, 2024. More more details, see:
-    <https://www.kaggle.com/discussions/product-feedback/485439>
-* Allow "help" and "version" to be used for all commands, unauthenticated.
-* Fix: "dataset download -f" can accept a specific dataset version.
-
 ### 1.6.8
 
 * Add "gguf"

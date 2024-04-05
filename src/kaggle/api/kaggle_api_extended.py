@@ -1488,7 +1488,8 @@ class KaggleApi(KaggleApi):
 
                   (owner_slug, dataset_slug))
         else:
-            print('Dataset URL: https://www.kaggle.com/%s/%s/versions/%s' %
+            print('Dataset URL: https://www.kaggle.com/datasets/%s/%s/versions/%s' %
+
                   (owner_slug, dataset_slug, dataset_version_number))
 
         if len(licenses) > 0:

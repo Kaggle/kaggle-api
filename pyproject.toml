@@ -36,9 +36,12 @@ dependencies = [
   "webencodings"
 ]
 
+[project.scripts]
+kaggle = "kaggle.cli:main"
+
 [project.urls]
-"Homepage" = "https://github.com/Kaggle/kaggle-api"
-"Bug Tracker" = "https://github.com/Kaggle/kaggle-api/issues"
+Homepage = "https://github.com/Kaggle/kaggle-api"
+Issues = "https://github.com/Kaggle/kaggle-api/issues"
 
 [tool.hatch.version]
 path = "src/__init__.py"

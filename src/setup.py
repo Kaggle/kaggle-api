@@ -32,5 +32,5 @@ setup(
         'urllib3',
         'bleach',
     ],
-    packages=find_packages(),
+    packages=find_packages(exclude=("src.*", "src")),
     license='Apache 2.0')

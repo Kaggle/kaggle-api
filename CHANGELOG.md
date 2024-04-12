@@ -1,5 +1,9 @@
 Changelog
 ====
+### 1.6.12
+
+* Re-release 1.6.11 without the `src` directory included in the package.
+
 ### 1.6.11
 
 * Allow unauthenticated usage of "datasets download", "datasets files".

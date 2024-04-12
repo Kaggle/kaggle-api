@@ -6,7 +6,7 @@ from setuptools import setup, find_packages
 # pyproject.toml instead of maintaining both flows.
 setup(
     name='kaggle',
-    version='1.6.11',
+    version='1.6.12',
     description='Kaggle API',
     long_description=
     ('Official API for https://www.kaggle.com, accessible using a command line '
@@ -32,5 +32,5 @@ setup(
         'urllib3',
         'bleach',
     ],
-    packages=find_packages(),
+    packages=find_packages(exclude=("src.*", "src")),
     license='Apache 2.0')

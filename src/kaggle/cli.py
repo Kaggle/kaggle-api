@@ -279,6 +279,17 @@ def parse_competitions(subparsers):
         dest='quiet',
         action='store_true',
         help=Help.param_quiet)
+    parser_competitions_submissions.add_argument(
+        '--page-token',
+        dest='page_token',
+        required=False,
+        help=Help.param_page_token)
+    parser_competitions_submissions.add_argument(
+        '--page-size',
+        dest='page_size',
+        required=False,
+        default=20,
+        help=Help.param_page_size)
     parser_competitions_submissions._action_groups.append(
         parser_competitions_submissions_optional)
     parser_competitions_submissions.set_defaults(
@@ -715,6 +726,33 @@ def parse_kernels(subparsers):
                                               help=Help.param_kernel_sort_by)
     parser_kernels_list._action_groups.append(parser_kernels_list_optional)
     parser_kernels_list.set_defaults(func=api.kernels_list_cli)
+
+    # Kernels file list
+    parser_kernels_files = subparsers_kernels.add_parser(
+        'files',
+        formatter_class=argparse.RawTextHelpFormatter,
+        help=Help.command_kernels_files)
+    parser_kernels_files_optional = parser_kernels_files._action_groups.pop()
+    parser_kernels_files_optional.add_argument(
+        'kernel', nargs='?', default=None, help=Help.param_kernel)
+    parser_kernels_files_optional.add_argument(
+        '-k',
+        '--kernel',
+        dest='kernel_opt',
+        required=False,
+        help=argparse.SUPPRESS)
+    parser_kernels_files_optional.add_argument(
+        '-v',
+        '--csv',
+        dest='csv_display',
+        action='store_true',
+        help=Help.param_csv)
+    parser_kernels_files_optional.add_argument(
+        '--page-token', dest='page_token', help=Help.param_page_token)
+    parser_kernels_files_optional.add_argument(
+        '--page-size', dest='page_size', default=20, help=Help.param_page_size)
+    parser_kernels_files._action_groups.append(parser_kernels_files_optional)
+    parser_kernels_files.set_defaults(func=api.kernels_list_files_cli)
 
     # Kernels init
     parser_kernels_init = subparsers_kernels.add_parser(
@@ -1169,6 +1207,33 @@ def parse_model_instance_versions(subparsers):
     parser_model_instance_versions_download.set_defaults(
         func=api.model_instance_version_download_cli)
 
+    # Models Instance Versions files
+    parser_model_instance_versions_files = subparsers_model_intance_versions.add_parser(
+        'files',
+        formatter_class=argparse.RawTextHelpFormatter,
+        help=Help.command_model_instance_versions_files)
+    parser_model_instance_versions_files_optional = parser_model_instance_versions_files._action_groups.pop(
+    )
+    parser_model_instance_versions_files_optional.add_argument(
+        'model_instance_version', help=Help.param_model_instance_version)
+    parser_model_instance_versions_files_optional.add_argument(
+        '-v',
+        '--csv',
+        dest='csv_display',
+        action='store_true',
+        help=Help.param_csv)
+    parser_model_instance_versions_files_optional.add_argument(
+        '--page-size', dest='page_size', default=20, help=Help.param_page_size)
+    parser_model_instance_versions_files_optional.add_argument(
+        '--page-token',
+        dest='page_token',
+        required=False,
+        help=Help.param_page_token)
+    parser_model_instance_versions_files._action_groups.append(
+        parser_model_instance_versions_files_optional)
+    parser_model_instance_versions_files.set_defaults(
+        func=api.model_instance_version_files_cli)
+
     # Models Instance Versions delete
     parser_model_instance_versions_delete = subparsers_model_intance_versions.add_parser(
         'delete',
@@ -1304,7 +1369,9 @@ class Help(object):
     model_instances_choices = [
         'versions', 'get', 'init', 'create', 'delete', 'update'
     ]
-    model_instance_versions_choices = ['init', 'create', 'download', 'delete']
+    model_instance_versions_choices = [
+        'init', 'create', 'download', 'delete', 'files'
+    ]
     files_choices = ['upload']
     config_choices = ['view', 'set', 'unset']
 
@@ -1349,6 +1416,7 @@ class Help(object):
     command_kernels_list = (
         'List available kernels. By default, shows 20 results sorted by '
         'hotness')
+    command_kernels_files = 'List kernel output files'
     command_kernels_init = 'Initialize metadata file for a kernel'
     command_kernels_push = 'Push new code to a kernel and run the kernel'
     command_kernels_pull = 'Pull down code from a kernel'
@@ -1356,6 +1424,7 @@ class Help(object):
     command_kernels_status = 'Display the status of the latest kernel run'
 
     # Models commands
+    command_models_files = 'List model files'
     command_models_get = 'Get a model'
     command_models_list = 'List models'
     command_models_init = 'Initialize metadata file for model creation'
@@ -1397,9 +1466,10 @@ class Help(object):
     param_upfile = 'File for upload (full path)'
     param_csv = 'Print results in CSV format (if not set print in table format)'
     param_page = 'Page number for results paging. Page size is 20 by default'
+    # NOTE: Default and max page size are set by the mid-tier code.
     param_page_size = (
         'Number of items to show on a page. Default size is 20, '
-        'max is 100')
+        'max is 200')
     param_page_token = 'Page token for results paging.'
     param_search = 'Term(s) to search for'
     param_mine = 'Display only my items'
@@ -1563,6 +1633,7 @@ class Help(object):
         'Defaults to current working directory')
     command_model_instance_versions_delete = 'Delete a model instance version'
     command_model_instance_versions_download = 'Download model instance version files'
+    command_model_instance_versions_files = 'List model instance version files'
     param_model_instance_version_notes = 'Version notes to record for the new model instance version'
 
     # Files params
@@ -1581,3 +1652,7 @@ class Help(object):
         ('Value of the configuration parameter, valid values '
          'depending on name\n- competition: ') + param_competition_nonempty +
         '\n- path: ' + param_downfolder + '\n- proxy: ' + param_proxy)
+
+
+if __name__ == '__main__':
+    main()

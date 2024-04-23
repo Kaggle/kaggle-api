@@ -22,6 +22,9 @@ We use [hatch](https://hatch.pypa.io) to manage this project.
 
 Follow these [instructions](https://hatch.pypa.io/latest/install/) to install it.
 
+If you are working in a managed environment, you may want to use `pipx`. If it isn't already installed
+try `sudo apt install pipx`. Then you should be able to proceed with `pipx install hatch`.
+
 ### Dependencies
 
 ```sh

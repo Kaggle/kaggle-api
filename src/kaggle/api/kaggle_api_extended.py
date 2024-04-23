@@ -815,12 +815,17 @@ class KaggleApi(KaggleApi):
                 raise e
         return submit_result
 
-    def competition_submissions(self, competition):
+    def competition_submissions(self,
+                                competition,
+                                page_token=None,
+                                page_size=20):
         """ get the list of Submission for a particular competition
 
             Parameters
             ==========
             competition: the name of the competition
+            page_token: token for pagination
+            page_size: the number of items per page
         """
         submissions_result = self.process_response(
             self.competitions_submissions_list_with_http_info(id=competition))
@@ -830,6 +835,8 @@ class KaggleApi(KaggleApi):
                                     competition=None,
                                     competition_opt=None,
                                     csv_display=False,
+                                    page_token=None,
+                                    page_size=20,
                                     quiet=False):
         """ wrapper to competition_submission, will return either json or csv
             to the user. Additional parameters are listed below, see
@@ -840,6 +847,8 @@ class KaggleApi(KaggleApi):
             competition: the name of the competition. If None, look to config
             competition_opt: an alternative competition option provided by cli
             csv_display: if True, print comma separated values
+            page_token: token for pagination
+            page_size: the number of items per page
             quiet: suppress verbose output (default is False)
         """
         competition = competition or competition_opt
@@ -851,7 +860,8 @@ class KaggleApi(KaggleApi):
         if competition is None:
             raise ValueError('No competition specified')
         else:
-            submissions = self.competition_submissions(competition)
+            submissions = self.competition_submissions(competition, page_token,
+                                                       page_size)
             fields = [
                 'fileName', 'date', 'description', 'status', 'publicScore',
                 'privateScore'
@@ -864,20 +874,28 @@ class KaggleApi(KaggleApi):
             else:
                 print('No submissions found')
 
-    def competition_list_files(self, competition):
+    def competition_list_files(self,
+                               competition,
+                               page_token=None,
+                               page_size=20):
         """ list files for competition
              Parameters
             ==========
             competition: the name of the competition
+            page_token: the page token for pagination
+            page_size: the number of items per page
         """
         competition_list_files_result = self.process_response(
-            self.competitions_data_list_files_with_http_info(id=competition))
+            self.competitions_data_list_files_with_http_info(
+                id=competition, page_token=page_token, page_size=page_size))
         return [File(f) for f in competition_list_files_result]
 
     def competition_list_files_cli(self,
                                    competition,
                                    competition_opt=None,
                                    csv_display=False,
+                                   page_token=None,
+                                   page_size=20,
                                    quiet=False):
         """ List files for a competition, if it exists
 
@@ -886,6 +904,8 @@ class KaggleApi(KaggleApi):
             competition: the name of the competition. If None, look to config
             competition_opt: an alternative competition option provided by cli
             csv_display: if True, print comma separated values
+            page_token: the page token for pagination
+            page_size: the number of items per page
             quiet: suppress verbose output (default is False)
         """
         competition = competition or competition_opt
@@ -897,7 +917,8 @@ class KaggleApi(KaggleApi):
         if competition is None:
             raise ValueError('No competition specified')
         else:
-            files = self.competition_list_files(competition)
+            files = self.competition_list_files(competition, page_token,
+                                                page_size)
             fields = ['name', 'size', 'creationDate']
             if files:
                 if csv_display:
@@ -1289,12 +1310,14 @@ class KaggleApi(KaggleApi):
             meta_file = self.dataset_metadata(dataset, path)
             print('Downloaded metadata to ' + meta_file)
 
-    def dataset_list_files(self, dataset):
+    def dataset_list_files(self, dataset, page_token=None, page_size=20):
         """ list files for a dataset
              Parameters
             ==========
             dataset: the string identified of the dataset
                      should be in format [owner]/[dataset-name]
+            page_token: the page token for pagination
+            page_size: the number of items per page
         """
         if dataset is None:
             raise ValueError('A dataset must be specified')
@@ -1305,13 +1328,17 @@ class KaggleApi(KaggleApi):
             self.datasets_list_files_with_http_info(
                 owner_slug=owner_slug,
                 dataset_slug=dataset_slug,
-                dataset_version_number=dataset_version_number))
+                dataset_version_number=dataset_version_number,
+                page_token=page_token,
+                page_size=page_size))
         return ListFilesResult(dataset_list_files_result)
 
     def dataset_list_files_cli(self,
                                dataset,
                                dataset_opt=None,
-                               csv_display=False):
+                               csv_display=False,
+                               page_token=None,
+                               page_size=20):
         """ a wrapper to dataset_list_files for the client
             (list files for a dataset)
              Parameters
@@ -1320,13 +1347,19 @@ class KaggleApi(KaggleApi):
                      should be in format [owner]/[dataset-name]
             dataset_opt: an alternative option to providing a dataset
             csv_display: if True, print comma separated values instead of table
+            page_token: the page token for pagination
+            page_size: the number of items per page
         """
         dataset = dataset or dataset_opt
-        result = self.dataset_list_files(dataset)
+        result = self.dataset_list_files(dataset, page_token, page_size)
+
         if result:
             if result.error_message:
                 print(result.error_message)
             else:
+                next_page_token = result.nextPageToken
+                if next_page_token != '':
+                    print('Next Page Token = {}'.format(next_page_token))
                 fields = ['name', 'size', 'creationDate']
                 if csv_display:
                     self.print_csv(result.files, fields)
@@ -2057,6 +2090,63 @@ class KaggleApi(KaggleApi):
                 self.print_table(kernels, fields)
         else:
             print('Not found')
+
+    def kernels_list_files(self, kernel, page_token=None, page_size=20):
+        """ list files for a kernel
+            Parameters
+            ==========
+            kernel: the string identifier of the kernel
+                     should be in format [owner]/[kernel-name]
+            page_token: the page token for pagination
+            page_size: the number of items per page
+        """
+        if kernel is None:
+            raise ValueError('A kernel must be specified')
+        user_name, kernel_slug, kernel_version_number = self.split_dataset_string(
+            kernel)
+
+        kernels_list_files_result = self.process_response(
+            self.kernels_list_files_with_http_info(
+                kernel_slug=kernel_slug,
+                user_name=user_name,
+                page_token=page_token,
+                page_size=page_size))
+        return FileList(kernels_list_files_result)
+
+    def kernels_list_files_cli(self,
+                               kernel,
+                               kernel_opt=None,
+                               csv_display=False,
+                               page_token=None,
+                               page_size=20):
+        """ a wrapper to kernel_list_files for the client
+            (list files for a kernel)
+             Parameters
+            ==========
+            kernel: the string identifier of the kernel
+                     should be in format [owner]/[kernel-name]
+            kernel_opt: an alternative option to providing a kernel
+            csv_display: if True, print comma separated values instead of table
+            page_token: the page token for pagination
+            page_size: the number of items per page
+        """
+        kernel = kernel or kernel_opt
+        result = self.kernels_list_files(kernel, page_token, page_size)
+
+        if result:
+            if result.error_message:
+                print(result.error_message)
+            else:
+                next_page_token = result.nextPageToken
+                if next_page_token != '':
+                    print('Next Page Token = {}'.format(next_page_token))
+                fields = ['name', 'size', 'creationDate']
+                if csv_display:
+                    self.print_csv(result.files, fields)
+                else:
+                    self.print_table(result.files, fields)
+        else:
+            print('No files found')
 
     def kernels_initialize(self, folder):
         """ create a new kernel in a specified folder from template, including
@@ -3386,6 +3476,78 @@ class KaggleApi(KaggleApi):
                                                     force=force,
                                                     quiet=quiet)
 
+    def model_instance_version_files(self,
+                                     model_instance_version,
+                                     page_token=None,
+                                     page_size=20,
+                                     csv_display=False):
+        """ list all files for a model instance version
+
+            Parameters
+            ==========
+            model_instance_version: the string identifier of the model instance version
+                    should be in format [owner]/[model-name]/[framework]/[instance-slug]/[version-number]
+            page_token: token for pagination
+            page_size: the number of items per page
+            csv_display: if True, print comma separated values instead of table
+        """
+        if model_instance_version is None:
+            raise ValueError('A model_instance_version must be specified')
+
+        self.validate_model_instance_version_string(model_instance_version)
+        urls = model_instance_version.split('/')
+        owner_slug = urls[0]
+        model_slug = urls[1]
+        framework = urls[2]
+        instance_slug = urls[3]
+        version_number = urls[4]
+
+        response = self.process_response(
+            self.model_instance_versions_files_with_http_info(
+                owner_slug=owner_slug,
+                model_slug=model_slug,
+                framework=framework,
+                instance_slug=instance_slug,
+                version_number=version_number,
+                page_size=page_size,
+                page_token=page_token,
+                _preload_content=True))
+
+        if response:
+            next_page_token = response['nextPageToken']
+            if next_page_token != '':
+                print('Next Page Token = {}'.format(next_page_token))
+            return FileList(response)
+        else:
+            print('No files found')
+
+    def model_instance_version_files_cli(self,
+                                         model_instance_version,
+                                         page_token=None,
+                                         page_size=20,
+                                         csv_display=False):
+        """ client wrapper for model_instance_version_files.
+
+            Parameters
+            ==========
+            model_instance_version: the string identified of the model instance version
+                    should be in format [owner]/[model-name]/[framework]/[instance-slug]/[version-number]
+            page_token: token for pagination
+            page_size: the number of items per page
+            csv_display: if True, print comma separated values instead of table
+        """
+        result = self.model_instance_version_files(
+            model_instance_version,
+            page_token=page_token,
+            page_size=page_size,
+            csv_display=csv_display)
+        if result and result.files is not None:
+            fields = ['name', 'size', 'creationDate']
+            if csv_display:
+                self.print_csv(result.files, fields)
+            else:
+                self.print_table(result.files, fields)
+
     def model_instance_version_delete(self, model_instance_version, yes):
         """ call to delete a model instance version from the API
              Parameters
@@ -3517,6 +3679,8 @@ class KaggleApi(KaggleApi):
         """
         formats = []
         borders = []
+        if len(items) == 0:
+            return
         for f in fields:
             length = max(len(f),
                          max([len(self.string(getattr(i, f))) for i in items]))
@@ -3922,7 +4086,7 @@ class KaggleApi(KaggleApi):
             else:
                 return urls[0], urls[1], None
         else:
-            return self.get_config_value(self.CONFIG_NAME_USER), dataset
+            return self.get_config_value(self.CONFIG_NAME_USER), dataset, None
 
     def validate_model_string(self, model):
         """ determine if a model string is valid, meaning it is in the format
@@ -4167,3 +4331,23 @@ class TqdmBufferedReader(io.BufferedReader):
             length: bytes to increment the reader by
         """
         self.progress_bar.update(length)
+
+
+class FileList(object):
+    def __init__(self, init_dict):
+        self.error_message = ''
+        files = init_dict['files']
+        if files:
+            for f in files:
+                f['totalBytes'] = f['size']
+            self.files = [File(f) for f in files]
+        else:
+            self.files = {}
+        token = init_dict['nextPageToken']
+        if token:
+            self.nextPageToken = token
+        else:
+            self.nextPageToken = ""
+
+    def __repr__(self):
+        return ''

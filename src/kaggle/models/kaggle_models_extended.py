@@ -171,6 +171,11 @@ class ListFilesResult(object):
             self.files = [File(f) for f in files]
         else:
             self.files = {}
+        token = init_dict['nextPageToken']
+        if token:
+            self.nextPageToken = token
+        else:
+            self.nextPageToken = ""
 
     def __repr__(self):
         return self.error_message

@@ -165,6 +165,15 @@ def parse_competitions(subparsers):
                                                     dest='quiet',
                                                     action='store_true',
                                                     help=Help.param_quiet)
+    parser_competitions_files_optional.add_argument('--page-token',
+                                                    dest='page_token',
+                                                    required=False,
+                                                    help=Help.param_page_token)
+    parser_competitions_files_optional.add_argument('--page-size',
+                                                    dest='page_size',
+                                                    required=False,
+                                                    default=20,
+                                                    help=Help.param_page_size)
     parser_competitions_files._action_groups.append(
         parser_competitions_files_optional)
     parser_competitions_files.set_defaults(func=api.competition_list_files_cli)
@@ -279,17 +288,6 @@ def parse_competitions(subparsers):
         dest='quiet',
         action='store_true',
         help=Help.param_quiet)
-    parser_competitions_submissions.add_argument(
-        '--page-token',
-        dest='page_token',
-        required=False,
-        help=Help.param_page_token)
-    parser_competitions_submissions.add_argument(
-        '--page-size',
-        dest='page_size',
-        required=False,
-        default=20,
-        help=Help.param_page_size)
     parser_competitions_submissions._action_groups.append(
         parser_competitions_submissions_optional)
     parser_competitions_submissions.set_defaults(

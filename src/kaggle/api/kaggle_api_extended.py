@@ -83,6 +83,7 @@ except NameError:
 
 
 class DirectoryArchive(object):
+
     def __init__(self, fullpath, format):
         self._fullpath = fullpath
         self._format = format
@@ -92,9 +93,8 @@ class DirectoryArchive(object):
     def __enter__(self):
         self._temp_dir = tempfile.mkdtemp()
         _, dir_name = os.path.split(self._fullpath)
-        self.path = shutil.make_archive(
-            os.path.join(self._temp_dir, dir_name), self._format,
-            self._fullpath)
+        self.path = shutil.make_archive(os.path.join(self._temp_dir, dir_name),
+                                        self._format, self._fullpath)
         _, self.name = os.path.split(self.path)
         return self
 
@@ -103,6 +103,7 @@ class DirectoryArchive(object):
 
 
 class ResumableUploadContext(object):
+
     def __init__(self, no_resume=False):
         self.no_resume = no_resume
         self._temp_dir = os.path.join(tempfile.gettempdir(), '.kaggle/uploads')
@@ -348,6 +349,7 @@ class KaggleApi(KaggleApi):
                    initial_delay_millis=500,
                    retry_multiplier=1.7,
                    randomness_factor=0.5):
+
         def retriable_func(*args):
             for i in range(1, max_retries + 1):
                 try:
@@ -357,8 +359,9 @@ class KaggleApi(KaggleApi):
                         total_delay = self._calculate_backoff_delay(
                             i, initial_delay_millis, retry_multiplier,
                             randomness_factor)
-                        print('Request failed: %s. Will retry in %2.1f seconds'
-                              % (e, total_delay))
+                        print(
+                            'Request failed: %s. Will retry in %2.1f seconds' %
+                            (e, total_delay))
                         time.sleep(total_delay)
                         continue
                     raise
@@ -386,8 +389,8 @@ class KaggleApi(KaggleApi):
                 or self.CONFIG_NAME_KEY not in config_data:
             if os.path.exists(self.config):
                 config_data = self.read_config_file(config_data)
-            elif self._is_help_or_version_command(api_command) or (
-                    len(sys.argv) > 2 and api_command.startswith(
+            elif self._is_help_or_version_command(api_command) or (len(
+                    sys.argv) > 2 and api_command.startswith(
                         self.command_prefixes_allowing_anonymous_access)):
                 # Some API commands should be allowed without authentication.
                 return
@@ -465,8 +468,8 @@ class KaggleApi(KaggleApi):
         # Cert File
 
         if self.CONFIG_NAME_SSL_CA_CERT in config_data:
-            configuration.ssl_ca_cert = config_data[self.
-                                                    CONFIG_NAME_SSL_CA_CERT]
+            configuration.ssl_ca_cert = config_data[
+                self.CONFIG_NAME_SSL_CA_CERT]
 
         # Keep config values with class instance, and load api client!
 
@@ -687,12 +690,11 @@ class KaggleApi(KaggleApi):
                              str(self.valid_competition_sort_by))
 
         competitions_list_result = self.process_response(
-            self.competitions_list_with_http_info(
-                group=group or '',
-                category=category or '',
-                sort_by=sort_by or '',
-                page=page,
-                search=search or ''))
+            self.competitions_list_with_http_info(group=group or '',
+                                                  category=category or '',
+                                                  sort_by=sort_by or '',
+                                                  page=page,
+                                                  search=search or ''))
         return [Competition(c) for c in competitions_list_result]
 
     def competitions_list_cli(self,
@@ -713,12 +715,11 @@ class KaggleApi(KaggleApi):
             search: a search term to use (default is empty string)
             csv_display: if True, print comma separated values
         """
-        competitions = self.competitions_list(
-            group=group,
-            category=category,
-            sort_by=sort_by,
-            page=page,
-            search=search)
+        competitions = self.competitions_list(group=group,
+                                              category=category,
+                                              sort_by=sort_by,
+                                              page=page,
+                                              search=search)
         fields = [
             'ref', 'deadline', 'category', 'reward', 'teamCount',
             'userHasEntered'
@@ -771,8 +772,9 @@ class KaggleApi(KaggleApi):
                 upload_result_token = upload_result['token']
             else:
                 # New submissions path!
-                upload_status = self.upload_complete(
-                    file_name, url_result['createUrl'], quiet)
+                upload_status = self.upload_complete(file_name,
+                                                     url_result['createUrl'],
+                                                     quiet)
                 if upload_status != ResumableUploadResult.COMPLETE:
                     # Actual error is printed during upload_complete. Not
                     # ideal but changing would not be backwards compatible
@@ -1147,8 +1149,9 @@ class KaggleApi(KaggleApi):
             )
 
         if file_type and file_type not in self.valid_dataset_file_types:
-            raise ValueError('Invalid file type specified. Valid options are '
-                             + str(self.valid_dataset_file_types))
+            raise ValueError(
+                'Invalid file type specified. Valid options are ' +
+                str(self.valid_dataset_file_types))
 
         if license_name and license_name not in self.valid_dataset_license_names:
             raise ValueError('Invalid license specified. Valid options are ' +
@@ -1174,18 +1177,17 @@ class KaggleApi(KaggleApi):
             group = 'user'
 
         datasets_list_result = self.process_response(
-            self.datasets_list_with_http_info(
-                group=group,
-                sort_by=sort_by or 'hottest',
-                size=size,
-                filetype=file_type or 'all',
-                license=license_name or 'all',
-                tagids=tag_ids or '',
-                search=search or '',
-                user=user or '',
-                page=page,
-                max_size=max_size,
-                min_size=min_size))
+            self.datasets_list_with_http_info(group=group,
+                                              sort_by=sort_by or 'hottest',
+                                              size=size,
+                                              filetype=file_type or 'all',
+                                              license=license_name or 'all',
+                                              tagids=tag_ids or '',
+                                              search=search or '',
+                                              user=user or '',
+                                              page=page,
+                                              max_size=max_size,
+                                              min_size=min_size))
         return [Dataset(d) for d in datasets_list_result]
 
     def dataset_list_cli(self,
@@ -1387,8 +1389,8 @@ class KaggleApi(KaggleApi):
             owner_slug = self.get_config_value(self.CONFIG_NAME_USER)
             dataset_slug = dataset
         dataset_status_result = self.process_response(
-            self.datasets_status_with_http_info(
-                owner_slug=owner_slug, dataset_slug=dataset_slug))
+            self.datasets_status_with_http_info(owner_slug=owner_slug,
+                                                dataset_slug=dataset_slug))
         return dataset_status_result
 
     def dataset_status_cli(self, dataset, dataset_opt=None):
@@ -1570,21 +1572,19 @@ class KaggleApi(KaggleApi):
             ]
 
         if file_name is None:
-            self.dataset_download_files(
-                dataset,
-                path=path,
-                unzip=unzip,
-                force=force,
-                quiet=quiet,
-                licenses=licenses)
+            self.dataset_download_files(dataset,
+                                        path=path,
+                                        unzip=unzip,
+                                        force=force,
+                                        quiet=quiet,
+                                        licenses=licenses)
         else:
-            self.dataset_download_file(
-                dataset,
-                file_name,
-                path=path,
-                force=force,
-                quiet=quiet,
-                licenses=licenses)
+            self.dataset_download_file(dataset,
+                                       file_name,
+                                       path=path,
+                                       force=force,
+                                       quiet=quiet,
+                                       licenses=licenses)
 
     def _upload_blob(self, path, quiet, blob_type, upload_context):
         """ upload a file
@@ -1745,8 +1745,9 @@ class KaggleApi(KaggleApi):
                 ('The following are not valid tags and could not be added to '
                  'the dataset: ') + str(result.invalidTags))
         elif result.status.lower() == 'ok':
-            print('Dataset version is being created. Please check progress at '
-                  + result.url)
+            print(
+                'Dataset version is being created. Please check progress at ' +
+                result.url)
         else:
             print('Dataset version creation error: ' + result.error)
 
@@ -1813,8 +1814,8 @@ class KaggleApi(KaggleApi):
         dataset_slug = ref_list[1]
 
         # validations
-        if ref == self.config_values[self.
-                                     CONFIG_NAME_USER] + '/INSERT_SLUG_HERE':
+        if ref == self.config_values[
+                self.CONFIG_NAME_USER] + '/INSERT_SLUG_HERE':
             raise ValueError(
                 'Default slug detected, please change values before uploading')
         if title == 'INSERT_TITLE_HERE':
@@ -1842,17 +1843,16 @@ class KaggleApi(KaggleApi):
             raise ValueError(
                 'Subtitle length must be between 20 and 80 characters')
 
-        request = DatasetNewRequest(
-            title=title,
-            slug=dataset_slug,
-            owner_slug=owner_slug,
-            license_name=license_name,
-            subtitle=subtitle,
-            description=description,
-            files=[],
-            is_private=not public,
-            convert_to_csv=convert_to_csv,
-            category_ids=keywords)
+        request = DatasetNewRequest(title=title,
+                                    slug=dataset_slug,
+                                    owner_slug=owner_slug,
+                                    license_name=license_name,
+                                    subtitle=subtitle,
+                                    description=description,
+                                    files=[],
+                                    is_private=not public,
+                                    convert_to_csv=convert_to_csv,
+                                    category_ids=keywords)
 
         with ResumableUploadContext() as upload_context:
             self.upload_files(request, resources, folder, ApiBlobType.DATASET,
@@ -1947,30 +1947,28 @@ class KaggleApi(KaggleApi):
                 headers={'Range': 'bytes=%d-' % (size_read, )},
                 _preload_content=False)
 
-        with tqdm(
-                total=size,
-                initial=size_read,
-                unit='B',
-                unit_scale=True,
-                unit_divisor=1024,
-                disable=quiet) as pbar:
+        with tqdm(total=size,
+                  initial=size_read,
+                  unit='B',
+                  unit_scale=True,
+                  unit_divisor=1024,
+                  disable=quiet) as pbar:
             with open(outfile, open_mode) as out:
                 while True:
                     data = response.read(chunk_size)
                     if not data:
                         break
                     out.write(data)
-                    os.utime(
-                        outfile,
-                        times=(remote_date_timestamp - 1,
-                               remote_date_timestamp - 1))
+                    os.utime(outfile,
+                             times=(remote_date_timestamp - 1,
+                                    remote_date_timestamp - 1))
                     size_read = min(size, size_read + chunk_size)
                     pbar.update(len(data))
             if not quiet:
                 print('\n', end='')
 
-            os.utime(
-                outfile, times=(remote_date_timestamp, remote_date_timestamp))
+            os.utime(outfile,
+                     times=(remote_date_timestamp, remote_date_timestamp))
 
     def kernels_list(self,
                      page=1,
@@ -2041,19 +2039,18 @@ class KaggleApi(KaggleApi):
             group = 'profile'
 
         kernels_list_result = self.process_response(
-            self.kernels_list_with_http_info(
-                page=page,
-                page_size=page_size,
-                group=group,
-                user=user or '',
-                language=language or 'all',
-                kernel_type=kernel_type or 'all',
-                output_type=output_type or 'all',
-                sort_by=sort_by or 'hotness',
-                dataset=dataset or '',
-                competition=competition or '',
-                parent_kernel=parent_kernel or '',
-                search=search or ''))
+            self.kernels_list_with_http_info(page=page,
+                                             page_size=page_size,
+                                             group=group,
+                                             user=user or '',
+                                             language=language or 'all',
+                                             kernel_type=kernel_type or 'all',
+                                             output_type=output_type or 'all',
+                                             sort_by=sort_by or 'hotness',
+                                             dataset=dataset or '',
+                                             competition=competition or '',
+                                             parent_kernel=parent_kernel or '',
+                                             search=search or ''))
         return [Kernel(k) for k in kernels_list_result]
 
     def kernels_list_cli(self,
@@ -2076,19 +2073,18 @@ class KaggleApi(KaggleApi):
             ==========
             csv_display: if True, print comma separated values instead of table
         """
-        kernels = self.kernels_list(
-            page=page,
-            page_size=page_size,
-            search=search,
-            mine=mine,
-            dataset=dataset,
-            competition=competition,
-            parent_kernel=parent,
-            user=user,
-            language=language,
-            kernel_type=kernel_type,
-            output_type=output_type,
-            sort_by=sort_by)
+        kernels = self.kernels_list(page=page,
+                                    page_size=page_size,
+                                    search=search,
+                                    mine=mine,
+                                    dataset=dataset,
+                                    competition=competition,
+                                    parent_kernel=parent,
+                                    user=user,
+                                    language=language,
+                                    kernel_type=kernel_type,
+                                    output_type=output_type,
+                                    sort_by=sort_by)
         fields = ['ref', 'title', 'author', 'lastRunTime', 'totalVotes']
         if kernels:
             if csv_display:
@@ -2292,8 +2288,9 @@ class KaggleApi(KaggleApi):
         for source in model_sources:
             self.validate_model_string(source)
 
-        docker_pinning_type = self.get_or_default(
-            meta_data, 'docker_image_pinning_type', None)
+        docker_pinning_type = self.get_or_default(meta_data,
+                                                  'docker_image_pinning_type',
+                                                  None)
         if (docker_pinning_type is not None
                 and docker_pinning_type not in self.valid_push_pinning_types):
             raise ValueError(
@@ -2467,8 +2464,8 @@ class KaggleApi(KaggleApi):
             if file_name is None:
                 print(
                     'Unknown language %s + kernel type %s - please report this '
-                    'on the kaggle-api github issues' % (language,
-                                                         kernel_type))
+                    'on the kaggle-api github issues' %
+                    (language, kernel_type))
                 print(
                     'Saving as a python file, even though this may not be the '
                     'correct language')
@@ -2524,8 +2521,10 @@ class KaggleApi(KaggleApi):
         """ client wrapper for kernels_pull
         """
         kernel = kernel or kernel_opt
-        effective_path = self.kernels_pull(
-            kernel, path=path, metadata=metadata, quiet=False)
+        effective_path = self.kernels_pull(kernel,
+                                           path=path,
+                                           metadata=metadata,
+                                           quiet=False)
         if metadata:
             print('Source code and metadata downloaded to ' + effective_path)
         else:
@@ -2707,12 +2706,11 @@ class KaggleApi(KaggleApi):
             raise ValueError('Page size must be >= 1')
 
         models_list_result = self.process_response(
-            self.models_list_with_http_info(
-                sort_by=sort_by or 'hotness',
-                search=search or '',
-                owner=owner or '',
-                page_size=page_size,
-                page_token=page_token))
+            self.models_list_with_http_info(sort_by=sort_by or 'hotness',
+                                            search=search or '',
+                                            owner=owner or '',
+                                            page_size=page_size,
+                                            page_token=page_token))
 
         next_page_token = models_list_result['nextPageToken']
         if next_page_token != '':
@@ -2759,18 +2757,12 @@ class KaggleApi(KaggleApi):
             raise ValueError('Invalid folder: ' + folder)
 
         meta_data = {
-            'ownerSlug':
-            'INSERT_OWNER_SLUG_HERE',
-            'title':
-            'INSERT_TITLE_HERE',
-            'slug':
-            'INSERT_SLUG_HERE',
-            'subtitle':
-            '',
-            'isPrivate':
-            True,
-            'description':
-            '''# Model Summary
+            'ownerSlug': 'INSERT_OWNER_SLUG_HERE',
+            'title': 'INSERT_TITLE_HERE',
+            'slug': 'INSERT_SLUG_HERE',
+            'subtitle': '',
+            'isPrivate': True,
+            'description': '''# Model Summary
 
 # Model Characteristics
 
@@ -2778,10 +2770,8 @@ class KaggleApi(KaggleApi):
 
 # Evaluation Results
 ''',
-            'publishTime':
-            '',
-            'provenanceSources':
-            ''
+            'publishTime': '',
+            'provenanceSources': ''
         }
         meta_file = os.path.join(folder, self.MODEL_METADATA_FILE)
         with open(meta_file, 'w') as f:
@@ -2835,15 +2825,14 @@ class KaggleApi(KaggleApi):
         if publish_time:
             self.validate_date(publish_time)
 
-        request = ModelNewRequest(
-            owner_slug=owner_slug,
-            slug=slug,
-            title=title,
-            subtitle=subtitle,
-            is_private=is_private,
-            description=description,
-            publish_time=publish_time,
-            provenance_sources=provenance_sources)
+        request = ModelNewRequest(owner_slug=owner_slug,
+                                  slug=slug,
+                                  title=title,
+                                  subtitle=subtitle,
+                                  is_private=is_private,
+                                  description=description,
+                                  publish_time=publish_time,
+                                  provenance_sources=provenance_sources)
         result = ModelNewResponse(
             self.process_response(
                 self.models_create_new_with_http_info(request)))
@@ -2955,14 +2944,13 @@ class KaggleApi(KaggleApi):
         if provenance_sources != None:
             update_mask['paths'].append('provenance_sources')
 
-        request = ModelUpdateRequest(
-            title=title,
-            subtitle=subtitle,
-            is_private=is_private,
-            description=description,
-            publish_time=publish_time,
-            provenance_sources=provenance_sources,
-            update_mask=update_mask)
+        request = ModelUpdateRequest(title=title,
+                                     subtitle=subtitle,
+                                     is_private=is_private,
+                                     description=description,
+                                     publish_time=publish_time,
+                                     provenance_sources=provenance_sources,
+                                     update_mask=update_mask)
         result = ModelNewResponse(
             self.process_response(
                 self.update_model_with_http_info(owner_slug, slug, request)))
@@ -3054,18 +3042,12 @@ class KaggleApi(KaggleApi):
             raise ValueError('Invalid folder: ' + folder)
 
         meta_data = {
-            'ownerSlug':
-            'INSERT_OWNER_SLUG_HERE',
-            'modelSlug':
-            'INSERT_EXISTING_MODEL_SLUG_HERE',
-            'instanceSlug':
-            'INSERT_INSTANCE_SLUG_HERE',
-            'framework':
-            'INSERT_FRAMEWORK_HERE',
-            'overview':
-            '',
-            'usage':
-            '''# Model Format
+            'ownerSlug': 'INSERT_OWNER_SLUG_HERE',
+            'modelSlug': 'INSERT_EXISTING_MODEL_SLUG_HERE',
+            'instanceSlug': 'INSERT_INSTANCE_SLUG_HERE',
+            'framework': 'INSERT_FRAMEWORK_HERE',
+            'overview': '',
+            'usage': '''# Model Format
 
 # Training Data
 
@@ -3079,17 +3061,12 @@ class KaggleApi(KaggleApi):
 
 # Changelog
 ''',
-            'licenseName':
-            'Apache 2.0',
-            'fineTunable':
-            False,
+            'licenseName': 'Apache 2.0',
+            'fineTunable': False,
             'trainingData': [],
-            'modelInstanceType':
-            'Unspecified',
-            'baseModelInstanceId':
-            0,
-            'externalBaseModelUrl':
-            ''
+            'modelInstanceType': 'Unspecified',
+            'baseModelInstanceId': 0,
+            'externalBaseModelUrl': ''
         }
         meta_file = os.path.join(folder, self.MODEL_INSTANCE_METADATA_FILE)
         with open(meta_file, 'w') as f:
@@ -3129,12 +3106,14 @@ class KaggleApi(KaggleApi):
         license_name = self.get_or_fail(meta_data, 'licenseName')
         fine_tunable = self.get_or_default(meta_data, 'fineTunable', False)
         training_data = self.get_or_default(meta_data, 'trainingData', [])
-        model_instance_type = self.get_or_default(
-            meta_data, 'modelInstanceType', 'Unspecified')
+        model_instance_type = self.get_or_default(meta_data,
+                                                  'modelInstanceType',
+                                                  'Unspecified')
         base_model_instance = self.get_or_default(meta_data,
                                                   'baseModelInstance', '')
-        external_base_model_url = self.get_or_default(
-            meta_data, 'externalBaseModelUrl', '')
+        external_base_model_url = self.get_or_default(meta_data,
+                                                      'externalBaseModelUrl',
+                                                      '')
 
         # validations
         if owner_slug == 'INSERT_OWNER_SLUG_HERE':
@@ -3179,8 +3158,9 @@ class KaggleApi(KaggleApi):
             result = ModelNewResponse(
                 self.process_response(
                     self.with_retry(
-                        self.models_create_instance_with_http_info)(
-                            owner_slug, model_slug, request)))
+                        self.models_create_instance_with_http_info)(owner_slug,
+                                                                    model_slug,
+                                                                    request)))
 
             return result
 
@@ -3267,8 +3247,9 @@ class KaggleApi(KaggleApi):
                                                   'modelInstanceType', None)
         base_model_instance = self.get_or_default(meta_data,
                                                   'baseModelInstance', None)
-        external_base_model_url = self.get_or_default(
-            meta_data, 'externalBaseModelUrl', None)
+        external_base_model_url = self.get_or_default(meta_data,
+                                                      'externalBaseModelUrl',
+                                                      None)
 
         # validations
         if owner_slug == 'INSERT_OWNER_SLUG_HERE':
@@ -3367,8 +3348,8 @@ class KaggleApi(KaggleApi):
         owner_slug, model_slug, framework, instance_slug = self.split_model_instance_string(
             model_instance)
 
-        request = ModelInstanceNewVersionRequest(
-            version_notes=version_notes, files=[])
+        request = ModelInstanceNewVersionRequest(version_notes=version_notes,
+                                                 files=[])
 
         with ResumableUploadContext() as upload_context:
             self.upload_files(request, None, folder, ApiBlobType.MODEL,
@@ -3398,8 +3379,9 @@ class KaggleApi(KaggleApi):
             quiet: suppress verbose output (default is False)
             dir_mode: what to do with directories: "skip" - ignore; "zip" - compress and upload
         """
-        result = self.model_instance_version_create(
-            model_instance, folder, version_notes, quiet, dir_mode)
+        result = self.model_instance_version_create(model_instance, folder,
+                                                    version_notes, quiet,
+                                                    dir_mode)
 
         if result.hasId:
             print('Your model instance version was created. Url={}'.format(
@@ -3491,12 +3473,11 @@ class KaggleApi(KaggleApi):
             quiet: suppress verbose output (default is False)
             untar: if True, untar files upon download (default is False)
         """
-        return self.model_instance_version_download(
-            model_instance_version,
-            path=path,
-            untar=untar,
-            force=force,
-            quiet=quiet)
+        return self.model_instance_version_download(model_instance_version,
+                                                    path=path,
+                                                    untar=untar,
+                                                    force=force,
+                                                    quiet=quiet)
 
     def model_instance_version_files(self,
                                      model_instance_version,
@@ -3627,8 +3608,9 @@ class KaggleApi(KaggleApi):
         files_to_create = []
         with ResumableUploadContext(no_resume) as upload_context:
             for local_path in local_paths:
-                (upload_file, file_name) = self.file_upload_cli(
-                    local_path, inbox_path, no_compress, upload_context)
+                (upload_file,
+                 file_name) = self.file_upload_cli(local_path, inbox_path,
+                                                   no_compress, upload_context)
                 if upload_file is None:
                     continue
 
@@ -3650,9 +3632,10 @@ class KaggleApi(KaggleApi):
         file_or_folder_name = os.path.basename(full_path)
         dir_mode = 'tar' if no_compress else 'zip'
 
-        upload_file = self._upload_file_or_folder(
-            parent_path, file_or_folder_name, ApiBlobType.INBOX,
-            upload_context, dir_mode)
+        upload_file = self._upload_file_or_folder(parent_path,
+                                                  file_or_folder_name,
+                                                  ApiBlobType.INBOX,
+                                                  upload_context, dir_mode)
         return (upload_file, file_or_folder_name)
 
     def print_obj(self, obj, indent=2):
@@ -3702,8 +3685,8 @@ class KaggleApi(KaggleApi):
         if len(items) == 0:
             return
         for f in fields:
-            length = max(
-                len(f), max([len(self.string(getattr(i, f))) for i in items]))
+            length = max(len(f),
+                         max([len(self.string(getattr(i, f))) for i in items]))
             justify = '>' if isinstance(getattr(
                 items[0], f), int) or f == 'size' or f == 'reward' else '<'
             formats.append('{:' + justify + self.string(length + 2) + '}')
@@ -3855,9 +3838,10 @@ class KaggleApi(KaggleApi):
                     self.MODEL_INSTANCE_METADATA_FILE
             ]):
                 continue
-            upload_file = self._upload_file_or_folder(
-                folder, file_name, blob_type, upload_context, dir_mode, quiet,
-                resources)
+            upload_file = self._upload_file_or_folder(folder, file_name,
+                                                      blob_type,
+                                                      upload_context, dir_mode,
+                                                      quiet, resources)
             if upload_file is not None:
                 request.files.append(upload_file)
 
@@ -3939,9 +3923,9 @@ class KaggleApi(KaggleApi):
             ==========
             column: a list of values in a column to be processed
         """
-        processed_column = DatasetColumn(
-            name=self.get_or_fail(column, 'name'),
-            description=self.get_or_default(column, 'description', ''))
+        processed_column = DatasetColumn(name=self.get_or_fail(column, 'name'),
+                                         description=self.get_or_default(
+                                             column, 'description', ''))
         if 'type' in column:
             original_type = column['type'].lower()
             processed_column.original_type = original_type
@@ -3985,12 +3969,11 @@ class KaggleApi(KaggleApi):
             start_at = resumable_upload_result.start_at
             upload_size = file_size - start_at
 
-            with tqdm(
-                    total=upload_size,
-                    unit='B',
-                    unit_scale=True,
-                    unit_divisor=1024,
-                    disable=quiet) as progress_bar:
+            with tqdm(total=upload_size,
+                      unit='B',
+                      unit_scale=True,
+                      unit_divisor=1024,
+                      disable=quiet) as progress_bar:
                 with io.open(path, 'rb', buffering=0) as fp:
                     session = requests.Session()
                     if start_at > 0:
@@ -3999,8 +3982,8 @@ class KaggleApi(KaggleApi):
                             'Content-Length':
                             '%d' % upload_size,
                             'Content-Range':
-                            'bytes %d-%d/%d' % (start_at, file_size - 1,
-                                                file_size)
+                            'bytes %d-%d/%d' %
+                            (start_at, file_size - 1, file_size)
                         })
                     reader = TqdmBufferedReader(fp, progress_bar)
                     retries = Retry(total=10, backoff_factor=0.5)
@@ -4324,6 +4307,7 @@ class KaggleApi(KaggleApi):
 
 
 class TqdmBufferedReader(io.BufferedReader):
+
     def __init__(self, raw, progress_bar):
         """ helper class to implement an io.BufferedReader
              Parameters

@@ -6,9 +6,7 @@
 
 # Pagination for listing of competitions, datasets, and kernels is out-of-scope for current work.
 
-# kaggle competitions list --page-size=3 --page-token=abcd
-kaggle competitions files -c competitions/titanic --page-size=4 --page-token=abcd
-# kaggle competitions submissions competitions/titanic --page-size=5 --page-token=abcd
-# kaggle kernels list --page-size=3 --page-token=abcd
-# kaggle datasets list --page-size=6 --page-token=abcd
+kaggle competitions files titanic --page-size=3 --page-token=abcd
+kaggle kernels files hermengardo/ps4e4-ensemble-eda --page-size=5 # valid page token required
 kaggle datasets files nelgiriyewithana/apple-quality --page-size=7 --page-token=abcd
+kaggle models instances versions files google/gemma/pytorch/7b/2 --page-size=3 --page-token=abcd

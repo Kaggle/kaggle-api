@@ -1,3 +1,19 @@
+#!/usr/bin/python
+#
+# Copyright 2024 Kaggle Inc
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 # coding: utf-8
 
 """
@@ -3011,7 +3027,7 @@ class KaggleApi(object):
 
         :param async_req bool
         :param int page: Page number
-        :param int page_size: Page size
+        :param int page_size: Number of items per page (default 20)
         :param str search: Search terms
         :param str group: Display only your kernels
         :param str user: Display kernels by a particular group
@@ -3043,7 +3059,7 @@ class KaggleApi(object):
 
         :param async_req bool
         :param int page: Page number
-        :param int page_size: Page size
+        :param int page_size: Number of items per page (default 20)
         :param str search: Search terms
         :param str group: Display only your kernels
         :param str user: Display kernels by a particular group
@@ -3146,7 +3162,7 @@ class KaggleApi(object):
         :param str user_name: Kernel owner (required)
         :param str kernel_slug: Kernel name (required)
         :param str kernel_version_number: Kernel version number
-        :param int page_size: Page size
+        :param int page_size: Number of items per page (default 20)
         :param str page_token: Page token for pagination
         :return: Result
                  If the method is called asynchronously,
@@ -3171,7 +3187,7 @@ class KaggleApi(object):
         :param str user_name: Kernel owner (required)
         :param str kernel_slug: Kernel name (required)
         :param str kernel_version_number: Kernel version number
-        :param int page_size: Page size
+        :param int page_size: Number of items per page (default 20)
         :param str page_token: Page token for pagination
         :return: Result
                  If the method is called asynchronously,
@@ -3600,7 +3616,7 @@ class KaggleApi(object):
         :param str framework: Model instance framework (required)
         :param str instance_slug: Model instance slug (required)
         :param str version_number: Model instance version number (required)
-        :param int page_size: Page size
+        :param int page_size: Number of items per page (default 20)
         :param str page_token: Page token for pagination
         :return: Result
                  If the method is called asynchronously,
@@ -3627,7 +3643,7 @@ class KaggleApi(object):
         :param str framework: Model instance framework (required)
         :param str instance_slug: Model instance slug (required)
         :param str version_number: Model instance version number (required)
-        :param int page_size: Page size
+        :param int page_size: Number of items per page (default 20)
         :param str page_token: Page token for pagination
         :return: Result
                  If the method is called asynchronously,
@@ -4070,7 +4086,7 @@ class KaggleApi(object):
         :param str search: Search terms
         :param str sort_by: Sort the results
         :param str owner: Display models by a specific user or organization
-        :param int page_size: Page size
+        :param int page_size: Number of items per page (default 20)
         :param str page_token: Page token for pagination
         :return: Result
                  If the method is called asynchronously,
@@ -4095,7 +4111,7 @@ class KaggleApi(object):
         :param str search: Search terms
         :param str sort_by: Sort the results
         :param str owner: Display models by a specific user or organization
-        :param int page_size: Page size
+        :param int page_size: Number of items per page (default 20)
         :param str page_token: Page token for pagination
         :return: Result
                  If the method is called asynchronously,
@@ -4175,7 +4191,7 @@ class KaggleApi(object):
         :param str owner_slug: Model owner (required)
         :param str model_slug: Model name (required)
         :param str model_version_number: Model version number
-        :param int page_size: Page size
+        :param int page_size: Number of items per page (default 20)
         :param str page_token: Page token for pagination
         :return: Result
                  If the method is called asynchronously,
@@ -4200,7 +4216,7 @@ class KaggleApi(object):
         :param str owner_slug: Model owner (required)
         :param str model_slug: Model name (required)
         :param str model_version_number: Model version number
-        :param int page_size: Page size
+        :param int page_size: Number of items per page (default 20)
         :param str page_token: Page token for pagination
         :return: Result
                  If the method is called asynchronously,

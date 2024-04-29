@@ -33,13 +33,16 @@ Method | HTTP request | Description
 [**kernel_push**](KaggleApi.md#kernel_push) | **POST** /kernels/push | Push a new kernel version.  Can be used to create a new kernel and update an existing one.
 [**kernel_status**](KaggleApi.md#kernel_status) | **GET** /kernels/status | Get the status of the latest kernel version
 [**kernels_list**](KaggleApi.md#kernels_list) | **GET** /kernels/list | List kernels
+[**kernels_list_files**](KaggleApi.md#kernels_list_files) | **GET** /kernels/files | List kernel files
 [**metadata_get**](KaggleApi.md#metadata_get) | **GET** /datasets/metadata/{ownerSlug}/{datasetSlug} | Get the metadata for a dataset
 [**metadata_post**](KaggleApi.md#metadata_post) | **POST** /datasets/metadata/{ownerSlug}/{datasetSlug} | Update the metadata for a dataset
 [**model_instance_versions_download**](KaggleApi.md#model_instance_versions_download) | **GET** /models/{ownerSlug}/{modelSlug}/{framework}/{instanceSlug}/{versionNumber}/download | Download model instance version files
+[**model_instance_versions_files**](KaggleApi.md#model_instance_versions_files) | **GET** /models/{ownerSlug}/{modelSlug}/{framework}/{instanceSlug}/{versionNumber}/files | List model instance version files
 [**models_create_instance**](KaggleApi.md#models_create_instance) | **POST** /models/{ownerSlug}/{modelSlug}/create/instance | Create a new model instance
 [**models_create_instance_version**](KaggleApi.md#models_create_instance_version) | **POST** /models/{ownerSlug}/{modelSlug}/{framework}/{instanceSlug}/create/version | Create a new model instance version
 [**models_create_new**](KaggleApi.md#models_create_new) | **POST** /models/create/new | Create a new model
 [**models_list**](KaggleApi.md#models_list) | **GET** /models/list | Lists models
+[**models_list_files**](KaggleApi.md#models_list_files) | **GET** /models/list/{ownerSlug}/{modelSlug} | List model files
 [**update_model**](KaggleApi.md#update_model) | **POST** /models/{ownerSlug}/{modelSlug}/update | Update a model
 [**update_model_instance**](KaggleApi.md#update_model_instance) | **POST** /models/{ownerSlug}/{modelSlug}/{framework}/{instanceSlug}/update | Update a model
 [**upload_file**](KaggleApi.md#upload_file) | **POST** /blobs/upload | Start uploading a file
@@ -252,7 +255,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **competitions_data_list_files**
-> Result competitions_data_list_files(id)
+> Result competitions_data_list_files(id, page_token=page_token, page_size=page_size)
 
 List competition data files
 
@@ -272,10 +275,12 @@ configuration.password = 'YOUR_PASSWORD'
 # create an instance of the API class
 api_instance = kaggle.KaggleApi(kaggle.ApiClient(configuration))
 id = 'id_example' # str | Competition name
+page_token = 'page_token_example' # str | Page token for pagination (optional)
+page_size = 20 # int | Number of items per page (default 20) (optional) (default to 20)
 
 try:
     # List competition data files
-    api_response = api_instance.competitions_data_list_files(id)
+    api_response = api_instance.competitions_data_list_files(id, page_token=page_token, page_size=page_size)
     pprint(api_response)
 except ApiException as e:
     print("Exception when calling KaggleApi->competitions_data_list_files: %s\n" % e)
@@ -286,6 +291,8 @@ except ApiException as e:
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **str**| Competition name | 
+ **page_token** | **str**| Page token for pagination | [optional] 
+ **page_size** | **int**| Number of items per page (default 20) | [optional] [default to 20]
 
 ### Return type
 
@@ -977,7 +984,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **datasets_list_files**
-> Result datasets_list_files(owner_slug, dataset_slug, dataset_version_number=dataset_version_number)
+> Result datasets_list_files(owner_slug, dataset_slug, dataset_version_number=dataset_version_number, page_token=page_token, page_size=page_size)
 
 List dataset files
 
@@ -999,10 +1006,12 @@ api_instance = kaggle.KaggleApi(kaggle.ApiClient(configuration))
 owner_slug = 'owner_slug_example' # str | Dataset owner
 dataset_slug = 'dataset_slug_example' # str | Dataset name
 dataset_version_number = 'dataset_version_number_example' # str | Dataset version number (optional)
+page_token = 'page_token_example' # str | Page token for pagination (optional)
+page_size = 20 # int | Number of items per page (default 20) (optional) (default to 20)
 
 try:
     # List dataset files
-    api_response = api_instance.datasets_list_files(owner_slug, dataset_slug, dataset_version_number=dataset_version_number)
+    api_response = api_instance.datasets_list_files(owner_slug, dataset_slug, dataset_version_number=dataset_version_number, page_token=page_token, page_size=page_size)
     pprint(api_response)
 except ApiException as e:
     print("Exception when calling KaggleApi->datasets_list_files: %s\n" % e)
@@ -1015,6 +1024,8 @@ Name | Type | Description  | Notes
  **owner_slug** | **str**| Dataset owner | 
  **dataset_slug** | **str**| Dataset name | 
  **dataset_version_number** | **str**| Dataset version number | [optional] 
+ **page_token** | **str**| Page token for pagination | [optional] 
+ **page_size** | **int**| Number of items per page (default 20) | [optional] [default to 20]
 
 ### Return type
 
@@ -1646,6 +1657,65 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
+# **kernels_list_files**
+> Result kernels_list_files(user_name, kernel_slug, kernel_version_number=kernel_version_number, page_size=page_size, page_token=page_token)
+
+List kernel files
+
+### Example
+```python
+from __future__ import print_function
+import time
+import kaggle
+from kaggle.rest import ApiException
+from pprint import pprint
+
+# Configure HTTP basic authorization: basicAuth
+configuration = kaggle.Configuration()
+configuration.username = 'YOUR_USERNAME'
+configuration.password = 'YOUR_PASSWORD'
+
+# create an instance of the API class
+api_instance = kaggle.KaggleApi(kaggle.ApiClient(configuration))
+user_name = 'user_name_example' # str | Kernel owner
+kernel_slug = 'kernel_slug_example' # str | Kernel name
+kernel_version_number = 'kernel_version_number_example' # str | Kernel version number (optional)
+page_size = 20 # int | Page size (optional) (default to 20)
+page_token = 'page_token_example' # str | Page token for pagination (optional)
+
+try:
+    # List kernel files
+    api_response = api_instance.kernels_list_files(user_name, kernel_slug, kernel_version_number=kernel_version_number, page_size=page_size, page_token=page_token)
+    pprint(api_response)
+except ApiException as e:
+    print("Exception when calling KaggleApi->kernels_list_files: %s\n" % e)
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **user_name** | **str**| Kernel owner | 
+ **kernel_slug** | **str**| Kernel name | 
+ **kernel_version_number** | **str**| Kernel version number | [optional] 
+ **page_size** | **int**| Page size | [optional] [default to 20]
+ **page_token** | **str**| Page token for pagination | [optional] 
+
+### Return type
+
+[**Result**](Result.md)
+
+### Authorization
+
+[basicAuth](../README.md#basicAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
 # **metadata_get**
 > Result metadata_get(owner_slug, dataset_slug)
 
@@ -1810,6 +1880,69 @@ Name | Type | Description  | Notes
 
  - **Content-Type**: Not defined
  - **Accept**: file
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **model_instance_versions_files**
+> Result model_instance_versions_files(owner_slug, model_slug, framework, instance_slug, version_number, page_size=page_size, page_token=page_token)
+
+List model instance version files
+
+### Example
+```python
+from __future__ import print_function
+import time
+import kaggle
+from kaggle.rest import ApiException
+from pprint import pprint
+
+# Configure HTTP basic authorization: basicAuth
+configuration = kaggle.Configuration()
+configuration.username = 'YOUR_USERNAME'
+configuration.password = 'YOUR_PASSWORD'
+
+# create an instance of the API class
+api_instance = kaggle.KaggleApi(kaggle.ApiClient(configuration))
+owner_slug = 'owner_slug_example' # str | Model owner
+model_slug = 'model_slug_example' # str | Model name
+framework = 'framework_example' # str | Model instance framework
+instance_slug = 'instance_slug_example' # str | Model instance slug
+version_number = 'version_number_example' # str | Model instance version number
+page_size = 20 # int | Page size (optional) (default to 20)
+page_token = 'page_token_example' # str | Page token for pagination (optional)
+
+try:
+    # List model instance version files
+    api_response = api_instance.model_instance_versions_files(owner_slug, model_slug, framework, instance_slug, version_number, page_size=page_size, page_token=page_token)
+    pprint(api_response)
+except ApiException as e:
+    print("Exception when calling KaggleApi->model_instance_versions_files: %s\n" % e)
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **owner_slug** | **str**| Model owner | 
+ **model_slug** | **str**| Model name | 
+ **framework** | **str**| Model instance framework | 
+ **instance_slug** | **str**| Model instance slug | 
+ **version_number** | **str**| Model instance version number | 
+ **page_size** | **int**| Page size | [optional] [default to 20]
+ **page_token** | **str**| Page token for pagination | [optional] 
+
+### Return type
+
+[**Result**](Result.md)
+
+### Authorization
+
+[basicAuth](../README.md#basicAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
@@ -2001,7 +2134,7 @@ api_instance = kaggle.KaggleApi(kaggle.ApiClient(configuration))
 search = '' # str | Search terms (optional) (default to )
 sort_by = 'hotness' # str | Sort the results (optional) (default to hotness)
 owner = 'owner_example' # str | Display models by a specific user or organization (optional)
-page_size = 1 # int | Page size (optional) (default to 1)
+page_size = 20 # int | Page size (optional) (default to 20)
 page_token = 'page_token_example' # str | Page token for pagination (optional)
 
 try:
@@ -2019,7 +2152,66 @@ Name | Type | Description  | Notes
  **search** | **str**| Search terms | [optional] [default to ]
  **sort_by** | **str**| Sort the results | [optional] [default to hotness]
  **owner** | **str**| Display models by a specific user or organization | [optional] 
- **page_size** | **int**| Page size | [optional] [default to 1]
+ **page_size** | **int**| Page size | [optional] [default to 20]
+ **page_token** | **str**| Page token for pagination | [optional] 
+
+### Return type
+
+[**Result**](Result.md)
+
+### Authorization
+
+[basicAuth](../README.md#basicAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **models_list_files**
+> Result models_list_files(owner_slug, model_slug, model_version_number=model_version_number, page_size=page_size, page_token=page_token)
+
+List model files
+
+### Example
+```python
+from __future__ import print_function
+import time
+import kaggle
+from kaggle.rest import ApiException
+from pprint import pprint
+
+# Configure HTTP basic authorization: basicAuth
+configuration = kaggle.Configuration()
+configuration.username = 'YOUR_USERNAME'
+configuration.password = 'YOUR_PASSWORD'
+
+# create an instance of the API class
+api_instance = kaggle.KaggleApi(kaggle.ApiClient(configuration))
+owner_slug = 'owner_slug_example' # str | Model owner
+model_slug = 'model_slug_example' # str | Model name
+model_version_number = 'model_version_number_example' # str | Model version number (optional)
+page_size = 20 # int | Page size (optional) (default to 20)
+page_token = 'page_token_example' # str | Page token for pagination (optional)
+
+try:
+    # List model files
+    api_response = api_instance.models_list_files(owner_slug, model_slug, model_version_number=model_version_number, page_size=page_size, page_token=page_token)
+    pprint(api_response)
+except ApiException as e:
+    print("Exception when calling KaggleApi->models_list_files: %s\n" % e)
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **owner_slug** | **str**| Model owner | 
+ **model_slug** | **str**| Model name | 
+ **model_version_number** | **str**| Model version number | [optional] 
+ **page_size** | **int**| Page size | [optional] [default to 20]
  **page_token** | **str**| Page token for pagination | [optional] 
 
 ### Return type

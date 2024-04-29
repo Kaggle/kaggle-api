@@ -1393,7 +1393,9 @@ class Help(object):
         'list', 'files', 'download', 'create', 'version', 'init', 'metadata',
         'status'
     ]
-    kernels_choices = ['list', 'files', init', 'push', 'pull', 'output', 'status']
+    kernels_choices = [
+        'list', 'files', 'init', 'push', 'pull', 'output', 'status'
+    ]
     models_choices = [
         'instances', 'get', 'list', 'init', 'create', 'delete', 'update'
     ]

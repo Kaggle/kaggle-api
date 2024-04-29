@@ -918,7 +918,7 @@ class KaggleApi(KaggleApi):
             result = self.competition_list_files(competition, page_token,
                                                  page_size)
             next_page_token = result.nextPageToken
-            if next_page_token != '':
+            if next_page_token:
                 print('Next Page Token = {}'.format(next_page_token))
             fields = ['name', 'size', 'creationDate']
             if result:
@@ -1359,7 +1359,7 @@ class KaggleApi(KaggleApi):
                 print(result.error_message)
             else:
                 next_page_token = result.nextPageToken
-                if next_page_token != '':
+                if next_page_token:
                     print('Next Page Token = {}'.format(next_page_token))
                 fields = ['name', 'size', 'creationDate']
                 if csv_display:
@@ -2140,20 +2140,22 @@ class KaggleApi(KaggleApi):
         kernel = kernel or kernel_opt
         result = self.kernels_list_files(kernel, page_token, page_size)
 
-        if result:
-            if result.error_message:
-                print(result.error_message)
-            else:
-                next_page_token = result.nextPageToken
-                if next_page_token != '':
-                    print('Next Page Token = {}'.format(next_page_token))
-                fields = ['name', 'size', 'creationDate']
-                if csv_display:
-                    self.print_csv(result.files, fields)
-                else:
-                    self.print_table(result.files, fields)
-        else:
+        if result is None:
             print('No files found')
+            return
+
+        if result.error_message:
+            print(result.error_message)
+            return
+
+        next_page_token = result.nextPageToken
+        if next_page_token:
+            print('Next Page Token = {}'.format(next_page_token))
+        fields = ['name', 'size', 'creationDate']
+        if csv_display:
+            self.print_csv(result.files, fields)
+        else:
+            self.print_table(result.files, fields)
 
     def kernels_initialize(self, folder):
         """ create a new kernel in a specified folder from template, including
@@ -2715,7 +2717,7 @@ class KaggleApi(KaggleApi):
                 page_token=page_token))
 
         next_page_token = models_list_result['nextPageToken']
-        if next_page_token != '':
+        if next_page_token:
             print('Next Page Token = {}'.format(next_page_token))
 
         return [Model(m) for m in models_list_result['models']]
@@ -3518,11 +3520,8 @@ class KaggleApi(KaggleApi):
 
         self.validate_model_instance_version_string(model_instance_version)
         urls = model_instance_version.split('/')
-        owner_slug = urls[0]
-        model_slug = urls[1]
-        framework = urls[2]
-        instance_slug = urls[3]
-        version_number = urls[4]
+        [owner_slug, model_slug, framework, instance_slug,
+         version_number] = urls
 
         response = self.process_response(
             self.model_instance_versions_files_with_http_info(
@@ -3537,7 +3536,7 @@ class KaggleApi(KaggleApi):
 
         if response:
             next_page_token = response['nextPageToken']
-            if next_page_token != '':
+            if next_page_token:
                 print('Next Page Token = {}'.format(next_page_token))
             return FileList(response)
         else:
@@ -4362,7 +4361,7 @@ class FileList(object):
                     f['totalBytes'] = f['size']
             self.files = [File(f) for f in files]
         else:
-            self.files = {}
+            self.files = []
         token = init_dict['nextPageToken']
         if token:
             self.nextPageToken = token

@@ -1,19 +1,3 @@
-#!/usr/bin/python
-#
-# Copyright 2024 Kaggle Inc
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#      http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 # coding: utf-8
 
 """
@@ -423,6 +407,8 @@ class KaggleApi(object):
 
         :param async_req bool
         :param str id: Competition name (required)
+        :param str page_token: Page token for pagination
+        :param int page_size: Number of items per page (default 20)
         :return: Result
                  If the method is called asynchronously,
                  returns the request thread.
@@ -444,12 +430,14 @@ class KaggleApi(object):
 
         :param async_req bool
         :param str id: Competition name (required)
+        :param str page_token: Page token for pagination
+        :param int page_size: Number of items per page (default 20)
         :return: Result
                  If the method is called asynchronously,
                  returns the request thread.
         """
 
-        all_params = ['id']  # noqa: E501
+        all_params = ['id', 'page_token', 'page_size']  # noqa: E501
         all_params.append('async_req')
         all_params.append('_return_http_data_only')
         all_params.append('_preload_content')
@@ -476,6 +464,10 @@ class KaggleApi(object):
             path_params['id'] = params['id']  # noqa: E501
 
         query_params = []
+        if 'page_token' in params:
+            query_params.append(('pageToken', params['page_token']))  # noqa: E501
+        if 'page_size' in params:
+            query_params.append(('pageSize', params['page_size']))  # noqa: E501
 
         header_params = {}
 
@@ -1830,6 +1822,8 @@ class KaggleApi(object):
         :param str owner_slug: Dataset owner (required)
         :param str dataset_slug: Dataset name (required)
         :param str dataset_version_number: Dataset version number
+        :param str page_token: Page token for pagination
+        :param int page_size: Number of items per page (default 20)
         :return: Result
                  If the method is called asynchronously,
                  returns the request thread.
@@ -1853,12 +1847,14 @@ class KaggleApi(object):
         :param str owner_slug: Dataset owner (required)
         :param str dataset_slug: Dataset name (required)
         :param str dataset_version_number: Dataset version number
+        :param str page_token: Page token for pagination
+        :param int page_size: Number of items per page (default 20)
         :return: Result
                  If the method is called asynchronously,
                  returns the request thread.
         """
 
-        all_params = ['owner_slug', 'dataset_slug', 'dataset_version_number']  # noqa: E501
+        all_params = ['owner_slug', 'dataset_slug', 'dataset_version_number', 'page_token', 'page_size']  # noqa: E501
         all_params.append('async_req')
         all_params.append('_return_http_data_only')
         all_params.append('_preload_content')
@@ -1893,6 +1889,10 @@ class KaggleApi(object):
         query_params = []
         if 'dataset_version_number' in params:
             query_params.append(('datasetVersionNumber', params['dataset_version_number']))  # noqa: E501
+        if 'page_token' in params:
+            query_params.append(('pageToken', params['page_token']))  # noqa: E501
+        if 'page_size' in params:
+            query_params.append(('pageSize', params['page_size']))  # noqa: E501
 
         header_params = {}
 
@@ -3134,6 +3134,119 @@ class KaggleApi(object):
             _request_timeout=params.get('_request_timeout'),
             collection_formats=collection_formats)
 
+    def kernels_list_files(self, user_name, kernel_slug, **kwargs):  # noqa: E501
+        """List kernel files  # noqa: E501
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.kernels_list_files(user_name, kernel_slug, async_req=True)
+        >>> result = thread.get()
+
+        :param async_req bool
+        :param str user_name: Kernel owner (required)
+        :param str kernel_slug: Kernel name (required)
+        :param str kernel_version_number: Kernel version number
+        :param int page_size: Page size
+        :param str page_token: Page token for pagination
+        :return: Result
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+        kwargs['_return_http_data_only'] = True
+        if kwargs.get('async_req'):
+            return self.kernels_list_files_with_http_info(user_name, kernel_slug, **kwargs)  # noqa: E501
+        else:
+            (data) = self.kernels_list_files_with_http_info(user_name, kernel_slug, **kwargs)  # noqa: E501
+            return data
+
+    def kernels_list_files_with_http_info(self, user_name, kernel_slug, **kwargs):  # noqa: E501
+        """List kernel files  # noqa: E501
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.kernels_list_files_with_http_info(user_name, kernel_slug, async_req=True)
+        >>> result = thread.get()
+
+        :param async_req bool
+        :param str user_name: Kernel owner (required)
+        :param str kernel_slug: Kernel name (required)
+        :param str kernel_version_number: Kernel version number
+        :param int page_size: Page size
+        :param str page_token: Page token for pagination
+        :return: Result
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+
+        all_params = ['user_name', 'kernel_slug', 'kernel_version_number', 'page_size', 'page_token']  # noqa: E501
+        all_params.append('async_req')
+        all_params.append('_return_http_data_only')
+        all_params.append('_preload_content')
+        all_params.append('_request_timeout')
+
+        params = locals()
+        for key, val in six.iteritems(params['kwargs']):
+            if key not in all_params:
+                raise TypeError(
+                    "Got an unexpected keyword argument '%s'"
+                    " to method kernels_list_files" % key
+                )
+            params[key] = val
+        del params['kwargs']
+        # verify the required parameter 'user_name' is set
+        if ('user_name' not in params or
+                params['user_name'] is None):
+            raise ValueError("Missing the required parameter `user_name` when calling `kernels_list_files`")  # noqa: E501
+        # verify the required parameter 'kernel_slug' is set
+        if ('kernel_slug' not in params or
+                params['kernel_slug'] is None):
+            raise ValueError("Missing the required parameter `kernel_slug` when calling `kernels_list_files`")  # noqa: E501
+
+        collection_formats = {}
+
+        path_params = {}
+
+        query_params = []
+        if 'user_name' in params:
+            query_params.append(('userName', params['user_name']))  # noqa: E501
+        if 'kernel_slug' in params:
+            query_params.append(('kernelSlug', params['kernel_slug']))  # noqa: E501
+        if 'kernel_version_number' in params:
+            query_params.append(('kernelVersionNumber', params['kernel_version_number']))  # noqa: E501
+        if 'page_size' in params:
+            query_params.append(('pageSize', params['page_size']))  # noqa: E501
+        if 'page_token' in params:
+            query_params.append(('pageToken', params['page_token']))  # noqa: E501
+
+        header_params = {}
+
+        form_params = []
+        local_var_files = {}
+
+        body_params = None
+        # HTTP header `Accept`
+        header_params['Accept'] = self.api_client.select_header_accept(
+            ['application/json'])  # noqa: E501
+
+        # Authentication setting
+        auth_settings = ['basicAuth']  # noqa: E501
+
+        return self.api_client.call_api(
+            '/kernels/files', 'GET',
+            path_params,
+            query_params,
+            header_params,
+            body=body_params,
+            post_params=form_params,
+            files=local_var_files,
+            response_type='Result',  # noqa: E501
+            auth_settings=auth_settings,
+            async_req=params.get('async_req'),
+            _return_http_data_only=params.get('_return_http_data_only'),
+            _preload_content=params.get('_preload_content', True),
+            _request_timeout=params.get('_request_timeout'),
+            collection_formats=collection_formats)
+
     def metadata_get(self, owner_slug, dataset_slug, **kwargs):  # noqa: E501
         """Get the metadata for a dataset  # noqa: E501
 
@@ -3459,6 +3572,139 @@ class KaggleApi(object):
 
         return self.api_client.call_api(
             '/models/{ownerSlug}/{modelSlug}/{framework}/{instanceSlug}/{versionNumber}/download', 'GET',
+            path_params,
+            query_params,
+            header_params,
+            body=body_params,
+            post_params=form_params,
+            files=local_var_files,
+            response_type='Result',  # noqa: E501
+            auth_settings=auth_settings,
+            async_req=params.get('async_req'),
+            _return_http_data_only=params.get('_return_http_data_only'),
+            _preload_content=params.get('_preload_content', True),
+            _request_timeout=params.get('_request_timeout'),
+            collection_formats=collection_formats)
+
+    def model_instance_versions_files(self, owner_slug, model_slug, framework, instance_slug, version_number, **kwargs):  # noqa: E501
+        """List model instance version files  # noqa: E501
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.model_instance_versions_files(owner_slug, model_slug, framework, instance_slug, version_number, async_req=True)
+        >>> result = thread.get()
+
+        :param async_req bool
+        :param str owner_slug: Model owner (required)
+        :param str model_slug: Model name (required)
+        :param str framework: Model instance framework (required)
+        :param str instance_slug: Model instance slug (required)
+        :param str version_number: Model instance version number (required)
+        :param int page_size: Page size
+        :param str page_token: Page token for pagination
+        :return: Result
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+        kwargs['_return_http_data_only'] = True
+        if kwargs.get('async_req'):
+            return self.model_instance_versions_files_with_http_info(owner_slug, model_slug, framework, instance_slug, version_number, **kwargs)  # noqa: E501
+        else:
+            (data) = self.model_instance_versions_files_with_http_info(owner_slug, model_slug, framework, instance_slug, version_number, **kwargs)  # noqa: E501
+            return data
+
+    def model_instance_versions_files_with_http_info(self, owner_slug, model_slug, framework, instance_slug, version_number, **kwargs):  # noqa: E501
+        """List model instance version files  # noqa: E501
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.model_instance_versions_files_with_http_info(owner_slug, model_slug, framework, instance_slug, version_number, async_req=True)
+        >>> result = thread.get()
+
+        :param async_req bool
+        :param str owner_slug: Model owner (required)
+        :param str model_slug: Model name (required)
+        :param str framework: Model instance framework (required)
+        :param str instance_slug: Model instance slug (required)
+        :param str version_number: Model instance version number (required)
+        :param int page_size: Page size
+        :param str page_token: Page token for pagination
+        :return: Result
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+
+        all_params = ['owner_slug', 'model_slug', 'framework', 'instance_slug', 'version_number', 'page_size', 'page_token']  # noqa: E501
+        all_params.append('async_req')
+        all_params.append('_return_http_data_only')
+        all_params.append('_preload_content')
+        all_params.append('_request_timeout')
+
+        params = locals()
+        for key, val in six.iteritems(params['kwargs']):
+            if key not in all_params:
+                raise TypeError(
+                    "Got an unexpected keyword argument '%s'"
+                    " to method model_instance_versions_files" % key
+                )
+            params[key] = val
+        del params['kwargs']
+        # verify the required parameter 'owner_slug' is set
+        if ('owner_slug' not in params or
+                params['owner_slug'] is None):
+            raise ValueError("Missing the required parameter `owner_slug` when calling `model_instance_versions_files`")  # noqa: E501
+        # verify the required parameter 'model_slug' is set
+        if ('model_slug' not in params or
+                params['model_slug'] is None):
+            raise ValueError("Missing the required parameter `model_slug` when calling `model_instance_versions_files`")  # noqa: E501
+        # verify the required parameter 'framework' is set
+        if ('framework' not in params or
+                params['framework'] is None):
+            raise ValueError("Missing the required parameter `framework` when calling `model_instance_versions_files`")  # noqa: E501
+        # verify the required parameter 'instance_slug' is set
+        if ('instance_slug' not in params or
+                params['instance_slug'] is None):
+            raise ValueError("Missing the required parameter `instance_slug` when calling `model_instance_versions_files`")  # noqa: E501
+        # verify the required parameter 'version_number' is set
+        if ('version_number' not in params or
+                params['version_number'] is None):
+            raise ValueError("Missing the required parameter `version_number` when calling `model_instance_versions_files`")  # noqa: E501
+
+        collection_formats = {}
+
+        path_params = {}
+        if 'owner_slug' in params:
+            path_params['ownerSlug'] = params['owner_slug']  # noqa: E501
+        if 'model_slug' in params:
+            path_params['modelSlug'] = params['model_slug']  # noqa: E501
+        if 'framework' in params:
+            path_params['framework'] = params['framework']  # noqa: E501
+        if 'instance_slug' in params:
+            path_params['instanceSlug'] = params['instance_slug']  # noqa: E501
+        if 'version_number' in params:
+            path_params['versionNumber'] = params['version_number']  # noqa: E501
+
+        query_params = []
+        if 'page_size' in params:
+            query_params.append(('pageSize', params['page_size']))  # noqa: E501
+        if 'page_token' in params:
+            query_params.append(('pageToken', params['page_token']))  # noqa: E501
+
+        header_params = {}
+
+        form_params = []
+        local_var_files = {}
+
+        body_params = None
+        # HTTP header `Accept`
+        header_params['Accept'] = self.api_client.select_header_accept(
+            ['application/json'])  # noqa: E501
+
+        # Authentication setting
+        auth_settings = ['basicAuth']  # noqa: E501
+
+        return self.api_client.call_api(
+            '/models/{ownerSlug}/{modelSlug}/{framework}/{instanceSlug}/{versionNumber}/files', 'GET',
             path_params,
             query_params,
             header_params,
@@ -3903,6 +4149,119 @@ class KaggleApi(object):
 
         return self.api_client.call_api(
             '/models/list', 'GET',
+            path_params,
+            query_params,
+            header_params,
+            body=body_params,
+            post_params=form_params,
+            files=local_var_files,
+            response_type='Result',  # noqa: E501
+            auth_settings=auth_settings,
+            async_req=params.get('async_req'),
+            _return_http_data_only=params.get('_return_http_data_only'),
+            _preload_content=params.get('_preload_content', True),
+            _request_timeout=params.get('_request_timeout'),
+            collection_formats=collection_formats)
+
+    def models_list_files(self, owner_slug, model_slug, **kwargs):  # noqa: E501
+        """List model files  # noqa: E501
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.models_list_files(owner_slug, model_slug, async_req=True)
+        >>> result = thread.get()
+
+        :param async_req bool
+        :param str owner_slug: Model owner (required)
+        :param str model_slug: Model name (required)
+        :param str model_version_number: Model version number
+        :param int page_size: Page size
+        :param str page_token: Page token for pagination
+        :return: Result
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+        kwargs['_return_http_data_only'] = True
+        if kwargs.get('async_req'):
+            return self.models_list_files_with_http_info(owner_slug, model_slug, **kwargs)  # noqa: E501
+        else:
+            (data) = self.models_list_files_with_http_info(owner_slug, model_slug, **kwargs)  # noqa: E501
+            return data
+
+    def models_list_files_with_http_info(self, owner_slug, model_slug, **kwargs):  # noqa: E501
+        """List model files  # noqa: E501
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.models_list_files_with_http_info(owner_slug, model_slug, async_req=True)
+        >>> result = thread.get()
+
+        :param async_req bool
+        :param str owner_slug: Model owner (required)
+        :param str model_slug: Model name (required)
+        :param str model_version_number: Model version number
+        :param int page_size: Page size
+        :param str page_token: Page token for pagination
+        :return: Result
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+
+        all_params = ['owner_slug', 'model_slug', 'model_version_number', 'page_size', 'page_token']  # noqa: E501
+        all_params.append('async_req')
+        all_params.append('_return_http_data_only')
+        all_params.append('_preload_content')
+        all_params.append('_request_timeout')
+
+        params = locals()
+        for key, val in six.iteritems(params['kwargs']):
+            if key not in all_params:
+                raise TypeError(
+                    "Got an unexpected keyword argument '%s'"
+                    " to method models_list_files" % key
+                )
+            params[key] = val
+        del params['kwargs']
+        # verify the required parameter 'owner_slug' is set
+        if ('owner_slug' not in params or
+                params['owner_slug'] is None):
+            raise ValueError("Missing the required parameter `owner_slug` when calling `models_list_files`")  # noqa: E501
+        # verify the required parameter 'model_slug' is set
+        if ('model_slug' not in params or
+                params['model_slug'] is None):
+            raise ValueError("Missing the required parameter `model_slug` when calling `models_list_files`")  # noqa: E501
+
+        collection_formats = {}
+
+        path_params = {}
+        if 'owner_slug' in params:
+            path_params['ownerSlug'] = params['owner_slug']  # noqa: E501
+        if 'model_slug' in params:
+            path_params['modelSlug'] = params['model_slug']  # noqa: E501
+
+        query_params = []
+        if 'model_version_number' in params:
+            query_params.append(('modelVersionNumber', params['model_version_number']))  # noqa: E501
+        if 'page_size' in params:
+            query_params.append(('pageSize', params['page_size']))  # noqa: E501
+        if 'page_token' in params:
+            query_params.append(('pageToken', params['page_token']))  # noqa: E501
+
+        header_params = {}
+
+        form_params = []
+        local_var_files = {}
+
+        body_params = None
+        # HTTP header `Accept`
+        header_params['Accept'] = self.api_client.select_header_accept(
+            ['application/json'])  # noqa: E501
+
+        # Authentication setting
+        auth_settings = ['basicAuth']  # noqa: E501
+
+        return self.api_client.call_api(
+            '/models/list/{ownerSlug}/{modelSlug}', 'GET',
             path_params,
             query_params,
             header_params,

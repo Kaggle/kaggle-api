@@ -481,6 +481,7 @@ paths:
         - in: query
           name: pageSize
           required: false
+          default: 20
           type: integer
           description: Number of items per page (default 20)
       responses:
@@ -801,7 +802,7 @@ paths:
         - in: query
           name: pageSize
           type: integer
-          default: 1
+          default: 20
           description: Page size
         - in: query
           name: pageToken
@@ -1069,7 +1070,7 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/Error"
-  /models/list/{ownerSlug}/{datasetSlug}:
+  /models/list/{ownerSlug}/{modelSlug}:
     get:
       tags:
         - kaggle
@@ -1096,7 +1097,7 @@ paths:
         - in: query
           name: pageSize
           type: integer
-          default: 1
+          default: 20
           description: Page size
         - in: query
           name: pageToken
@@ -1536,7 +1537,7 @@ paths:
         - in: query
           name: pageSize
           type: integer
-          default: 1
+          default: 20
           description: Page size
         - in: query
           name: pageToken

@@ -16,7 +16,7 @@ Run the following command to access the Kaggle API using the command line:
 
 You can now use the `kaggle` command as shown in the examples below.
 
-If you run into a `kaggle: command not found` error, ensure that your python binaries are on your path.  You can see where `kaggle` is installed by doing `pip uninstall kaggle` and seeing where the binary is.  For a local user install on Linux, the default location is `~/.local/bin`.  On Windows, the default location is `$PYTHON_HOME/Scripts`.
+If you run into a `kaggle: command not found` error, ensure that your python binaries are on your path.  You can see where `kaggle` is installed by doing `pip show kaggle` and seeing where the binary is.  For a local user install on Linux, the default location is `~/.local/bin`.  On Windows, the default location is `$PYTHON_HOME/Scripts`.
 
 IMPORTANT: We do not offer Python 2 support.  Please ensure that you are using Python 3 before reporting any issues.
 

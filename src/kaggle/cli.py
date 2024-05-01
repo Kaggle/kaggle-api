@@ -1115,6 +1115,33 @@ def parse_model_instances(subparsers):
     parser_model_instances_create.set_defaults(
         func=api.model_instance_create_cli)
 
+    # Model Instances files
+    parser_model_instances_files = subparsers_model_instances.add_parser(
+        'files',
+        formatter_class=argparse.RawTextHelpFormatter,
+        help=Help.command_model_instances_files)
+    parser_model_instances_files_optional = parser_model_instances_files._action_groups.pop(
+    )
+    parser_model_instances_files_optional.add_argument(
+        'model_instance', help=Help.param_model_instance)
+    parser_model_instances_files_optional.add_argument(
+        '-v',
+        '--csv',
+        dest='csv_display',
+        action='store_true',
+        help=Help.param_csv)
+    parser_model_instances_files_optional.add_argument(
+        '--page-size', dest='page_size', default=20, help=Help.param_page_size)
+    parser_model_instances_files_optional.add_argument(
+        '--page-token',
+        dest='page_token',
+        required=False,
+        help=Help.param_page_token)
+    parser_model_instances_files._action_groups.append(
+        parser_model_instances_files_optional)
+    parser_model_instances_files.set_defaults(
+        func=api.model_instance_files_cli)
+
     # Models Instances delete
     parser_model_instances_delete = subparsers_model_instances.add_parser(
         'delete',
@@ -1400,7 +1427,7 @@ class Help(object):
         'instances', 'get', 'list', 'init', 'create', 'delete', 'update'
     ]
     model_instances_choices = [
-        'versions', 'get', 'init', 'create', 'delete', 'update'
+        'versions', 'get', 'files', 'init', 'create', 'delete', 'update'
     ]
     model_instance_versions_choices = [
         'init', 'create', 'download', 'delete', 'files'
@@ -1640,6 +1667,7 @@ class Help(object):
     )
     command_model_instances_get = 'Get a model instance'
     command_model_instances_init = 'Initialize metadata file for model instance creation'
+    command_model_instances_files = 'List files for the current version of a model instance'
     command_model_instances_new = 'Create a new model instance'
     param_model_instance_downfile = (
         'Folder for downloading the special model-instance-metadata.json file '

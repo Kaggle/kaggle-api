@@ -703,7 +703,7 @@ paths:
           name: pageSize
           type: integer
           default: 20
-          description: Page size
+          description: Number of items per page (default 20)
         - in: query
           name: search
           default: ""
@@ -803,7 +803,7 @@ paths:
           name: pageSize
           type: integer
           default: 20
-          description: Page size
+          description: Number of items per page (default 20)
         - in: query
           name: pageToken
           type: string
@@ -1056,7 +1056,7 @@ paths:
           name: pageSize
           type: integer
           default: 20
-          description: Page size
+          description: Number of items per page (default 20)
         - in: query
           name: pageToken
           type: string
@@ -1070,12 +1070,12 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/Error"
-  /models/list/{ownerSlug}/{modelSlug}:
+  /models/{ownerSlug}/{modelSlug}/{framework}/{instanceSlug}/files:
     get:
       tags:
         - kaggle
-      summary: List model files
-      operationId: ModelsListFiles
+      summary: List model instance files for the current version
+      operationId: ModelInstanceFiles
       produces:
         - application/json
       parameters:
@@ -1089,16 +1089,21 @@ paths:
           required: true
           type: string
           description: Model name
-        - in: query
-          name: modelVersionNumber
-          required: false
+        - in: path
+          name: framework
+          required: true
           type: string
-          description: Model version number
+          description: Model instance framework
+        - in: path
+          name: instanceSlug
+          required: true
+          type: string
+          description: Model instance slug
         - in: query
           name: pageSize
           type: integer
           default: 20
-          description: Page size
+          description: Number of items per page (default 20)
         - in: query
           name: pageToken
           type: string
@@ -1505,7 +1510,7 @@ paths:
       tags:
         - kaggle
       summary: List model instance version files
-      operationId: ModelInstanceVersionsFiles
+      operationId: ModelInstanceVersionFiles
       produces:
         - application/json
       parameters:
@@ -1538,7 +1543,7 @@ paths:
           name: pageSize
           type: integer
           default: 20
-          description: Page size
+          description: Number of items per page (default 20)
         - in: query
           name: pageToken
           type: string

@@ -3242,6 +3242,73 @@ class KaggleApi(KaggleApi):
         else:
             print('The model instance was deleted.')
 
+    def model_instance_files(self,
+                             model_instance,
+                             page_token=None,
+                             page_size=20,
+                             csv_display=False):
+        """ list all files for the current version of a model instance
+
+            Parameters
+            ==========
+            model_instance: the string identifier of the model instance
+                    should be in format [owner]/[model-name]/[framework]/[instance-slug]
+            page_token: token for pagination
+            page_size: the number of items per page
+            csv_display: if True, print comma separated values instead of table
+        """
+        if model_instance is None:
+            raise ValueError('A model_instance must be specified')
+
+        self.validate_model_instance_string(model_instance)
+        urls = model_instance.split('/')
+        [owner_slug, model_slug, framework, instance_slug] = urls
+
+        response = self.process_response(
+            self.model_instance_files_with_http_info(
+                owner_slug=owner_slug,
+                model_slug=model_slug,
+                framework=framework,
+                instance_slug=instance_slug,
+                page_size=page_size,
+                page_token=page_token,
+                _preload_content=True))
+
+        if response:
+            next_page_token = response['nextPageToken']
+            if next_page_token:
+                print('Next Page Token = {}'.format(next_page_token))
+            return FileList(response)
+        else:
+            print('No files found')
+
+    def model_instance_files_cli(self,
+                                 model_instance,
+                                 page_token=None,
+                                 page_size=20,
+                                 csv_display=False):
+        """ client wrapper for model_instance_files.
+
+            Parameters
+            ==========
+            model_instance: the string identified of the model instance version
+                    should be in format [owner]/[model-name]/[framework]/[instance-slug]
+            page_token: token for pagination
+            page_size: the number of items per page
+            csv_display: if True, print comma separated values instead of table
+        """
+        result = self.model_instance_files(
+            model_instance,
+            page_token=page_token,
+            page_size=page_size,
+            csv_display=csv_display)
+        if result and result.files is not None:
+            fields = ['name', 'size', 'creationDate']
+            if csv_display:
+                self.print_csv(result.files, fields)
+            else:
+                self.print_table(result.files, fields)
+
     def model_instance_update(self, folder):
         """ update a model instance.
              Parameters
@@ -3524,7 +3591,7 @@ class KaggleApi(KaggleApi):
          version_number] = urls
 
         response = self.process_response(
-            self.model_instance_versions_files_with_http_info(
+            self.model_instance_version_files_with_http_info(
                 owner_slug=owner_slug,
                 model_slug=model_slug,
                 framework=framework,

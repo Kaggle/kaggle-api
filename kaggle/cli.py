@@ -44,14 +44,14 @@ def main():
     parser = argparse.ArgumentParser(
         formatter_class=argparse.RawTextHelpFormatter)
 
-    parser.add_argument(
-        '-v',
-        '--version',
-        action='version',
-        version='Kaggle API ' + KaggleApi.__version__)
+    parser.add_argument('-v',
+                        '--version',
+                        action='version',
+                        version='Kaggle API ' + KaggleApi.__version__)
 
-    subparsers = parser.add_subparsers(
-        title='commands', help=Help.kaggle, dest='command')
+    subparsers = parser.add_subparsers(title='commands',
+                                       help=Help.kaggle,
+                                       dest='command')
     subparsers.required = True
     subparsers.choices = Help.kaggle_choices
     parse_competitions(subparsers)
@@ -137,25 +137,22 @@ def parse_competitions(subparsers):
         dest='sort_by',
         required=False,
         help=Help.param_competition_sort_by)
-    parser_competitions_list_optional.add_argument(
-        '-p',
-        '--page',
-        dest='page',
-        default=1,
-        required=False,
-        help=Help.param_page)
-    parser_competitions_list_optional.add_argument(
-        '-s',
-        '--search',
-        dest='search',
-        required=False,
-        help=Help.param_search)
-    parser_competitions_list_optional.add_argument(
-        '-v',
-        '--csv',
-        dest='csv_display',
-        action='store_true',
-        help=Help.param_csv)
+    parser_competitions_list_optional.add_argument('-p',
+                                                   '--page',
+                                                   dest='page',
+                                                   default=1,
+                                                   required=False,
+                                                   help=Help.param_page)
+    parser_competitions_list_optional.add_argument('-s',
+                                                   '--search',
+                                                   dest='search',
+                                                   required=False,
+                                                   help=Help.param_search)
+    parser_competitions_list_optional.add_argument('-v',
+                                                   '--csv',
+                                                   dest='csv_display',
+                                                   action='store_true',
+                                                   help=Help.param_csv)
     parser_competitions_list._action_groups.append(
         parser_competitions_list_optional)
     parser_competitions_list.set_defaults(func=api.competitions_list_cli)
@@ -169,35 +166,30 @@ def parse_competitions(subparsers):
     )
     parser_competitions_files_optional.add_argument(
         'competition', nargs='?', default=None, help=Help.param_competition)
-    parser_competitions_files_optional.add_argument(
-        '-c',
-        '--competition',
-        dest='competition_opt',
-        required=False,
-        help=argparse.SUPPRESS)
-    parser_competitions_files_optional.add_argument(
-        '-v',
-        '--csv',
-        dest='csv_display',
-        action='store_true',
-        help=Help.param_csv)
-    parser_competitions_files_optional.add_argument(
-        '-q',
-        '--quiet',
-        dest='quiet',
-        action='store_true',
-        help=Help.param_quiet)
-    parser_competitions_files_optional.add_argument(
-        '--page-token',
-        dest='page_token',
-        required=False,
-        help=Help.param_page_token)
-    parser_competitions_files_optional.add_argument(
-        '--page-size',
-        dest='page_size',
-        required=False,
-        default=20,
-        help=Help.param_page_size)
+    parser_competitions_files_optional.add_argument('-c',
+                                                    '--competition',
+                                                    dest='competition_opt',
+                                                    required=False,
+                                                    help=argparse.SUPPRESS)
+    parser_competitions_files_optional.add_argument('-v',
+                                                    '--csv',
+                                                    dest='csv_display',
+                                                    action='store_true',
+                                                    help=Help.param_csv)
+    parser_competitions_files_optional.add_argument('-q',
+                                                    '--quiet',
+                                                    dest='quiet',
+                                                    action='store_true',
+                                                    help=Help.param_quiet)
+    parser_competitions_files_optional.add_argument('--page-token',
+                                                    dest='page_token',
+                                                    required=False,
+                                                    help=Help.param_page_token)
+    parser_competitions_files_optional.add_argument('--page-size',
+                                                    dest='page_size',
+                                                    required=False,
+                                                    default=20,
+                                                    help=Help.param_page_size)
     parser_competitions_files._action_groups.append(
         parser_competitions_files_optional)
     parser_competitions_files.set_defaults(func=api.competition_list_files_cli)
@@ -211,12 +203,11 @@ def parse_competitions(subparsers):
     )
     parser_competitions_download_optional.add_argument(
         'competition', nargs='?', default=None, help=Help.param_competition)
-    parser_competitions_download_optional.add_argument(
-        '-c',
-        '--competition',
-        dest='competition_opt',
-        required=False,
-        help=argparse.SUPPRESS)
+    parser_competitions_download_optional.add_argument('-c',
+                                                       '--competition',
+                                                       dest='competition_opt',
+                                                       required=False,
+                                                       help=argparse.SUPPRESS)
     parser_competitions_download_optional.add_argument(
         '-f',
         '--file',
@@ -229,26 +220,23 @@ def parse_competitions(subparsers):
         dest='path',
         required=False,
         help=Help.param_downfolder)
-    parser_competitions_download_optional.add_argument(
-        '-w',
-        '--wp',
-        dest='path',
-        action='store_const',
-        const='.',
-        required=False,
-        help=Help.param_wp)
-    parser_competitions_download_optional.add_argument(
-        '-o',
-        '--force',
-        dest='force',
-        action='store_true',
-        help=Help.param_force)
-    parser_competitions_download_optional.add_argument(
-        '-q',
-        '--quiet',
-        dest='quiet',
-        action='store_true',
-        help=Help.param_quiet)
+    parser_competitions_download_optional.add_argument('-w',
+                                                       '--wp',
+                                                       dest='path',
+                                                       action='store_const',
+                                                       const='.',
+                                                       required=False,
+                                                       help=Help.param_wp)
+    parser_competitions_download_optional.add_argument('-o',
+                                                       '--force',
+                                                       dest='force',
+                                                       action='store_true',
+                                                       help=Help.param_force)
+    parser_competitions_download_optional.add_argument('-q',
+                                                       '--quiet',
+                                                       dest='quiet',
+                                                       action='store_true',
+                                                       help=Help.param_quiet)
     parser_competitions_download._action_groups.append(
         parser_competitions_download_optional)
     parser_competitions_download.set_defaults(
@@ -265,30 +253,27 @@ def parse_competitions(subparsers):
         'required arguments')
     parser_competitions_submit_optional.add_argument(
         'competition', nargs='?', default=None, help=Help.param_competition)
-    parser_competitions_submit_optional.add_argument(
-        '-c',
-        '--competition',
-        dest='competition_opt',
-        required=False,
-        help=argparse.SUPPRESS)
-    parser_competitions_submit_required.add_argument(
-        '-f',
-        '--file',
-        dest='file_name',
-        required=True,
-        help=Help.param_upfile)
+    parser_competitions_submit_optional.add_argument('-c',
+                                                     '--competition',
+                                                     dest='competition_opt',
+                                                     required=False,
+                                                     help=argparse.SUPPRESS)
+    parser_competitions_submit_required.add_argument('-f',
+                                                     '--file',
+                                                     dest='file_name',
+                                                     required=True,
+                                                     help=Help.param_upfile)
     parser_competitions_submit_required.add_argument(
         '-m',
         '--message',
         dest='message',
         required=True,
         help=Help.param_competition_message)
-    parser_competitions_submit_optional.add_argument(
-        '-q',
-        '--quiet',
-        dest='quiet',
-        action='store_true',
-        help=Help.param_quiet)
+    parser_competitions_submit_optional.add_argument('-q',
+                                                     '--quiet',
+                                                     dest='quiet',
+                                                     action='store_true',
+                                                     help=Help.param_quiet)
     parser_competitions_submit._action_groups.append(
         parser_competitions_submit_optional)
     parser_competitions_submit.set_defaults(func=api.competition_submit_cli)
@@ -308,12 +293,11 @@ def parse_competitions(subparsers):
         dest='competition_opt',
         required=False,
         help=argparse.SUPPRESS)
-    parser_competitions_submissions_optional.add_argument(
-        '-v',
-        '--csv',
-        dest='csv_display',
-        action='store_true',
-        help=Help.param_csv)
+    parser_competitions_submissions_optional.add_argument('-v',
+                                                          '--csv',
+                                                          dest='csv_display',
+                                                          action='store_true',
+                                                          help=Help.param_csv)
     parser_competitions_submissions_optional.add_argument(
         '-q',
         '--quiet',
@@ -354,12 +338,11 @@ def parse_competitions(subparsers):
         help=Help.param_competition_leaderboard_download)
     parser_competitions_leaderboard_optional.add_argument(
         '-p', '--path', dest='path', help=Help.param_downfolder)
-    parser_competitions_leaderboard_optional.add_argument(
-        '-v',
-        '--csv',
-        dest='csv_display',
-        action='store_true',
-        help=Help.param_csv)
+    parser_competitions_leaderboard_optional.add_argument('-v',
+                                                          '--csv',
+                                                          dest='csv_display',
+                                                          action='store_true',
+                                                          help=Help.param_csv)
     parser_competitions_leaderboard_optional.add_argument(
         '-q',
         '--quiet',
@@ -384,8 +367,8 @@ def parse_datasets(subparsers):
             formatter_class=argparse.RawTextHelpFormatter,
             help=Help.group_datasets,
             aliases=['d'])
-    subparsers_datasets = parser_datasets.add_subparsers(
-        title='commands', dest='command')
+    subparsers_datasets = parser_datasets.add_subparsers(title='commands',
+                                                         dest='command')
     subparsers_datasets.required = True
     subparsers_datasets.choices = Help.datasets_choices
 
@@ -395,58 +378,59 @@ def parse_datasets(subparsers):
         formatter_class=argparse.RawTextHelpFormatter,
         help=Help.command_datasets_list)
     parser_datasets_list_optional = parser_datasets_list._action_groups.pop()
-    parser_datasets_list.add_argument(
-        '--sort-by',
-        dest='sort_by',
-        required=False,
-        help=Help.param_dataset_sort_by)
-    parser_datasets_list.add_argument(
-        '--size', dest='size', required=False, help=Help.param_dataset_size)
-    parser_datasets_list.add_argument(
-        '--file-type',
-        dest='file_type',
-        required=False,
-        help=Help.param_dataset_file_type)
-    parser_datasets_list.add_argument(
-        '--license',
-        dest='license_name',
-        required=False,
-        help=Help.param_dataset_license)
-    parser_datasets_list.add_argument(
-        '--tags', dest='tag_ids', required=False, help=Help.param_dataset_tags)
-    parser_datasets_list.add_argument(
-        '-s',
-        '--search',
-        dest='search',
-        required=False,
-        help=Help.param_search)
-    parser_datasets_list.add_argument(
-        '-m', '--mine', dest='mine', action='store_true', help=Help.param_mine)
-    parser_datasets_list.add_argument(
-        '--user', dest='user', required=False, help=Help.param_dataset_user)
-    parser_datasets_list.add_argument(
-        '-p',
-        '--page',
-        dest='page',
-        default=1,
-        required=False,
-        help=Help.param_page)
-    parser_datasets_list.add_argument(
-        '-v',
-        '--csv',
-        dest='csv_display',
-        action='store_true',
-        help=Help.param_csv)
-    parser_datasets_list.add_argument(
-        '--max-size',
-        dest='max_size',
-        required=False,
-        help=Help.param_dataset_maxsize)
-    parser_datasets_list.add_argument(
-        '--min-size',
-        dest='min_size',
-        required=False,
-        help=Help.param_dataset_minsize)
+    parser_datasets_list.add_argument('--sort-by',
+                                      dest='sort_by',
+                                      required=False,
+                                      help=Help.param_dataset_sort_by)
+    parser_datasets_list.add_argument('--size',
+                                      dest='size',
+                                      required=False,
+                                      help=Help.param_dataset_size)
+    parser_datasets_list.add_argument('--file-type',
+                                      dest='file_type',
+                                      required=False,
+                                      help=Help.param_dataset_file_type)
+    parser_datasets_list.add_argument('--license',
+                                      dest='license_name',
+                                      required=False,
+                                      help=Help.param_dataset_license)
+    parser_datasets_list.add_argument('--tags',
+                                      dest='tag_ids',
+                                      required=False,
+                                      help=Help.param_dataset_tags)
+    parser_datasets_list.add_argument('-s',
+                                      '--search',
+                                      dest='search',
+                                      required=False,
+                                      help=Help.param_search)
+    parser_datasets_list.add_argument('-m',
+                                      '--mine',
+                                      dest='mine',
+                                      action='store_true',
+                                      help=Help.param_mine)
+    parser_datasets_list.add_argument('--user',
+                                      dest='user',
+                                      required=False,
+                                      help=Help.param_dataset_user)
+    parser_datasets_list.add_argument('-p',
+                                      '--page',
+                                      dest='page',
+                                      default=1,
+                                      required=False,
+                                      help=Help.param_page)
+    parser_datasets_list.add_argument('-v',
+                                      '--csv',
+                                      dest='csv_display',
+                                      action='store_true',
+                                      help=Help.param_csv)
+    parser_datasets_list.add_argument('--max-size',
+                                      dest='max_size',
+                                      required=False,
+                                      help=Help.param_dataset_maxsize)
+    parser_datasets_list.add_argument('--min-size',
+                                      dest='min_size',
+                                      required=False,
+                                      help=Help.param_dataset_minsize)
     parser_datasets_list._action_groups.append(parser_datasets_list_optional)
     parser_datasets_list.set_defaults(func=api.dataset_list_cli)
 
@@ -456,31 +440,29 @@ def parse_datasets(subparsers):
         formatter_class=argparse.RawTextHelpFormatter,
         help=Help.command_datasets_files)
     parser_datasets_files_optional = parser_datasets_files._action_groups.pop()
-    parser_datasets_files_optional.add_argument(
-        'dataset', nargs='?', default=None, help=Help.param_dataset)
-    parser_datasets_files_optional.add_argument(
-        '-d',
-        '--dataset',
-        dest='dataset_opt',
-        required=False,
-        help=argparse.SUPPRESS)
-    parser_datasets_files_optional.add_argument(
-        '-v',
-        '--csv',
-        dest='csv_display',
-        action='store_true',
-        help=Help.param_csv)
-    parser_datasets_files_optional.add_argument(
-        '--page-token',
-        dest='page_token',
-        required=False,
-        help=Help.param_page_token)
-    parser_datasets_files_optional.add_argument(
-        '--page-size',
-        dest='page_size',
-        required=False,
-        default=20,
-        help=Help.param_page_size)
+    parser_datasets_files_optional.add_argument('dataset',
+                                                nargs='?',
+                                                default=None,
+                                                help=Help.param_dataset)
+    parser_datasets_files_optional.add_argument('-d',
+                                                '--dataset',
+                                                dest='dataset_opt',
+                                                required=False,
+                                                help=argparse.SUPPRESS)
+    parser_datasets_files_optional.add_argument('-v',
+                                                '--csv',
+                                                dest='csv_display',
+                                                action='store_true',
+                                                help=Help.param_csv)
+    parser_datasets_files_optional.add_argument('--page-token',
+                                                dest='page_token',
+                                                required=False,
+                                                help=Help.param_page_token)
+    parser_datasets_files_optional.add_argument('--page-size',
+                                                dest='page_size',
+                                                required=False,
+                                                default=20,
+                                                help=Help.param_page_size)
     parser_datasets_files._action_groups.append(parser_datasets_files_optional)
     parser_datasets_files.set_defaults(func=api.dataset_list_files_cli)
 
@@ -491,48 +473,47 @@ def parse_datasets(subparsers):
         help=Help.command_datasets_download)
     parser_datasets_download_optional = parser_datasets_download._action_groups.pop(
     )
-    parser_datasets_download_optional.add_argument(
-        'dataset', nargs='?', default=None, help=Help.param_dataset)
-    parser_datasets_download_optional.add_argument(
-        '-d',
-        '--dataset',
-        dest='dataset_opt',
-        required=False,
-        help=argparse.SUPPRESS)
+    parser_datasets_download_optional.add_argument('dataset',
+                                                   nargs='?',
+                                                   default=None,
+                                                   help=Help.param_dataset)
+    parser_datasets_download_optional.add_argument('-d',
+                                                   '--dataset',
+                                                   dest='dataset_opt',
+                                                   required=False,
+                                                   help=argparse.SUPPRESS)
     parser_datasets_download_optional.add_argument(
         '-f',
         '--file',
         dest='file_name',
         required=False,
         help=Help.param_dataset_file)
-    parser_datasets_download_optional.add_argument(
-        '-p',
-        '--path',
-        dest='path',
-        required=False,
-        help=Help.param_downfolder)
-    parser_datasets_download_optional.add_argument(
-        '-w',
-        '--wp',
-        dest='path',
-        action='store_const',
-        const='.',
-        required=False,
-        help=Help.param_wp)
-    parser_datasets_download_optional.add_argument(
-        '--unzip', dest='unzip', action='store_true', help=Help.param_unzip)
-    parser_datasets_download_optional.add_argument(
-        '-o',
-        '--force',
-        dest='force',
-        action='store_true',
-        help=Help.param_force)
-    parser_datasets_download_optional.add_argument(
-        '-q',
-        '--quiet',
-        dest='quiet',
-        action='store_true',
-        help=Help.param_quiet)
+    parser_datasets_download_optional.add_argument('-p',
+                                                   '--path',
+                                                   dest='path',
+                                                   required=False,
+                                                   help=Help.param_downfolder)
+    parser_datasets_download_optional.add_argument('-w',
+                                                   '--wp',
+                                                   dest='path',
+                                                   action='store_const',
+                                                   const='.',
+                                                   required=False,
+                                                   help=Help.param_wp)
+    parser_datasets_download_optional.add_argument('--unzip',
+                                                   dest='unzip',
+                                                   action='store_true',
+                                                   help=Help.param_unzip)
+    parser_datasets_download_optional.add_argument('-o',
+                                                   '--force',
+                                                   dest='force',
+                                                   action='store_true',
+                                                   help=Help.param_force)
+    parser_datasets_download_optional.add_argument('-q',
+                                                   '--quiet',
+                                                   dest='quiet',
+                                                   action='store_true',
+                                                   help=Help.param_quiet)
     parser_datasets_download._action_groups.append(
         parser_datasets_download_optional)
     parser_datasets_download.set_defaults(func=api.dataset_download_cli)
@@ -550,24 +531,21 @@ def parse_datasets(subparsers):
         dest='folder',
         required=False,
         help=Help.param_dataset_upfile)
-    parser_datasets_create_optional.add_argument(
-        '-u',
-        '--public',
-        dest='public',
-        action='store_true',
-        help=Help.param_public)
-    parser_datasets_create_optional.add_argument(
-        '-q',
-        '--quiet',
-        dest='quiet',
-        action='store_true',
-        help=Help.param_quiet)
-    parser_datasets_create_optional.add_argument(
-        '-t',
-        '--keep-tabular',
-        dest='convert_to_csv',
-        action='store_false',
-        help=Help.param_keep_tabular)
+    parser_datasets_create_optional.add_argument('-u',
+                                                 '--public',
+                                                 dest='public',
+                                                 action='store_true',
+                                                 help=Help.param_public)
+    parser_datasets_create_optional.add_argument('-q',
+                                                 '--quiet',
+                                                 dest='quiet',
+                                                 action='store_true',
+                                                 help=Help.param_quiet)
+    parser_datasets_create_optional.add_argument('-t',
+                                                 '--keep-tabular',
+                                                 dest='convert_to_csv',
+                                                 action='store_false',
+                                                 help=Help.param_keep_tabular)
     parser_datasets_create_optional.add_argument(
         '-r',
         '--dir-mode',
@@ -600,18 +578,16 @@ def parse_datasets(subparsers):
         dest='folder',
         required=False,
         help=Help.param_dataset_upfile)
-    parser_datasets_version_optional.add_argument(
-        '-q',
-        '--quiet',
-        dest='quiet',
-        action='store_true',
-        help=Help.param_quiet)
-    parser_datasets_version_optional.add_argument(
-        '-t',
-        '--keep-tabular',
-        dest='convert_to_csv',
-        action='store_false',
-        help=Help.param_keep_tabular)
+    parser_datasets_version_optional.add_argument('-q',
+                                                  '--quiet',
+                                                  dest='quiet',
+                                                  action='store_true',
+                                                  help=Help.param_quiet)
+    parser_datasets_version_optional.add_argument('-t',
+                                                  '--keep-tabular',
+                                                  dest='convert_to_csv',
+                                                  action='store_false',
+                                                  help=Help.param_keep_tabular)
     parser_datasets_version_optional.add_argument(
         '-r',
         '--dir-mode',
@@ -635,12 +611,11 @@ def parse_datasets(subparsers):
         formatter_class=argparse.RawTextHelpFormatter,
         help=Help.command_datasets_init)
     parser_datasets_init_optional = parser_datasets_init._action_groups.pop()
-    parser_datasets_init_optional.add_argument(
-        '-p',
-        '--path',
-        dest='folder',
-        required=False,
-        help=Help.param_dataset_upfile)
+    parser_datasets_init_optional.add_argument('-p',
+                                               '--path',
+                                               dest='folder',
+                                               required=False,
+                                               help=Help.param_dataset_upfile)
     parser_datasets_init._action_groups.append(parser_datasets_init_optional)
     parser_datasets_init.set_defaults(func=api.dataset_initialize_cli)
 
@@ -651,14 +626,15 @@ def parse_datasets(subparsers):
         help=Help.command_datasets_metadata)
     parser_datasets_metadata_optional = parser_datasets_metadata._action_groups.pop(
     )
-    parser_datasets_metadata_optional.add_argument(
-        'dataset', nargs='?', default=None, help=Help.param_dataset)
-    parser_datasets_metadata_optional.add_argument(
-        '-d',
-        '--dataset',
-        dest='dataset_opt',
-        required=False,
-        help=argparse.SUPPRESS)
+    parser_datasets_metadata_optional.add_argument('dataset',
+                                                   nargs='?',
+                                                   default=None,
+                                                   help=Help.param_dataset)
+    parser_datasets_metadata_optional.add_argument('-d',
+                                                   '--dataset',
+                                                   dest='dataset_opt',
+                                                   required=False,
+                                                   help=argparse.SUPPRESS)
     parser_datasets_metadata_optional.add_argument(
         '--update',
         dest='update',
@@ -677,14 +653,15 @@ def parse_datasets(subparsers):
         help=Help.command_datasets_status)
     parser_datasets_status_optional = parser_datasets_status._action_groups.pop(
     )
-    parser_datasets_status_optional.add_argument(
-        'dataset', nargs='?', default=None, help=Help.param_dataset)
-    parser_datasets_status_optional.add_argument(
-        '-d',
-        '--dataset',
-        dest='dataset_opt',
-        required=False,
-        help=argparse.SUPPRESS)
+    parser_datasets_status_optional.add_argument('dataset',
+                                                 nargs='?',
+                                                 default=None,
+                                                 help=Help.param_dataset)
+    parser_datasets_status_optional.add_argument('-d',
+                                                 '--dataset',
+                                                 dest='dataset_opt',
+                                                 required=False,
+                                                 help=argparse.SUPPRESS)
     parser_datasets_status._action_groups.append(
         parser_datasets_status_optional)
     parser_datasets_status.set_defaults(func=api.dataset_status_cli)
@@ -702,8 +679,8 @@ def parse_kernels(subparsers):
             formatter_class=argparse.RawTextHelpFormatter,
             help=Help.group_kernels,
             aliases=['k'])
-    subparsers_kernels = parser_kernels.add_subparsers(
-        title='commands', dest='command')
+    subparsers_kernels = parser_kernels.add_subparsers(title='commands',
+                                                       dest='command')
     subparsers_kernels.required = True
     subparsers_kernels.choices = Help.kernels_choices
 
@@ -713,57 +690,63 @@ def parse_kernels(subparsers):
         formatter_class=argparse.RawTextHelpFormatter,
         help=Help.command_kernels_list)
     parser_kernels_list_optional = parser_kernels_list._action_groups.pop()
-    parser_kernels_list_optional.add_argument(
-        '-m', '--mine', dest='mine', action='store_true', help=Help.param_mine)
-    parser_kernels_list_optional.add_argument(
-        '-p', '--page', dest='page', default=1, help=Help.param_page)
-    parser_kernels_list_optional.add_argument(
-        '--page-size', dest='page_size', default=20, help=Help.param_page_size)
-    parser_kernels_list_optional.add_argument(
-        '-s', '--search', dest='search', help=Help.param_search)
-    parser_kernels_list_optional.add_argument(
-        '-v',
-        '--csv',
-        dest='csv_display',
-        action='store_true',
-        help=Help.param_csv)
-    parser_kernels_list_optional.add_argument(
-        '--parent',
-        dest='parent',
-        required=False,
-        help=Help.param_kernel_parent)
+    parser_kernels_list_optional.add_argument('-m',
+                                              '--mine',
+                                              dest='mine',
+                                              action='store_true',
+                                              help=Help.param_mine)
+    parser_kernels_list_optional.add_argument('-p',
+                                              '--page',
+                                              dest='page',
+                                              default=1,
+                                              help=Help.param_page)
+    parser_kernels_list_optional.add_argument('--page-size',
+                                              dest='page_size',
+                                              default=20,
+                                              help=Help.param_page_size)
+    parser_kernels_list_optional.add_argument('-s',
+                                              '--search',
+                                              dest='search',
+                                              help=Help.param_search)
+    parser_kernels_list_optional.add_argument('-v',
+                                              '--csv',
+                                              dest='csv_display',
+                                              action='store_true',
+                                              help=Help.param_csv)
+    parser_kernels_list_optional.add_argument('--parent',
+                                              dest='parent',
+                                              required=False,
+                                              help=Help.param_kernel_parent)
     parser_kernels_list_optional.add_argument(
         '--competition',
         dest='competition',
         required=False,
         help=Help.param_kernel_competition)
-    parser_kernels_list_optional.add_argument(
-        '--dataset',
-        dest='dataset',
-        required=False,
-        help=Help.param_kernel_dataset)
-    parser_kernels_list_optional.add_argument(
-        '--user', dest='user', required=False, help=Help.param_kernel_user)
-    parser_kernels_list_optional.add_argument(
-        '--language',
-        dest='language',
-        required=False,
-        help=Help.param_kernel_language)
-    parser_kernels_list_optional.add_argument(
-        '--kernel-type',
-        dest='kernel_type',
-        required=False,
-        help=Help.param_kernel_type)
+    parser_kernels_list_optional.add_argument('--dataset',
+                                              dest='dataset',
+                                              required=False,
+                                              help=Help.param_kernel_dataset)
+    parser_kernels_list_optional.add_argument('--user',
+                                              dest='user',
+                                              required=False,
+                                              help=Help.param_kernel_user)
+    parser_kernels_list_optional.add_argument('--language',
+                                              dest='language',
+                                              required=False,
+                                              help=Help.param_kernel_language)
+    parser_kernels_list_optional.add_argument('--kernel-type',
+                                              dest='kernel_type',
+                                              required=False,
+                                              help=Help.param_kernel_type)
     parser_kernels_list_optional.add_argument(
         '--output-type',
         dest='output_type',
         required=False,
         help=Help.param_kernel_output_type)
-    parser_kernels_list_optional.add_argument(
-        '--sort-by',
-        dest='sort_by',
-        required=False,
-        help=Help.param_kernel_sort_by)
+    parser_kernels_list_optional.add_argument('--sort-by',
+                                              dest='sort_by',
+                                              required=False,
+                                              help=Help.param_kernel_sort_by)
     parser_kernels_list._action_groups.append(parser_kernels_list_optional)
     parser_kernels_list.set_defaults(func=api.kernels_list_cli)
 
@@ -773,24 +756,27 @@ def parse_kernels(subparsers):
         formatter_class=argparse.RawTextHelpFormatter,
         help=Help.command_kernels_files)
     parser_kernels_files_optional = parser_kernels_files._action_groups.pop()
-    parser_kernels_files_optional.add_argument(
-        'kernel', nargs='?', default=None, help=Help.param_kernel)
-    parser_kernels_files_optional.add_argument(
-        '-k',
-        '--kernel',
-        dest='kernel_opt',
-        required=False,
-        help=argparse.SUPPRESS)
-    parser_kernels_files_optional.add_argument(
-        '-v',
-        '--csv',
-        dest='csv_display',
-        action='store_true',
-        help=Help.param_csv)
-    parser_kernels_files_optional.add_argument(
-        '--page-token', dest='page_token', help=Help.param_page_token)
-    parser_kernels_files_optional.add_argument(
-        '--page-size', dest='page_size', default=20, help=Help.param_page_size)
+    parser_kernels_files_optional.add_argument('kernel',
+                                               nargs='?',
+                                               default=None,
+                                               help=Help.param_kernel)
+    parser_kernels_files_optional.add_argument('-k',
+                                               '--kernel',
+                                               dest='kernel_opt',
+                                               required=False,
+                                               help=argparse.SUPPRESS)
+    parser_kernels_files_optional.add_argument('-v',
+                                               '--csv',
+                                               dest='csv_display',
+                                               action='store_true',
+                                               help=Help.param_csv)
+    parser_kernels_files_optional.add_argument('--page-token',
+                                               dest='page_token',
+                                               help=Help.param_page_token)
+    parser_kernels_files_optional.add_argument('--page-size',
+                                               dest='page_size',
+                                               default=20,
+                                               help=Help.param_page_size)
     parser_kernels_files._action_groups.append(parser_kernels_files_optional)
     parser_kernels_files.set_defaults(func=api.kernels_list_files_cli)
 
@@ -800,12 +786,11 @@ def parse_kernels(subparsers):
         formatter_class=argparse.RawTextHelpFormatter,
         help=Help.command_kernels_init)
     parser_kernels_init_optional = parser_kernels_init._action_groups.pop()
-    parser_kernels_init_optional.add_argument(
-        '-p',
-        '--path',
-        dest='folder',
-        required=False,
-        help=Help.param_kernel_upfile)
+    parser_kernels_init_optional.add_argument('-p',
+                                              '--path',
+                                              dest='folder',
+                                              required=False,
+                                              help=Help.param_kernel_upfile)
     parser_kernels_init._action_groups.append(parser_kernels_init_optional)
     parser_kernels_init.set_defaults(func=api.kernels_initialize_cli)
 
@@ -815,12 +800,11 @@ def parse_kernels(subparsers):
         formatter_class=argparse.RawTextHelpFormatter,
         help=Help.command_kernels_push)
     parser_kernels_push_optional = parser_kernels_push._action_groups.pop()
-    parser_kernels_push_optional.add_argument(
-        '-p',
-        '--path',
-        dest='folder',
-        required=False,
-        help=Help.param_kernel_upfile)
+    parser_kernels_push_optional.add_argument('-p',
+                                              '--path',
+                                              dest='folder',
+                                              required=False,
+                                              help=Help.param_kernel_upfile)
     parser_kernels_push._action_groups.append(parser_kernels_push_optional)
     parser_kernels_push.set_defaults(func=api.kernels_push_cli)
 
@@ -830,28 +814,27 @@ def parse_kernels(subparsers):
         formatter_class=argparse.RawTextHelpFormatter,
         help=Help.command_kernels_pull)
     parser_kernels_pull_optional = parser_kernels_pull._action_groups.pop()
-    parser_kernels_pull_optional.add_argument(
-        'kernel', nargs='?', default=None, help=Help.param_kernel)
-    parser_kernels_pull_optional.add_argument(
-        '-k',
-        '--kernel',
-        dest='kernel',
-        required=False,
-        help=argparse.SUPPRESS)
-    parser_kernels_pull_optional.add_argument(
-        '-p',
-        '--path',
-        dest='path',
-        required=False,
-        help=Help.param_downfolder)
-    parser_kernels_pull_optional.add_argument(
-        '-w',
-        '--wp',
-        dest='path',
-        action='store_const',
-        const='.',
-        required=False,
-        help=Help.param_wp)
+    parser_kernels_pull_optional.add_argument('kernel',
+                                              nargs='?',
+                                              default=None,
+                                              help=Help.param_kernel)
+    parser_kernels_pull_optional.add_argument('-k',
+                                              '--kernel',
+                                              dest='kernel',
+                                              required=False,
+                                              help=argparse.SUPPRESS)
+    parser_kernels_pull_optional.add_argument('-p',
+                                              '--path',
+                                              dest='path',
+                                              required=False,
+                                              help=Help.param_downfolder)
+    parser_kernels_pull_optional.add_argument('-w',
+                                              '--wp',
+                                              dest='path',
+                                              action='store_const',
+                                              const='.',
+                                              required=False,
+                                              help=Help.param_wp)
     parser_kernels_pull_optional.add_argument(
         '-m',
         '--metadata',
@@ -867,42 +850,39 @@ def parse_kernels(subparsers):
         formatter_class=argparse.RawTextHelpFormatter,
         help=Help.command_kernels_output)
     parser_kernels_output_optional = parser_kernels_output._action_groups.pop()
-    parser_kernels_output_optional.add_argument(
-        'kernel', nargs='?', default=None, help=Help.param_kernel)
-    parser_kernels_output_optional.add_argument(
-        '-k',
-        '--kernel',
-        dest='kernel_opt',
-        required=False,
-        help=argparse.SUPPRESS)
-    parser_kernels_output_optional.add_argument(
-        '-p',
-        '--path',
-        dest='path',
-        required=False,
-        help=Help.param_downfolder)
-    parser_kernels_output_optional.add_argument(
-        '-w',
-        '--wp',
-        dest='path',
-        action='store_const',
-        const='.',
-        required=False,
-        help=Help.param_wp)
-    parser_kernels_output_optional.add_argument(
-        '-o',
-        '--force',
-        dest='force',
-        action='store_true',
-        required=False,
-        help=Help.param_force)
-    parser_kernels_output_optional.add_argument(
-        '-q',
-        '--quiet',
-        dest='quiet',
-        action='store_true',
-        required=False,
-        help=Help.param_quiet)
+    parser_kernels_output_optional.add_argument('kernel',
+                                                nargs='?',
+                                                default=None,
+                                                help=Help.param_kernel)
+    parser_kernels_output_optional.add_argument('-k',
+                                                '--kernel',
+                                                dest='kernel_opt',
+                                                required=False,
+                                                help=argparse.SUPPRESS)
+    parser_kernels_output_optional.add_argument('-p',
+                                                '--path',
+                                                dest='path',
+                                                required=False,
+                                                help=Help.param_downfolder)
+    parser_kernels_output_optional.add_argument('-w',
+                                                '--wp',
+                                                dest='path',
+                                                action='store_const',
+                                                const='.',
+                                                required=False,
+                                                help=Help.param_wp)
+    parser_kernels_output_optional.add_argument('-o',
+                                                '--force',
+                                                dest='force',
+                                                action='store_true',
+                                                required=False,
+                                                help=Help.param_force)
+    parser_kernels_output_optional.add_argument('-q',
+                                                '--quiet',
+                                                dest='quiet',
+                                                action='store_true',
+                                                required=False,
+                                                help=Help.param_quiet)
     parser_kernels_output._action_groups.append(parser_kernels_output_optional)
     parser_kernels_output.set_defaults(func=api.kernels_output_cli)
 
@@ -912,14 +892,15 @@ def parse_kernels(subparsers):
         formatter_class=argparse.RawTextHelpFormatter,
         help=Help.command_kernels_status)
     parser_kernels_status_optional = parser_kernels_status._action_groups.pop()
-    parser_kernels_status_optional.add_argument(
-        'kernel', nargs='?', default=None, help=Help.param_kernel)
-    parser_kernels_status_optional.add_argument(
-        '-k',
-        '--kernel',
-        dest='kernel_opt',
-        required=False,
-        help=argparse.SUPPRESS)
+    parser_kernels_status_optional.add_argument('kernel',
+                                                nargs='?',
+                                                default=None,
+                                                help=Help.param_kernel)
+    parser_kernels_status_optional.add_argument('-k',
+                                                '--kernel',
+                                                dest='kernel_opt',
+                                                required=False,
+                                                help=argparse.SUPPRESS)
     parser_kernels_status._action_groups.append(parser_kernels_status_optional)
     parser_kernels_status.set_defaults(func=api.kernels_status_cli)
 
@@ -931,8 +912,8 @@ def parse_models(subparsers):
         help=Help.group_models,
         aliases=['m'])
 
-    subparsers_models = parser_models.add_subparsers(
-        title='commands', dest='command')
+    subparsers_models = parser_models.add_subparsers(title='commands',
+                                                     dest='command')
     subparsers_models.required = True
     subparsers_models.choices = Help.models_choices
 
@@ -946,12 +927,11 @@ def parse_models(subparsers):
         help=Help.command_models_get)
     parser_models_get_optional = parser_models_get._action_groups.pop()
     parser_models_get_optional.add_argument('model', help=Help.param_model)
-    parser_models_get_optional.add_argument(
-        '-p',
-        '--path',
-        dest='folder',
-        required=False,
-        help=Help.param_model_downfile)
+    parser_models_get_optional.add_argument('-p',
+                                            '--path',
+                                            dest='folder',
+                                            required=False,
+                                            help=Help.param_model_downfile)
     parser_models_get._action_groups.append(parser_models_get_optional)
     parser_models_get.set_defaults(func=api.model_get_cli)
 
@@ -961,32 +941,32 @@ def parse_models(subparsers):
         formatter_class=argparse.RawTextHelpFormatter,
         help=Help.command_models_list)
     parser_models_list_optional = parser_models_list._action_groups.pop()
-    parser_models_list.add_argument(
-        '--sort-by',
-        dest='sort_by',
-        required=False,
-        help=Help.param_model_sort_by)
-    parser_models_list.add_argument(
-        '-s',
-        '--search',
-        dest='search',
-        required=False,
-        help=Help.param_search)
-    parser_models_list.add_argument(
-        '--owner', dest='owner', required=False, help=Help.param_model_owner)
-    parser_models_list.add_argument(
-        '--page-size', dest='page_size', default=20, help=Help.param_page_size)
-    parser_models_list.add_argument(
-        '--page-token',
-        dest='page_token',
-        required=False,
-        help=Help.param_page_token)
-    parser_models_list.add_argument(
-        '-v',
-        '--csv',
-        dest='csv_display',
-        action='store_true',
-        help=Help.param_csv)
+    parser_models_list.add_argument('--sort-by',
+                                    dest='sort_by',
+                                    required=False,
+                                    help=Help.param_model_sort_by)
+    parser_models_list.add_argument('-s',
+                                    '--search',
+                                    dest='search',
+                                    required=False,
+                                    help=Help.param_search)
+    parser_models_list.add_argument('--owner',
+                                    dest='owner',
+                                    required=False,
+                                    help=Help.param_model_owner)
+    parser_models_list.add_argument('--page-size',
+                                    dest='page_size',
+                                    default=20,
+                                    help=Help.param_page_size)
+    parser_models_list.add_argument('--page-token',
+                                    dest='page_token',
+                                    required=False,
+                                    help=Help.param_page_token)
+    parser_models_list.add_argument('-v',
+                                    '--csv',
+                                    dest='csv_display',
+                                    action='store_true',
+                                    help=Help.param_csv)
     parser_models_list._action_groups.append(parser_models_list_optional)
     parser_models_list.set_defaults(func=api.model_list_cli)
 
@@ -996,12 +976,11 @@ def parse_models(subparsers):
         formatter_class=argparse.RawTextHelpFormatter,
         help=Help.command_models_init)
     parser_models_init_optional = parser_models_init._action_groups.pop()
-    parser_models_init_optional.add_argument(
-        '-p',
-        '--path',
-        dest='folder',
-        required=False,
-        help=Help.param_model_upfile)
+    parser_models_init_optional.add_argument('-p',
+                                             '--path',
+                                             dest='folder',
+                                             required=False,
+                                             help=Help.param_model_upfile)
     parser_models_init._action_groups.append(parser_models_init_optional)
     parser_models_init.set_defaults(func=api.model_initialize_cli)
 
@@ -1011,12 +990,11 @@ def parse_models(subparsers):
         formatter_class=argparse.RawTextHelpFormatter,
         help=Help.command_models_new)
     parser_models_create_optional = parser_models_create._action_groups.pop()
-    parser_models_create_optional.add_argument(
-        '-p',
-        '--path',
-        dest='folder',
-        required=False,
-        help=Help.param_model_upfile)
+    parser_models_create_optional.add_argument('-p',
+                                               '--path',
+                                               dest='folder',
+                                               required=False,
+                                               help=Help.param_model_upfile)
     parser_models_create._action_groups.append(parser_models_create_optional)
     parser_models_create.set_defaults(func=api.model_create_new_cli)
 
@@ -1027,8 +1005,11 @@ def parse_models(subparsers):
         help=Help.command_models_delete)
     parser_models_delete_optional = parser_models_delete._action_groups.pop()
     parser_models_delete_optional.add_argument('model', help=Help.param_model)
-    parser_models_delete_optional.add_argument(
-        '-y', '--yes', dest='yes', action='store_true', help=Help.param_yes)
+    parser_models_delete_optional.add_argument('-y',
+                                               '--yes',
+                                               dest='yes',
+                                               action='store_true',
+                                               help=Help.param_yes)
     parser_models_delete._action_groups.append(parser_models_delete_optional)
     parser_models_delete.set_defaults(func=api.model_delete_cli)
 
@@ -1038,12 +1019,11 @@ def parse_models(subparsers):
         formatter_class=argparse.RawTextHelpFormatter,
         help=Help.command_models_update)
     parser_models_update_optional = parser_models_update._action_groups.pop()
-    parser_models_update_optional.add_argument(
-        '-p',
-        '--path',
-        dest='folder',
-        required=False,
-        help=Help.param_model_upfile)
+    parser_models_update_optional.add_argument('-p',
+                                               '--path',
+                                               dest='folder',
+                                               required=False,
+                                               help=Help.param_model_upfile)
     parser_models_update._action_groups.append(parser_models_update_optional)
     parser_models_update.set_defaults(func=api.model_update_cli)
 
@@ -1113,12 +1093,11 @@ def parse_model_instances(subparsers):
         dest='folder',
         required=False,
         help=Help.param_model_instance_upfile)
-    parser_model_instances_create_optional.add_argument(
-        '-q',
-        '--quiet',
-        dest='quiet',
-        action='store_true',
-        help=Help.param_quiet)
+    parser_model_instances_create_optional.add_argument('-q',
+                                                        '--quiet',
+                                                        dest='quiet',
+                                                        action='store_true',
+                                                        help=Help.param_quiet)
     parser_model_instances_create_optional.add_argument(
         '-r',
         '--dir-mode',
@@ -1140,12 +1119,11 @@ def parse_model_instances(subparsers):
     )
     parser_model_instances_files_optional.add_argument(
         'model_instance', help=Help.param_model_instance)
-    parser_model_instances_files_optional.add_argument(
-        '-v',
-        '--csv',
-        dest='csv_display',
-        action='store_true',
-        help=Help.param_csv)
+    parser_model_instances_files_optional.add_argument('-v',
+                                                       '--csv',
+                                                       dest='csv_display',
+                                                       action='store_true',
+                                                       help=Help.param_csv)
     parser_model_instances_files_optional.add_argument(
         '--page-size', dest='page_size', default=20, help=Help.param_page_size)
     parser_model_instances_files_optional.add_argument(
@@ -1167,8 +1145,11 @@ def parse_model_instances(subparsers):
     )
     parser_model_instances_delete_optional.add_argument(
         'model_instance', help=Help.param_model_instance)
-    parser_model_instances_delete_optional.add_argument(
-        '-y', '--yes', dest='yes', action='store_true', help=Help.param_yes)
+    parser_model_instances_delete_optional.add_argument('-y',
+                                                        '--yes',
+                                                        dest='yes',
+                                                        action='store_true',
+                                                        help=Help.param_yes)
     parser_model_instances_delete._action_groups.append(
         parser_model_instances_delete_optional)
     parser_model_instances_delete.set_defaults(
@@ -1329,8 +1310,8 @@ def parse_files(subparsers):
         help=Help.group_files,
         aliases=['f'])
 
-    subparsers_files = parser_files.add_subparsers(
-        title='commands', dest='command')
+    subparsers_files = parser_files.add_subparsers(title='commands',
+                                                   dest='command')
     subparsers_files.required = True
     subparsers_files.choices = Help.files_choices
 
@@ -1376,8 +1357,8 @@ def parse_config(subparsers):
         'config',
         formatter_class=argparse.RawTextHelpFormatter,
         help=Help.group_config)
-    subparsers_config = parser_config.add_subparsers(
-        title='commands', dest='command')
+    subparsers_config = parser_config.add_subparsers(title='commands',
+                                                     dest='command')
     subparsers_config.required = True
     subparsers_config.choices = Help.config_choices
 
@@ -1394,18 +1375,16 @@ def parse_config(subparsers):
     parser_config_set._action_groups.pop()
     parser_config_set_required = parser_config_set.add_argument_group(
         'required arguments')
-    parser_config_set_required.add_argument(
-        '-n',
-        '--name',
-        dest='name',
-        required=True,
-        help=Help.param_config_name)
-    parser_config_set_required.add_argument(
-        '-v',
-        '--value',
-        dest='value',
-        required=True,
-        help=Help.param_config_value)
+    parser_config_set_required.add_argument('-n',
+                                            '--name',
+                                            dest='name',
+                                            required=True,
+                                            help=Help.param_config_name)
+    parser_config_set_required.add_argument('-v',
+                                            '--value',
+                                            dest='value',
+                                            required=True,
+                                            help=Help.param_config_value)
     parser_config_set.set_defaults(func=api.set_config_value)
 
     parser_config_unset = subparsers_config.add_parser(
@@ -1415,12 +1394,11 @@ def parse_config(subparsers):
     parser_config_unset._action_groups.pop()
     parser_config_unset_required = parser_config_unset.add_argument_group(
         'required arguments')
-    parser_config_unset_required.add_argument(
-        '-n',
-        '--name',
-        dest='name',
-        required=True,
-        help=Help.param_config_name)
+    parser_config_unset_required.add_argument('-n',
+                                              '--name',
+                                              dest='name',
+                                              required=True,
+                                              help=Help.param_config_name)
     parser_config_unset.set_defaults(func=api.unset_config_value)
 
 

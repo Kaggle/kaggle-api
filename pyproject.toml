@@ -1,0 +1,67 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "kaggle"
+dynamic = [
+    "version",
+]
+description = "Access Kaggle resources anywhere"
+authors = [
+    { name = "Kaggle", email = "support@kaggle.com" },
+]
+license = { file = "LICENSE" }
+readme = "README.md"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+]
+keywords = ["Kaggle", "API"]
+requires-python = ">=3.7"
+dependencies = [
+  "bleach", 
+  "certifi>=14.05.14",
+  "charset-normalizer",
+  "idna",
+  "python-dateutil>=2.5.3",
+  "python-slugify",
+  "requests",
+  "setuptools>=21.0.0",
+  "six>=1.10",
+  "text-unidecode",
+  "tqdm",
+  "urllib3>=1.15.1",
+  "webencodings"
+]
+
+[project.scripts]
+kaggle = "kaggle.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/Kaggle/kaggle-api"
+Issues = "https://github.com/Kaggle/kaggle-api/issues"
+
+[tool.hatch.version]
+path = "src/__init__.py"
+
+[tool.hatch.envs.default]
+dependencies = [
+  "pytest",
+]
+
+[tool.hatch.envs.default.scripts]
+install-autogen = """curl -fsSL --output /tmp/autogen.zip "https://github.com/mbrukman/autogen/archive/refs/heads/master.zip" && 
+  rm -rf /tmp/autogen && mkdir -p /tmp/autogen && unzip -qo /tmp/autogen.zip -d /tmp/autogen && 
+  mv /tmp/autogen/autogen-*/* /tmp/autogen && rm -rf /tmp/autogen/autogen-* && 
+  sudo chmod a+rx /tmp/autogen/autogen.sh"""
+# TODO: install in Mac/Windows
+install-yapf = """sudo apt-get install -y yapf3 python3-yapf || echo 'yapf could not be installed'"""
+install-deps = "hatch run install-autogen && hatch run install-yapf"
+
+integration-test = "pytest {args:integration_tests}"
+
+compile = "./tools/GeneratePythonLibrary.sh"
+install = "./tools/GeneratePythonLibrary.sh --install"
+watch = "./tools/GeneratePythonLibrary.sh --watch"

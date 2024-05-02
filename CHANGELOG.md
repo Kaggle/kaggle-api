@@ -1,5 +1,55 @@
 Changelog
 ====
+### 1.6.12
+
+* Re-release 1.6.11 without the `src` directory included in the package.
+
+### 1.6.11
+
+* Allow unauthenticated usage of "datasets download", "datasets files".
+  * This will only work after April 8th, 2024. More more details, see:
+    <https://www.kaggle.com/discussions/product-feedback/485439>
+* Allow "help" and "version" to be used for all commands, unauthenticated.
+* Fix: "dataset download -f" can accept a specific dataset version.
+
+### 1.6.10
+
+Repackage of 1.6.8 as a new release, to fix the problematic 1.6.9 release.
+
+### 1.6.9
+
+* Do not use. Problematic release that causes an error:
+  `ModuleNotFoundError: No module named 'kaggle.api'`
+
+### 1.6.8
+
+* Add "gguf"
+
+### 1.6.7
+
+* Add "TensorRtLlm" model framework.
+
+### 1.6.6
+
+* Add "GemmaCpp" and "GGML" model frameworks.
+
+### 1.6.5
+
+* Add "MaxText" model framework.
+
+### 1.6.4
+
+* Add "Transformers" model framework.
+
+### 1.6.3
+
+Release date: 01/11/24
+* Add "Flax" and "Pax" model frameworks.
+
+### 1.6.2
+
+Release date: 01/09/24
+* Add "Other" model framework.
 
 ### 1.6.1
 Release date: 01/08/24
@@ -19,7 +69,7 @@ Release date: 9/19/23
 
 #### 1.6.0a5
 Release date: 8/02/23
-* Add Keras framework
+* Add Keras model framework.
 
 #### 1.5.16
 Release date: 7/17/23

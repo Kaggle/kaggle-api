@@ -1,25 +1,12 @@
-#!/usr/bin/python
-#
-# Copyright 2024 Kaggle Inc
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#      http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 # coding=utf-8
 from setuptools import setup, find_packages
 
+# Note: pyproject.toml seems to be chosen by pip install over setup.py, so this
+# file is likely not being used anymore. We should verify and merge this into
+# pyproject.toml instead of maintaining both flows.
 setup(
     name='kaggle',
-    version='1.6.1',
+    version='1.6.12',
     description='Kaggle API',
     long_description=
     ('Official API for https://www.kaggle.com, accessible using a command line '
@@ -37,7 +24,7 @@ setup(
     entry_points={'console_scripts': ['kaggle = kaggle.cli:main']},
     install_requires=[
         'six >= 1.10',
-        'certifi',
+        'certifi >= 2023.7.22',
         'python-dateutil',
         'requests',
         'tqdm',
@@ -45,5 +32,5 @@ setup(
         'urllib3',
         'bleach',
     ],
-    packages=find_packages(),
+    packages=find_packages(exclude=("src.*", "src")),
     license='Apache 2.0')

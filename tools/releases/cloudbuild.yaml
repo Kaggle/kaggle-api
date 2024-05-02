@@ -1,0 +1,107 @@
+steps:
+  # Import builder if exists.
+  # Note: the reason to use bash is to be able to return an exit code 0 even if
+  # the docker image doesn't exist yet.
+  - name: "gcr.io/cloud-builders/docker"
+    entrypoint: "bash"
+    args:
+      - "-c"
+      - |
+        docker pull ${_IMAGE_REPO_NAME}/${PROJECT_ID}/cli-releaser || exit 0
+
+  # Build a modified version of the python image, including tools to build and
+  # release the Kaggle CLI.
+  # Use the previous built image as cache.
+  - name: "gcr.io/cloud-builders/docker"
+    dir: "tools/releases"
+    args:
+      - build
+      - -f
+      - Dockerfile
+      - -t
+      - ${_IMAGE_REPO_NAME}/${PROJECT_ID}/cli-releaser
+      - --cache-from
+      - ${_IMAGE_REPO_NAME}/${PROJECT_ID}/cli-releaser
+      - .
+
+  - name: "${_IMAGE_REPO_NAME}/${PROJECT_ID}/cli-releaser"
+    id: generate-cli
+    entrypoint: bash
+    args:
+      - "-c"
+      - |
+        mkdir -p ~/.kaggle/dev # Directory expected by following script
+        ./tools/GeneratePythonLibrary.sh
+        python3 setup.py develop
+        python3 setup.py sdist
+        # Move the built CLI to a volume that will survive to next steps.
+        mv dist /root/
+    volumes:
+      - name: "root"
+        path: /root
+
+  # Get the pypi token from Secret Manager, and create the ~/.pypirc file.
+  - name: "gcr.io/cloud-builders/gcloud"
+    id: create-credentials-pypirc
+    entrypoint: "bash"
+    args:
+      - "-c"
+      - |
+        token_test=$(gcloud secrets versions access latest --secret=test-pypi-token)
+        token=$(gcloud secrets versions access latest --secret=pypi-token)
+        cat >~/.pypirc <<EOL
+        [distutils]
+        index-servers =
+          pypi
+          pypitest
+        [pypi]
+        repository: https://upload.pypi.org/legacy/
+        username=__token__
+        password=${token}
+        [pypitest]
+        repository: https://test.pypi.org/legacy/
+        username=__token__
+        password=${token_test}
+        EOL
+    volumes:
+      - name: "root"
+        path: /root
+
+  - name: ${_IMAGE_REPO_NAME}/${PROJECT_ID}/cli-releaser
+    id: release-pypitest
+    waitFor: ["generate-cli", "create-credentials-pypirc"]
+    entrypoint: bash
+    args:
+      - "-c"
+      - |
+        if [ "$_TO_TEST" = "false" ] ; then
+            echo "Deployment to pypitest disabled, set substitution _TO_TEST to true if you want otherwise."
+            exit 0
+        fi
+        twine upload /root/dist/* -r pypitest
+    volumes:
+      - name: "root"
+        path: /root
+
+  - name: ${_IMAGE_REPO_NAME}/${PROJECT_ID}/cli-releaser
+    id: release-pypi
+    waitFor: ["release-pypitest"]
+    entrypoint: bash
+    args:
+      - "-c"
+      - |
+        if [ "$_TO_PROD" = "false" ] ; then
+            echo "Deployment to pypi disabled, set substitution _TO_PROD to true if you want otherwise."
+            exit 0
+        fi
+        twine upload /root/dist/* -r pypi
+    volumes:
+      - name: "root"
+        path: /root
+
+images: ["${_IMAGE_REPO_NAME}/${PROJECT_ID}/cli-releaser"]
+
+substitutions:
+  _IMAGE_REPO_NAME: us-docker.pkg.dev/kaggle-cicd/tools
+  _TO_TEST: "false"
+  _TO_PROD: "false"

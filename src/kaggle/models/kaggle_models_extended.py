@@ -21,7 +21,6 @@ from datetime import datetime
 
 
 class Competition(object):
-
     def __init__(self, init_dict):
         parsed_dict = {k: parse(v) for k, v in init_dict.items()}
         self.__dict__.update(parsed_dict)
@@ -32,7 +31,6 @@ class Competition(object):
 
 
 class SubmitResult(object):
-
     def __init__(self, init_dict):
         parsed_dict = {k: parse(v) for k, v in init_dict.items()}
         self.__dict__.update(parsed_dict)
@@ -42,7 +40,6 @@ class SubmitResult(object):
 
 
 class Submission(object):
-
     def __init__(self, init_dict):
         parsed_dict = {k: parse(v) for k, v in init_dict.items()}
         self.__dict__.update(parsed_dict)
@@ -56,7 +53,6 @@ class Submission(object):
 
 
 class LeaderboardEntry(object):
-
     def __init__(self, init_dict):
         parsed_dict = {k: parse(v) for k, v in init_dict.items()}
         self.__dict__.update(parsed_dict)
@@ -66,7 +62,6 @@ class LeaderboardEntry(object):
 
 
 class Dataset(object):
-
     def __init__(self, init_dict):
         parsed_dict = {k: parse(v) for k, v in init_dict.items()}
         self.__dict__.update(parsed_dict)
@@ -80,7 +75,6 @@ class Dataset(object):
 
 
 class Model(object):
-
     def __init__(self, init_dict):
         parsed_dict = {k: parse(v) for k, v in init_dict.items()}
         self.__dict__.update(parsed_dict)
@@ -90,7 +84,6 @@ class Model(object):
 
 
 class Metadata(object):
-
     def __init__(self, init_info):
         parsed_info = {k: parse(v) for k, v in init_info.items()}
         # backwards compatibility
@@ -103,7 +96,6 @@ class Metadata(object):
 
 
 class DatasetVersion(object):
-
     def __init__(self, init_dict):
         parsed_dict = {k: parse(v) for k, v in init_dict.items()}
         self.__dict__.update(parsed_dict)
@@ -113,7 +105,6 @@ class DatasetVersion(object):
 
 
 class File(object):
-
     def __init__(self, init_dict):
         parsed_dict = {k: parse(v) for k, v in init_dict.items()}
         self.__dict__.update(parsed_dict)
@@ -133,7 +124,6 @@ class File(object):
 
 
 class Tag(object):
-
     def __init__(self, init_dict):
         parsed_dict = {k: parse(v) for k, v in init_dict.items()}
         self.__dict__.update(parsed_dict)
@@ -143,7 +133,6 @@ class Tag(object):
 
 
 class DatasetNewVersionResponse(object):
-
     def __init__(self, init_dict):
         parsed_dict = {k: parse(v) for k, v in init_dict.items()}
         self.__dict__.update(parsed_dict)
@@ -153,7 +142,6 @@ class DatasetNewVersionResponse(object):
 
 
 class DatasetNewResponse(object):
-
     def __init__(self, init_dict):
         parsed_dict = {k: parse(v) for k, v in init_dict.items()}
         self.__dict__.update(parsed_dict)
@@ -163,7 +151,6 @@ class DatasetNewResponse(object):
 
 
 class ListFilesResult(object):
-
     def __init__(self, init_dict):
         self.error_message = init_dict['errorMessage']
         files = init_dict['datasetFiles']
@@ -171,13 +158,17 @@ class ListFilesResult(object):
             self.files = [File(f) for f in files]
         else:
             self.files = {}
+        token = init_dict['nextPageToken']
+        if token:
+            self.nextPageToken = token
+        else:
+            self.nextPageToken = ""
 
     def __repr__(self):
         return self.error_message
 
 
 class Kernel:
-
     def __init__(self, init_dict):
         parsed_dict = {k: parse(v) for k, v in init_dict.items()}
         self.__dict__.update(parsed_dict)
@@ -187,7 +178,6 @@ class Kernel:
 
 
 class KernelPushResponse(object):
-
     def __init__(self, init_dict):
         parsed_dict = {k: parse(v) for k, v in init_dict.items()}
         self.__dict__.update(parsed_dict)
@@ -197,7 +187,6 @@ class KernelPushResponse(object):
 
 
 class ModelNewResponse(object):
-
     def __init__(self, init_dict):
         parsed_dict = {k: parse(v) for k, v in init_dict.items()}
         self.__dict__.update(parsed_dict)
@@ -207,7 +196,6 @@ class ModelNewResponse(object):
 
 
 class ModelDeleteResponse(object):
-
     def __init__(self, init_dict):
         parsed_dict = {k: parse(v) for k, v in init_dict.items()}
         self.__dict__.update(parsed_dict)

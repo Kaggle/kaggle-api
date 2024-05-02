@@ -16,11 +16,27 @@ pip install kaggle
 
 ## Development
 
+### Kaggle Internal
+
+Obviously, this depends on Kaggle services. When you're extending the API and modifying
+or adding to those services, you should be working in your Kaggle mid-tier development
+environment. You'll run Kaggle locally, in the container, and test the Python code by
+running it in the container so it can connect to your local testing environment.
+
+Also, run the following command to get `autogen.sh` installed: ```bash
+rm -rf /tmp/autogen && mkdir -p /tmp/autogen && unzip -qo /tmp/autogen.zip -d /tmp/autogen &&
+mv /tmp/autogen/autogen-*/* /tmp/autogen && rm -rf /tmp/autogen/autogen-* &&
+sudo chmod a+rx /tmp/autogen/autogen.sh
+```
+
 ### Prerequisites
 
 We use [hatch](https://hatch.pypa.io) to manage this project.
 
 Follow these [instructions](https://hatch.pypa.io/latest/install/) to install it.
+
+If you are working in a managed environment, you may want to use `pipx`. If it isn't already installed
+try `sudo apt install pipx`. Then you should be able to proceed with `pipx install hatch`.
 
 ### Dependencies
 

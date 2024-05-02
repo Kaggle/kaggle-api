@@ -264,6 +264,17 @@ paths:
           required: true
           type: string
           description: Competition name
+        - in: query
+          name: pageToken
+          required: false
+          type: string
+          description: Page token for pagination
+        - in: query
+          name: pageSize
+          required: false
+          type: integer
+          default: 20
+          description: Number of items per page (default 20)
       responses:
         200:
           description: Result
@@ -462,6 +473,17 @@ paths:
           required: false
           type: string
           description: Dataset version number
+        - in: query
+          name: pageToken
+          required: false
+          type: string
+          description: Page token for pagination
+        - in: query
+          name: pageSize
+          required: false
+          default: 20
+          type: integer
+          description: Number of items per page (default 20)
       responses:
         200:
           description: Result
@@ -681,7 +703,7 @@ paths:
           name: pageSize
           type: integer
           default: 20
-          description: Page size
+          description: Number of items per page (default 20)
         - in: query
           name: search
           default: ""
@@ -744,6 +766,48 @@ paths:
           name: parentKernel
           type: string
           description: Display kernels that have forked the specified kernel
+      responses:
+        200:
+          description: Result
+          schema:
+            $ref: "#/definitions/Result"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/Error"
+  /kernels/files:
+    get:
+      tags:
+        - kaggle
+      summary: List kernel files
+      operationId: KernelsListFiles
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: userName
+          required: true
+          type: string
+          description: Kernel owner
+        - in: query
+          name: kernelSlug
+          required: true
+          type: string
+          description: Kernel name
+        - in: query
+          name: kernelVersionNumber
+          required: false
+          type: string
+          description: Kernel version number
+        - in: query
+          name: pageSize
+          type: integer
+          default: 20
+          description: Number of items per page (default 20)
+        - in: query
+          name: pageToken
+          type: string
+          description: Page token for pagination
       responses:
         200:
           description: Result
@@ -991,8 +1055,55 @@ paths:
         - in: query
           name: pageSize
           type: integer
-          default: 1
-          description: Page size
+          default: 20
+          description: Number of items per page (default 20)
+        - in: query
+          name: pageToken
+          type: string
+          description: Page token for pagination
+      responses:
+        200:
+          description: Result
+          schema:
+            $ref: "#/definitions/Result"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/Error"
+  /models/{ownerSlug}/{modelSlug}/{framework}/{instanceSlug}/files:
+    get:
+      tags:
+        - kaggle
+      summary: List model instance files for the current version
+      operationId: ModelInstanceFiles
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: ownerSlug
+          required: true
+          type: string
+          description: Model owner
+        - in: path
+          name: modelSlug
+          required: true
+          type: string
+          description: Model name
+        - in: path
+          name: framework
+          required: true
+          type: string
+          description: Model instance framework
+        - in: path
+          name: instanceSlug
+          required: true
+          type: string
+          description: Model instance slug
+        - in: query
+          name: pageSize
+          type: integer
+          default: 20
+          description: Number of items per page (default 20)
         - in: query
           name: pageToken
           type: string
@@ -1385,6 +1496,58 @@ paths:
           required: true
           type: string
           description: Model instance version number
+      responses:
+        200:
+          description: Result
+          schema:
+            $ref: "#/definitions/Result"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/Error"
+  /models/{ownerSlug}/{modelSlug}/{framework}/{instanceSlug}/{versionNumber}/files:
+    get:
+      tags:
+        - kaggle
+      summary: List model instance version files
+      operationId: ModelInstanceVersionFiles
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: ownerSlug
+          required: true
+          type: string
+          description: Model owner
+        - in: path
+          name: modelSlug
+          required: true
+          type: string
+          description: Model name
+        - in: path
+          name: framework
+          required: true
+          type: string
+          description: Model instance framework
+        - in: path
+          name: instanceSlug
+          required: true
+          type: string
+          description: Model instance slug
+        - in: path
+          name: versionNumber
+          required: true
+          type: string
+          description: Model instance version number
+        - in: query
+          name: pageSize
+          type: integer
+          default: 20
+          description: Number of items per page (default 20)
+        - in: query
+          name: pageToken
+          type: string
+          description: Page token for pagination
       responses:
         200:
           description: Result

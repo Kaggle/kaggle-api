@@ -274,7 +274,6 @@ class KaggleApi(KaggleApi):
     MAX_NUM_INBOX_FILES_TO_UPLOAD = 1000
     MAX_UPLOAD_RESUME_ATTEMPTS = 10
 
-
     config_dir = os.environ.get('KAGGLE_CONFIG_DIR')
 
     if not config_dir:
@@ -283,13 +282,8 @@ class KaggleApi(KaggleApi):
         # otherwise follow XDG base directory specification
         if sys.platform.startswith('linux') and not os.path.exists(config_dir):
             config_dir = os.path.join(
-                (
-                    os.environ.get('XDG_CONFIG_HOME')
-                    or
-                    os.path.join(expanduser('~'), '.config')
-                ),
-                'kaggle'
-            )
+                (os.environ.get('XDG_CONFIG_HOME')
+                 or os.path.join(expanduser('~'), '.config')), 'kaggle')
 
     if not os.path.exists(config_dir):
         os.makedirs(config_dir)

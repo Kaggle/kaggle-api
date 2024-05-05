@@ -8,14 +8,14 @@ if [[ "$0" == "$BASH_SOURCE" ]]; then
 fi
 
 export KAGGLE_API_ENDPOINT=http://localhost
-export KAGGLE_CONFIG_DIR=$(realpath ~/.kaggle/dev)
+export KAGGLE_CONFIG_DIR=$(realpath "${XDG_CONFIG_HOME:-$HOME/.config}/kaggle/dev")
 
 KAGGLE_CONFIG_FILE="$KAGGLE_CONFIG_DIR/kaggle.json"
 if ! [[ -f "$KAGGLE_CONFIG_FILE" ]]; then
   # Generate a separate dev credentials file (kaggle.json) to use when running against
   # http://localhost. This token only works when the webtier is running locally in debug
   # mode. When running against localhost, we set KAGGLE_CONFIG_DIR env var to
-  # "~/.kaggle/dev/" so that the Python client searches for kaggle.json under this folder
+  # "~/.config/kaggle/dev/" so that the Python client searches for kaggle.json under this folder
   # and uses dummy dev creds
   
   mkdir -p $KAGGLE_CONFIG_DIR

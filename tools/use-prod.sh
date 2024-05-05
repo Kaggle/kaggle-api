@@ -10,10 +10,10 @@ fi
 unset KAGGLE_API_ENDPOINT
 unset KAGGLE_CONFIG_DIR
 
-if ! [[ -f ~/.kaggle/kaggle.json ]]; then
+if ! [[ -f "${XDG_CONFIG_HOME:-$HOME/.config}/kaggle/kaggle.json" ]]; then
   echo "Warning: Please download an API token at https://www.kaggle.com/settings and"
   echo "copy it to home directory to run the client against prod."
   echo
 else
-  chmod 600 ~/.kaggle/kaggle.json
+  chmod 600 "${XDG_CONFIG_HOME:-$HOME/.config}/kaggle/kaggle.json"
 fi

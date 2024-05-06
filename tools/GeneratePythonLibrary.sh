@@ -65,15 +65,16 @@ cd $SELF_DIR
 
 SWAGGER_YAML=$SELF_DIR/src/KaggleSwagger.yaml
 SWAGGER_CONFIG=$SELF_DIR/src/KaggleSwaggerConfig.json
-mkdir -p ~/.kaggle/dev
-KAGGLE_DEV_CONFIG_DIR=$(realpath ~/.kaggle/dev)
+KAGGLE_XDG_CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/kaggle"
+mkdir -p "$KAGGLE_XDG_CONFIG_DIR"
+KAGGLE_DEV_CONFIG_DIR=$(realpath "$KAGGLE_XDG_CONFIG_DIR/dev")
 
 trap cleanup EXIT
 
 function init {
   cd $SELF_DIR
 
-  mkdir -p ~/.kaggle && chmod 700 ~/.kaggle
+  mkdir -p "$KAGGLE_XDG_CONFIG_DIR" && chmod 700 "$KAGGLE_XDG_CONFIG_DIR"
 
   echo "rm -rf kaggle"
   rm -rf kaggle
@@ -99,7 +100,7 @@ function create-local-creds {
   # Generate a separate dev credentials file (kaggle.json) to use when running against
   # http://localhost. This token only works when the webtier is running locally in debug
   # mode. When running against localhost, we set KAGGLE_CONFIG_DIR env var to
-  # "~/.kaggle/dev/" so that the Python client searches for kaggle.json under this folder
+  # "~/.config/kaggle/dev/" so that the Python client searches for kaggle.json under this folder
   # and uses dummy dev creds
   local kaggle_config_file="$KAGGLE_DEV_CONFIG_DIR/kaggle.json"
   mkdir -p $KAGGLE_DEV_CONFIG_DIR

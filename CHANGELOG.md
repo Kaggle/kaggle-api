@@ -2,7 +2,7 @@ Changelog
 ====
 ### 1.6.14
 
-* No changes; fixing a bad release.
+* No changes; release 1.6.13 isn't usable.
 
 ### 1.6.13
 

@@ -2,7 +2,7 @@ Changelog
 ====
 ### 1.6.13
 
-* Add --page-ize and --page-token CLI options to all commands that display lists of files.
+* Add --page-size and --page-token CLI options to all commands that display lists of files.
 
 ### 1.6.12
 

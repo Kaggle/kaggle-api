@@ -35,7 +35,7 @@ class TestAuthenticate(unittest.TestCase):
     def test_config_actions(self):
         api = KaggleApi()
 
-        self.assertTrue(api.config_dir.endswith('kaggle'))
+        self.assertTrue(api.config_dir.endswith('.kaggle'))
         self.assertEqual(api.get_config_value('doesntexist'), None)
 
 

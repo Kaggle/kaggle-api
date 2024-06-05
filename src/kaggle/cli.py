@@ -57,7 +57,7 @@ def main():
     del command_args['command']
     if command_args['disable_version_warning']:
         KaggleApi.already_printed_version_warning = True
-        del command_args['disable_version_warning']
+    del command_args['disable_version_warning']
     error = False
     try:
         out = args.func(**command_args)

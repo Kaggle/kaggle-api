@@ -31,7 +31,13 @@ def main():
     parser.add_argument('-v',
                         '--version',
                         action='version',
+                        help='Print the Kaggle API version',
                         version='Kaggle API ' + KaggleApi.__version__)
+    parser.add_argument('-W',
+                        '--no-warn',
+                        dest='disable_version_warning',
+                        action='store_true',
+                        help='Disable out-of-date API version warning')
 
     subparsers = parser.add_subparsers(title='commands',
                                        help=Help.kaggle,
@@ -49,6 +55,9 @@ def main():
     command_args.update(vars(args))
     del command_args['func']
     del command_args['command']
+    if command_args['disable_version_warning']:
+        KaggleApi.already_printed_version_warning = True
+        del command_args['disable_version_warning']
     error = False
     try:
         out = args.func(**command_args)

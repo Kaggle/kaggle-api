@@ -412,7 +412,9 @@ class KaggleApi(KaggleApi):
                 return
             else:
                 raise IOError('Could not find {}. Make sure it\'s located in'
-                              ' {}. Or use the environment method.'.format(
+                              ' {}. Or use the environment method. See setup'
+                              ' instructions at'
+                              ' https://github.com/Kaggle/kaggle-api/'.format(
                                   self.config_file, self.config_dir))
 
         # Step 3: load into configuration!

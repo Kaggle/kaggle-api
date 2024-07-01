@@ -398,8 +398,8 @@ class KaggleApi(KaggleApi):
                 or self.CONFIG_NAME_KEY not in config_data:
             if os.path.exists(self.config):
                 config_data = self.read_config_file(config_data)
-            elif self._is_help_or_version_command(api_command) or (len(
-                    sys.argv) > 2 and api_command.startswith(
+            elif self._is_help_or_version_command(api_command) or (
+                    len(sys.argv) > 2 and api_command.startswith(
                         self.command_prefixes_allowing_anonymous_access)):
                 # Some API commands should be allowed without authentication.
                 return
@@ -2318,6 +2318,10 @@ class KaggleApi(KaggleApi):
                 for cell in json_body['cells']:
                     if 'outputs' in cell and cell['cell_type'] == 'code':
                         cell['outputs'] = []
+                    # The spec allows a list of strings,
+                    # but the server expects just one
+                    if 'source' in cell and isinstance(cell['source'], list):
+                        cell['source'] = ''.join(cell['source'])
             script_body = json.dumps(json_body)
 
         kernel_push_request = KernelPushRequest(

@@ -2,7 +2,7 @@ Changelog
 ====
 ### 1.6.17
 
-* No changes; release 1.6.15 did not complete.
+* No changes; release 1.6.16 did not complete.
 
 ### 1.6.16
 

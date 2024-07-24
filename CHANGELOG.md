@@ -1,5 +1,9 @@
 Changelog
 ====
+### 1.6.16
+
+* No changes; release 1.6.15 isn't usable. We're working on process updates to prevent this from happening again.
+
 ### 1.6.15
 * Support XDG base directory specification on Linux
 * Disable out-of-date API version warning with -W

@@ -1,5 +1,9 @@
 Changelog
 ====
+### 1.6.17
+
+* No changes; release 1.6.16 did not complete.
+
 ### 1.6.16
 
 * No changes; release 1.6.15 isn't usable. We're working on process updates to prevent this from happening again.

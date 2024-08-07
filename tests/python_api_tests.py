@@ -198,7 +198,7 @@ print(len(result))
 print(f'Download leaderboard for competition: {competition}')
 api.competition_leaderboard_download(competition, 'tmp')
 os.remove(f'tmp/{competition}.zip')
-print('Downloaded and deleted {tmp/{competition}.zip}')
+print(f'Downloaded and deleted tmp/{competition}.zip')
 
 # List datasets
 print('List datasets')

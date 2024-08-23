@@ -32,6 +32,9 @@ from kaggle import api
 # KAGGLE_KEY=local_api_token
 # KAGGLE_USERNAME=<kaggle-user-name>
 
+# Add those envars to the Python Tests>Unittest template to
+# make running individual tests easier.
+
 test_user = api.config_values['username']
 model_title = 'testing'
 instance_name = 'test'
@@ -55,7 +58,7 @@ def tearDownModule():
     if os.path.exists(file):
         os.remove(file)
     file = os.path.join(kernel_directory, api.KERNEL_METADATA_FILE)
-    if os.path.exists:
+    if os.path.exists(file):
         os.remove(file)
     file = os.path.join(model_directory, api.MODEL_METADATA_FILE)
     if os.path.exists(file):
@@ -285,7 +288,7 @@ class TestKaggleApi(unittest.TestCase):
 
     # Competitions
 
-    def test_competitions_a_list(self):
+    def test_competition_a_list(self):
         try:
             competitions = api.competitions_list()
             self.assertGreater(len(competitions), 0)  # Assuming there should be some competitions
@@ -335,6 +338,7 @@ class TestKaggleApi(unittest.TestCase):
         try:
             api.competition_download_files(competition)
             self.assertTrue(os.path.exists(f'{competition}.zip'))
+            self.assertTrue(os.path.getsize(f'{competition}.zip') > 0)
         except ApiException as e:
             self.fail(f"competition_download_files failed: {e}")
         finally:

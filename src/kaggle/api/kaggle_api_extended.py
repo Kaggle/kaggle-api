@@ -1929,8 +1929,11 @@ class KaggleApi(KaggleApi):
         size = int(response.headers['Content-Length'])
         size_read = 0
         open_mode = 'wb'
-        remote_date = datetime.strptime(response.headers['Last-Modified'],
-                                        '%a, %d %b %Y %H:%M:%S %Z')
+        try:
+            remote_date = datetime.strptime(response.headers['Last-Modified'],
+                                            '%a, %d %b %Y %H:%M:%S %Z')
+        except KeyError:
+            remote_date = datetime.now()
         remote_date_timestamp = time.mktime(remote_date.timetuple())
 
         if not quiet:

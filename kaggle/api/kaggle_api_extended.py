@@ -414,8 +414,8 @@ class KaggleApi(KaggleApi):
                 or self.CONFIG_NAME_KEY not in config_data:
             if os.path.exists(self.config):
                 config_data = self.read_config_file(config_data)
-            elif self._is_help_or_version_command(api_command) or (
-                    len(sys.argv) > 2 and api_command.startswith(
+            elif self._is_help_or_version_command(api_command) or (len(
+                    sys.argv) > 2 and api_command.startswith(
                         self.command_prefixes_allowing_anonymous_access)):
                 # Some API commands should be allowed without authentication.
                 return
@@ -1537,15 +1537,18 @@ class KaggleApi(KaggleApi):
                 except zipfile.BadZipFile as e:
                     raise ValueError(
                         f"The file {outfile} is corrupted or not a valid zip file. "
-                        "Please report this issue at https://www.github.com/kaggle/kaggle-api")
+                        "Please report this issue at https://www.github.com/kaggle/kaggle-api"
+                    )
                 except FileNotFoundError:
                     raise FileNotFoundError(
                         f"The file {outfile} was not found. "
-                        "Please report this issue at https://www.github.com/kaggle/kaggle-api")
+                        "Please report this issue at https://www.github.com/kaggle/kaggle-api"
+                    )
                 except Exception as e:
                     raise RuntimeError(
                         f"An unexpected error occurred: {e}. "
-                        "Please report this issue at https://www.github.com/kaggle/kaggle-api")
+                        "Please report this issue at https://www.github.com/kaggle/kaggle-api"
+                    )
 
                 try:
                     os.remove(outfile)

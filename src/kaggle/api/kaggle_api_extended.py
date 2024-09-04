@@ -398,8 +398,8 @@ class KaggleApi(KaggleApi):
                 or self.CONFIG_NAME_KEY not in config_data:
             if os.path.exists(self.config):
                 config_data = self.read_config_file(config_data)
-            elif self._is_help_or_version_command(api_command) or (
-                    len(sys.argv) > 2 and api_command.startswith(
+            elif self._is_help_or_version_command(api_command) or (len(
+                    sys.argv) > 2 and api_command.startswith(
                         self.command_prefixes_allowing_anonymous_access)):
                 # Some API commands should be allowed without authentication.
                 return

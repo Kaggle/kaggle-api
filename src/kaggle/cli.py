@@ -1658,7 +1658,8 @@ class Help(object):
     command_model_instances_new = 'Create a new model instance'
     param_model_instance_downfile = (
         'Folder for downloading the special model-instance-metadata.json file '
-        '(https://github.com/Kaggle/kaggle-api/wiki/Model-Metadata#model-instance). ')
+        '(https://github.com/Kaggle/kaggle-api/wiki/Model-Metadata#model-instance). '
+    )
     param_model_instance_upfile = (
         'Folder for upload, containing data files and a '
         'special model-instance-metadata.json file '

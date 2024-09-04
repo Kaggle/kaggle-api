@@ -1520,19 +1520,8 @@ class KaggleApi(KaggleApi):
                         z.extractall(effective_path)
                 except zipfile.BadZipFile as e:
                     raise ValueError(
-                        f"The file {outfile} is corrupted or not a valid zip file. "
-                        "Please report this issue at https://www.github.com/kaggle/kaggle-api"
-                    )
-                except FileNotFoundError:
-                    raise FileNotFoundError(
-                        f"The file {outfile} was not found. "
-                        "Please report this issue at https://www.github.com/kaggle/kaggle-api"
-                    )
-                except Exception as e:
-                    raise RuntimeError(
-                        f"An unexpected error occurred: {e}. "
-                        "Please report this issue at https://www.github.com/kaggle/kaggle-api"
-                    )
+                        'Bad zip file, please report on '
+                        'www.github.com/kaggle/kaggle-api', e)
 
                 try:
                     os.remove(outfile)

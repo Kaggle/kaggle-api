@@ -1520,8 +1520,19 @@ class KaggleApi(KaggleApi):
                         z.extractall(effective_path)
                 except zipfile.BadZipFile as e:
                     raise ValueError(
-                        'Bad zip file, please report on '
-                        'www.github.com/kaggle/kaggle-api', e)
+                        f"The file {outfile} is corrupted or not a valid zip file. "
+                        "Please report this issue at https://www.github.com/kaggle/kaggle-api"
+                    )
+                except FileNotFoundError:
+                    raise FileNotFoundError(
+                        f"The file {outfile} was not found. "
+                        "Please report this issue at https://www.github.com/kaggle/kaggle-api"
+                    )
+                except Exception as e:
+                    raise RuntimeError(
+                        f"An unexpected error occurred: {e}. "
+                        "Please report this issue at https://www.github.com/kaggle/kaggle-api"
+                    )
 
                 try:
                     os.remove(outfile)
@@ -1929,11 +1940,12 @@ class KaggleApi(KaggleApi):
         size = int(response.headers['Content-Length'])
         size_read = 0
         open_mode = 'wb'
-        try:
+        last_modified = response.headers.get('Last-Modified')
+        if last_modified is None:
+            remote_date = datetime.now()
+        else:
             remote_date = datetime.strptime(response.headers['Last-Modified'],
                                             '%a, %d %b %Y %H:%M:%S %Z')
-        except KeyError:
-            remote_date = datetime.now()
         remote_date_timestamp = time.mktime(remote_date.timetuple())
 
         if not quiet:
@@ -3733,8 +3745,12 @@ class KaggleApi(KaggleApi):
             quiet: suppress verbose output (default is True)
         """
         try:
-            remote_date = datetime.strptime(response.headers['Last-Modified'],
-                                            '%a, %d %b %Y %H:%M:%S %Z')
+            last_modified = response.headers.get('Last-Modified')
+            if last_modified is None:
+                remote_date = datetime.now()
+            else:
+                remote_date = datetime.strptime(response.headers['Last-Modified'],
+                                                '%a, %d %b %Y %H:%M:%S %Z')
             file_exists = os.path.isfile(outfile)
             if file_exists:
                 local_date = datetime.fromtimestamp(os.path.getmtime(outfile))

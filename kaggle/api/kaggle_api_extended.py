@@ -1956,8 +1956,12 @@ class KaggleApi(KaggleApi):
         size = int(response.headers['Content-Length'])
         size_read = 0
         open_mode = 'wb'
-        remote_date = datetime.strptime(response.headers['Last-Modified'],
-                                        '%a, %d %b %Y %H:%M:%S %Z')
+        last_modified = response.headers.get('Last-Modified')
+        if last_modified is None:
+            remote_date = datetime.now()
+        else:
+            remote_date = datetime.strptime(response.headers['Last-Modified'],
+                                            '%a, %d %b %Y %H:%M:%S %Z')
         remote_date_timestamp = time.mktime(remote_date.timetuple())
 
         if not quiet:
@@ -3757,8 +3761,12 @@ class KaggleApi(KaggleApi):
             quiet: suppress verbose output (default is True)
         """
         try:
-            remote_date = datetime.strptime(response.headers['Last-Modified'],
-                                            '%a, %d %b %Y %H:%M:%S %Z')
+            last_modified = response.headers.get('Last-Modified')
+            if last_modified is None:
+                remote_date = datetime.now()
+            else:
+                remote_date = datetime.strptime(response.headers['Last-Modified'],
+                                                '%a, %d %b %Y %H:%M:%S %Z')
             file_exists = os.path.isfile(outfile)
             if file_exists:
                 local_date = datetime.fromtimestamp(os.path.getmtime(outfile))

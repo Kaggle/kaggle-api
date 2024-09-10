@@ -612,6 +612,7 @@ optional arguments:
                         Page token for pagination
   --page-size PAGE_SIZE Number of items to show on a page. Default size is 20, max is 50
   -v, --csv             Print results in CSV format (if not set then print in table format)
+  --vertex VERTEX_ONLY  'true' if you only want to return models with Vertex links, 'false' by default
 ```
 
 Example:

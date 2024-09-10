@@ -1,5 +1,7 @@
 import os
 import json
+import urllib.parse
+
 import requests
 from kagglesdk.kaggle_env import get_endpoint, get_env, KaggleEnv
 from kagglesdk.kaggle_object import KaggleObject
@@ -61,10 +63,9 @@ class KaggleHttpClient(object):
   def _prepare_request(self, service_name: str, request_name: str, request: KaggleObject):
     request_url = self._get_request_url(request)
     method = request.method()
-    if method == 'POST':
-      data = request.__class__.to_dict(request)
-    else:
-      data = []
+    data = request.__class__.to_dict(request)
+    if method == 'GET':
+      request_url = f'{request_url}?{urllib.parse.urlencode(data)}'
     http_request = requests.Request(
       method=method,
       url=request_url,

@@ -292,6 +292,7 @@ class TestKaggleApi(unittest.TestCase):
         try:
             competitions = api.competitions_list()
             self.assertGreater(len(competitions), 0)  # Assuming there should be some competitions
+            api.competitions_list_cli()
         except ApiException as e:
             self.fail(f"competitions_list failed: {e}")
 
@@ -310,6 +311,7 @@ class TestKaggleApi(unittest.TestCase):
             submissions = api.competition_submissions(competition)
             self.assertIsInstance(submissions, list)  # Assuming it returns a list of submissions
             self.assertGreater(len(submissions), 0)
+            api.competition_submissions_cli(competition)
         except ApiException as e:
             self.fail(f"competition_submissions failed: {e}")
 
@@ -319,6 +321,7 @@ class TestKaggleApi(unittest.TestCase):
             self.assertIsInstance(competition_files, list)
             self.assertGreater(len(competition_files), 0)
             self.competition_file = competition_files[0]
+            api.competition_list_files_cli(competition)
         except ApiException as e:
             self.fail(f"competition_list_files failed: {e}")
 
@@ -350,6 +353,7 @@ class TestKaggleApi(unittest.TestCase):
             result = api.competition_leaderboard_view(competition)
             self.assertIsInstance(result, list)
             self.assertGreater(len(result), 0)
+            api.competition_leaderboard_cli(competition, view=True)
         except ApiException as e:
             self.fail(f"competition_leaderboard_view failed: {e}")
 
@@ -371,7 +375,8 @@ class TestKaggleApi(unittest.TestCase):
         try:
             datasets = api.dataset_list(sort_by='votes')
             self.assertGreater(len(datasets), 0)  # Assuming there should be some datasets
-            self.dataset = str(datasets[0])
+            self.dataset = str(datasets[0].ref)
+            api.dataset_list_cli()
         except ApiException as e:
             self.fail(f"dataset_list failed: {e}")
 

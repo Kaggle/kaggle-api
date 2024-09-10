@@ -136,7 +136,7 @@ class File(object):
         self.size = File.get_size(self.totalBytes)
 
     def __repr__(self):
-        return self.ref
+        return self.name
 
     @staticmethod
     def get_size(size, precision=0):

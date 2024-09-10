@@ -7,6 +7,8 @@ class KaggleEnv(Enum):
   STAGING = 1  # staging.kaggle.com
   ADMIN = 2  # admin.kaggle.com
   QA = 3 # qa.kaggle.com
+  # Direct prod access is not allowed to have IAP protection during testing.
+  # PROD = 3  # www.kaggle.com
 
 
 _env_to_endpoint = {
@@ -14,6 +16,8 @@ _env_to_endpoint = {
   KaggleEnv.STAGING: 'https://staging.kaggle.com',
   KaggleEnv.ADMIN: 'https://admin.kaggle.com',
   KaggleEnv.QA: 'https://qa.kaggle.com',
+  # See the comment above in KaggleEnv enum.
+  # KaggleEnv.PROD: "http://www.kaggle.com",
 }
 
 

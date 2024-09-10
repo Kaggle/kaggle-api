@@ -31,6 +31,7 @@ setup(
         'python-slugify',
         'urllib3',
         'bleach',
+        'protobuf'
     ],
     packages=find_packages(exclude=("src.*", "src")),
     license='Apache 2.0')

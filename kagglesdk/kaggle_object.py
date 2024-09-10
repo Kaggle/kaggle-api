@@ -65,7 +65,15 @@ class EnumSerializer(ObjectSerializer):
     #   return enum_items[v[ix_start:]]
     # 
     # return enum_items[f'{enum_prefix}_{v}']
-    return cls[v]
+    try:
+      return cls[v]
+    except KeyError:
+      dct = vars(cls)
+      n = v.lower()
+      for key in dct.keys():
+        if key.lower() == n:
+          return dct[key]
+      raise
 
 
 class ListSerializer(ObjectSerializer):

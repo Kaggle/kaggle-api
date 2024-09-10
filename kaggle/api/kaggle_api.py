@@ -4213,6 +4213,7 @@ class KaggleApi(object):
         :param str owner: Display models by a specific user or organization
         :param int page_size: Number of items per page (default 20)
         :param str page_token: Page token for pagination
+        :param bool only_vertex_models: Only return models that have a Vertex link
         :return: Result
                  If the method is called asynchronously,
                  returns the request thread.
@@ -4238,12 +4239,13 @@ class KaggleApi(object):
         :param str owner: Display models by a specific user or organization
         :param int page_size: Number of items per page (default 20)
         :param str page_token: Page token for pagination
+        :param bool only_vertex_models: Only return models that have a Vertex link
         :return: Result
                  If the method is called asynchronously,
                  returns the request thread.
         """
 
-        all_params = ['search', 'sort_by', 'owner', 'page_size', 'page_token']  # noqa: E501
+        all_params = ['search', 'sort_by', 'owner', 'page_size', 'page_token', 'only_vertex_models']  # noqa: E501
         all_params.append('async_req')
         all_params.append('_return_http_data_only')
         all_params.append('_preload_content')
@@ -4274,6 +4276,8 @@ class KaggleApi(object):
             query_params.append(('pageSize', params['page_size']))  # noqa: E501
         if 'page_token' in params:
             query_params.append(('pageToken', params['page_token']))  # noqa: E501
+        if 'only_vertex_models' in params:
+            query_params.append(('only_vertex_models', params['only_vertex_models']))  # noqa: E501
 
         header_params = {}
 

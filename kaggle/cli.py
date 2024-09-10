@@ -976,6 +976,10 @@ def parse_models(subparsers):
                                     dest='csv_display',
                                     action='store_true',
                                     help=Help.param_csv)
+    parser_models_list.add_argument('-vertex',
+                                    dest='only_vertex_models',
+                                    action='store_true',
+                                    help=Help.param_model_vertex)
     parser_models_list._action_groups.append(parser_models_list_optional)
     parser_models_list.set_defaults(func=api.model_list_cli)
 
@@ -1663,6 +1667,7 @@ class Help(object):
         'Folder containing the special model-metadata.json file '
         '(https://github.com/Kaggle/kaggle-api/wiki/Model-Metadata). '
         'Defaults to current working directory')
+    param_model_vertex = ('Only return models that are Vertex models.')
 
     # Model Instances params
     param_model_instance = (

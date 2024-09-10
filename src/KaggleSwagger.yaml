@@ -1061,6 +1061,11 @@ paths:
           name: pageToken
           type: string
           description: Page token for pagination
+        - in: query
+          name: only_vertex_models
+          type: boolean
+          default: false
+          description: Only return models that have a Vertex link
       responses:
         200:
           description: Result

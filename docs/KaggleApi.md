@@ -2173,7 +2173,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **models_list**
-> Result models_list(search=search, sort_by=sort_by, owner=owner, page_size=page_size, page_token=page_token)
+> Result models_list(search=search, sort_by=sort_by, owner=owner, page_size=page_size, page_token=page_token, only_vertex_models=only_vertex_models)
 
 Lists models
 
@@ -2197,10 +2197,11 @@ sort_by = 'hotness' # str | Sort the results (optional) (default to hotness)
 owner = 'owner_example' # str | Display models by a specific user or organization (optional)
 page_size = 20 # int | Number of items per page (default 20) (optional) (default to 20)
 page_token = 'page_token_example' # str | Page token for pagination (optional)
+only_vertex_models = false # bool | Only return models that have a Vertex link (optional) (default to false)
 
 try:
     # Lists models
-    api_response = api_instance.models_list(search=search, sort_by=sort_by, owner=owner, page_size=page_size, page_token=page_token)
+    api_response = api_instance.models_list(search=search, sort_by=sort_by, owner=owner, page_size=page_size, page_token=page_token, only_vertex_models=only_vertex_models)
     pprint(api_response)
 except ApiException as e:
     print("Exception when calling KaggleApi->models_list: %s\n" % e)
@@ -2215,6 +2216,7 @@ Name | Type | Description  | Notes
  **owner** | **str**| Display models by a specific user or organization | [optional] 
  **page_size** | **int**| Number of items per page (default 20) | [optional] [default to 20]
  **page_token** | **str**| Page token for pagination | [optional] 
+ **only_vertex_models** | **bool**| Only return models that have a Vertex link | [optional] [default to false]
 
 ### Return type
 

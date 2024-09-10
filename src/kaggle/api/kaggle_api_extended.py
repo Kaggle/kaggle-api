@@ -2703,7 +2703,8 @@ class KaggleApi(KaggleApi):
                    search=None,
                    owner=None,
                    page_size=20,
-                   page_token=None):
+                   page_token=None,
+                   only_vertex_models=False):
         """ return a list of models!
 
             Parameters
@@ -2713,6 +2714,7 @@ class KaggleApi(KaggleApi):
             owner: username or organization slug to filter the search to
             page_size: the page size to return (default is 20)
             page_token: the page token for pagination
+            only_vertex_models: return vertex models only
         """
         if sort_by and sort_by not in self.valid_model_sort_bys:
             raise ValueError('Invalid sort by specified. Valid options are ' +
@@ -2722,11 +2724,13 @@ class KaggleApi(KaggleApi):
             raise ValueError('Page size must be >= 1')
 
         models_list_result = self.process_response(
-            self.models_list_with_http_info(sort_by=sort_by or 'hotness',
-                                            search=search or '',
-                                            owner=owner or '',
-                                            page_size=page_size,
-                                            page_token=page_token))
+            self.models_list_with_http_info(
+                sort_by=sort_by or 'hotness',
+                search=search or '',
+                owner=owner or '',
+                page_size=page_size,
+                page_token=page_token,
+                only_vertex_models=only_vertex_models))
 
         next_page_token = models_list_result['nextPageToken']
         if next_page_token:
@@ -2740,7 +2744,8 @@ class KaggleApi(KaggleApi):
                        owner=None,
                        page_size=20,
                        page_token=None,
-                       csv_display=False):
+                       csv_display=False,
+                       only_vertex_models=False):
         """ a wrapper to model_list for the client. Additional parameters
             are described here, see model_list for others.
 
@@ -2752,9 +2757,13 @@ class KaggleApi(KaggleApi):
             page_size: the page size to return (default is 20)
             page_token: the page token for pagination
             csv_display: if True, print comma separated values instead of table
+            only_vertex_models: return vertex models only
         """
-        models = self.model_list(sort_by, search, owner, page_size, page_token)
+        models = self.model_list(sort_by, search, owner, page_size, page_token,
+                                 only_vertex_models)
         fields = ['id', 'ref', 'title', 'subtitle', 'author']
+        if only_vertex_models:
+            fields.append('modelVersionLinks')
         if models:
             if csv_display:
                 self.print_csv(models, fields)

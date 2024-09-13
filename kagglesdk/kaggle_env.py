@@ -7,8 +7,8 @@ class KaggleEnv(Enum):
   STAGING = 1  # staging.kaggle.com
   ADMIN = 2  # admin.kaggle.com
   QA = 3 # qa.kaggle.com
-  # Direct prod access is not allowed to have IAP protection during testing.
-  # PROD = 3  # www.kaggle.com
+  # Direct prod access is not allowed to have IAP protection during testing, but we support basic auth.
+  PROD = 4  # www.kaggle.com
 
 
 _env_to_endpoint = {
@@ -17,7 +17,7 @@ _env_to_endpoint = {
   KaggleEnv.ADMIN: 'https://admin.kaggle.com',
   KaggleEnv.QA: 'https://qa.kaggle.com',
   # See the comment above in KaggleEnv enum.
-  # KaggleEnv.PROD: "http://www.kaggle.com",
+  KaggleEnv.PROD: "https://www.kaggle.com",
 }
 
 
@@ -37,4 +37,6 @@ def get_env():
     return KaggleEnv.STAGING
   if env == 'QA':
     return KaggleEnv.QA
+  if env == 'PROD':
+    return KaggleEnv.PROD
   raise Exception(f'Unrecognized value in KAGGLE_API_ENVIRONMENT: "{env}"')

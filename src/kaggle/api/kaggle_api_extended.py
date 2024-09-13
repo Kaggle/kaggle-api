@@ -29,6 +29,9 @@ import tarfile
 import time
 import zipfile
 import tempfile
+
+from kagglesdk.datasets.types.dataset_api_service import ApiListDatasetsRequest
+from kagglesdk.datasets.types.dataset_enums import DatasetSelectionGroup, DatasetSortBy
 from ..api_client import ApiClient
 from kaggle.configuration import Configuration
 from .kaggle_api import KaggleApi
@@ -295,7 +298,7 @@ class KaggleApi(KaggleApi):
     config = os.path.join(config_dir, config_file)
     config_values = {}
     already_printed_version_warning = False
-    args = {}
+    args = {} # DEBUG Add --local to use localhost
 
     # Kernels valid types
     valid_push_kernel_types = ['script', 'notebook']
@@ -675,9 +678,10 @@ class KaggleApi(KaggleApi):
     def build_kaggle_client(self):
         env = KaggleEnv.STAGING if '--staging' in self.args \
             else KaggleEnv.ADMIN if '--admin' in self.args \
-            else KaggleEnv.LOCAL
+            else KaggleEnv.LOCAL if '--local' in self.args \
+            else KaggleEnv.PROD
         verbose = '--verbose' in self.args or '-v' in self.args
-        return KaggleClient(env=env, verbose=verbose)
+        return KaggleClient(env=env, verbose=verbose, username=config.username, password=config.password)
 
     def camel_to_snake(self, name):
         """
@@ -997,7 +1001,7 @@ class KaggleApi(KaggleApi):
             request.file_name = file_name
             response = kaggle.competitions.competition_api_client.download_data_file(request)
         url = response.history[0].url
-        outfile = os.path.join(effective_path, url.split('/')[-1])
+        outfile = os.path.join(effective_path, url.split('?')[0].split('/')[-1])
 
         if force or self.download_needed(response, outfile, quiet):
             self.download_file(response, outfile, quiet, not force)
@@ -1180,9 +1184,12 @@ class KaggleApi(KaggleApi):
             max_size: the maximum size of the dataset to return (bytes)
             min_size: the minimum size of the dataset to return (bytes)
         """
-        if sort_by and sort_by not in self.valid_dataset_sort_bys:
-            raise ValueError('Invalid sort by specified. Valid options are ' +
-                             str(self.valid_dataset_sort_bys))
+        if sort_by:
+            if sort_by not in self.valid_dataset_sort_bys:
+                raise ValueError('Invalid sort by specified. Valid options are ' +
+                                 str(self.valid_dataset_sort_bys))
+            else:
+                sort_by = DatasetSortBy[f"DATASET_SORT_BY_{sort_by.upper()}"]
 
         if size:
             raise ValueError(
@@ -1210,27 +1217,28 @@ class KaggleApi(KaggleApi):
         elif (min_size and int(min_size) < 0):
             raise ValueError('Min Size must be >= 0')
 
-        group = 'public'
+        group = DatasetSelectionGroup.DATASET_SELECTION_GROUP_PUBLIC
         if mine:
-            group = 'my'
+            group = DatasetSelectionGroup.DATASET_SELECTION_GROUP_MY
             if user:
                 raise ValueError('Cannot specify both mine and a user')
         if user:
-            group = 'user'
+            group = DatasetSelectionGroup.DATASET_SELECTION_GROUP_USER
 
-        datasets_list_result = self.process_response(
-            self.datasets_list_with_http_info(group=group,
-                                              sort_by=sort_by or 'hottest',
-                                              size=size,
-                                              filetype=file_type or 'all',
-                                              license=license_name or 'all',
-                                              tagids=tag_ids or '',
-                                              search=search or '',
-                                              user=user or '',
-                                              page=page,
-                                              max_size=max_size,
-                                              min_size=min_size))
-        return [Dataset(d) for d in datasets_list_result]
+        with self.build_kaggle_client() as kaggle:
+            request = ApiListDatasetsRequest()
+            request.group = group
+            request.sort_by = sort_by
+            request.file_type = file_type
+            request.license = license_name
+            request.tag_ids = tag_ids
+            request.search = search
+            request.user = user
+            request.page = page
+            request.max_size = max_size
+            request.min_size = min_size
+            response = kaggle.datasets.dataset_api_client.list_datasets(request)
+            return response.datasets
 
     def dataset_list_cli(self,
                          sort_by=None,
@@ -3812,7 +3820,7 @@ class KaggleApi(KaggleApi):
             pass
         return True
 
-    def print_table(self, items, fields, labels: None):
+    def print_table(self, items, fields, labels = None):
         """ print a table of items, for a set of fields defined
 
             Parameters
@@ -3845,7 +3853,7 @@ class KaggleApi(KaggleApi):
             except UnicodeEncodeError:
                 print(row_format.format(*i_fields).encode('utf-8'))
 
-    def print_csv(self, items, fields, labels: None):
+    def print_csv(self, items, fields, labels = None):
         """ print a set of fields in a set of items using a csv.writer
 
             Parameters

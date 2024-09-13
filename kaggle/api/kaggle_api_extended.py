@@ -314,7 +314,7 @@ class KaggleApi(KaggleApi):
     config = os.path.join(config_dir, config_file)
     config_values = {}
     already_printed_version_warning = False
-    args = {}
+    args = {} # DEBUG Add --local to use localhost
 
     # Kernels valid types
     valid_push_kernel_types = ['script', 'notebook']
@@ -694,9 +694,10 @@ class KaggleApi(KaggleApi):
     def build_kaggle_client(self):
         env = KaggleEnv.STAGING if '--staging' in self.args \
             else KaggleEnv.ADMIN if '--admin' in self.args \
-            else KaggleEnv.LOCAL
+            else KaggleEnv.LOCAL if '--local' in self.args \
+            else KaggleEnv.PROD
         verbose = '--verbose' in self.args or '-v' in self.args
-        return KaggleClient(env=env, verbose=verbose)
+        return KaggleClient(env=env, verbose=verbose, username=config.username, password=config.password)
 
     def camel_to_snake(self, name):
         """
@@ -1240,19 +1241,6 @@ class KaggleApi(KaggleApi):
         if user:
             group = DatasetSelectionGroup.DATASET_SELECTION_GROUP_USER
 
-        # datasets_list_result = self.process_response(
-        #     self.datasets_list_with_http_info(group=group,
-        #                                       sort_by=sort_by or 'hottest',
-        #                                       size=size,
-        #                                       filetype=file_type or 'all',
-        #                                       license=license_name or 'all',
-        #                                       tagids=tag_ids or '',
-        #                                       search=search or '',
-        #                                       user=user or '',
-        #                                       page=page,
-        #                                       max_size=max_size,
-        #                                       min_size=min_size))
-        # return [Dataset(d) for d in datasets_list_result]
         with self.build_kaggle_client() as kaggle:
             request = ApiListDatasetsRequest()
             request.group = group
@@ -1267,11 +1255,6 @@ class KaggleApi(KaggleApi):
             request.min_size = min_size
             response = kaggle.datasets.dataset_api_client.list_datasets(request)
             return response.datasets
-
-
-    @staticmethod
-    def method():
-        return 'POST'
 
     def dataset_list_cli(self,
                          sort_by=None,

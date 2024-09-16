@@ -314,7 +314,7 @@ class KaggleApi(KaggleApi):
     config = os.path.join(config_dir, config_file)
     config_values = {}
     already_printed_version_warning = False
-    args = {'--local'}  # DEBUG Add --local to use localhost
+    args = {}  # DEBUG Add --local to use localhost
 
     # Kernels valid types
     valid_push_kernel_types = ['script', 'notebook']

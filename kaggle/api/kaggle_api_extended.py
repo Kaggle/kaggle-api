@@ -314,7 +314,7 @@ class KaggleApi(KaggleApi):
     config = os.path.join(config_dir, config_file)
     config_values = {}
     already_printed_version_warning = False
-    args = {}  # DEBUG Add --local to use localhost
+    args = {'--local'}  # DEBUG Add --local to use localhost
 
     # Kernels valid types
     valid_push_kernel_types = ['script', 'notebook']
@@ -354,6 +354,15 @@ class KaggleApi(KaggleApi):
     # Command prefixes that are valid without authentication.
     command_prefixes_allowing_anonymous_access = ('datasets download',
                                                   'datasets files')
+
+    # Attributes
+    competition_fields = ['ref', 'deadline', 'category', 'reward', 'teamCount','userHasEntered']
+    submission_fields = ['fileName', 'date', 'description', 'status', 'publicScore', 'privateScore']
+    competition_file_fields = ['name', 'totalBytes', 'creationDate']
+    competition_file_labels = ['name', 'size', 'creationDate']
+    competition_leaderboard_fields = ['teamId', 'teamName', 'submissionDate', 'score']
+    dataset_fields = ['ref', 'title', 'totalBytes', 'lastUpdated', 'downloadCount', 'voteCount', 'usabilityRating']
+    dataset_labels = ['ref', 'title', 'size', 'lastUpdated', 'downloadCount', 'voteCount', 'usabilityRating']
 
     # Hack for https://github.com/Kaggle/kaggle-api/issues/22 / b/78194015
     if six.PY2:
@@ -697,6 +706,7 @@ class KaggleApi(KaggleApi):
             else KaggleEnv.LOCAL if '--local' in self.args \
             else KaggleEnv.PROD
         verbose = '--verbose' in self.args or '-v' in self.args
+        config = self.api_client.configuration
         return KaggleClient(env=env,
                             verbose=verbose,
                             username=config.username,
@@ -776,15 +786,11 @@ class KaggleApi(KaggleApi):
                                               sort_by=sort_by,
                                               page=page,
                                               search=search)
-        fields = [
-            'ref', 'deadline', 'category', 'reward', 'teamCount',
-            'userHasEntered'
-        ]
         if competitions:
             if csv_display:
-                self.print_csv(competitions, fields)
+                self.print_csv(competitions, self.competition_fields)
             else:
-                self.print_table(competitions, fields)
+                self.print_table(competitions, self.competition_fields)
         else:
             print('No competitions found')
 
@@ -921,15 +927,11 @@ class KaggleApi(KaggleApi):
             submissions = self.competition_submissions(competition,
                                                        page_token=page_token,
                                                        page_size=page_size)
-            fields = [
-                'fileName', 'date', 'description', 'status', 'publicScore',
-                'privateScore'
-            ]
             if submissions:
                 if csv_display:
-                    self.print_csv(submissions, fields)
+                    self.print_csv(submissions, submission_fields)
                 else:
-                    self.print_table(submissions, fields)
+                    self.print_table(submissions, submission_fields)
             else:
                 print('No submissions found')
 
@@ -985,13 +987,11 @@ class KaggleApi(KaggleApi):
             next_page_token = result.next_page_token
             if next_page_token:
                 print('Next Page Token = {}'.format(next_page_token))
-            fields = ['name', 'totalBytes', 'creationDate']
-            labels = ['name', 'size', 'creationDate']
             if result:
                 if csv_display:
-                    self.print_csv(result.files, fields, labels)
+                    self.print_csv(result.files, self.competition_file_fields, self.competition_file_labels)
                 else:
-                    self.print_table(result.files, fields, labels)
+                    self.print_table(result.files, self.competition_file_fields, self.competition_file_labels)
             else:
                 print('No files found')
 
@@ -1175,12 +1175,11 @@ class KaggleApi(KaggleApi):
 
         if view:
             results = self.competition_leaderboard_view(competition)
-            fields = ['teamId', 'teamName', 'submissionDate', 'score']
             if results:
                 if csv_display:
-                    self.print_csv(results, fields)
+                    self.print_csv(results, self.competition_leaderboard_fields)
                 else:
-                    self.print_table(results, fields)
+                    self.print_table(results, self.competition_leaderboard_fields)
             else:
                 print('No results found')
 
@@ -1304,15 +1303,11 @@ class KaggleApi(KaggleApi):
         datasets = self.dataset_list(sort_by, size, file_type, license_name,
                                      tag_ids, search, user, mine, page,
                                      max_size, min_size)
-        fields = [
-            'ref', 'title', 'size', 'lastUpdated', 'downloadCount',
-            'voteCount', 'usabilityRating'
-        ]
         if datasets:
             if csv_display:
-                self.print_csv(datasets, fields)
+                self.print_csv(datasets, self.dataset_fields, self.dataset_labels)
             else:
-                self.print_table(datasets, fields)
+                self.print_table(datasets, self.dataset_fields, self.dataset_labels)
         else:
             print('No datasets found')
 

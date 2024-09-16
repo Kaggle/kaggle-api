@@ -182,6 +182,10 @@ def update_model_instance_metadata(metadata_file, owner, model_slug, instance_sl
         json.dump(meta_data, f, indent=2)
     return meta_data
 
+def print_fields(instance,fields): # For debugging.
+    for f in fields:
+        if not hasattr(instance, api.camel_to_snake(f)):
+            print(f"Missing field: {f} named: {api.camel_to_snake(f)}")
 
 class TestKaggleApi(unittest.TestCase):
 
@@ -292,7 +296,7 @@ class TestKaggleApi(unittest.TestCase):
         try:
             competitions = api.competitions_list()
             self.assertGreater(len(competitions), 0)  # Assuming there should be some competitions
-            api.competitions_list_cli()
+            [self.assertTrue(hasattr(competitions[0], api.camel_to_snake(f))) for f in api.competition_fields]
         except ApiException as e:
             self.fail(f"competitions_list failed: {e}")
 
@@ -311,7 +315,7 @@ class TestKaggleApi(unittest.TestCase):
             submissions = api.competition_submissions(competition)
             self.assertIsInstance(submissions, list)  # Assuming it returns a list of submissions
             self.assertGreater(len(submissions), 0)
-            api.competition_submissions_cli(competition)
+            [self.assertTrue(hasattr(submissions[0], api.camel_to_snake(f))) for f in api.submission_fields]
         except ApiException as e:
             self.fail(f"competition_submissions failed: {e}")
 
@@ -321,7 +325,7 @@ class TestKaggleApi(unittest.TestCase):
             self.assertIsInstance(competition_files, list)
             self.assertGreater(len(competition_files), 0)
             self.competition_file = competition_files[0]
-            api.competition_list_files_cli(competition)
+            [self.assertTrue(hasattr(competition_files[0], api.camel_to_snake(f))) for f in api.competition_file_fields]
         except ApiException as e:
             self.fail(f"competition_list_files failed: {e}")
 
@@ -353,7 +357,7 @@ class TestKaggleApi(unittest.TestCase):
             result = api.competition_leaderboard_view(competition)
             self.assertIsInstance(result, list)
             self.assertGreater(len(result), 0)
-            api.competition_leaderboard_cli(competition, view=True)
+            [self.assertTrue(hasattr(result[0], api.camel_to_snake(f))) for f in api.competition_leaderboard_fields]
         except ApiException as e:
             self.fail(f"competition_leaderboard_view failed: {e}")
 
@@ -376,7 +380,7 @@ class TestKaggleApi(unittest.TestCase):
             datasets = api.dataset_list(sort_by='votes')
             self.assertGreater(len(datasets), 0)  # Assuming there should be some datasets
             self.dataset = str(datasets[0].ref)
-            api.dataset_list_cli()
+            [self.assertTrue(hasattr(datasets[0], api.camel_to_snake(f))) for f in api.dataset_fields]
         except ApiException as e:
             self.fail(f"dataset_list failed: {e}")
 

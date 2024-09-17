@@ -90,7 +90,7 @@ function reset {
 
   echo "yapf3 -ir src/"
   if [ -x "$(command -v yapf3)" ]; then
-    yapf3 -ir src/
+    yapf3 -ir --style='{based_on_style: yapf, indent_width: 4}' src/
   else
     echo "yapf3 is not installed on your system"
   fi

@@ -25,12 +25,14 @@ class KaggleClient(object):
     def __init__(self, http_client: KaggleHttpClient):
       self.dataset_api_client = DatasetApiClient(http_client)
 
-  def __init__(self, env: KaggleEnv = None, verbose: bool = False):
-    self._http_client = http_client = KaggleHttpClient(env, verbose, self._renew_iap_token)
+  def __init__(self, env: KaggleEnv = None, verbose: bool = False, username: str = None, password: str = None):
+    self._http_client = http_client = KaggleHttpClient(env, verbose, self._renew_iap_token, username=username, password=password)
     self.kernels = KaggleClient.Kernels(http_client)
     self.models = KaggleClient.Models(http_client)
     self.competitions = KaggleClient.Competitions(http_client)
     self.datasets = KaggleClient.Datasets(http_client)
+    self.username = username
+    self.password = password
 
   def _renew_iap_token(self):
     return self.admin.admin_client.renew_iap_token()

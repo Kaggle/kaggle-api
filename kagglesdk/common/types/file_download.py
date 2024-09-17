@@ -89,6 +89,10 @@ class FileDownload(KaggleObject):
     self._content_length = content_length
 
 
+  @classmethod
+  def prepare_from(cls, http_response):
+    return http_response
+
 FileDownload._fields = [
   FieldMetadata("contentType", "content_type", "_content_type", str, "", PredefinedSerializer()),
   FieldMetadata("fileName", "file_name", "_file_name", str, "", PredefinedSerializer()),

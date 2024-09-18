@@ -58,7 +58,7 @@ install-autogen = """curl -fsSL --output /tmp/autogen.zip "https://github.com/mb
   mv /tmp/autogen/autogen-*/* /tmp/autogen && rm -rf /tmp/autogen/autogen-* && 
   sudo chmod a+rx /tmp/autogen/autogen.sh"""
 # TODO: install in Mac/Windows
-install-yapf = """sudo apt-get install -y yapf3 python3-yapf || echo 'yapf could not be installed'"""
+install-yapf = """pip3 install yapf==0.40.2 --break-system-packages || echo 'yapf could not be installed'"""
 install-deps = "hatch run install-autogen && hatch run install-yapf"
 
 integration-test = "pytest {args:integration_tests}"

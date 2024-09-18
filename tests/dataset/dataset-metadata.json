@@ -1,0 +1,1 @@
+{"title": "kaggleapitestdataset", "id": "stevemessick/kaggleapitestdataset", "licenses": [{"name": "CC0-1.0"}], "versionNumber": 1, "resources": [{"path": "data.csv", "description": "Description", "schema": {"fields": [{"name": "NumberField", "description": "id", "type": "number"}, {"name": "StringField", "description": "label", "type": "string"}]}}]}

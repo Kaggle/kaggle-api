@@ -33,7 +33,8 @@ dependencies = [
   "text-unidecode",
   "tqdm",
   "urllib3>=1.15.1",
-  "webencodings"
+  "webencodings", 
+  "protobuf"
 ]
 
 [project.scripts]
@@ -58,7 +59,7 @@ install-autogen = """curl -fsSL --output /tmp/autogen.zip "https://github.com/mb
   mv /tmp/autogen/autogen-*/* /tmp/autogen && rm -rf /tmp/autogen/autogen-* && 
   sudo chmod a+rx /tmp/autogen/autogen.sh"""
 # TODO: install in Mac/Windows
-install-yapf = """sudo apt-get install -y yapf3 python3-yapf || echo 'yapf could not be installed'"""
+install-yapf = """pip3 install yapf==0.40.2 --break-system-packages || echo 'yapf could not be installed'"""
 install-toml = """sudo apt-get install -y python3-toml || echo 'toml could not be installed'"""
 install-java = """sudo apt-get install -y default-jre || echo 'java could not be installed'"""
 install-deps = "hatch run install-unzip && hatch run install-autogen && hatch run install-yapf && hatch run install-toml && hatch run install-java"

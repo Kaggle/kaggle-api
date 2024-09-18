@@ -63,5 +63,5 @@ target/
 #Ipython Notebook
 .ipynb_checkpoints
 
-# Rider
-.idea
+# Rider/IntelliJ
+.idea/

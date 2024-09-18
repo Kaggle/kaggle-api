@@ -1,5 +1,20 @@
 Changelog
 ====
+### 1.6.17
+
+* No changes; release 1.6.16 did not complete.
+
+### 1.6.16
+
+* No changes; release 1.6.15 isn't usable. We're working on process updates to prevent this from happening again.
+
+### 1.6.15
+* Support XDG base directory specification on Linux
+* Disable out-of-date API version warning with -W
+* Allow an array of strings in "source" when uploading .ipynb files (thanks to GitHub user mgallifrey for the contribution!)
+* Add triton framework for models
+* Update model licenses
+
 ### 1.6.14
 
 * No changes; release 1.6.13 isn't usable.

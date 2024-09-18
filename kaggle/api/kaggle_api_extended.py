@@ -33,16 +33,13 @@
 # coding=utf-8
 from __future__ import print_function
 import csv
-from datetime import datetime
 import io
-import json
 import os
 from os.path import expanduser
 from random import random
 import sys
 import shutil
 import tarfile
-import time
 import zipfile
 import tempfile
 
@@ -312,7 +309,7 @@ class KaggleApi(KaggleApi):
   config = os.path.join(config_dir, config_file)
   config_values = {}
   already_printed_version_warning = False
-  args = {}  # DEBUG Add --local to use localhost
+  args = {'--local'}  # DEBUG Add --local to use localhost
 
   # Kernels valid types
   valid_push_kernel_types = ['script', 'notebook']
@@ -1347,7 +1344,7 @@ class KaggleApi(KaggleApi):
               for c in metadata['collaborators']
           ],
           data=metadata['data'])
-      result = self.process_response(
+      result = self.process_response( # TODO
           self.metadata_post_with_http_info(owner_slug, dataset_slug,
                                             updateSettingsRequest))
       if (len(result['errors']) > 0):

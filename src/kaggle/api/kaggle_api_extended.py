@@ -16,75 +16,64 @@
 
 # coding=utf-8
 from __future__ import print_function
+
 import csv
 import io
 import os
+import shutil
+import sys
+import tarfile
+import tempfile
+import time
+import zipfile
 from os.path import expanduser
 from random import random
-import sys
-import shutil
-import tarfile
-import zipfile
-import tempfile
 
+import bleach
+import requests
+import urllib3.exceptions as urllib3_exceptions
+from requests.adapters import HTTPAdapter
+from slugify import slugify
+from tqdm import tqdm
+from urllib3.util.retry import Retry
+
+from kaggle.configuration import Configuration
+from kagglesdk import KaggleClient, KaggleEnv
+from kagglesdk.competitions.types.competition_api_service import *
 from kagglesdk.datasets.types.dataset_api_service import ApiListDatasetsRequest, ApiListDatasetFilesRequest, \
   ApiGetDatasetStatusRequest, ApiDownloadDatasetRequest, ApiCreateDatasetRequest, ApiCreateDatasetVersionRequestBody, \
   ApiCreateDatasetVersionByIdRequest, ApiCreateDatasetVersionRequest, ApiDatasetNewFile
 from kagglesdk.datasets.types.dataset_enums import DatasetSelectionGroup, DatasetSortBy
-from ..api_client import ApiClient
-from kaggle.configuration import Configuration
 from .kaggle_api import KaggleApi
+from ..api_client import ApiClient
 from ..models.api_blob_type import ApiBlobType
 from ..models.collaborator import Collaborator
 from ..models.create_inbox_file_request import CreateInboxFileRequest
 from ..models.dataset_column import DatasetColumn
 from ..models.dataset_new_request import DatasetNewRequest
-from ..models.dataset_new_version_request import DatasetNewVersionRequest
 from ..models.dataset_update_settings_request import DatasetUpdateSettingsRequest
-from ..models.kaggle_models_extended import Competition
-from ..models.kaggle_models_extended import Dataset
 from ..models.kaggle_models_extended import DatasetNewResponse
 from ..models.kaggle_models_extended import DatasetNewVersionResponse
 from ..models.kaggle_models_extended import File
 from ..models.kaggle_models_extended import Kernel
 from ..models.kaggle_models_extended import KernelPushResponse
-from ..models.kaggle_models_extended import LeaderboardEntry
 from ..models.kaggle_models_extended import ListFilesResult
 from ..models.kaggle_models_extended import Metadata
 from ..models.kaggle_models_extended import Model
-from ..models.kaggle_models_extended import ModelNewResponse
 from ..models.kaggle_models_extended import ModelDeleteResponse
+from ..models.kaggle_models_extended import ModelNewResponse
 from ..models.kaggle_models_extended import ResumableUploadResult
-from ..models.kaggle_models_extended import Submission
-from ..models.kaggle_models_extended import SubmitResult
 from ..models.kernel_push_request import KernelPushRequest
 from ..models.license import License
-from ..models.model_new_request import ModelNewRequest
-from ..models.model_new_instance_request import ModelNewInstanceRequest
 from ..models.model_instance_new_version_request import ModelInstanceNewVersionRequest
-from ..models.model_update_request import ModelUpdateRequest
 from ..models.model_instance_update_request import ModelInstanceUpdateRequest
+from ..models.model_new_instance_request import ModelNewInstanceRequest
+from ..models.model_new_request import ModelNewRequest
+from ..models.model_update_request import ModelUpdateRequest
 from ..models.start_blob_upload_request import StartBlobUploadRequest
 from ..models.start_blob_upload_response import StartBlobUploadResponse
 from ..models.upload_file import UploadFile
-import requests
-from requests.adapters import HTTPAdapter
-import requests.packages.urllib3.exceptions as urllib3_exceptions
-from requests.packages.urllib3.util.retry import Retry
 from ..rest import ApiException
-import six
-from slugify import slugify
-from tqdm import tqdm
-import bleach
-import time
-
-from kagglesdk import KaggleClient, KaggleEnv
-from kagglesdk.competitions.types.competition_api_service import *
-
-try:
-  unicode  # Python 2
-except NameError:
-  unicode = str  # Python 3
 
 
 class DirectoryArchive(object):
@@ -355,11 +344,6 @@ class KaggleApi(KaggleApi):
     'usabilityRating'
   ]
   dataset_file_fields = ['name', 'size', 'creationDate']
-
-  # Hack for https://github.com/Kaggle/kaggle-api/issues/22 / b/78194015
-  if six.PY2:
-    reload(sys)
-    sys.setdefaultencoding('latin1')
 
   def _is_retriable(self, e):
     return issubclass(type(e), ConnectionError) or \
@@ -916,9 +900,9 @@ class KaggleApi(KaggleApi):
         competition, page_token=page_token, page_size=page_size)
       if submissions:
         if csv_display:
-          self.print_csv(submissions, submission_fields)
+          self.print_csv(submissions, self.submission_fields)
         else:
-          self.print_table(submissions, submission_fields)
+          self.print_table(submissions, self.submission_fields)
       else:
         print('No submissions found')
 
@@ -3911,7 +3895,7 @@ class KaggleApi(KaggleApi):
       writer.writerow(i_fields)
 
   def string(self, item):
-    return item if isinstance(item, unicode) else str(item)
+    return item if isinstance(item, str) else str(item)
 
   def get_or_fail(self, data, key):
     if key in data:
@@ -4149,7 +4133,7 @@ class KaggleApi(KaggleApi):
 
     try:
       if resume:
-        resumable_upload_result = self._resume_upload(url, file_size, quiet)
+        resumable_upload_result = self._resume_upload(path, url, file_size, quiet)
         if resumable_upload_result.result != ResumableUploadResult.INCOMPLETE:
           return resumable_upload_result.result
 
@@ -4190,7 +4174,7 @@ class KaggleApi(KaggleApi):
       # in case it works on the next try.
       return ResumableUploadResult.INCOMPLETE
 
-  def _resume_upload(self, url, content_length, quiet):
+  def _resume_upload(self, path, url, content_length, quiet):
     # Documentation: https://developers.google.com/drive/api/guides/manage-uploads#resume-upload
     session = requests.Session()
     session.headers.update({
@@ -4204,7 +4188,7 @@ class KaggleApi(KaggleApi):
       return ResumableUploadResult.Complete()
     if response.status_code == 404:
       # Upload expired so need to start from scratch.
-      if not query:
+      if not quiet:
         print('Upload of %s expired. Please try again.' % path)
       return ResumableUploadResult.Failed()
     if response.status_code == 308:  # Resume Incomplete

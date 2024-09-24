@@ -919,9 +919,9 @@ class KaggleApi(KaggleApi):
         competition, page_token=page_token, page_size=page_size)
       if submissions:
         if csv_display:
-          self.print_csv(submissions, submission_fields)
+          self.print_csv(submissions, self.submission_fields)
         else:
-          self.print_table(submissions, submission_fields)
+          self.print_table(submissions, self.submission_fields)
       else:
         print('No submissions found')
 

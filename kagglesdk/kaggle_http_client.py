@@ -34,6 +34,16 @@ def _get_apikey_creds():
   api_key = api_key_data['key']
   return username, api_key
 
+def clean_data(data):
+  if isinstance(data, dict):
+    return {k: clean_data(v) for k, v in data.items() if v is not None}
+  if isinstance(data, list):
+    return [clean_data(v) for v in data if v is not None]
+  if data is True:
+    return 'true'
+  if data is False:
+    return 'false'
+  return data
 
 class KaggleHttpClient(object):
   _xsrf_cookie_name = 'XSRF-TOKEN'
@@ -75,6 +85,19 @@ class KaggleHttpClient(object):
         'Accept': 'application/json',
         'Content-Type': 'text/plain',
       })
+    elif method == 'POST':
+      self._session.headers.update({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      })
+      if isinstance(data, dict):
+        fields = request.body_fields()
+        if fields is not None:
+          if fields != '*':
+            data = data[fields]
+        data = clean_data(data)
+        data = data.__str__().replace("'", '"')
+        # TODO Remove quotes from numbers.
     http_request = requests.Request(
       method=method,
       url=request_url,

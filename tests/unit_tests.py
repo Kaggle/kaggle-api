@@ -459,58 +459,19 @@ class TestKaggleApi(unittest.TestCase):
     except ApiException as e:
       self.fail(f"dataset_status failed: {e}")
 
-  def dataset_download_file(self,
-                            dataset,
-                            file_name,
-                            path=None,
-                            force=False,
-                            quiet=True,
-                            licenses=[]):
-    """ Download a single file for a dataset.
-    
-            Parameters
-            ==========
-            dataset: the string identified of the dataset
-                     should be in format [owner]/[dataset-name]
-            file_name: the dataset configuration file
-            path: if defined, download to this location
-            force: force the download if the file already exists (default False)
-            quiet: suppress verbose output (default is True)
-            licenses: a list of license names, e.g. ['CC0-1.0']
-        """
-    if '/' in dataset:
-      self.validate_dataset_string(dataset)
-      owner_slug, dataset_slug, dataset_version_number = self.split_dataset_string(
-          dataset)
-    else:
-      owner_slug = self.get_config_value(self.CONFIG_NAME_USER)
-      dataset_slug = dataset
-      dataset_version_number = None
-
-    if path is None:
-      effective_path = self.get_default_download_dir('datasets', owner_slug,
-                                                     dataset_slug)
-    else:
-      effective_path = path
-
-    self._print_dataset_url_and_license(owner_slug, dataset_slug,
-                                        dataset_version_number, licenses)
-
-    with self.build_kaggle_client() as kaggle:
-      request = ApiDownloadDatasetRequest()
-      request.owner_slug = owner_slug
-      request.dataset_slug = dataset_slug
-      request.dataset_version_number = dataset_version_number
-      request.file_name = file_name
-      response = kaggle.datasets.dataset_api_client.download_dataset(request)
-    url = response.history[0].url
-    outfile = os.path.join(effective_path, url.split('?')[0].split('/')[-1])
-
-    if force or self.download_needed(response, outfile, quiet):
-      self.download_file(response, outfile, quiet, not force)
-      return True
-    else:
-      return False
+  def test_dataset_f_download_file(self):
+    if self.dataset_file is None:
+      self.test_dataset_d_list_files()
+    try:
+      api.dataset_download_file(self.dataset, self.dataset_file.name, 'tmp')
+      self.assertTrue(os.path.exists(f'tmp/{self.dataset_file.name}'))
+    except ApiException as e:
+      self.fail(f"dataset_download_file failed: {e}")
+    finally:
+      if os.path.exists(f'tmp/{self.dataset_file.name}'):
+        os.remove(f'tmp/{self.dataset_file.name}')
+      if os.path.exists('tmp'):
+        os.rmdir('tmp')
 
   def test_dataset_g_download_files(self):
     if self.dataset == '':
@@ -544,17 +505,20 @@ class TestKaggleApi(unittest.TestCase):
                                    self.version_number)
       new_dataset = api.dataset_create_new(dataset_directory)
       self.assertIsNotNone(new_dataset)
-      if new_dataset.hasError:
+      if new_dataset.error is not None:
         print(new_dataset.error)  # This is likely to happen, and that's OK.
     except ApiException as e:
       self.fail(f"dataset_create_new failed: {e}")
 
   def test_dataset_j_create_version(self):
+    if not os.path.exists(
+        os.path.join(dataset_directory, api.DATASET_METADATA_FILE)):
+      self.test_dataset_i_create_new()
     try:
       new_version = api.dataset_create_version(dataset_directory, "Notes")
       self.assertIsNotNone(new_version)
-      self.assertFalse(new_version.hasError)
-      self.assertTrue(new_version.hasRef)
+      self.assertTrue(new_version.error == '')
+      self.assertFalse(new_version.ref == '')
     except ApiException as e:
       self.fail(f"dataset_create_version failed: {e}")
 

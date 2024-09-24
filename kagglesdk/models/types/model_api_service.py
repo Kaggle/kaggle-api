@@ -3,7 +3,7 @@ from google.protobuf.field_mask_pb2 import FieldMask
 from kagglesdk.datasets.types.dataset_api_service import ApiCategory, ApiDatasetNewFile, ApiUploadDirectoryInfo
 from kagglesdk.kaggle_object import *
 from kagglesdk.models.types.model_enums import ListModelsOrderBy, ModelFramework, ModelInstanceType
-from kagglesdk.models.types.model_types import BaseModelInstanceInformation
+from kagglesdk.models.types.model_types import BaseModelInstanceInformation, ModelLink
 from typing import Optional, List
 
 class ApiCreateModelInstanceRequest(KaggleObject):
@@ -68,6 +68,10 @@ class ApiCreateModelInstanceRequest(KaggleObject):
   @staticmethod
   def method():
     return 'POST'
+
+  @staticmethod
+  def body_fields():
+    return 'body'
 
 class ApiCreateModelInstanceRequestBody(KaggleObject):
   r"""
@@ -357,6 +361,10 @@ class ApiCreateModelInstanceVersionRequest(KaggleObject):
   def method():
     return 'POST'
 
+  @staticmethod
+  def body_fields():
+    return 'body'
+
 class ApiCreateModelInstanceVersionRequestBody(KaggleObject):
   r"""
   Attributes:
@@ -552,6 +560,10 @@ class ApiCreateModelRequest(KaggleObject):
   @staticmethod
   def method():
     return 'POST'
+
+  @staticmethod
+  def body_fields():
+    return '*'
 
 class ApiCreateModelResponse(KaggleObject):
   r"""
@@ -1280,6 +1292,8 @@ class ApiListModelsRequest(KaggleObject):
       Page size.
     page_token (str)
       Page token used for pagination.
+    only_vertex_models (bool)
+      Only list models that have Vertex URLs
   """
 
   def __init__(self):
@@ -1288,6 +1302,7 @@ class ApiListModelsRequest(KaggleObject):
     self._owner = None
     self._page_size = None
     self._page_token = None
+    self._only_vertex_models = None
     self._freeze()
 
   @property
@@ -1362,6 +1377,20 @@ class ApiListModelsRequest(KaggleObject):
     if not isinstance(page_token, str):
       raise TypeError('page_token must be of type str')
     self._page_token = page_token
+
+  @property
+  def only_vertex_models(self) -> bool:
+    """Only list models that have Vertex URLs"""
+    return self._only_vertex_models or False
+
+  @only_vertex_models.setter
+  def only_vertex_models(self, only_vertex_models: bool):
+    if only_vertex_models is None:
+      del self.only_vertex_models
+      return
+    if not isinstance(only_vertex_models, bool):
+      raise TypeError('only_vertex_models must be of type bool')
+    self._only_vertex_models = only_vertex_models
 
 
   def endpoint(self):
@@ -1441,6 +1470,7 @@ class ApiModel(KaggleObject):
     publish_time (datetime)
     provenance_sources (str)
     url (str)
+    model_version_links (ModelLink)
   """
 
   def __init__(self):
@@ -1457,6 +1487,7 @@ class ApiModel(KaggleObject):
     self._publish_time = None
     self._provenance_sources = ""
     self._url = ""
+    self._model_version_links = []
     self._freeze()
 
   @property
@@ -1632,6 +1663,21 @@ class ApiModel(KaggleObject):
     if not isinstance(url, str):
       raise TypeError('url must be of type str')
     self._url = url
+
+  @property
+  def model_version_links(self) -> Optional[List[Optional['ModelLink']]]:
+    return self._model_version_links
+
+  @model_version_links.setter
+  def model_version_links(self, model_version_links: Optional[List[Optional['ModelLink']]]):
+    if model_version_links is None:
+      del self.model_version_links
+      return
+    if not isinstance(model_version_links, list):
+      raise TypeError('model_version_links must be of type list')
+    if not all([isinstance(t, ModelLink) for t in model_version_links]):
+      raise TypeError('model_version_links must contain only items of type ModelLink')
+    self._model_version_links = model_version_links
 
 
 class ApiModelFile(KaggleObject):
@@ -2139,6 +2185,10 @@ class ApiUpdateModelInstanceRequest(KaggleObject):
   def method():
     return 'POST'
 
+  @staticmethod
+  def body_fields():
+    return '*'
+
 class ApiUpdateModelRequest(KaggleObject):
   r"""
   Attributes:
@@ -2291,6 +2341,10 @@ class ApiUpdateModelRequest(KaggleObject):
   @staticmethod
   def method():
     return 'POST'
+
+  @staticmethod
+  def body_fields():
+    return '*'
 
 class ApiUpdateModelResponse(KaggleObject):
   r"""
@@ -2587,6 +2641,7 @@ ApiListModelsRequest._fields = [
   FieldMetadata("owner", "owner", "_owner", str, None, PredefinedSerializer(), optional=True),
   FieldMetadata("pageSize", "page_size", "_page_size", int, None, PredefinedSerializer(), optional=True),
   FieldMetadata("pageToken", "page_token", "_page_token", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("onlyVertexModels", "only_vertex_models", "_only_vertex_models", bool, None, PredefinedSerializer(), optional=True),
 ]
 
 ApiListModelsResponse._fields = [
@@ -2609,6 +2664,7 @@ ApiModel._fields = [
   FieldMetadata("publishTime", "publish_time", "_publish_time", datetime, None, DateTimeSerializer()),
   FieldMetadata("provenanceSources", "provenance_sources", "_provenance_sources", str, "", PredefinedSerializer()),
   FieldMetadata("url", "url", "_url", str, "", PredefinedSerializer()),
+  FieldMetadata("modelVersionLinks", "model_version_links", "_model_version_links", ModelLink, [], ListSerializer(KaggleObjectSerializer())),
 ]
 
 ApiModelFile._fields = [

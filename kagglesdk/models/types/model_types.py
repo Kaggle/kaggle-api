@@ -1,5 +1,5 @@
 from kagglesdk.kaggle_object import *
-from kagglesdk.models.types.model_enums import ModelFramework
+from kagglesdk.models.types.model_enums import ModelFramework, ModelVersionLinkType
 from kagglesdk.users.types.users_enums import UserAchievementTier
 from typing import Optional
 
@@ -85,6 +85,45 @@ class BaseModelInstanceInformation(KaggleObject):
     if not isinstance(framework, ModelFramework):
       raise TypeError('framework must be of type ModelFramework')
     self._framework = framework
+
+
+class ModelLink(KaggleObject):
+  r"""
+  Attributes:
+    type (ModelVersionLinkType)
+    url (str)
+  """
+
+  def __init__(self):
+    self._type = ModelVersionLinkType.MODEL_VERSION_LINK_TYPE_UNSPECIFIED
+    self._url = ""
+    self._freeze()
+
+  @property
+  def type(self) -> 'ModelVersionLinkType':
+    return self._type
+
+  @type.setter
+  def type(self, type: 'ModelVersionLinkType'):
+    if type is None:
+      del self.type
+      return
+    if not isinstance(type, ModelVersionLinkType):
+      raise TypeError('type must be of type ModelVersionLinkType')
+    self._type = type
+
+  @property
+  def url(self) -> str:
+    return self._url
+
+  @url.setter
+  def url(self, url: str):
+    if url is None:
+      del self.url
+      return
+    if not isinstance(url, str):
+      raise TypeError('url must be of type str')
+    self._url = url
 
 
 class Owner(KaggleObject):
@@ -212,6 +251,11 @@ BaseModelInstanceInformation._fields = [
   FieldMetadata("modelSlug", "model_slug", "_model_slug", str, "", PredefinedSerializer()),
   FieldMetadata("instanceSlug", "instance_slug", "_instance_slug", str, "", PredefinedSerializer()),
   FieldMetadata("framework", "framework", "_framework", ModelFramework, ModelFramework.MODEL_FRAMEWORK_UNSPECIFIED, EnumSerializer()),
+]
+
+ModelLink._fields = [
+  FieldMetadata("type", "type", "_type", ModelVersionLinkType, ModelVersionLinkType.MODEL_VERSION_LINK_TYPE_UNSPECIFIED, EnumSerializer()),
+  FieldMetadata("url", "url", "_url", str, "", PredefinedSerializer()),
 ]
 
 Owner._fields = [

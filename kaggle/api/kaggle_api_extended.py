@@ -47,7 +47,8 @@ import zipfile
 import tempfile
 
 from kagglesdk.datasets.types.dataset_api_service import ApiListDatasetsRequest, ApiListDatasetFilesRequest, \
-  ApiGetDatasetStatusRequest, ApiDownloadDatasetRequest, ApiCreateDatasetRequest
+  ApiGetDatasetStatusRequest, ApiDownloadDatasetRequest, ApiCreateDatasetRequest, ApiCreateDatasetVersionRequestBody, \
+  ApiCreateDatasetVersionByIdRequest, ApiCreateDatasetVersionRequest, ApiDatasetNewFile
 from kagglesdk.datasets.types.dataset_enums import DatasetSelectionGroup, DatasetSortBy
 from ..api_client import ApiClient
 from kaggle.configuration import Configuration
@@ -1624,9 +1625,9 @@ class KaggleApi(KaggleApi):
                            unzip=False,
                            force=False,
                            quiet=False):
-    """ client wrapper for dataset_download_files and download dataset file,
+    """ Client wrapper for dataset_download_files and download dataset file,
             either for a specific file (when file_name is provided),
-            or all files for a dataset (plural)
+            or all files for a dataset (plural).
 
             Parameters
             ==========
@@ -1676,7 +1677,7 @@ class KaggleApi(KaggleApi):
           licenses=licenses)
 
   def _upload_blob(self, path, quiet, blob_type, upload_context):
-    """ upload a file
+    """ Upload a file.
 
             Parameters
             ==========
@@ -1730,7 +1731,7 @@ class KaggleApi(KaggleApi):
                              convert_to_csv=True,
                              delete_old_versions=False,
                              dir_mode='skip'):
-    """ create a version of a dataset
+    """ Create a version of a dataset.
 
             Parameters
             ==========
@@ -1753,6 +1754,8 @@ class KaggleApi(KaggleApi):
     id_no = self.get_or_default(meta_data, 'id_no', None)
     if not ref and not id_no:
       raise ValueError('ID or slug must be specified in the metadata')
+    elif ref and ref == self.config_values[self.CONFIG_NAME_USER] + '/INSERT_SLUG_HERE':
+      raise ValueError('Default slug detected, please change values before uploading')
 
     subtitle = meta_data.get('subtitle')
     if subtitle and (len(subtitle) < 20 or len(subtitle) > 80):
@@ -1764,14 +1767,36 @@ class KaggleApi(KaggleApi):
     description = meta_data.get('description')
     keywords = self.get_or_default(meta_data, 'keywords', [])
 
-    request = DatasetNewVersionRequest(
-        version_notes=version_notes,
-        subtitle=subtitle,
-        description=description,
-        files=[],
-        convert_to_csv=convert_to_csv,
-        category_ids=keywords,
-        delete_old_versions=delete_old_versions)
+    body = ApiCreateDatasetVersionRequestBody()
+    body.version_notes=version_notes
+    body.subtitle=subtitle
+    body.description=description
+    body.files=[]
+    # body.convert_to_csv=convert_to_csv
+    body.category_ids=keywords
+    body.delete_old_versions=delete_old_versions
+
+    with self.build_kaggle_client() as kaggle:
+      if id_no:
+        request = ApiCreateDatasetVersionByIdRequest()
+        request.id = id_no
+        message = kaggle.datasets.dataset_api_client.create_dataset_version_by_id
+      else:
+        self.validate_dataset_string(ref)
+        ref_list = ref.split('/')
+        owner_slug = ref_list[0]
+        dataset_slug = ref_list[1]
+        request = ApiCreateDatasetVersionRequest()
+        request.owner_slug = owner_slug
+        request.dataset_slug = dataset_slug
+        message = kaggle.datasets.dataset_api_client.create_dataset_version
+      request.body = body
+      with ResumableUploadContext() as upload_context:
+        self.upload_files(body, resources, folder, ApiBlobType.DATASET,
+                          upload_context, quiet, dir_mode)
+        request.body.files = [self._api_dataset_new_file(file) for file in request.body.files]
+        response = self.with_retry(message)(request)
+        return response
 
     with ResumableUploadContext() as upload_context:
       self.upload_files(request, resources, folder, ApiBlobType.DATASET,
@@ -1784,10 +1809,8 @@ class KaggleApi(KaggleApi):
                     self.datasets_create_version_by_id_with_http_info)(
                         id_no, request)))
       else:
-        if ref == self.config_values[
-            self.CONFIG_NAME_USER] + '/INSERT_SLUG_HERE':
-          raise ValueError('Default slug detected, please change values before '
-                           'uploading')
+        if ref == self.config_values[self.CONFIG_NAME_USER] + '/INSERT_SLUG_HERE':
+          raise ValueError('Default slug detected, please change values before uploading')
         self.validate_dataset_string(ref)
         ref_list = ref.split('/')
         owner_slug = ref_list[0]
@@ -1798,6 +1821,12 @@ class KaggleApi(KaggleApi):
                     owner_slug, dataset_slug, request)))
 
       return result
+
+  def _api_dataset_new_file(self, file):
+    # TODO Eliminate the need for this conversion
+    f = ApiDatasetNewFile()
+    f.token = file.token
+    return f
 
   def dataset_create_version_cli(self,
                                  folder,

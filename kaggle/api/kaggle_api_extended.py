@@ -210,8 +210,8 @@ class ResumableFileUpload(object):
 
   def _is_previous_valid(self, previous):
     return previous.path == self.path and \
-        previous.start_blob_upload_request == self.start_blob_upload_request and \
-        previous.timestamp > time.time() - ResumableFileUpload.RESUMABLE_UPLOAD_EXPIRY_SECONDS
+      previous.start_blob_upload_request == self.start_blob_upload_request and \
+      previous.timestamp > time.time() - ResumableFileUpload.RESUMABLE_UPLOAD_EXPIRY_SECONDS
 
   def upload_initiated(self, start_blob_upload_response):
     if self.context.no_resume:
@@ -382,11 +382,11 @@ class KaggleApi(KaggleApi):
 
   def _is_retriable(self, e):
     return issubclass(type(e), ConnectionError) or \
-        issubclass(type(e), urllib3_exceptions.ConnectionError) or \
-        issubclass(type(e), urllib3_exceptions.ConnectTimeoutError) or \
-        issubclass(type(e), urllib3_exceptions.ProtocolError) or \
-        issubclass(type(e), requests.exceptions.ConnectionError) or \
-        issubclass(type(e), requests.exceptions.ConnectTimeout)
+      issubclass(type(e), urllib3_exceptions.ConnectionError) or \
+      issubclass(type(e), urllib3_exceptions.ConnectTimeoutError) or \
+      issubclass(type(e), urllib3_exceptions.ProtocolError) or \
+      issubclass(type(e), requests.exceptions.ConnectionError) or \
+      issubclass(type(e), requests.exceptions.ConnectTimeout)
 
   def _calculate_backoff_delay(self, attempt, initial_delay_millis,
                                retry_multiplier, randomness_factor):
@@ -437,7 +437,7 @@ class KaggleApi(KaggleApi):
 
     # Step 2: if credentials were not in env read in configuration file
     if self.CONFIG_NAME_USER not in config_data \
-            or self.CONFIG_NAME_KEY not in config_data:
+        or self.CONFIG_NAME_KEY not in config_data:
       if os.path.exists(self.config):
         config_data = self.read_config_file(config_data)
       elif self._is_help_or_version_command(api_command) or (len(
@@ -709,9 +709,9 @@ class KaggleApi(KaggleApi):
 
   def build_kaggle_client(self):
     env = KaggleEnv.STAGING if '--staging' in self.args \
-        else KaggleEnv.ADMIN if '--admin' in self.args \
-        else KaggleEnv.LOCAL if '--local' in self.args \
-        else KaggleEnv.PROD
+      else KaggleEnv.ADMIN if '--admin' in self.args \
+      else KaggleEnv.LOCAL if '--local' in self.args \
+      else KaggleEnv.PROD
     verbose = '--verbose' in self.args or '-v' in self.args
     config = self.api_client.configuration
     return KaggleClient(
@@ -1397,7 +1397,7 @@ class KaggleApi(KaggleApi):
     if dataset is None:
       raise ValueError('A dataset must be specified')
     owner_slug, dataset_slug, dataset_version_number = self.split_dataset_string(
-      dataset)
+        dataset)
 
     with self.build_kaggle_client() as kaggle:
       request = ApiListDatasetFilesRequest()
@@ -1501,15 +1501,15 @@ class KaggleApi(KaggleApi):
     if '/' in dataset:
       self.validate_dataset_string(dataset)
       owner_slug, dataset_slug, dataset_version_number = self.split_dataset_string(
-        dataset)
+          dataset)
     else:
       owner_slug = self.get_config_value(self.CONFIG_NAME_USER)
       dataset_slug = dataset
       dataset_version_number = None
 
     if path is None:
-      effective_path = self.get_default_download_dir(
-        'datasets', owner_slug, dataset_slug)
+      effective_path = self.get_default_download_dir('datasets', owner_slug,
+                                                     dataset_slug)
     else:
       effective_path = path
 
@@ -1554,10 +1554,10 @@ class KaggleApi(KaggleApi):
     if dataset is None:
       raise ValueError('A dataset must be specified')
     owner_slug, dataset_slug, dataset_version_number = self.split_dataset_string(
-      dataset)
+        dataset)
     if path is None:
-      effective_path = self.get_default_download_dir(
-        'datasets', owner_slug, dataset_slug)
+      effective_path = self.get_default_download_dir('datasets', owner_slug,
+                                                     dataset_slug)
     else:
       effective_path = path
 
@@ -1586,18 +1586,18 @@ class KaggleApi(KaggleApi):
             z.extractall(effective_path)
         except zipfile.BadZipFile as e:
           raise ValueError(
-            f"The file {outfile} is corrupted or not a valid zip file. "
-            "Please report this issue at https://www.github.com/kaggle/kaggle-api"
+              f"The file {outfile} is corrupted or not a valid zip file. "
+              "Please report this issue at https://www.github.com/kaggle/kaggle-api"
           )
         except FileNotFoundError:
           raise FileNotFoundError(
-            f"The file {outfile} was not found. "
-            "Please report this issue at https://www.github.com/kaggle/kaggle-api"
+              f"The file {outfile} was not found. "
+              "Please report this issue at https://www.github.com/kaggle/kaggle-api"
           )
         except Exception as e:
           raise RuntimeError(
-            f"An unexpected error occurred: {e}. "
-            "Please report this issue at https://www.github.com/kaggle/kaggle-api"
+              f"An unexpected error occurred: {e}. "
+              "Please report this issue at https://www.github.com/kaggle/kaggle-api"
           )
 
         try:
@@ -1754,8 +1754,10 @@ class KaggleApi(KaggleApi):
     id_no = self.get_or_default(meta_data, 'id_no', None)
     if not ref and not id_no:
       raise ValueError('ID or slug must be specified in the metadata')
-    elif ref and ref == self.config_values[self.CONFIG_NAME_USER] + '/INSERT_SLUG_HERE':
-      raise ValueError('Default slug detected, please change values before uploading')
+    elif ref and ref == self.config_values[
+        self.CONFIG_NAME_USER] + '/INSERT_SLUG_HERE':
+      raise ValueError(
+          'Default slug detected, please change values before uploading')
 
     subtitle = meta_data.get('subtitle')
     if subtitle and (len(subtitle) < 20 or len(subtitle) > 80):
@@ -1793,7 +1795,9 @@ class KaggleApi(KaggleApi):
       with ResumableUploadContext() as upload_context:
         self.upload_files(body, resources, folder, ApiBlobType.DATASET,
                           upload_context, quiet, dir_mode)
-        request.body.files = [self._api_dataset_new_file(file) for file in request.body.files]
+        request.body.files = [
+            self._api_dataset_new_file(file) for file in request.body.files
+        ]
         response = self.with_retry(message)(request)
         return response
 
@@ -1808,8 +1812,10 @@ class KaggleApi(KaggleApi):
                     self.datasets_create_version_by_id_with_http_info)(
                         id_no, request)))
       else:
-        if ref == self.config_values[self.CONFIG_NAME_USER] + '/INSERT_SLUG_HERE':
-          raise ValueError('Default slug detected, please change values before uploading')
+        if ref == self.config_values[
+            self.CONFIG_NAME_USER] + '/INSERT_SLUG_HERE':
+          raise ValueError(
+              'Default slug detected, please change values before uploading')
         self.validate_dataset_string(ref)
         ref_list = ref.split('/')
         owner_slug = ref_list[0]
@@ -1924,22 +1930,18 @@ class KaggleApi(KaggleApi):
     dataset_slug = ref_list[1]
 
     # validations
-    if ref == self.config_values[
-      self.CONFIG_NAME_USER] + '/INSERT_SLUG_HERE':
+    if ref == self.config_values[self.CONFIG_NAME_USER] + '/INSERT_SLUG_HERE':
       raise ValueError(
-        'Default slug detected, please change values before uploading')
+          'Default slug detected, please change values before uploading')
     if title == 'INSERT_TITLE_HERE':
       raise ValueError(
-        'Default title detected, please change values before uploading'
-      )
+          'Default title detected, please change values before uploading')
     if len(licenses) != 1:
       raise ValueError('Please specify exactly one license')
     if len(dataset_slug) < 6 or len(dataset_slug) > 50:
-      raise ValueError(
-        'The dataset slug must be between 6 and 50 characters')
+      raise ValueError('The dataset slug must be between 6 and 50 characters')
     if len(title) < 6 or len(title) > 50:
-      raise ValueError(
-        'The dataset title must be between 6 and 50 characters')
+      raise ValueError('The dataset title must be between 6 and 50 characters')
     resources = meta_data.get('resources')
     if resources:
       self.validate_resources(folder, resources)
@@ -1950,19 +1952,19 @@ class KaggleApi(KaggleApi):
 
     subtitle = meta_data.get('subtitle')
     if subtitle and (len(subtitle) < 20 or len(subtitle) > 80):
-      raise ValueError(
-        'Subtitle length must be between 20 and 80 characters')
+      raise ValueError('Subtitle length must be between 20 and 80 characters')
 
-    request = DatasetNewRequest(title=title,
-                                slug=dataset_slug,
-                                owner_slug=owner_slug,
-                                license_name=license_name,
-                                subtitle=subtitle,
-                                description=description,
-                                files=[],
-                                is_private=not public,
-                                convert_to_csv=convert_to_csv,
-                                category_ids=keywords)
+    request = DatasetNewRequest(
+        title=title,
+        slug=dataset_slug,
+        owner_slug=owner_slug,
+        license_name=license_name,
+        subtitle=subtitle,
+        description=description,
+        files=[],
+        is_private=not public,
+        convert_to_csv=convert_to_csv,
+        category_ids=keywords)
 
     with ResumableUploadContext() as upload_context:
       # TODO Change upload_files() to use ApiCreateDatasetRequest
@@ -1971,23 +1973,24 @@ class KaggleApi(KaggleApi):
 
       with self.build_kaggle_client() as kaggle:
         retry_request = ApiCreateDatasetRequest()
-        retry_request.title=title
-        retry_request.slug=dataset_slug
-        retry_request.owner_slug=owner_slug
-        retry_request.license_name=license_name
-        retry_request.subtitle=subtitle
-        retry_request.description=description
-        retry_request.files=[]
-        retry_request.is_private=not public
-        retry_request.category_ids=keywords
+        retry_request.title = title
+        retry_request.slug = dataset_slug
+        retry_request.owner_slug = owner_slug
+        retry_request.license_name = license_name
+        retry_request.subtitle = subtitle
+        retry_request.description = description
+        retry_request.files = []
+        retry_request.is_private = not public
+        retry_request.category_ids = keywords
         response = self.with_retry(
-          kaggle.datasets.dataset_api_client.create_dataset)(retry_request)
+            kaggle.datasets.dataset_api_client.create_dataset)(
+                retry_request)
         return response
 
       result = DatasetNewResponse(
-        self.process_response(
-          self.with_retry(
-            self.datasets_create_new_with_http_info)(request)))
+          self.process_response(
+              self.with_retry(
+                  self.datasets_create_new_with_http_info)(request)))
 
     return result
 

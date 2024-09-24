@@ -131,7 +131,7 @@ class DatasetVersion(object):
 class File(object):
 
   def __init__(self, init_dict):
-    try: # TODO Remove try-block
+    try:  # TODO Remove try-block
       parsed_dict = {k: parse(v) for k, v in init_dict.items()}
       self.__dict__.update(parsed_dict)
       self.size = File.get_size(self.totalBytes)
@@ -186,7 +186,7 @@ class DatasetNewResponse(object):
 class ListFilesResult(object):
 
   def __init__(self, init_dict):
-    try: # TODO Remove try-block
+    try:  # TODO Remove try-block
       self.error_message = init_dict['errorMessage']
       files = init_dict['datasetFiles']
       token = init_dict['nextPageToken']

@@ -312,7 +312,7 @@ class KaggleApi(KaggleApi):
   config = os.path.join(config_dir, config_file)
   config_values = {}
   already_printed_version_warning = False
-  args = {'--local'}  # DEBUG Add --local to use localhost
+  args = {}  # DEBUG Add --local to use localhost
 
   # Kernels valid types
   valid_push_kernel_types = ['script', 'notebook']
@@ -1347,7 +1347,7 @@ class KaggleApi(KaggleApi):
               for c in metadata['collaborators']
           ],
           data=metadata['data'])
-      result = self.process_response( # TODO
+      result = self.process_response(
           self.metadata_post_with_http_info(owner_slug, dataset_slug,
                                             updateSettingsRequest))
       if (len(result['errors']) > 0):

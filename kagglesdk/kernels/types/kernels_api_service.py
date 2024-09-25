@@ -1365,6 +1365,10 @@ class ApiSaveKernelRequest(KaggleObject):
   def method():
     return 'POST'
 
+  @staticmethod
+  def body_fields():
+    return '*'
+
 class ApiSaveKernelResponse(KaggleObject):
   r"""
   Attributes:

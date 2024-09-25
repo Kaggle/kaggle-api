@@ -115,9 +115,14 @@ class DatasetVersion(object):
 class File(object):
 
   def __init__(self, init_dict):
-    parsed_dict = {k: parse(v) for k, v in init_dict.items()}
-    self.__dict__.update(parsed_dict)
-    self.size = File.get_size(self.totalBytes)
+    try: # TODO Remove try-block
+      parsed_dict = {k: parse(v) for k, v in init_dict.items()}
+      self.__dict__.update(parsed_dict)
+      self.size = File.get_size(self.totalBytes)
+    except AttributeError:
+      self.name = init_dict.name
+      self.creation_date = init_dict.creation_date
+      self.size = File.get_size(init_dict.total_bytes)
 
   def __repr__(self):
     return self.name
@@ -165,13 +170,18 @@ class DatasetNewResponse(object):
 class ListFilesResult(object):
 
   def __init__(self, init_dict):
-    self.error_message = init_dict['errorMessage']
-    files = init_dict['datasetFiles']
+    try: # TODO Remove try-block
+      self.error_message = init_dict['errorMessage']
+      files = init_dict['datasetFiles']
+      token = init_dict['nextPageToken']
+    except TypeError:
+      self.error_message = init_dict.error_message
+      files = init_dict.dataset_files
+      token = init_dict.next_page_token
     if files:
       self.files = [File(f) for f in files]
     else:
       self.files = {}
-    token = init_dict['nextPageToken']
     if token:
       self.nextPageToken = token
     else:
@@ -223,8 +233,8 @@ class ModelDeleteResponse(object):
 
 def parse(string):
   time_formats = [
-      '%Y-%m-%dT%H:%M:%S', '%Y-%m-%dT%H:%M:%SZ', '%Y-%m-%dT%H:%M:%S.%f',
-      '%Y-%m-%dT%H:%M:%S.%fZ'
+    '%Y-%m-%dT%H:%M:%S', '%Y-%m-%dT%H:%M:%SZ', '%Y-%m-%dT%H:%M:%S.%f',
+    '%Y-%m-%dT%H:%M:%S.%fZ'
   ]
   for t in time_formats:
     try:

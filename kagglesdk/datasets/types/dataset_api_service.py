@@ -176,6 +176,10 @@ class ApiCreateDatasetRequest(KaggleObject):
   def method():
     return 'POST'
 
+  @staticmethod
+  def body_fields():
+    return '*'
+
 class ApiCreateDatasetResponse(KaggleObject):
   r"""
   Attributes:
@@ -310,6 +314,10 @@ class ApiCreateDatasetVersionByIdRequest(KaggleObject):
   def method():
     return 'POST'
 
+  @staticmethod
+  def body_fields():
+    return 'body'
+
 class ApiCreateDatasetVersionRequest(KaggleObject):
   r"""
   Attributes:
@@ -372,6 +380,10 @@ class ApiCreateDatasetVersionRequest(KaggleObject):
   @staticmethod
   def method():
     return 'POST'
+
+  @staticmethod
+  def body_fields():
+    return 'body'
 
 class ApiCreateDatasetVersionRequestBody(KaggleObject):
   r"""
@@ -2079,6 +2091,10 @@ class ApiUpdateDatasetMetadataRequest(KaggleObject):
   @staticmethod
   def method():
     return 'POST'
+
+  @staticmethod
+  def body_fields():
+    return 'settings'
 
 class ApiUpdateDatasetMetadataResponse(KaggleObject):
   r"""

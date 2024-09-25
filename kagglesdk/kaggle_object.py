@@ -205,6 +205,10 @@ class KaggleObject(object):
   def endpoint(self):
     raise 'Error: endpoint must be defined by the request object'
 
+  @staticmethod
+  def body_fields():
+    return None
+
   @classmethod
   def prepare_from(cls, http_response):
     return cls.from_json(http_response.text)
@@ -229,7 +233,7 @@ class KaggleObject(object):
   @staticmethod
   def to_field_map(self, ignore_defaults=True):
     kv_pairs = [(field.field_name, field.get_as_dict_item(self, ignore_defaults)) for field in self._fields]
-    return {k: v for (k, v) in kv_pairs if not ignore_defaults or v is not None}
+    return {k: str(v) for (k, v) in kv_pairs if not ignore_defaults or v is not None}
 
   @classmethod
   def from_dict(cls, json_dict):

@@ -231,8 +231,8 @@ class ModelDeleteResponse(object):
 
 def parse(string):
   time_formats = [
-    '%Y-%m-%dT%H:%M:%S', '%Y-%m-%dT%H:%M:%SZ', '%Y-%m-%dT%H:%M:%S.%f',
-    '%Y-%m-%dT%H:%M:%S.%fZ'
+      '%Y-%m-%dT%H:%M:%S', '%Y-%m-%dT%H:%M:%SZ', '%Y-%m-%dT%H:%M:%S.%f',
+      '%Y-%m-%dT%H:%M:%S.%fZ'
   ]
   for t in time_formats:
     try:

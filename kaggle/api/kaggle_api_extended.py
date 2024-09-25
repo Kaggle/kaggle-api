@@ -1751,12 +1751,12 @@ class KaggleApi(KaggleApi):
     keywords = self.get_or_default(meta_data, 'keywords', [])
 
     body = ApiCreateDatasetVersionRequestBody()
-    body.version_notes=version_notes
-    body.subtitle=subtitle
-    body.description=description
-    body.files=[]
-    body.category_ids=keywords
-    body.delete_old_versions=delete_old_versions
+    body.version_notes = version_notes
+    body.subtitle = subtitle
+    body.description = description
+    body.files = []
+    body.category_ids = keywords
+    body.delete_old_versions = delete_old_versions
 
     with self.build_kaggle_client() as kaggle:
       if id_no:
@@ -4149,7 +4149,8 @@ class KaggleApi(KaggleApi):
 
     try:
       if resume:
-        resumable_upload_result = self._resume_upload(path, url, file_size, quiet)
+        resumable_upload_result = self._resume_upload(path, url, file_size,
+                                                      quiet)
         if resumable_upload_result.result != ResumableUploadResult.INCOMPLETE:
           return resumable_upload_result.result
 

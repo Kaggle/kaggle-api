@@ -1756,7 +1756,6 @@ class KaggleApi(KaggleApi):
     body.subtitle=subtitle
     body.description=description
     body.files=[]
-    # body.convert_to_csv=convert_to_csv
     body.category_ids=keywords
     body.delete_old_versions=delete_old_versions
 

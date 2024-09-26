@@ -15,8 +15,6 @@
 # limitations under the License.
 
 # coding=utf-8
-import os
-import time
 from datetime import datetime
 
 
@@ -264,10 +262,10 @@ class ResumableUploadResult(object):
     self.bytes_uploaded = bytes_uploaded
     self.start_at = 0 if bytes_uploaded is None else bytes_uploaded + 1
 
-  def Complete():
+  def Complete(self):
     return ResumableUploadResult(ResumableUploadResult.COMPLETE)
 
-  def Failed():
+  def Failed(self):
     return ResumableUploadResult(ResumableUploadResult.FAILED)
 
   def Incomplete(bytes_uploaded=None):

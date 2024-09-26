@@ -16,12 +16,15 @@
 
 # coding=utf-8
 from __future__ import print_function
+
 import argparse
 import json
-from kaggle import api
-from kaggle import KaggleApi
-from .rest import ApiException
+
 import six
+
+from kaggle import KaggleApi
+from kaggle import api
+from .rest import ApiException
 
 
 def main():

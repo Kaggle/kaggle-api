@@ -173,7 +173,7 @@ class KaggleHttpClient(object):
       })
 
     self._try_fill_auth()
-    self._fill_xsrf_token(iap_token)
+    # self._fill_xsrf_token(iap_token)
 
   def _get_iap_token_if_required(self):
     if self._env not in (KaggleEnv.STAGING, KaggleEnv.ADMIN):

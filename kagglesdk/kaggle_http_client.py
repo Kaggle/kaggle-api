@@ -103,7 +103,7 @@ class KaggleHttpClient(object):
       url=request_url,
       data=data,
       headers=self._session.headers,
-      # cookies=self._get_xsrf_cookies(),  # TODO Make this align with original handler.
+      # cookies=self._get_xsrf_cookies(),
       auth=self._session.auth)
     prepared_request = http_request.prepare()
     self._print_request(prepared_request)
@@ -173,7 +173,7 @@ class KaggleHttpClient(object):
       })
 
     self._try_fill_auth()
-    # self._fill_xsrf_token(iap_token)
+    # self._fill_xsrf_token(iap_token)  # TODO Make this align with original handler.
 
   def _get_iap_token_if_required(self):
     if self._env not in (KaggleEnv.STAGING, KaggleEnv.ADMIN):

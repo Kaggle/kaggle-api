@@ -741,7 +741,7 @@ class KaggleApi(KaggleApi):
             page: the page to return (default is 1)
             search: a search term to use (default is empty string)
             sort_by: how to sort the result, see valid_competition_sort_by for options
-            category: category to filter result to
+            category: category to filter result to; use 'all' to get closed competitions
             group: group to filter result to
         """
     if group:
@@ -752,9 +752,6 @@ class KaggleApi(KaggleApi):
         group = CompetitionListTab.COMPETITION_LIST_TAB_DEFAULT
       else:
         group = self.lookup_enum(CompetitionListTab, group)
-    else:
-      # Breaking change: default to list all competitions, not just active ones.
-      group = CompetitionListTab.COMPETITION_LIST_TAB_DEFAULT
 
     if category:
       if category not in self.valid_competition_categories:
@@ -1348,32 +1345,26 @@ class KaggleApi(KaggleApi):
      effective_path) = self.dataset_metadata_prep(dataset, path)
     meta_file = self.get_dataset_metadata_file(effective_path)
     with open(meta_file, 'r') as f:
-      metadata = json.load(f)
-      with self.build_kaggle_client() as kaggle:
-        settings = DatasetSettings()
-        settings.title = metadata['title']
-        settings.subtitle = metadata['subtitle']
-        settings.description = metadata['description']
-        settings.is_private = metadata['isPrivate']
-        settings.licenses = [
-            self.new_license(l['name']) for l in metadata['licenses']
-        ]
-        settings.keywords = metadata['keywords']
-        settings.collaborators = [
-            self.new_collaborator(c['username'], c['role'])
+      s = json.load(f)
+      metadata = json.loads(s)
+      updateSettingsRequest = DatasetUpdateSettingsRequest(
+          title=metadata.get('title') or '',
+          subtitle=metadata.get('subtitle') or '',
+          description=metadata.get('description') or '',
+          is_private=metadata.get('isPrivate') or False,
+          licenses=[License(name=l['name']) for l in metadata['licenses']] if metadata.get('licenses') else [],
+          keywords=metadata.get('keywords'),
+          collaborators=[
+            Collaborator(username=c['username'], role=c['role'])
             for c in metadata['collaborators']
-        ]
-        settings.data = [self.new_metadata() for m in metadata['data']]
-        request = ApiUpdateDatasetMetadataRequest()
-        request.settings = settings
-        request.owner_slug = owner_slug
-        request.dataset_slug = dataset_slug
-        response = kaggle.datasets.dataset_api_client.update_dataset_metadata(
-            request)
-
-      if len(response.errors) > 0:
-        [print(e) for e in response.errors]
-      return response
+            ] if metadata.get('collaborators') else [],
+          data=metadata.get('data'))
+      result = self.process_response(
+          self.metadata_post_with_http_info(owner_slug, dataset_slug,
+                                            updateSettingsRequest))
+      if (len(result['errors']) > 0):
+        [print(e['message']) for e in result['errors']]
+        exit(1)
 
   def new_license(self, name):
     slicense = SettingsLicense()
@@ -1404,11 +1395,6 @@ class KaggleApi(KaggleApi):
     if not os.path.exists(effective_path):
       os.makedirs(effective_path)
 
-    # result = self.process_response(
-    #     self.metadata_get_with_http_info(owner_slug, dataset_slug))
-    # if (result['errorMessage']):
-    #   raise Exception(result['errorMessage'])
-
     with self.build_kaggle_client() as kaggle:
       request = ApiGetDatasetMetadataRequest()
       request.owner_slug = owner_slug
@@ -1418,11 +1404,9 @@ class KaggleApi(KaggleApi):
       if response.error_message:
         raise Exception(response.error_message)
 
-    # metadata = Metadata(result['info'])
-
     meta_file = os.path.join(effective_path, self.DATASET_METADATA_FILE)
     with open(meta_file, 'w') as f:
-      json.dump(response.info, f, indent=2, default=lambda o: o.__dict__)
+      json.dump(response.to_json(response.info), f, indent=2, default=lambda o: o.__dict__)
 
     return meta_file
 

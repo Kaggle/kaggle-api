@@ -433,8 +433,8 @@ class TestKaggleApi(unittest.TestCase):
         os.path.join(dataset_directory, api.DATASET_METADATA_FILE)):
       self.test_dataset_b_metadata()
     try:
-      response = api.dataset_metadata_update(self.dataset, dataset_directory)
-      self.assertTrue(len(response.errors) == 0)
+      api.dataset_metadata_update(self.dataset, dataset_directory)
+      # TODO Make the API method return something, and not exit when it fails.
     except ApiException as e:
       self.fail(f"dataset_metadata_update failed: {e}")
 

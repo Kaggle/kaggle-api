@@ -103,7 +103,7 @@ class KaggleHttpClient(object):
       url=request_url,
       data=data,
       headers=self._session.headers,
-      # cookies=self._get_xsrf_cookies(),
+      # cookies=self._get_xsrf_cookies(),  # TODO Make this align with original handler.
       auth=self._session.auth)
     prepared_request = http_request.prepare()
     self._print_request(prepared_request)

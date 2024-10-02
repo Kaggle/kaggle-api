@@ -304,13 +304,15 @@ class TestKaggleApi(unittest.TestCase):
 
   def test_competition_a_list(self):
     try:
-      competitions = api.competitions_list()
-      self.assertGreater(len(competitions),
-                         0)  # Assuming there should be some competitions
+      competitions = api.competitions_list(group='general')
+      self.assertGreater(len(competitions), 0)
+      self.assertLessEqual(len(competitions), 20)
       [
           self.assertTrue(hasattr(competitions[0], api.camel_to_snake(f)))
           for f in api.competition_fields
       ]
+      competitions = api.competitions_list(page=2, category='gettingStarted', sort_by='prize')
+      self.assertEqual(len(competitions), 0)
     except ApiException as e:
       self.fail(f"competitions_list failed: {e}")
 
@@ -403,13 +405,14 @@ class TestKaggleApi(unittest.TestCase):
   def test_dataset_a_list(self):
     try:
       datasets = api.dataset_list(sort_by='votes')
-      self.assertGreater(len(datasets),
-                         0)  # Assuming there should be some datasets
+      self.assertGreater(len(datasets), 0)
       self.dataset = str(datasets[0].ref)
       [
           self.assertTrue(hasattr(datasets[0], api.camel_to_snake(f)))
           for f in api.dataset_fields
       ]
+      datasets = api.dataset_list(license_name='other', file_type='bigQuery')
+      self.assertGreater(len(datasets), 10)
     except ApiException as e:
       self.fail(f"dataset_list failed: {e}")
 

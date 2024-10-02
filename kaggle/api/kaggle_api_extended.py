@@ -306,7 +306,7 @@ class KaggleApi(KaggleApi):
   config = os.path.join(config_dir, config_file)
   config_values = {}
   already_printed_version_warning = False
-  args = {'--local'}  # DEBUG Add --local to use localhost
+  args = {}  # DEBUG Add --local to use localhost
 
   # Kernels valid types
   valid_push_kernel_types = ['script', 'notebook']
@@ -1376,17 +1376,6 @@ class KaggleApi(KaggleApi):
     collab.username = name
     collab.role = role
     return collab
-
-  def new_metadata(self, data):
-    if len(data) == 0:
-      return None
-    md = DatasetSettingsFile()
-    # TODO Verify this is correct.
-    md.name = data['name']
-    md.description = data['description']
-    md.columns = data['columns']
-    md.total_bytes = data['total_bytes']
-    return md
 
   def dataset_metadata(self, dataset, path):
     (owner_slug, dataset_slug,

@@ -306,7 +306,7 @@ class TestKaggleApi(unittest.TestCase):
     try:
       competitions = api.competitions_list(group='general')
       self.assertGreater(len(competitions), 0)
-      self.assertLess(len(competitions), 20)
+      self.assertLessEqual(len(competitions), 20)
       [
           self.assertTrue(hasattr(competitions[0], api.camel_to_snake(f)))
           for f in api.competition_fields

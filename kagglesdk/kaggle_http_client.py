@@ -7,11 +7,11 @@ from kagglesdk.kaggle_env import get_endpoint, get_env, KaggleEnv
 from kagglesdk.kaggle_object import KaggleObject
 from typing import Type
 
-
 # TODO (http://b/354237483) Generate the client from the existing one.
 # This was created from kaggle_api_client.py, prior to recent changes to
 # auth handling. The new client requires KAGGLE_API_TOKEN, so it is not
 # currently usable by the CLI.
+
 
 def _headers_to_str(headers):
   return '\n'.join(f'{k}: {v}' for k, v in headers.items())
@@ -34,6 +34,7 @@ def _get_apikey_creds():
   api_key = api_key_data['key']
   return username, api_key
 
+
 def clean_data(data):
   if isinstance(data, dict):
     return {k: clean_data(v) for k, v in data.items() if v is not None}
@@ -45,6 +46,7 @@ def clean_data(data):
     return 'false'
   return data
 
+
 class KaggleHttpClient(object):
   _xsrf_cookie_name = 'XSRF-TOKEN'
   _csrf_cookie_name = "CSRF-TOKEN"
@@ -54,9 +56,9 @@ class KaggleHttpClient(object):
   def __init__(self,
                env: KaggleEnv = None,
                verbose: bool = False,
-               renew_iap_token = None,
-               username = None,
-               password = None):
+               renew_iap_token=None,
+               username=None,
+               password=None):
     self._env = env or get_env()
     self._signed_in = None
     self._endpoint = get_endpoint(self._env)
@@ -65,7 +67,8 @@ class KaggleHttpClient(object):
     self._username = username
     self._password = password
 
-  def call(self, service_name: str, request_name: str, request: KaggleObject, response_type: Type[KaggleObject]):
+  def call(self, service_name: str, request_name: str, request: KaggleObject,
+           response_type: Type[KaggleObject]):
     self._init_session()
     http_request = self._prepare_request(service_name, request_name, request)
 
@@ -74,7 +77,8 @@ class KaggleHttpClient(object):
     response = self._prepare_response(response_type, http_response)
     return response
 
-  def _prepare_request(self, service_name: str, request_name: str, request: KaggleObject):
+  def _prepare_request(self, service_name: str, request_name: str,
+                       request: KaggleObject):
     request_url = self._get_request_url(request)
     method = request.method()
     data = request.__class__.to_dict(request)
@@ -82,14 +86,14 @@ class KaggleHttpClient(object):
       request_url = f'{request_url}?{urllib.parse.urlencode(data)}'
       data = ''
       self._session.headers.update({
-        'Accept': 'application/json',
-        'Content-Type': 'text/plain',
-        })
+          'Accept': 'application/json',
+          'Content-Type': 'text/plain',
+      })
     elif method == 'POST':
       self._session.headers.update({
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        })
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+      })
       if isinstance(data, dict):
         fields = request.body_fields()
         if fields is not None:
@@ -121,7 +125,8 @@ class KaggleHttpClient(object):
     if 'application/json' in http_response.headers['Content-Type']:
       resp = http_response.json()
       if 'code' in resp and resp['code'] >= 400:
-        raise requests.exceptions.HTTPError(resp['message'], response=http_response)
+        raise requests.exceptions.HTTPError(
+            resp['message'], response=http_response)
     if response_type is None:  # Method doesn't have a return type
       return None
     return response_type.prepare_from(http_response)
@@ -130,7 +135,9 @@ class KaggleHttpClient(object):
     if not self._verbose:
       return
     self._print('---------------------Request----------------------')
-    self._print(f'{request.method} {request.url}\n{_headers_to_str(request.headers)}\n\n{request.body}')
+    self._print(
+        f'{request.method} {request.url}\n{_headers_to_str(request.headers)}\n\n{request.body}'
+    )
     self._print('--------------------------------------------------')
 
   def _print_response(self, response, body=True):
@@ -160,16 +167,16 @@ class KaggleHttpClient(object):
 
     self._session = requests.Session()
     self._session.headers.update({
-      'User-Agent': 'kaggle-api/v1.0.0', # Was: V2
-      'Content-Type': 'application/x-www-form-urlencoded', # Was: /json
-      })
+        'User-Agent': 'kaggle-api/v1.0.0',  # Was: V2
+        'Content-Type': 'application/x-www-form-urlencoded',  # Was: /json
+    })
 
     iap_token = self._get_iap_token_if_required()
     if iap_token is not None:
       self._session.headers.update({
-        # https://cloud.google.com/iap/docs/authentication-howto#authenticating_from_proxy-authorization_header
-        'Proxy-Authorization': f'Bearer {iap_token}',
-        })
+          # https://cloud.google.com/iap/docs/authentication-howto#authenticating_from_proxy-authorization_header
+          'Proxy-Authorization': f'Bearer {iap_token}',
+      })
 
     self._try_fill_auth()
     # self._fill_xsrf_token(iap_token)  # TODO Make this align with original handler.
@@ -199,10 +206,12 @@ class KaggleHttpClient(object):
     http_response.raise_for_status()
 
     self._session.headers.update({
-      KaggleHttpClient._xsrf_header_name: self._session.cookies[KaggleHttpClient._xsrf_cookie_name],
-      })
+        KaggleHttpClient._xsrf_header_name:
+            self._session.cookies[KaggleHttpClient._xsrf_cookie_name],
+    })
 
   class BearerAuth(requests.auth.AuthBase):
+
     def __init__(self, token):
       self.token = token
 

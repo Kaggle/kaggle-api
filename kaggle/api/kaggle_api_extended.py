@@ -53,7 +53,6 @@ from slugify import slugify
 from tqdm import tqdm
 from urllib3.util.retry import Retry
 
-import kaggle
 from kaggle.configuration import Configuration
 from kagglesdk import KaggleClient, KaggleEnv
 from kagglesdk.competitions.types.competition_api_service import *
@@ -311,7 +310,7 @@ class KaggleApi(KaggleApi):
   config = os.path.join(config_dir, config_file)
   config_values = {}
   already_printed_version_warning = False
-  args = {'--local'}  # DEBUG Add --local to use localhost
+  args = {}  # DEBUG Add --local to use localhost
 
   # Kernels valid types
   valid_push_kernel_types = ['script', 'notebook']
@@ -2522,23 +2521,6 @@ class KaggleApi(KaggleApi):
       request.category_ids = self.get_or_default(meta_data, 'keywords', [])
       request.docker_image_pinning_type = docker_pinning_type
       return kaggle.kernels.kernels_api_client.save_kernel(request)
-
-  def to_json_string(self, item):  # TODO REMOVE
-    return self.json_stringify(item).__str__().replace('"', '\\"').replace(
-        '\\', '\\\\')
-
-  def json_stringify(self, data):  # TODO REMOVE
-    if isinstance(data, dict):
-      return {
-          k: self.json_stringify(v) for k, v in data.items() if v is not None
-      }
-    if isinstance(data, list):
-      return [self.json_stringify(v) for v in data if v is not None]
-    if data is True:
-      return 'true'
-    if data is False:
-      return 'false'
-    return data
 
   def kernels_push_cli(self, folder):
     """ Client wrapper for kernels_push.

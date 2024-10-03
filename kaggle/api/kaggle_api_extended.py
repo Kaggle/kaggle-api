@@ -2608,9 +2608,6 @@ class KaggleApi(KaggleApi):
       request.kernel_slug = kernel_slug
       response = kaggle.kernels.kernels_api_client.get_kernel(request)
 
-    # response = self.process_response(
-    #     self.kernel_pull_with_http_info(owner_slug, kernel_slug))
-    # blob = response['blob']
     blob = response.blob
 
     if os.path.isfile(effective_path):
@@ -2621,8 +2618,6 @@ class KaggleApi(KaggleApi):
 
     if not os.path.isfile(effective_path):
       language = blob.language.lower()
-      # language = blob['language'].lower()
-      # kernel_type = blob['kernelType'].lower()
       kernel_type = blob.kernel_type.lower()
 
       file_name = None
@@ -2652,7 +2647,6 @@ class KaggleApi(KaggleApi):
             extension = '.irnb'
           elif language == 'julia':
             extension = '.ijlnb'
-        # file_name = blob['slug'] + extension
         file_name = blob.slug + extension
 
       if file_name is None:
@@ -2667,7 +2661,6 @@ class KaggleApi(KaggleApi):
       file_name = os.path.basename(effective_path)
 
     with open(script_path, 'w', encoding="utf-8") as f:
-      # f.write(blob['source'])
       f.write(blob.source)
 
     if metadata:
@@ -2679,14 +2672,6 @@ class KaggleApi(KaggleApi):
       data['code_file'] = file_name
       data['language'] = server_metadata.language
       data['kernel_type'] = server_metadata.kernel_type
-
-      # server_metadata = response['metadata']
-      # data['id'] = server_metadata['ref']
-      # data['id_no'] = server_metadata['id']
-      # data['title'] = server_metadata['title']
-      # data['code_file'] = file_name
-      # data['language'] = server_metadata['language']
-      # data['kernel_type'] = server_metadata['kernelType']
       data['is_private'] = server_metadata.is_private
       data['enable_gpu'] = server_metadata.enable_gpu
       data['enable_tpu'] = server_metadata.enable_tpu
@@ -2696,21 +2681,6 @@ class KaggleApi(KaggleApi):
       data['kernel_sources'] = server_metadata.kernel_data_sources
       data['competition_sources'] = server_metadata.competition_data_sources
       data['model_sources'] = server_metadata.model_data_sources
-
-      # self.set_if_present(server_metadata, 'isPrivate', data, 'is_private')
-      # self.set_if_present(server_metadata, 'enableGpu', data, 'enable_gpu')
-      # self.set_if_present(server_metadata, 'enableTpu', data, 'enable_tpu')
-      # self.set_if_present(server_metadata, 'enableInternet', data,
-      #                     'enable_internet')
-      # self.set_if_present(server_metadata, 'categoryIds', data, 'keywords')
-      # self.set_if_present(server_metadata, 'datasetDataSources', data,
-      #                     'dataset_sources')
-      # self.set_if_present(server_metadata, 'kernelDataSources', data,
-      #                     'kernel_sources')
-      # self.set_if_present(server_metadata, 'competitionDataSources', data,
-      #                     'competition_sources')
-      # self.set_if_present(server_metadata, 'modelDataSources', data,
-      #                     'model_sources')
       with open(metadata_path, 'w') as f:
         json.dump(data, f, indent=2)
 

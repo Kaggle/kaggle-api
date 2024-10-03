@@ -84,27 +84,26 @@ class KaggleHttpClient(object):
       self._session.headers.update({
         'Accept': 'application/json',
         'Content-Type': 'text/plain',
-      })
+        })
     elif method == 'POST':
       self._session.headers.update({
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-      })
+        })
       if isinstance(data, dict):
         fields = request.body_fields()
         if fields is not None:
           if fields != '*':
             data = data[fields]
         data = clean_data(data)
-        data = data.__str__().replace("'", '"')
-        # TODO Remove quotes from numbers.
+        data = data.__str__()
     http_request = requests.Request(
-      method=method,
-      url=request_url,
-      data=data,
-      headers=self._session.headers,
-      # cookies=self._get_xsrf_cookies(),
-      auth=self._session.auth)
+        method=method,
+        url=request_url,
+        data=data,
+        headers=self._session.headers,
+        # cookies=self._get_xsrf_cookies(),
+        auth=self._session.auth)
     prepared_request = http_request.prepare()
     self._print_request(prepared_request)
     return prepared_request
@@ -163,14 +162,14 @@ class KaggleHttpClient(object):
     self._session.headers.update({
       'User-Agent': 'kaggle-api/v1.0.0', # Was: V2
       'Content-Type': 'application/x-www-form-urlencoded', # Was: /json
-    })
+      })
 
     iap_token = self._get_iap_token_if_required()
     if iap_token is not None:
       self._session.headers.update({
         # https://cloud.google.com/iap/docs/authentication-howto#authenticating_from_proxy-authorization_header
         'Proxy-Authorization': f'Bearer {iap_token}',
-      })
+        })
 
     self._try_fill_auth()
     # self._fill_xsrf_token(iap_token)  # TODO Make this align with original handler.
@@ -185,10 +184,10 @@ class KaggleHttpClient(object):
 
   def _fill_xsrf_token(self, iap_token):
     initial_get_request = requests.Request(
-      method='GET',
-      url=self._endpoint,
-      headers=self._session.headers,
-      auth=self._session.auth)
+        method='GET',
+        url=self._endpoint,
+        headers=self._session.headers,
+        auth=self._session.auth)
     prepared_request = initial_get_request.prepare()
     self._print_request(prepared_request)
 
@@ -201,7 +200,7 @@ class KaggleHttpClient(object):
 
     self._session.headers.update({
       KaggleHttpClient._xsrf_header_name: self._session.cookies[KaggleHttpClient._xsrf_cookie_name],
-    })
+      })
 
   class BearerAuth(requests.auth.AuthBase):
     def __init__(self, token):

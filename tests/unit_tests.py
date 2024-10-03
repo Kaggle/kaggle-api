@@ -210,9 +210,8 @@ class TestKaggleApi(unittest.TestCase):
 
   def test_kernels_a_list(self):
     try:
-      kernels = api.kernels_list()
-      self.assertGreater(len(kernels),
-                         0)  # Assuming there should be some kernels
+      kernels = api.kernels_list(sort_by='dateCreated', user='stevemessick', language='python')
+      self.assertGreater(len(kernels), 0)
     except ApiException as e:
       self.fail(f"kernels_list failed: {e}")
 
@@ -230,7 +229,7 @@ class TestKaggleApi(unittest.TestCase):
       md = update_kernel_metadata_file(self.kernel_metadata_path, kernel_name)
       push_result = api.kernels_push(kernel_directory)
       self.assertIsNotNone(push_result.ref)
-      self.assertIsNotNone(push_result.versionNumber)
+      self.assertTrue(isinstance(push_result.version_number, int))
       self.kernel_slug = md['id']
     except ApiException as e:
       self.fail(f"kernels_push failed: {e}")
@@ -245,11 +244,10 @@ class TestKaggleApi(unittest.TestCase):
       # on localhost and cancel the active event. That will exit the loop, but you may
       # need to clean up other active kernels to get it to run again.
       count = 0
-      while status_result['status'] == 'running' or status_result[
-          'status'] == 'queued' or count >= max_status_tries:
+      while status_result.status == 'running' or status_result.status == 'queued' or count >= max_status_tries:
         time.sleep(5)
         status_result = api.kernels_status(self.kernel_slug)
-        print(status_result['status'])
+        print(status_result.status)
       end_time = time.time()
       print(f'kernels_status ready in {end_time-start_time}s')
     except ApiException as e:
@@ -269,9 +267,10 @@ class TestKaggleApi(unittest.TestCase):
     if self.kernel_slug == '':
       self.test_kernels_c_push()
     try:
-      fs = api.kernels_output(self.kernel_slug, 'kernel/tmp')
-      self.assertIsInstance(
-          fs, list)  # Assuming it returns a list of files, but may be empty
+      fs, token = api.kernels_output(self.kernel_slug, 'kernel/tmp')
+      self.assertIsInstance(fs, list)
+      if token:
+        print(token)
     except ApiException as e:
       self.fail(f"kernels_output failed: {e}")
     finally:
@@ -288,6 +287,16 @@ class TestKaggleApi(unittest.TestCase):
     try:
       fs = api.kernels_pull(f'{test_user}/testing', 'kernel/tmp', metadata=True)
       self.assertTrue(os.path.exists(fs))
+      with open(f'{fs}/{self.kernel_metadata_path.split("/")[1]}') as f:
+        metadata = json.load(f)
+        [
+          self.assertTrue(metadata.get(f))
+          for f in ['id','id_no','title','code_file','language','kernel_type']
+        ]
+        [
+          self.assertTrue(metadata.get(f) is not None)
+          for f in ['is_private','enable_gpu','enable_tpu','enable_internet','keywords','dataset_sources','kernel_sources','competition_sources','model_sources']
+        ]
     except ApiException as e:
       self.fail(f"kernels_pull failed: {e}")
     finally:

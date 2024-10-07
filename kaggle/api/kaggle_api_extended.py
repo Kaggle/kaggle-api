@@ -2509,10 +2509,10 @@ class KaggleApi(KaggleApi):
       request.text = script_body
       request.language = language
       request.kernel_type = kernel_type
-      request.is_private = self.get_bool(meta_data, 'is_private')
-      request.enable_gpu = self.get_bool(meta_data, 'enable_gpu')
-      request.enable_tpu = self.get_bool(meta_data, 'enable_tpu')
-      request.enable_internet = self.get_bool(meta_data, 'enable_internet')
+      request.is_private = self.get_bool(meta_data, 'is_private', True)
+      request.enable_gpu = self.get_bool(meta_data, 'enable_gpu', False)
+      request.enable_tpu = self.get_bool(meta_data, 'enable_tpu', False)
+      request.enable_internet = self.get_bool(meta_data, 'enable_internet', True)
       request.dataset_data_sources = dataset_sources
       request.competition_data_sources = self.get_or_default(
           meta_data, 'competition_sources', [])
@@ -3998,7 +3998,7 @@ class KaggleApi(KaggleApi):
       return data[key]
     return default
 
-  def get_bool(self, data, key, default=False):
+  def get_bool(self, data, key, default):
     if key in data:
       val = data[key]
       if isinstance(val, str):

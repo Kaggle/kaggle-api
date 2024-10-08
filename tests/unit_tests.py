@@ -541,6 +541,8 @@ class TestKaggleApi(unittest.TestCase):
       ms = api.model_list()
       self.assertIsInstance(ms, list)
       self.assertGreater(len(ms), 0)
+      [self.assertTrue(hasattr(ms[0], api.camel_to_snake(f)))
+        for f in api.model_fields]
     except ApiException as e:
       self.fail(f"models_list failed: {e}")
 
@@ -560,26 +562,34 @@ class TestKaggleApi(unittest.TestCase):
       self.test_model_b_initialize()
     try:
       model = api.model_create_new(model_directory)
-      if model.hasError:
+      if model.error:
         self.fail(model.error)
       else:
         self.assertIsNotNone(model.ref)
         self.assertGreater(len(model.ref), 0)
+        [self.assertTrue(hasattr(model, api.camel_to_snake(f)))
+         for f in ['id', 'url']]
+        
     except ApiException as e:
       self.fail(f"model_create_new failed: {e}")
 
   def test_model_d_get(self):
     try:
       model_data = api.model_get(f'{test_user}/{model_title}')
-      self.assertIsNotNone(model_data['ref'])
-      self.assertGreater(len(model_data['ref']), 0)
-      self.assertEquals(model_data['title'], model_title)
+      self.assertIsNotNone(model_data.ref)
+      self.assertGreater(len(model_data.ref), 0)
+      self.assertEqual(model_data.title, model_title)
+      [self.assertTrue(hasattr(model_data, api.camel_to_snake(f)))
+       for f in api.model_all_fields]
     except ApiException as e:
       self.fail(f"model_get failed: {e}")
 
   def test_model_e_update(self):
+    if self.model_metadata_file == '':
+      self.test_model_b_initialize()
     try:
       update_response = api.model_update(model_directory)
+      self.assertEquals(len(update_response.error), 0)   
       self.assertIsNotNone(update_response.ref)
       self.assertGreater(len(update_response.ref), 0)
     except ApiException as e:
@@ -605,6 +615,8 @@ class TestKaggleApi(unittest.TestCase):
                                      self.model_meta_data['slug'],
                                      instance_name, framework_name)
       inst_create_resp = api.model_instance_create(model_inst_directory)
+      if inst_create_resp.hasError:
+        self.fail(inst_create_resp.error)
       self.assertIsNotNone(inst_create_resp.ref)
       self.assertGreater(len(inst_create_resp.ref), 0)
     except ApiException as e:
@@ -709,7 +721,7 @@ class TestKaggleApi(unittest.TestCase):
   def test_model_z_delete(self):
     try:
       delete_response = api.model_delete(f'{test_user}/{model_title}', True)
-      if delete_response.hasError:
+      if delete_response.error:
         self.fail(delete_response.error)
       else:
         pass

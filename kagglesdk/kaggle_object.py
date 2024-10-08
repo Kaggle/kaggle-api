@@ -70,8 +70,13 @@ class EnumSerializer(ObjectSerializer):
     except KeyError:
       dct = vars(cls)
       n = v.lower()
+      nn = _pascal_case_to_upper_snake_case(v).lower()
+      enum_prefix = _pascal_case_to_upper_snake_case(cls.__name__).lower()
       for key in dct.keys():
-        if key.lower() == n:
+        k = key.lower()
+        if k == n:
+          return dct[key]
+        if k.startswith(enum_prefix) and k.endswith(n) or k.endswith(nn):
           return dct[key]
       raise
 
@@ -204,6 +209,10 @@ class FieldMetadata(object):
 class KaggleObject(object):
   def endpoint(self):
     raise 'Error: endpoint must be defined by the request object'
+
+  @staticmethod
+  def endpoint_path():
+    return None
 
   @staticmethod
   def body_fields():

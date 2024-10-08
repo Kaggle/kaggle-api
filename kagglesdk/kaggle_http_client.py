@@ -46,6 +46,26 @@ def clean_data(data):
     return 'false'
   return data
 
+def find_words(source, left='{', right='}'):
+  words = []
+  split_str = source.split(left)
+  
+  for s in split_str[1:]:
+    split_s = s.split(right)
+    if len(split_s) > 1:
+      words.append(split_s[0])
+  
+  return words
+
+def to_camel_case(snake_str):
+  return "".join(x.capitalize() for x in snake_str.lower().split("_"))
+
+def to_lower_camel_case(snake_str):
+  # https://stackoverflow.com/questions/19053707/converting-snake-case-to-lower-camel-case-lowercamelcase
+  # We capitalize the first letter of each component except the first one
+  # with the 'capitalize' method and join them together.
+  camel_string = to_camel_case(snake_str)
+  return snake_str[0].lower() + camel_string[1:]
 
 class KaggleHttpClient(object):
   _xsrf_cookie_name = 'XSRF-TOKEN'
@@ -83,7 +103,13 @@ class KaggleHttpClient(object):
     method = request.method()
     data = request.__class__.to_dict(request)
     if method == 'GET':
-      request_url = f'{request_url}?{urllib.parse.urlencode(data)}'
+      if request.endpoint_path():
+        words = find_words(request.endpoint_path())
+        list(map(data.pop, [to_lower_camel_case(w) for w in words]))
+        if len(data) == 0:
+          data = None
+      if data:
+        request_url = f'{request_url}?{urllib.parse.urlencode(data)}'
       data = ''
       self._session.headers.update({
           'Accept': 'application/json',
@@ -167,7 +193,7 @@ class KaggleHttpClient(object):
 
     self._session = requests.Session()
     self._session.headers.update({
-        'User-Agent': 'kaggle-api/v1.0.0',  # Was: V2
+        'User-Agent': 'kaggle-api/v1.7.0',  # Was: V2
         'Content-Type': 'application/x-www-form-urlencoded',  # Was: /json
     })
 

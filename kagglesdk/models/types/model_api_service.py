@@ -1069,9 +1069,15 @@ class ApiGetModelInstanceRequest(KaggleObject):
     self._instance_slug = instance_slug
 
 
+  @staticmethod
+  def endpoint_path():
+    return '/api/v1/models/{owner_slug}/{model_slug}/{framework}/{instance_slug}/get'
+
   def endpoint(self):
     path = '/api/v1/models/{owner_slug}/{model_slug}/{framework}/{instance_slug}/get'
-    return path.format_map(self.to_field_map(self))
+    fields = self.to_field_map(self)
+    fields['framework'] = fields['framework'][len('MODEL_FRAMEWORK_'):].lower()
+    return path.format_map(fields)
 
 class ApiGetModelRequest(KaggleObject):
   r"""

@@ -52,6 +52,9 @@ from requests.adapters import HTTPAdapter
 from slugify import slugify
 from tqdm import tqdm
 from urllib3.util.retry import Retry
+# from google.protobuf.field_mask_pb2 import FieldMask
+from google.protobuf import field_mask_pb2
+
 
 from kaggle.configuration import Configuration
 from kagglesdk import KaggleClient, KaggleEnv
@@ -72,6 +75,10 @@ from kagglesdk.kernels.types.kernels_api_service import ApiListKernelsRequest, \
   ApiListKernelSessionOutputRequest, ApiGetKernelSessionStatusRequest
 from kagglesdk.kernels.types.kernels_enums import KernelsListSortType, \
   KernelsListViewType
+from kagglesdk.models.types.model_api_service import ApiListModelsRequest, \
+  ApiCreateModelRequest, ApiGetModelRequest, ApiDeleteModelRequest, \
+  ApiUpdateModelRequest, ApiGetModelInstanceRequest
+from kagglesdk.models.types.model_enums import ListModelsOrderBy
 from .kaggle_api import KaggleApi
 from ..api_client import ApiClient
 from ..models.api_blob_type import ApiBlobType
@@ -310,7 +317,7 @@ class KaggleApi(KaggleApi):
   config = os.path.join(config_dir, config_file)
   config_values = {}
   already_printed_version_warning = False
-  args = {}  # DEBUG Add --local to use localhost
+  args = {'--local'}  # DEBUG Add --local to use localhost
 
   # Kernels valid types
   valid_push_kernel_types = ['script', 'notebook']
@@ -375,6 +382,10 @@ class KaggleApi(KaggleApi):
       'usabilityRating'
   ]
   dataset_file_fields = ['name', 'size', 'creationDate']
+  model_fields = ['id', 'ref', 'title', 'subtitle', 'author']
+  model_all_fields = ['id','ref','author','slug','title','subtitle','isPrivate','description','publishTime']
+
+
 
   def _is_retriable(self, e):
     return issubclass(type(e), ConnectionError) or \
@@ -2824,24 +2835,26 @@ class KaggleApi(KaggleApi):
       print('%s has status "%s"' % (kernel, status))
 
   def model_get(self, model):
-    """ call to get a model from the API
-             Parameters
+    """ Get a model.
+            Parameters
             ==========
-            model: the string identified of the model
+            model: the string identifier of the model
                      should be in format [owner]/[model-name]
         """
     owner_slug, model_slug = self.split_model_string(model)
 
-    model_get_result = self.process_response(
-        self.get_model_with_http_info(owner_slug, model_slug))
-    return model_get_result
+    with self.build_kaggle_client() as kaggle:
+      request = ApiGetModelRequest()
+      request.owner_slug = owner_slug
+      request.model_slug = model_slug
+      return kaggle.models.model_api_client.get_model(request)
 
   def model_get_cli(self, model, folder=None):
-    """ wrapper for client for model_get, with additional
+    """ Clent wrapper for model_get, with additional
             model_opt to get a model from the API
-             Parameters
+            Parameters
             ==========
-            model: the string identified of the model
+            model: the string identifier of the model
                      should be in format [owner]/[model-name]
             folder: the folder to download the model metadata file
         """
@@ -2852,15 +2865,15 @@ class KaggleApi(KaggleApi):
       meta_file = os.path.join(folder, self.MODEL_METADATA_FILE)
 
       data = {}
-      data['id'] = model['id']
-      model_ref_split = model['ref'].split('/')
+      data['id'] = model.id
+      model_ref_split = model.ref.split('/')
       data['ownerSlug'] = model_ref_split[0]
       data['slug'] = model_ref_split[1]
-      data['title'] = model['title']
-      data['subtitle'] = model['subtitle']
-      data['isPrivate'] = model['isPrivate']
-      data['description'] = model['description']
-      data['publishTime'] = model['publishTime']
+      data['title'] = model.title
+      data['subtitle'] = model.subtitle
+      data['isPrivate'] = model.isPrivate
+      data['description'] = model.description
+      data['publishTime'] = model.publishTime
 
       with open(meta_file, 'w') as f:
         json.dump(data, f, indent=2)
@@ -2882,26 +2895,26 @@ class KaggleApi(KaggleApi):
             page_size: the page size to return (default is 20)
             page_token: the page token for pagination
         """
-    if sort_by and sort_by not in self.valid_model_sort_bys:
-      raise ValueError('Invalid sort by specified. Valid options are ' +
+    if sort_by:
+      if sort_by not in self.valid_model_sort_bys:
+        raise ValueError('Invalid sort by specified. Valid options are ' +
                        str(self.valid_model_sort_bys))
+      sort_by = self.lookup_enum(ListModelsOrderBy, sort_by)
 
     if int(page_size) <= 0:
       raise ValueError('Page size must be >= 1')
 
-    models_list_result = self.process_response(
-        self.models_list_with_http_info(
-            sort_by=sort_by or 'hotness',
-            search=search or '',
-            owner=owner or '',
-            page_size=page_size,
-            page_token=page_token))
-
-    next_page_token = models_list_result['nextPageToken']
-    if next_page_token:
-      print('Next Page Token = {}'.format(next_page_token))
-
-    return [Model(m) for m in models_list_result['models']]
+    with self.build_kaggle_client() as kaggle:
+      request = ApiListModelsRequest()
+      request.sort_by=sort_by or ListModelsOrderBy.LIST_MODELS_ORDER_BY_HOTNESS
+      request.search=search or ''
+      request.owner=owner or ''
+      request.page_size=page_size
+      request.page_token=page_token
+      response =kaggle.models.model_api_client.list_models(request)
+      if response.next_page_token:
+        print('Next Page Token = {}'.format(response.next_page_token))
+      return response.models
 
   def model_list_cli(self,
                      sort_by=None,
@@ -2978,8 +2991,8 @@ class KaggleApi(KaggleApi):
     self.model_initialize(folder)
 
   def model_create_new(self, folder):
-    """ create a new model.
-             Parameters
+    """ Create a new model.
+            Parameters
             ==========
             folder: the folder to get the metadata file from
         """
@@ -3015,24 +3028,24 @@ class KaggleApi(KaggleApi):
       raise ValueError('model.isPrivate must be a boolean')
     if publish_time:
       self.validate_date(publish_time)
+    else:
+      publish_time = None
 
-    request = ModelNewRequest(
-        owner_slug=owner_slug,
-        slug=slug,
-        title=title,
-        subtitle=subtitle,
-        is_private=is_private,
-        description=description,
-        publish_time=publish_time,
-        provenance_sources=provenance_sources)
-    result = ModelNewResponse(
-        self.process_response(self.models_create_new_with_http_info(request)))
-
-    return result
+    with self.build_kaggle_client() as kaggle:
+      request = ApiCreateModelRequest()
+      request.owner_slug=owner_slug
+      request.slug=slug
+      request.title=title
+      request.subtitle=subtitle
+      request.is_private=is_private
+      request.description=description
+      request.publish_time=publish_time
+      request.provenance_sources=provenance_sources
+      return kaggle.models.model_api_client.create_model(request)
 
   def model_create_new_cli(self, folder=None):
-    """ client wrapper for creating a new model
-             Parameters
+    """ Client wrapper for creating a new model.
+            Parameters
             ==========
             folder: the folder to get the metadata file from
         """
@@ -3046,10 +3059,10 @@ class KaggleApi(KaggleApi):
       print('Model creation error: ' + result.error)
 
   def model_delete(self, model, yes):
-    """ call to delete a model from the API
-             Parameters
+    """ Delete a modeL.
+            Parameters
             ==========
-            model: the string identified of the model
+            model: the string identifieR of the model
                      should be in format [owner]/[model-name]
             yes: automatic confirmation
         """
@@ -3060,10 +3073,11 @@ class KaggleApi(KaggleApi):
         print('Deletion cancelled')
         exit(0)
 
-    res = ModelDeleteResponse(
-        self.process_response(
-            self.delete_model_with_http_info(owner_slug, model_slug)))
-    return res
+    with self.build_kaggle_client() as kaggle:
+      request = ApiDeleteModelRequest()
+      request.owner_slug = owner_slug
+      request.model_slug = model_slug
+      return kaggle.models.model_api_client.delete_model(request)
 
   def model_delete_cli(self, model, yes):
     """ wrapper for client for model_delete
@@ -3075,14 +3089,14 @@ class KaggleApi(KaggleApi):
         """
     result = self.model_delete(model, yes)
 
-    if result.hasError:
+    if result.error:
       print('Model deletion error: ' + result.error)
     else:
       print('The model was deleted.')
 
   def model_update(self, folder):
-    """ update a model.
-             Parameters
+    """ Update a model.
+            Parameters
             ==========
             folder: the folder to get the metadata file from
         """
@@ -3123,34 +3137,40 @@ class KaggleApi(KaggleApi):
     if subtitle != None:
       update_mask['paths'].append('subtitle')
     if is_private != None:
-      update_mask['paths'].append('is_private')
+      update_mask['paths'].append('isPrivate') # is_private
     else:
       is_private = True  # default value, not updated
     if description != None:
       description = self.sanitize_markdown(description)
       update_mask['paths'].append('description')
-    if publish_time != None:
+    if publish_time != None and len(publish_time) > 0:
       update_mask['paths'].append('publish_time')
-    if provenance_sources != None:
+    else:
+      publish_time = None
+    if provenance_sources != None and len(provenance_sources) > 0:
       update_mask['paths'].append('provenance_sources')
+    else: 
+      provenance_sources = None
 
-    request = ModelUpdateRequest(
-        title=title,
-        subtitle=subtitle,
-        is_private=is_private,
-        description=description,
-        publish_time=publish_time,
-        provenance_sources=provenance_sources,
-        update_mask=update_mask)
-    result = ModelNewResponse(
-        self.process_response(
-            self.update_model_with_http_info(owner_slug, slug, request)))
-
-    return result
+    with self.build_kaggle_client() as kaggle:
+      fm = field_mask_pb2.FieldMask(paths=update_mask['paths'])
+      # TODO Field masks should work w/o needing re-initialization.
+      fm = fm.FromJsonString(json.dumps(update_mask))
+      request = ApiUpdateModelRequest()
+      request.owner_slug = owner_slug
+      request.model_slug = slug
+      request.title=title
+      request.subtitle=subtitle
+      request.is_private=is_private
+      request.description=description
+      request.publish_time=publish_time
+      request.provenance_sources=provenance_sources
+      request.update_mask=fm if len(update_mask['paths']) > 0 else None
+      return kaggle.models.model_api_client.update_model(request)
 
   def model_update_cli(self, folder=None):
-    """ client wrapper for updating a model
-             Parameters
+    """ Client wrapper for updating a model.
+            Parameters
             ==========
             folder: the folder to get the metadata file from
         """
@@ -3164,10 +3184,10 @@ class KaggleApi(KaggleApi):
       print('Model update error: ' + result.error)
 
   def model_instance_get(self, model_instance):
-    """ call to get a model instance from the API
-             Parameters
+    """ Get a model instance.
+            Parameters
             ==========
-            model_instance: the string identified of the model instance
+            model_instance: the string identifier of the model instance
                      should be in format [owner]/[model-name]/[framework]/[instance-slug]
         """
     if model_instance is None:
@@ -3181,10 +3201,10 @@ class KaggleApi(KaggleApi):
     return mi
 
   def model_instance_get_cli(self, model_instance, folder=None):
-    """ wrapper for client for model_instance_get
-             Parameters
+    """ Clent wrapper for model_instance_get.
+            Parameters
             ==========
-            model_instance: the string identified of the model instance
+            model_instance: the string identifier of the model instance
                      should be in format [owner]/[model-name]/[framework]/[instance-slug]
             folder: the folder to download the model metadata file
         """
@@ -3224,8 +3244,8 @@ class KaggleApi(KaggleApi):
       print('Metadata file written to {}'.format(meta_file))
 
   def model_instance_initialize(self, folder):
-    """ initialize a folder with a model instance configuration (metadata) file
-             Parameters
+    """ Initialize a folder with a model instance configuration (metadata) file.
+            Parameters
             ==========
             folder: the folder to initialize the metadata file in
         """

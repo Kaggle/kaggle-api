@@ -1,5 +1,6 @@
-import os
+import enum
 import json
+import os
 import urllib.parse
 
 import requests
@@ -40,6 +41,8 @@ def clean_data(data):
     return {k: clean_data(v) for k, v in data.items() if v is not None}
   if isinstance(data, list):
     return [clean_data(v) for v in data if v is not None]
+  # if isinstance(data, enum.Enum):
+  #   return data.name
   if data is True:
     return 'true'
   if data is False:
@@ -101,7 +104,8 @@ class KaggleHttpClient(object):
                        request: KaggleObject):
     request_url = self._get_request_url(request)
     method = request.method()
-    data = request.__class__.to_dict(request)
+    data = request.__class__.to_dict(request, ignore_defaults=False)
+    # data = request.to_field_map(request, ignore_defaults=False)
     if method == 'GET':
       if request.endpoint_path():
         words = find_words(request.endpoint_path())
@@ -126,7 +130,7 @@ class KaggleHttpClient(object):
           if fields != '*':
             data = data[fields]
         data = clean_data(data)
-        data = data.__str__()
+        data = data.__str__().replace("'",'"')
     http_request = requests.Request(
         method=method,
         url=request_url,

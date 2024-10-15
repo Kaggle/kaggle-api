@@ -1076,7 +1076,7 @@ class ApiGetModelInstanceRequest(KaggleObject):
   def endpoint(self):
     path = '/api/v1/models/{owner_slug}/{model_slug}/{framework}/{instance_slug}/get'
     fields = self.to_field_map(self)
-    fields['framework'] = fields['framework'][len('MODEL_FRAMEWORK_'):].lower()
+    # TODO DELETE fields['framework'] = fields['framework'][len('MODEL_FRAMEWORK_'):].lower()
     return path.format_map(fields)
 
 class ApiGetModelRequest(KaggleObject):

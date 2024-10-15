@@ -1,8 +1,8 @@
+import enum
 import json
 import re
 from datetime import datetime, timedelta
 from google.protobuf.field_mask_pb2 import FieldMask
-from kagglesdk.models.types.model_enums import ModelFramework
 
 
 class ObjectSerializer(object):
@@ -48,6 +48,9 @@ class EnumSerializer(ObjectSerializer):
     #if v.name.startswith(enum_prefix):
     #  return v.name
     #return f'{enum_prefix}{v.name}'
+    enum_prefix = f'{_pascal_case_to_upper_snake_case(cls.__name__)}_'
+    if v.name.index(enum_prefix) == 0:
+      return v.name[len(enum_prefix):].lower()
     return v.name
 
   @staticmethod
@@ -242,8 +245,14 @@ class KaggleObject(object):
   @staticmethod
   def to_field_map(self, ignore_defaults=True):
     kv_pairs = [(field.field_name, field.get_as_dict_item(self, ignore_defaults)) for field in self._fields]
-    return {k: str(v) for (k, v) in kv_pairs if not ignore_defaults or v is not None}
+    return {k: self._name_of(v) for (k, v) in kv_pairs if not ignore_defaults or v is not None}
 
+  @staticmethod
+  def _name_of(obj):
+    if isinstance(obj, enum.Enum):
+      return obj.name
+    return str(obj)
+      
   @classmethod
   def from_dict(cls, json_dict):
     instance = cls()

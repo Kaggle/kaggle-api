@@ -7,6 +7,7 @@ from kaggle.api.kaggle_api_extended import KaggleApi
 MODEL_HANDLE = "keras/bert"
 MODEL_ID = 2819
 
+# TODO(messick) Add a test that creates a dataset w/o specifying privacy that is created private.
 
 class TestModels(unittest.TestCase):
     def setUp(self):
@@ -19,4 +20,4 @@ class TestModels(unittest.TestCase):
 
     def test_get_model(self) -> None:
         model = self.api.model_get(MODEL_HANDLE)
-        self.assertEqual(MODEL_ID, model['id'])
+        self.assertEqual(MODEL_ID, model.id)

@@ -1339,6 +1339,10 @@ class ApiDownloadDatasetRawRequest(KaggleObject):
     path = '/api/v1/datasets/download-raw/{owner_slug}/{dataset_slug}/{file_name}'
     return path.format_map(self.to_field_map(self))
 
+  @staticmethod
+  def endpoint_path():
+    return '/api/v1/datasets/download-raw/{owner_slug}/{dataset_slug}/{file_name}'
+
 class ApiDownloadDatasetRequest(KaggleObject):
   r"""
   Attributes:
@@ -1430,6 +1434,10 @@ class ApiDownloadDatasetRequest(KaggleObject):
       path = '/api/v1/datasets/download/{owner_slug}/{dataset_slug}'
     return path.format_map(self.to_field_map(self))
 
+  @staticmethod
+  def endpoint_path():
+    return '/api/v1/datasets/download/{owner_slug}/{dataset_slug}'
+
 class ApiGetDatasetMetadataRequest(KaggleObject):
   r"""
   Attributes:
@@ -1472,6 +1480,10 @@ class ApiGetDatasetMetadataRequest(KaggleObject):
   def endpoint(self):
     path = '/api/v1/datasets/metadata/{owner_slug}/{dataset_slug}'
     return path.format_map(self.to_field_map(self))
+
+  @staticmethod
+  def endpoint_path():
+    return '/api/v1/datasets/metadata/{owner_slug}/{dataset_slug}'
 
 class ApiGetDatasetMetadataResponse(KaggleObject):
   r"""
@@ -1561,6 +1573,10 @@ class ApiGetDatasetRequest(KaggleObject):
     path = '/api/v1/datasets/view/{owner_slug}/{dataset_slug}'
     return path.format_map(self.to_field_map(self))
 
+  @staticmethod
+  def endpoint_path():
+    return '/api/v1/datasets/view/{owner_slug}/{dataset_slug}'
+
 class ApiGetDatasetStatusRequest(KaggleObject):
   r"""
   Attributes:
@@ -1603,6 +1619,10 @@ class ApiGetDatasetStatusRequest(KaggleObject):
   def endpoint(self):
     path = '/api/v1/datasets/status/{owner_slug}/{dataset_slug}'
     return path.format_map(self.to_field_map(self))
+
+  @staticmethod
+  def endpoint_path():
+    return '/api/v1/datasets/status/{owner_slug}/{dataset_slug}'
 
 class ApiGetDatasetStatusResponse(KaggleObject):
   r"""
@@ -1719,6 +1739,10 @@ class ApiListDatasetFilesRequest(KaggleObject):
   def endpoint(self):
     path = '/api/v1/datasets/list/{owner_slug}/{dataset_slug}'
     return path.format_map(self.to_field_map(self))
+
+  @staticmethod
+  def endpoint_path():
+    return '/api/v1/datasets/list/{owner_slug}/{dataset_slug}'
 
 class ApiListDatasetFilesResponse(KaggleObject):
   r"""

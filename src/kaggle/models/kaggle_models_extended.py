@@ -262,12 +262,15 @@ class ResumableUploadResult(object):
     self.bytes_uploaded = bytes_uploaded
     self.start_at = 0 if bytes_uploaded is None else bytes_uploaded + 1
 
-  def Complete(self):
+  @staticmethod
+  def Complete():
     return ResumableUploadResult(ResumableUploadResult.COMPLETE)
 
-  def Failed(self):
+  @staticmethod
+  def Failed():
     return ResumableUploadResult(ResumableUploadResult.FAILED)
 
+  @staticmethod
   def Incomplete(bytes_uploaded=None):
     return ResumableUploadResult(ResumableUploadResult.INCOMPLETE,
                                  bytes_uploaded)

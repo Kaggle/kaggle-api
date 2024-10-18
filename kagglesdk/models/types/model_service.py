@@ -63,6 +63,10 @@ class GetModelMetricsRequest(KaggleObject):
     path = '/api/v1/models/{owner_slug}/{model_slug}/metrics'
     return path.format_map(self.to_field_map(self))
 
+  @staticmethod
+  def endpoint_path():
+    return '/models/{owner_slug}/{model_slug}/metrics'
+
 class GetModelMetricsResponse(KaggleObject):
   r"""
   Attributes:

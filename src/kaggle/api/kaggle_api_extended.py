@@ -2851,7 +2851,7 @@ class KaggleApi(KaggleApi):
                  owner=None,
                  page_size=20,
                  page_token=None):
-    """ Teturn a list of models.
+    """ Return a list of models.
 
             Parameters
             ==========
@@ -3028,7 +3028,7 @@ class KaggleApi(KaggleApi):
     """ Delete a modeL.
             Parameters
             ==========
-            model: the string identifieR of the model
+            model: the string identifier of the model
                      should be in format [owner]/[model-name]
             yes: automatic confirmation
         """

@@ -20,4 +20,4 @@ class TestModels(unittest.TestCase):
 
     def test_get_model(self) -> None:
         model = self.api.model_get(MODEL_HANDLE)
-        self.assertEqual(MODEL_ID, model['id'])
+        self.assertEqual(MODEL_ID, model.id)

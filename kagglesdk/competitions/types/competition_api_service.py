@@ -144,6 +144,10 @@ class ApiDownloadDataFileRequest(KaggleObject):
     path = '/api/v1/competitions/data/download/{competition_name}/{file_name}'
     return path.format_map(self.to_field_map(self))
 
+  @staticmethod
+  def endpoint_path():
+    return '/api/v1/competitions/data/download/{competition_name}/{file_name}'
+
 class ApiDownloadDataFilesRequest(KaggleObject):
   r"""
   Attributes:
@@ -174,6 +178,10 @@ class ApiDownloadDataFilesRequest(KaggleObject):
     path = '/api/v1/competitions/data/download-all/{competition_name}'
     return path.format_map(self.to_field_map(self))
 
+  @staticmethod
+  def endpoint_path():
+    return '/api/v1/competitions/data/download-all/{competition_name}'
+
 class ApiDownloadLeaderboardRequest(KaggleObject):
   r"""
   Attributes:
@@ -201,6 +209,10 @@ class ApiDownloadLeaderboardRequest(KaggleObject):
   def endpoint(self):
     path = '/api/v1/competitions/{competition_name}/leaderboard/download'
     return path.format_map(self.to_field_map(self))
+
+  @staticmethod
+  def endpoint_path():
+    return '/api/v1/competitions/{competition_name}/leaderboard/download'
 
 class ApiGetLeaderboardRequest(KaggleObject):
   r"""
@@ -231,6 +243,10 @@ class ApiGetLeaderboardRequest(KaggleObject):
   def endpoint(self):
     path = '/api/v1/competitions/{competition_name}/leaderboard/view'
     return path.format_map(self.to_field_map(self))
+
+  @staticmethod
+  def endpoint_path():
+    return '/api/v1/competitions/{competition_name}/leaderboard/view'
 
 class ApiGetLeaderboardResponse(KaggleObject):
   r"""
@@ -531,6 +547,10 @@ class ApiListDataFilesRequest(KaggleObject):
     path = '/api/v1/competitions/data/list/{competition_name}'
     return path.format_map(self.to_field_map(self))
 
+  @staticmethod
+  def endpoint_path():
+    return '/api/v1/competitions/data/list/{competition_name}'
+
 class ApiListDataFilesResponse(KaggleObject):
   r"""
   Attributes:
@@ -644,6 +664,10 @@ class ApiListSubmissionsRequest(KaggleObject):
   def endpoint(self):
     path = '/api/v1/competitions/submissions/list/{competition_name}'
     return path.format_map(self.to_field_map(self))
+
+  @staticmethod
+  def endpoint_path():
+    return '/api/v1/competitions/submissions/list/{competition_name}'
 
 class ApiListSubmissionsResponse(KaggleObject):
   r"""

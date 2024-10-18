@@ -1000,6 +1000,10 @@ class ApiDownloadModelInstanceVersionRequest(KaggleObject):
       path = '/api/v1/models/{owner_slug}/{model_slug}/{framework}/{instance_slug}/{version_number}/download'
     return path.format_map(self.to_field_map(self))
 
+  @staticmethod
+  def endpoint_path():
+    return '/api/v1/models/{owner_slug}/{model_slug}/{framework}/{instance_slug}/{version_number}/download'
+
 class ApiGetModelInstanceRequest(KaggleObject):
   r"""
   Attributes:
@@ -1069,15 +1073,13 @@ class ApiGetModelInstanceRequest(KaggleObject):
     self._instance_slug = instance_slug
 
 
+  def endpoint(self):
+    path = '/api/v1/models/{owner_slug}/{model_slug}/{framework}/{instance_slug}/get'
+    return path.format_map(self.to_field_map(self))
+
   @staticmethod
   def endpoint_path():
     return '/api/v1/models/{owner_slug}/{model_slug}/{framework}/{instance_slug}/get'
-
-  def endpoint(self):
-    path = '/api/v1/models/{owner_slug}/{model_slug}/{framework}/{instance_slug}/get'
-    fields = self.to_field_map(self)
-    # TODO DELETE fields['framework'] = fields['framework'][len('MODEL_FRAMEWORK_'):].lower()
-    return path.format_map(fields)
 
 class ApiGetModelRequest(KaggleObject):
   r"""
@@ -1121,6 +1123,10 @@ class ApiGetModelRequest(KaggleObject):
   def endpoint(self):
     path = '/api/v1/models/{owner_slug}/{model_slug}/get'
     return path.format_map(self.to_field_map(self))
+
+  @staticmethod
+  def endpoint_path():
+    return '/api/v1/models/{owner_slug}/{model_slug}/get'
 
 class ApiListModelInstanceVersionFilesRequest(KaggleObject):
   r"""
@@ -1242,6 +1248,10 @@ class ApiListModelInstanceVersionFilesRequest(KaggleObject):
     else:
       path = '/api/v1/models/{owner_slug}/{model_slug}/{framework}/{instance_slug}/files'
     return path.format_map(self.to_field_map(self))
+
+  @staticmethod
+  def endpoint_path():
+    return '/api/v1/models/{owner_slug}/{model_slug}/{framework}/{instance_slug}/files'
 
 class ApiListModelInstanceVersionFilesResponse(KaggleObject):
   r"""

@@ -25,6 +25,11 @@ def _pascal_case_to_upper_snake_case(string):
   return _pascal_to_upper_snake_case_regex.sub(r'_\1', string).upper()
 
 
+def _convert (camel_input):
+  words = re.findall(r'[A-Z]?[a-z]+|[A-Z]{2,}(?=[A-Z][a-z]|\d|\W|$)|\d+', camel_input)
+  return '_'.join(map(str.lower, words))
+
+
 class EnumSerializer(ObjectSerializer):
   def __init__(self):
     """
@@ -49,7 +54,7 @@ class EnumSerializer(ObjectSerializer):
     #  return v.name
     #return f'{enum_prefix}{v.name}'
     enum_prefix = f'{_pascal_case_to_upper_snake_case(cls.__name__)}_'
-    if v.name.index(enum_prefix) == 0:
+    if v.name.find(enum_prefix) == 0:
       return v.name[len(enum_prefix):].lower()
     return v.name
 
@@ -73,7 +78,7 @@ class EnumSerializer(ObjectSerializer):
     except KeyError:
       dct = vars(cls)
       n = v.lower()
-      nn = _pascal_case_to_upper_snake_case(v).lower()
+      nn = _convert(v).lower()
       enum_prefix = _pascal_case_to_upper_snake_case(cls.__name__).lower()
       for key in dct.keys():
         k = key.lower()
@@ -245,14 +250,8 @@ class KaggleObject(object):
   @staticmethod
   def to_field_map(self, ignore_defaults=True):
     kv_pairs = [(field.field_name, field.get_as_dict_item(self, ignore_defaults)) for field in self._fields]
-    return {k: self._name_of(v) for (k, v) in kv_pairs if not ignore_defaults or v is not None}
+    return {k: v for (k, v) in kv_pairs if not ignore_defaults or v is not None}
 
-  @staticmethod
-  def _name_of(obj):
-    if isinstance(obj, enum.Enum):
-      return obj.name
-    return str(obj)
-      
   @classmethod
   def from_dict(cls, json_dict):
     instance = cls()

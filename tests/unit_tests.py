@@ -258,7 +258,8 @@ class TestKaggleApi(unittest.TestCase):
       self.test_kernels_c_push()
     try:
       fs = api.kernels_list_files(self.kernel_slug)
-      self.assertGreaterEqual(len(fs.files), 0)  # Adjust expectation if needed
+      # TODO Make sure the test uses a kernel that has at least one file.
+      self.assertGreaterEqual(len(fs.files), 0)
     except ApiException as e:
       self.fail(f"kernels_list_files failed: {e}")
 
@@ -331,20 +332,22 @@ class TestKaggleApi(unittest.TestCase):
     except HTTPError:
       # Handle submission limit reached gracefully (potentially skip the test)
       print('Competition submission limit reached for the day')
+      self.skip_submissions = True
       pass
     except ApiException as e:
       self.fail(f"competition_submit failed: {e}")
 
   def test_competition_c_submissions(self):
+    self.test_competition_b_submit()
     try:
       submissions = api.competition_submissions(competition)
-      self.assertIsInstance(submissions,
-                            list)  # Assuming it returns a list of submissions
-      self.assertGreater(len(submissions), 0)
-      [
-          self.assertTrue(hasattr(submissions[0], api.camel_to_snake(f)))
-          for f in api.submission_fields
-      ]
+      self.assertIsInstance(submissions, list)
+      if not self.skip_submissions:
+        self.assertGreater(len(submissions), 0)
+        [
+            self.assertTrue(hasattr(submissions[0], api.camel_to_snake(f)))
+            for f in api.submission_fields
+        ]
     except ApiException as e:
       self.fail(f"competition_submissions failed: {e}")
 
@@ -519,13 +522,16 @@ class TestKaggleApi(unittest.TestCase):
       self.assertIsNotNone(new_dataset)
       if new_dataset.error is not None:
         print(new_dataset.error)  # This is likely to happen, and that's OK.
+        # self.skip_create_version = True
     except ApiException as e:
       self.fail(f"dataset_create_new failed: {e}")
 
   def test_dataset_j_create_version(self):
     if not os.path.exists(
         os.path.join(dataset_directory, api.DATASET_METADATA_FILE)):
-      self.test_dataset_i_create_new()
+      self.test_dataset_h_initialize()
+      update_dataset_metadata_file(self.meta_file, dataset_name,
+                                   self.version_number)
     try:
       new_version = api.dataset_create_version(dataset_directory, "Notes")
       self.assertIsNotNone(new_version)
@@ -541,6 +547,8 @@ class TestKaggleApi(unittest.TestCase):
       ms = api.model_list()
       self.assertIsInstance(ms, list)
       self.assertGreater(len(ms), 0)
+      [self.assertTrue(hasattr(ms[0], api.camel_to_snake(f)))
+        for f in api.model_fields]
     except ApiException as e:
       self.fail(f"models_list failed: {e}")
 
@@ -560,26 +568,41 @@ class TestKaggleApi(unittest.TestCase):
       self.test_model_b_initialize()
     try:
       model = api.model_create_new(model_directory)
-      if model.hasError:
-        self.fail(model.error)
-      else:
-        self.assertIsNotNone(model.ref)
-        self.assertGreater(len(model.ref), 0)
+      if model.error:
+        if 'already used' in model.error:
+          delete_response = api.model_delete(f'{test_user}/{model_title}', True)
+          if delete_response.error:
+            self.fail(delete_response.error)
+          else:
+            model = api.model_create_new(model_directory)
+            if model.error:
+              self.fail(model.error)
+        else:
+          self.fail(model.error)
+      self.assertIsNotNone(model.ref)
+      self.assertGreater(len(model.ref), 0)
+      [self.assertTrue(hasattr(model, api.camel_to_snake(f)))
+       for f in ['id', 'url']]
     except ApiException as e:
       self.fail(f"model_create_new failed: {e}")
 
   def test_model_d_get(self):
     try:
       model_data = api.model_get(f'{test_user}/{model_title}')
-      self.assertIsNotNone(model_data['ref'])
-      self.assertGreater(len(model_data['ref']), 0)
-      self.assertEquals(model_data['title'], model_title)
+      self.assertIsNotNone(model_data.ref)
+      self.assertGreater(len(model_data.ref), 0)
+      self.assertEqual(model_data.title, model_title)
+      [self.assertTrue(hasattr(model_data, api.camel_to_snake(f)))
+       for f in api.model_all_fields]
     except ApiException as e:
       self.fail(f"model_get failed: {e}")
 
   def test_model_e_update(self):
+    if self.model_metadata_file == '':
+      self.test_model_c_create_new()
     try:
       update_response = api.model_update(model_directory)
+      self.assertEquals(len(update_response.error), 0)   
       self.assertIsNotNone(update_response.ref)
       self.assertGreater(len(update_response.ref), 0)
     except ApiException as e:
@@ -595,7 +618,7 @@ class TestKaggleApi(unittest.TestCase):
     except ApiException as e:
       self.fail(f"model_instance_initialize failed: {e}")
 
-  def test_model_instance_b_create(self):
+  def test_model_instance_b_create(self, check_result: bool = True):
     if self.model_meta_data is None:
       self.test_model_b_initialize()
     if self.instance_metadata_file == '':
@@ -605,8 +628,20 @@ class TestKaggleApi(unittest.TestCase):
                                      self.model_meta_data['slug'],
                                      instance_name, framework_name)
       inst_create_resp = api.model_instance_create(model_inst_directory)
-      self.assertIsNotNone(inst_create_resp.ref)
-      self.assertGreater(len(inst_create_resp.ref), 0)
+      if check_result:
+        if inst_create_resp.error:
+          if 'already exists' in inst_create_resp.error:
+            delete_response = api.model_instance_delete(f'{test_user}/{model_title}', True)
+            if delete_response.error:
+              self.fail(delete_response.error)
+            else:
+              inst_create_resp = api.model_instance_create(model_inst_directory)
+              if inst_create_resp.error:
+                self.fail(inst_create_resp.error)
+          else:
+            self.fail(inst_create_resp.error)
+        self.assertIsNotNone(inst_create_resp.ref)
+        self.assertGreater(len(inst_create_resp.ref), 0)
     except ApiException as e:
       self.fail(f"model_instance_create failed: {e}")
 
@@ -619,10 +654,15 @@ class TestKaggleApi(unittest.TestCase):
       self.test_model_b_initialize()
     try:
       inst_get_resp = api.model_instance_get(self.model_instance)
-      self.assertIsNotNone(inst_get_resp['url'])
-      self.assertGreater(len(inst_get_resp['url']), 0)
+      self.assertIsNotNone(inst_get_resp.url)
+      self.assertGreater(len(inst_get_resp.url), 0)
+      os.makedirs('model/tmp', exist_ok=True)
+      api.model_instance_get_cli(self.model_instance, 'model/tmp')
     except ApiException as e:
       self.fail(f"model_instance_get failed: {e}")
+    finally:
+      os.remove('model/tmp/model-instance-metadata.json')
+      os.rmdir('model/tmp')
 
   def test_model_instance_d_files(self):
     if self.model_instance == '':
@@ -631,17 +671,34 @@ class TestKaggleApi(unittest.TestCase):
       inst_files_resp = api.model_instance_files(self.model_instance)
       self.assertIsInstance(inst_files_resp.files, list)
       self.assertGreater(len(inst_files_resp.files), 0)
+      [self.assertTrue(hasattr(inst_files_resp.files[0], api.camel_to_snake(f)))
+       for f in api.dataset_file_fields]
     except ApiException as e:
       self.fail(f"model_instance_files failed: {e}")
 
   def test_model_instance_e_update(self):
     if self.model_instance == '':
       self.test_model_b_initialize()
+      self.test_model_instance_a_initialize()
+      try:
+        self.test_model_c_create_new()
+      except AssertionError:
+        pass
+      try:
+        update_model_instance_metadata(self.instance_metadata_file, test_user,
+                                     self.model_meta_data['slug'],
+                                     instance_name, framework_name)
+      except AssertionError:
+        pass
+      self.test_model_instance_b_create(check_result=False)
+      self.test_model_instance_b_wait_after_create()
     try:
       inst_update_resp = api.model_instance_update(model_inst_directory)
       self.assertIsNotNone(inst_update_resp)
       self.assertIsNotNone(inst_update_resp.ref)
       self.assertGreater(len(inst_update_resp.ref), 0)
+      [self.assertTrue(hasattr(inst_update_resp, api.camel_to_snake(f)))
+       for f in ['error', 'id', 'ref', 'url']]
     except ApiException as e:
       self.fail(f"model_instance_update failed: {e}")
 
@@ -654,6 +711,8 @@ class TestKaggleApi(unittest.TestCase):
       version_metadata_resp = api.model_instance_version_create(
           self.model_instance, model_inst_vers_directory)
       self.assertIsNotNone(version_metadata_resp.ref)
+      [self.assertTrue(hasattr(version_metadata_resp, api.camel_to_snake(f)))
+       for f in ['id', 'url', 'error']]
     except ApiException as e:
       self.fail(f"model_instance_version_create failed: {e}")
 
@@ -664,6 +723,7 @@ class TestKaggleApi(unittest.TestCase):
       r = api.model_instance_version_files(f'{self.model_instance}/1')
       self.assertIsInstance(r.files, list)
       self.assertGreater(len(r.files), 0)
+      api.model_instance_version_files_cli(f'{self.model_instance}/1')
     except ApiException as e:
       self.fail(f"model_instance_version_files failed: {e}")
 
@@ -673,7 +733,7 @@ class TestKaggleApi(unittest.TestCase):
     version_file = ''
     try:
       version_file = api.model_instance_version_download(
-          f'{self.model_instance}/1', 'tmp')
+          f'{self.model_instance}/1', 'tmp', force=True)
       self.assertTrue(os.path.exists(version_file))
     except KeyError:
       pass  # TODO Create a version that has content.
@@ -693,7 +753,7 @@ class TestKaggleApi(unittest.TestCase):
     try:
       version_delete_resp = api.model_instance_version_delete(
           f'{self.model_instance}/1', True)
-      self.assertFalse(version_delete_resp.hasError)
+      self.assertEquals(len(version_delete_resp.error), 0, msg=version_delete_resp.error)
     except ApiException as e:
       self.fail(f"model_instance_version_delete failed: {e}")
 
@@ -703,13 +763,14 @@ class TestKaggleApi(unittest.TestCase):
     try:
       inst_update_resp = api.model_instance_delete(self.model_instance, True)
       self.assertIsNotNone(inst_update_resp)
+      self.assertEquals(len(inst_update_resp.error), 0)
     except ApiException as e:
       self.fail(f"model_instance_delete failed: {e}")
 
   def test_model_z_delete(self):
     try:
       delete_response = api.model_delete(f'{test_user}/{model_title}', True)
-      if delete_response.hasError:
+      if delete_response.error:
         self.fail(delete_response.error)
       else:
         pass

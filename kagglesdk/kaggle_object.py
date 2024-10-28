@@ -1,8 +1,8 @@
+import enum
 import json
 import re
 from datetime import datetime, timedelta
 from google.protobuf.field_mask_pb2 import FieldMask
-from kagglesdk.models.types.model_enums import ModelFramework
 
 
 class ObjectSerializer(object):
@@ -23,6 +23,11 @@ _pascal_to_upper_snake_case_regex = re.compile('((?<=[a-z0-9])[A-Z]|(?!^)[A-Z](?
 
 def _pascal_case_to_upper_snake_case(string):
   return _pascal_to_upper_snake_case_regex.sub(r'_\1', string).upper()
+
+
+def _convert (camel_input):
+  words = re.findall(r'[A-Z]?[a-z]+|[A-Z]{2,}(?=[A-Z][a-z]|\d|\W|$)|\d+', camel_input)
+  return '_'.join(map(str.lower, words))
 
 
 class EnumSerializer(ObjectSerializer):
@@ -48,6 +53,9 @@ class EnumSerializer(ObjectSerializer):
     #if v.name.startswith(enum_prefix):
     #  return v.name
     #return f'{enum_prefix}{v.name}'
+    enum_prefix = f'{_pascal_case_to_upper_snake_case(cls.__name__)}_'
+    if v.name.find(enum_prefix) == 0:
+      return v.name[len(enum_prefix):].lower()
     return v.name
 
   @staticmethod
@@ -70,8 +78,13 @@ class EnumSerializer(ObjectSerializer):
     except KeyError:
       dct = vars(cls)
       n = v.lower()
+      nn = _convert(v).lower()
+      enum_prefix = _pascal_case_to_upper_snake_case(cls.__name__).lower()
       for key in dct.keys():
-        if key.lower() == n:
+        k = key.lower()
+        if k == n:
+          return dct[key]
+        if k.startswith(enum_prefix) and k.endswith(n) or k.endswith(nn):
           return dct[key]
       raise
 
@@ -206,6 +219,10 @@ class KaggleObject(object):
     raise 'Error: endpoint must be defined by the request object'
 
   @staticmethod
+  def endpoint_path():
+    return None
+
+  @staticmethod
   def body_fields():
     return None
 
@@ -233,7 +250,7 @@ class KaggleObject(object):
   @staticmethod
   def to_field_map(self, ignore_defaults=True):
     kv_pairs = [(field.field_name, field.get_as_dict_item(self, ignore_defaults)) for field in self._fields]
-    return {k: str(v) for (k, v) in kv_pairs if not ignore_defaults or v is not None}
+    return {k: v for (k, v) in kv_pairs if not ignore_defaults or v is not None}
 
   @classmethod
   def from_dict(cls, json_dict):

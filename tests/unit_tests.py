@@ -258,6 +258,7 @@ class TestKaggleApi(unittest.TestCase):
       self.test_kernels_c_push()
     try:
       fs = api.kernels_list_files(self.kernel_slug)
+      # TODO Make sure the test uses a kernel that has at least one file.
       self.assertGreaterEqual(len(fs.files), 0)
     except ApiException as e:
       self.fail(f"kernels_list_files failed: {e}")
@@ -598,7 +599,7 @@ class TestKaggleApi(unittest.TestCase):
 
   def test_model_e_update(self):
     if self.model_metadata_file == '':
-      self.test_model_b_initialize()
+      self.test_model_c_create_new()
     try:
       update_response = api.model_update(model_directory)
       self.assertEquals(len(update_response.error), 0)   

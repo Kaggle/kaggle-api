@@ -2837,7 +2837,7 @@ class KaggleApi(KaggleApi):
       data['slug'] = model_ref_split[1]
       data['title'] = model.title
       data['subtitle'] = model.subtitle
-      data['isPrivate'] = model.isPrivate
+      data['isPrivate'] = model.isPrivate # TODO Add a test to ensure default is True
       data['description'] = model.description
       data['publishTime'] = model.publishTime
 

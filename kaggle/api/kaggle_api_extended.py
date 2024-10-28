@@ -322,7 +322,7 @@ class KaggleApi(KaggleApi):
   config_values = {}
   already_printed_version_warning = False
 
-  args = {}  # DEBUG Add --local to use localhost
+  args = {'--local'}  # DEBUG Add --local to use localhost
 
   # Kernels valid types
   valid_push_kernel_types = ['script', 'notebook']
@@ -2853,7 +2853,7 @@ class KaggleApi(KaggleApi):
       data['slug'] = model_ref_split[1]
       data['title'] = model.title
       data['subtitle'] = model.subtitle
-      data['isPrivate'] = model.isPrivate
+      data['isPrivate'] = model.isPrivate # TODO Add a test to ensure default is True
       data['description'] = model.description
       data['publishTime'] = model.publishTime
 
@@ -3870,13 +3870,6 @@ class KaggleApi(KaggleApi):
       response = kaggle.models.model_api_client.delete_model_instance_version(
           request)
       return response
-
-    res = ModelDeleteResponse(
-        self.process_response(
-            self.delete_model_instance_version_with_http_info(
-                owner_slug, model_slug, framework, instance_slug,
-                version_number)))
-    return res
 
   def model_instance_version_delete_cli(self, model_instance_version, yes):
     """ Client wrapper for model_instance_version_delete

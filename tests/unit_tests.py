@@ -602,7 +602,7 @@ class TestKaggleApi(unittest.TestCase):
       self.test_model_c_create_new()
     try:
       update_response = api.model_update(model_directory)
-      self.assertEquals(len(update_response.error), 0)   
+      self.assertEqual(len(update_response.error), 0)   
       self.assertIsNotNone(update_response.ref)
       self.assertGreater(len(update_response.ref), 0)
     except ApiException as e:
@@ -753,7 +753,7 @@ class TestKaggleApi(unittest.TestCase):
     try:
       version_delete_resp = api.model_instance_version_delete(
           f'{self.model_instance}/1', True)
-      self.assertEquals(len(version_delete_resp.error), 0, msg=version_delete_resp.error)
+      self.assertEqual(len(version_delete_resp.error), 0, msg=version_delete_resp.error)
     except ApiException as e:
       self.fail(f"model_instance_version_delete failed: {e}")
 
@@ -763,7 +763,7 @@ class TestKaggleApi(unittest.TestCase):
     try:
       inst_update_resp = api.model_instance_delete(self.model_instance, True)
       self.assertIsNotNone(inst_update_resp)
-      self.assertEquals(len(inst_update_resp.error), 0)
+      self.assertEqual(len(inst_update_resp.error), 0)
     except ApiException as e:
       self.fail(f"model_instance_delete failed: {e}")
 

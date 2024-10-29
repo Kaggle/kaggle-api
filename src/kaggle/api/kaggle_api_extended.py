@@ -3855,13 +3855,6 @@ class KaggleApi(KaggleApi):
           request)
       return response
 
-    res = ModelDeleteResponse(
-        self.process_response(
-            self.delete_model_instance_version_with_http_info(
-                owner_slug, model_slug, framework, instance_slug,
-                version_number)))
-    return res
-
   def model_instance_version_delete_cli(self, model_instance_version, yes):
     """ Client wrapper for model_instance_version_delete
             Parameters

@@ -20,7 +20,7 @@ class DatasetInfo(KaggleObject):
     is_private (bool)
     keywords (str)
     licenses (SettingsLicense)
-    collaborators (UserRole)
+    collaborators (DatasetCollaborator)
     data (DatasetSettingsFile)
   """
 
@@ -220,18 +220,18 @@ class DatasetInfo(KaggleObject):
     self._licenses = licenses
 
   @property
-  def collaborators(self) -> Optional[List[Optional['UserRole']]]:
+  def collaborators(self) -> Optional[List[Optional['DatasetCollaborator']]]:
     return self._collaborators
 
   @collaborators.setter
-  def collaborators(self, collaborators: Optional[List[Optional['UserRole']]]):
+  def collaborators(self, collaborators: Optional[List[Optional['DatasetCollaborator']]]):
     if collaborators is None:
       del self.collaborators
       return
     if not isinstance(collaborators, list):
       raise TypeError('collaborators must be of type list')
-    if not all([isinstance(t, UserRole) for t in collaborators]):
-      raise TypeError('collaborators must contain only items of type UserRole')
+    if not all([isinstance(t, DatasetCollaborator) for t in collaborators]):
+      raise TypeError('collaborators must contain only items of type DatasetCollaborator')
     self._collaborators = collaborators
 
   @property
@@ -259,7 +259,7 @@ class DatasetSettings(KaggleObject):
     is_private (bool)
     keywords (str)
     licenses (SettingsLicense)
-    collaborators (UserRole)
+    collaborators (DatasetCollaborator)
     data (DatasetSettingsFile)
   """
 
@@ -357,18 +357,18 @@ class DatasetSettings(KaggleObject):
     self._licenses = licenses
 
   @property
-  def collaborators(self) -> Optional[List[Optional['UserRole']]]:
+  def collaborators(self) -> Optional[List[Optional['DatasetCollaborator']]]:
     return self._collaborators
 
   @collaborators.setter
-  def collaborators(self, collaborators: Optional[List[Optional['UserRole']]]):
+  def collaborators(self, collaborators: Optional[List[Optional['DatasetCollaborator']]]):
     if collaborators is None:
       del self.collaborators
       return
     if not isinstance(collaborators, list):
       raise TypeError('collaborators must be of type list')
-    if not all([isinstance(t, UserRole) for t in collaborators]):
-      raise TypeError('collaborators must contain only items of type UserRole')
+    if not all([isinstance(t, DatasetCollaborator) for t in collaborators]):
+      raise TypeError('collaborators must contain only items of type DatasetCollaborator')
     self._collaborators = collaborators
 
   @property
@@ -536,7 +536,7 @@ class SettingsLicense(KaggleObject):
     self._name = name
 
 
-class UserRole(KaggleObject):
+class DatasetCollaborator(KaggleObject):
   r"""
   Attributes:
     username (str)
@@ -589,7 +589,7 @@ DatasetInfo._fields = [
   FieldMetadata("isPrivate", "is_private", "_is_private", bool, False, PredefinedSerializer()),
   FieldMetadata("keywords", "keywords", "_keywords", str, [], ListSerializer(PredefinedSerializer())),
   FieldMetadata("licenses", "licenses", "_licenses", SettingsLicense, [], ListSerializer(KaggleObjectSerializer())),
-  FieldMetadata("collaborators", "collaborators", "_collaborators", UserRole, [], ListSerializer(KaggleObjectSerializer())),
+  FieldMetadata("collaborators", "collaborators", "_collaborators", DatasetCollaborator, [], ListSerializer(KaggleObjectSerializer())),
   FieldMetadata("data", "data", "_data", DatasetSettingsFile, [], ListSerializer(KaggleObjectSerializer())),
 ]
 
@@ -600,7 +600,7 @@ DatasetSettings._fields = [
   FieldMetadata("isPrivate", "is_private", "_is_private", bool, False, PredefinedSerializer()),
   FieldMetadata("keywords", "keywords", "_keywords", str, [], ListSerializer(PredefinedSerializer())),
   FieldMetadata("licenses", "licenses", "_licenses", SettingsLicense, [], ListSerializer(KaggleObjectSerializer())),
-  FieldMetadata("collaborators", "collaborators", "_collaborators", UserRole, [], ListSerializer(KaggleObjectSerializer())),
+  FieldMetadata("collaborators", "collaborators", "_collaborators", DatasetCollaborator, [], ListSerializer(KaggleObjectSerializer())),
   FieldMetadata("data", "data", "_data", DatasetSettingsFile, [], ListSerializer(KaggleObjectSerializer())),
 ]
 
@@ -621,7 +621,7 @@ SettingsLicense._fields = [
   FieldMetadata("name", "name", "_name", str, None, PredefinedSerializer(), optional=True),
 ]
 
-UserRole._fields = [
+DatasetCollaborator._fields = [
   FieldMetadata("username", "username", "_username", str, "", PredefinedSerializer()),
   FieldMetadata("role", "role", "_role", CollaboratorType, CollaboratorType.COLLABORATOR_TYPE_UNSPECIFIED, EnumSerializer()),
 ]

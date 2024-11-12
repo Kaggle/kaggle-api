@@ -67,7 +67,7 @@ from kagglesdk.datasets.types.dataset_api_service import ApiListDatasetsRequest,
 from kagglesdk.datasets.types.dataset_enums import DatasetSelectionGroup, \
   DatasetSortBy, DatasetFileTypeGroup, DatasetLicenseGroup
 from kagglesdk.datasets.types.dataset_types import DatasetSettings, \
-  SettingsLicense, UserRole, DatasetSettingsFile
+  SettingsLicense, DatasetCollaborator, DatasetSettingsFile
 from kagglesdk.kernels.types.kernels_api_service import ApiListKernelsRequest, \
   ApiListKernelFilesRequest, ApiSaveKernelRequest, ApiGetKernelRequest, \
   ApiListKernelSessionOutputRequest, ApiGetKernelSessionStatusRequest

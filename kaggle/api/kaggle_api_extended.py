@@ -233,7 +233,8 @@ class ResumableFileUpload(object):
     req.from_dict(other['start_blob_upload_request'])
     new = ResumableFileUpload(
         other['path'],
-        ApiStartBlobUploadRequest(**other['start_blob_upload_request']), context)
+        ApiStartBlobUploadRequest(**other['start_blob_upload_request']),
+        context)
     new.timestamp = other.get('timestamp')
     start_blob_upload_response = other.get('start_blob_upload_response')
     if start_blob_upload_response is not None:
@@ -247,7 +248,6 @@ class ResumableFileUpload(object):
 
   def __repr__(self):
     return self.to_str()
-
 
 
 class KaggleApi:
@@ -288,7 +288,7 @@ class KaggleApi:
   config_values = {}
   already_printed_version_warning = False
 
-  args = {'--local'}  # DEBUG Add --local to use localhost
+  args = {}  # DEBUG Add --local to use localhost
 
   # Kernels valid types
   valid_push_kernel_types = ['script', 'notebook']
@@ -508,7 +508,7 @@ class KaggleApi:
     self.config_values = config_data
 
     try:
-      self.api_client = None # ApiClient(configuration)
+      self.api_client = None  # ApiClient(configuration)
 
     except Exception as error:
 
@@ -693,7 +693,7 @@ class KaggleApi:
       else KaggleEnv.LOCAL if '--local' in self.args \
       else KaggleEnv.PROD
     verbose = '--verbose' in self.args or '-v' in self.args
-#    config = self.api_client.configuration
+    #    config = self.api_client.configuration
     return KaggleClient(
         env=env,
         verbose=verbose,
@@ -1034,7 +1034,8 @@ class KaggleApi:
     outfile = os.path.join(effective_path, url.split('?')[0].split('/')[-1])
 
     if force or self.download_needed(response, outfile, quiet):
-        self.download_file(response, outfile, kaggle.http_client(), quiet, not force)
+      self.download_file(response, outfile, kaggle.http_client(), quiet,
+                         not force)
 
   def competition_download_files(self,
                                  competition,
@@ -1345,24 +1346,26 @@ class KaggleApi:
       s = json.load(f)
       metadata = json.loads(s)
       update_settings = DatasetSettings()
-      update_settings.title=metadata.get('title') or ''
-      update_settings.subtitle=metadata.get('subtitle') or ''
-      update_settings.description=metadata.get('description') or ''
-      update_settings.is_private=metadata.get('isPrivate') or False
-      update_settings.licenses=[
-        self._new_license(l['name']) for l in metadata['licenses']
+      update_settings.title = metadata.get('title') or ''
+      update_settings.subtitle = metadata.get('subtitle') or ''
+      update_settings.description = metadata.get('description') or ''
+      update_settings.is_private = metadata.get('isPrivate') or False
+      update_settings.licenses = [
+          self._new_license(l['name']) for l in metadata['licenses']
       ] if metadata.get('licenses') else []
-      update_settings.keywords=metadata.get('keywords')
-      update_settings.collaborators=[
-        self._new_collaborator(c['username'], c['role']) for c in metadata['collaborators']
+      update_settings.keywords = metadata.get('keywords')
+      update_settings.collaborators = [
+          self._new_collaborator(c['username'], c['role'])
+          for c in metadata['collaborators']
       ] if metadata.get('collaborators') else []
-      update_settings.data=metadata.get('data')
+      update_settings.data = metadata.get('data')
       request = ApiUpdateDatasetMetadataRequest()
       request.owner_slug = owner_slug
-      request.dataset_slug =  dataset_slug
+      request.dataset_slug = dataset_slug
       request.settings = update_settings
       with self.build_kaggle_client() as kaggle:
-        response = kaggle.datasets.dataset_api_client.update_dataset_metadata(request)
+        response = kaggle.datasets.dataset_api_client.update_dataset_metadata(
+            request)
         if len(response.errors) > 0:
           [print(e['message']) for e in response.errors]
           exit(1)
@@ -1723,10 +1726,10 @@ class KaggleApi:
     last_modified_epoch_seconds = int(os.path.getmtime(path))
 
     start_blob_upload_request = ApiStartBlobUploadRequest()
-    start_blob_upload_request.type=blob_type
-    start_blob_upload_request.name=file_name
-    start_blob_upload_request.content_length=content_length
-    start_blob_upload_request.last_modified_epoch_seconds=last_modified_epoch_seconds
+    start_blob_upload_request.type = blob_type
+    start_blob_upload_request.name = file_name
+    start_blob_upload_request.content_length = content_length
+    start_blob_upload_request.last_modified_epoch_seconds = last_modified_epoch_seconds
 
     file_upload = upload_context.new_resumable_file_upload(
         path, start_blob_upload_request)
@@ -1739,7 +1742,8 @@ class KaggleApi:
         # Initiate upload on Kaggle backend to get the url and token.
         with self.build_kaggle_client() as kaggle:
           method = kaggle.blobs.blob_api_client.start_blob_upload
-          start_blob_upload_response = self.with_retry(method)(file_upload.start_blob_upload_request)
+          start_blob_upload_response = self.with_retry(method)(
+              file_upload.start_blob_upload_request)
           file_upload.upload_initiated(start_blob_upload_response)
 
       upload_result = self.upload_complete(
@@ -1961,16 +1965,16 @@ class KaggleApi:
       raise ValueError('Subtitle length must be between 20 and 80 characters')
 
     request = ApiCreateDatasetRequest()
-    request.title=title
-    request.slug=dataset_slug
-    request.owner_slug=owner_slug
-    request.license_name=license_name
-    request.subtitle=subtitle
-    request.description=description
-    request.files=[]
-    request.is_private=not public
+    request.title = title
+    request.slug = dataset_slug
+    request.owner_slug = owner_slug
+    request.license_name = license_name
+    request.subtitle = subtitle
+    request.description = description
+    request.files = []
+    request.is_private = not public
     # request.convert_to_csv=convert_to_csv
-    request.category_ids=keywords
+    request.category_ids = keywords
 
     with ResumableUploadContext() as upload_context:
       self.upload_files(request, resources, folder, ApiBlobType.DATASET,
@@ -3884,8 +3888,8 @@ class KaggleApi:
           continue
 
         create_inbox_file_request = CreateInboxFileRequest()
-        create_inbox_file_request.virtual_directory=inbox_path
-        create_inbox_file_request.blob_file_token=upload_file.token
+        create_inbox_file_request.virtual_directory = inbox_path
+        create_inbox_file_request.blob_file_token = upload_file.token
         files_to_create.append((create_inbox_file_request, file_name))
 
       with self.build_kaggle_client() as kaggle:
@@ -3931,7 +3935,7 @@ class KaggleApi:
         local_date = datetime.fromtimestamp(os.path.getmtime(outfile))
         remote_size = int(response.headers['Content-Length'])
         local_size = os.path.getsize(outfile)
-        if local_size < remote_size or True: # DEBUG
+        if local_size < remote_size or True:  # DEBUG
           return True
         if remote_date <= local_date:
           if not quiet:

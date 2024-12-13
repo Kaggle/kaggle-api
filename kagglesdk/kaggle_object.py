@@ -1,4 +1,3 @@
-import enum
 import json
 import re
 from datetime import datetime, timedelta
@@ -242,7 +241,6 @@ class KaggleObject(object):
       raise AttributeError(f'Unknown field for {self.__class__.__name__}: {key}')
     object.__setattr__(self, key, value)
 
-  @staticmethod
   def to_dict(self, ignore_defaults=True):
     kv_pairs = [(field.json_name, field.get_as_dict_item(self, ignore_defaults)) for field in self._fields]
     return {k: v for (k, v) in kv_pairs if not ignore_defaults or v is not None}

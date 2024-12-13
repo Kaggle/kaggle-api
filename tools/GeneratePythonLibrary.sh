@@ -110,7 +110,7 @@ function create-local-creds {
 }
 
 function generate-from-swagger {
-  java -jar ./tools/swagger-codegen-cli.jar generate -i $SWAGGER_YAML -c $SWAGGER_CONFIG -l python || true
+#  java -jar ./tools/swagger-codegen-cli.jar generate -i $SWAGGER_YAML -c $SWAGGER_CONFIG -l python || true
 
   if [[ -f "kaggle/api/__init__.py" ]]; then
     sed -i -e 's/kaggle_api/kaggle_api_extended/g' kaggle/api/__init__.py
@@ -146,7 +146,7 @@ END
 function copy-src {
   cp ./src/setup.py .
   cp ./src/setup.cfg .
-  cp -r ./src/kaggle/* ./kaggle/
+  cp -r ./src/kaggle .
 }
 
 function run-autogen {
@@ -184,7 +184,6 @@ function install-package {
 function cleanup {
   cd $SELF_DIR
   rm -rf tox.ini \
-    requirements.txt \
     test-requirements.txt \
     test \
     .swagger-codegen \
@@ -199,6 +198,7 @@ function cleanup {
     kaggle/*.py-e \
     kaggle/api/*.py-e \
     kaggle/*.py.bak
+#    requirements.txt \
 }
 
 function run {

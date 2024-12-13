@@ -24,7 +24,8 @@ import six
 
 from kaggle import KaggleApi
 from kaggle import api
-from .rest import ApiException
+# from rest import ApiException
+ApiException = IOError
 
 
 def main():
@@ -118,7 +119,7 @@ def parse_competitions(subparsers):
       formatter_class=argparse.RawTextHelpFormatter,
       help=Help.command_competitions_list)
   parser_competitions_list_optional = parser_competitions_list._action_groups.pop(
-  )
+      )
   parser_competitions_list_optional.add_argument(
       '--group',
       dest='group',
@@ -159,7 +160,7 @@ def parse_competitions(subparsers):
       formatter_class=argparse.RawTextHelpFormatter,
       help=Help.command_competitions_files)
   parser_competitions_files_optional = parser_competitions_files._action_groups.pop(
-  )
+      )
   parser_competitions_files_optional.add_argument(
       'competition', nargs='?', default=None, help=Help.param_competition)
   parser_competitions_files_optional.add_argument(
@@ -197,7 +198,7 @@ def parse_competitions(subparsers):
       formatter_class=argparse.RawTextHelpFormatter,
       help=Help.command_competitions_download)
   parser_competitions_download_optional = parser_competitions_download._action_groups.pop(
-  )
+      )
   parser_competitions_download_optional.add_argument(
       'competition', nargs='?', default=None, help=Help.param_competition)
   parser_competitions_download_optional.add_argument(
@@ -236,7 +237,7 @@ def parse_competitions(subparsers):
       formatter_class=argparse.RawTextHelpFormatter,
       help=Help.command_competitions_submit)
   parser_competitions_submit_optional = parser_competitions_submit._action_groups.pop(
-  )
+      )
   parser_competitions_submit_required = parser_competitions_submit.add_argument_group(
       'required arguments')
   parser_competitions_submit_optional.add_argument(
@@ -267,7 +268,7 @@ def parse_competitions(subparsers):
       formatter_class=argparse.RawTextHelpFormatter,
       help=Help.command_competitions_submissions)
   parser_competitions_submissions_optional = parser_competitions_submissions._action_groups.pop(
-  )
+      )
   parser_competitions_submissions_optional.add_argument(
       'competition', nargs='?', default=None, help=Help.param_competition)
   parser_competitions_submissions_optional.add_argument(
@@ -295,7 +296,7 @@ def parse_competitions(subparsers):
       formatter_class=argparse.RawTextHelpFormatter,
       help=Help.command_competitions_leaderboard)
   parser_competitions_leaderboard_optional = parser_competitions_leaderboard._action_groups.pop(
-  )
+      )
   parser_competitions_leaderboard_optional.add_argument(
       'competition', nargs='?', default=None, help=Help.param_competition)
   parser_competitions_leaderboard_optional.add_argument(
@@ -446,7 +447,7 @@ def parse_datasets(subparsers):
       formatter_class=argparse.RawTextHelpFormatter,
       help=Help.command_datasets_download)
   parser_datasets_download_optional = parser_datasets_download._action_groups.pop(
-  )
+      )
   parser_datasets_download_optional.add_argument(
       'dataset', nargs='?', default=None, help=Help.param_dataset)
   parser_datasets_download_optional.add_argument(
@@ -523,7 +524,7 @@ def parse_datasets(subparsers):
       formatter_class=argparse.RawTextHelpFormatter,
       help=Help.command_datasets_new_version)
   parser_datasets_version_optional = parser_datasets_version._action_groups.pop(
-  )
+      )
   parser_datasets_version_required = parser_datasets_version.add_argument_group(
       'required arguments')
   parser_datasets_version_required.add_argument(
@@ -584,7 +585,7 @@ def parse_datasets(subparsers):
       formatter_class=argparse.RawTextHelpFormatter,
       help=Help.command_datasets_metadata)
   parser_datasets_metadata_optional = parser_datasets_metadata._action_groups.pop(
-  )
+      )
   parser_datasets_metadata_optional.add_argument(
       'dataset', nargs='?', default=None, help=Help.param_dataset)
   parser_datasets_metadata_optional.add_argument(
@@ -982,7 +983,7 @@ def parse_model_instances(subparsers):
       formatter_class=argparse.RawTextHelpFormatter,
       help=Help.command_model_instances_get)
   parser_model_instance_get_optional = parser_model_instance_get._action_groups.pop(
-  )
+      )
   parser_model_instance_get_optional.add_argument(
       'model_instance', help=Help.param_model_instance)
   parser_model_instance_get_optional.add_argument(
@@ -1001,7 +1002,7 @@ def parse_model_instances(subparsers):
       formatter_class=argparse.RawTextHelpFormatter,
       help=Help.command_model_instances_init)
   parser_model_instances_init_optional = parser_model_instances_init._action_groups.pop(
-  )
+      )
   parser_model_instances_init_optional.add_argument(
       '-p',
       '--path',
@@ -1019,7 +1020,7 @@ def parse_model_instances(subparsers):
       formatter_class=argparse.RawTextHelpFormatter,
       help=Help.command_model_instances_new)
   parser_model_instances_create_optional = parser_model_instances_create._action_groups.pop(
-  )
+      )
   parser_model_instances_create_optional.add_argument(
       '-p',
       '--path',
@@ -1045,7 +1046,7 @@ def parse_model_instances(subparsers):
       formatter_class=argparse.RawTextHelpFormatter,
       help=Help.command_model_instances_files)
   parser_model_instances_files_optional = parser_model_instances_files._action_groups.pop(
-  )
+      )
   parser_model_instances_files_optional.add_argument(
       'model_instance', help=Help.param_model_instance)
   parser_model_instances_files_optional.add_argument(
@@ -1071,7 +1072,7 @@ def parse_model_instances(subparsers):
       formatter_class=argparse.RawTextHelpFormatter,
       help=Help.command_model_instances_delete)
   parser_model_instances_delete_optional = parser_model_instances_delete._action_groups.pop(
-  )
+      )
   parser_model_instances_delete_optional.add_argument(
       'model_instance', help=Help.param_model_instance)
   parser_model_instances_delete_optional.add_argument(
@@ -1086,7 +1087,7 @@ def parse_model_instances(subparsers):
       formatter_class=argparse.RawTextHelpFormatter,
       help=Help.command_model_instances_update)
   parser_model_instances_update_optional = parser_model_instances_update._action_groups.pop(
-  )
+      )
   parser_model_instances_update_optional.add_argument(
       '-p',
       '--path',
@@ -1116,7 +1117,7 @@ def parse_model_instance_versions(subparsers):
       formatter_class=argparse.RawTextHelpFormatter,
       help=Help.command_model_instance_versions_new)
   parser_model_instance_versions_create_optional = parser_model_instance_versions_create._action_groups.pop(
-  )
+      )
   parser_model_instance_versions_create_optional.add_argument(
       'model_instance', help=Help.param_model_instance)
   parser_model_instance_versions_create_optional.add_argument(
@@ -1151,7 +1152,7 @@ def parse_model_instance_versions(subparsers):
       formatter_class=argparse.RawTextHelpFormatter,
       help=Help.command_model_instance_versions_download)
   parser_model_instance_versions_download_optional = parser_model_instance_versions_download._action_groups.pop(
-  )
+      )
   parser_model_instance_versions_download_optional.add_argument(
       'model_instance_version', help=Help.param_model_instance_version)
   parser_model_instance_versions_download_optional.add_argument(
@@ -1173,7 +1174,7 @@ def parse_model_instance_versions(subparsers):
       formatter_class=argparse.RawTextHelpFormatter,
       help=Help.command_model_instance_versions_files)
   parser_model_instance_versions_files_optional = parser_model_instance_versions_files._action_groups.pop(
-  )
+      )
   parser_model_instance_versions_files_optional.add_argument(
       'model_instance_version', help=Help.param_model_instance_version)
   parser_model_instance_versions_files_optional.add_argument(
@@ -1200,7 +1201,7 @@ def parse_model_instance_versions(subparsers):
       formatter_class=argparse.RawTextHelpFormatter,
       help=Help.command_model_instance_versions_delete)
   parser_model_instance_versions_delete_optional = parser_model_instance_versions_delete._action_groups.pop(
-  )
+      )
   parser_model_instance_versions_delete_optional.add_argument(
       'model_instance_version', help=Help.param_model_instance_version)
   parser_model_instance_versions_delete_optional.add_argument(
@@ -1307,40 +1308,40 @@ def parse_config(subparsers):
 
 class Help(object):
   kaggle_choices = [
-      'competitions', 'c', 'datasets', 'd', 'kernels', 'k', 'models', 'm',
-      'files', 'f', 'config'
-  ]
+    'competitions', 'c', 'datasets', 'd', 'kernels', 'k', 'models', 'm',
+    'files', 'f', 'config'
+    ]
   competitions_choices = [
-      'list', 'files', 'download', 'submit', 'submissions', 'leaderboard'
-  ]
+    'list', 'files', 'download', 'submit', 'submissions', 'leaderboard'
+    ]
   datasets_choices = [
-      'list', 'files', 'download', 'create', 'version', 'init', 'metadata',
-      'status'
-  ]
+    'list', 'files', 'download', 'create', 'version', 'init', 'metadata',
+    'status'
+    ]
   kernels_choices = [
-      'list', 'files', 'init', 'push', 'pull', 'output', 'status'
-  ]
+    'list', 'files', 'init', 'push', 'pull', 'output', 'status'
+    ]
   models_choices = [
-      'instances', 'get', 'list', 'init', 'create', 'delete', 'update'
-  ]
+    'instances', 'get', 'list', 'init', 'create', 'delete', 'update'
+    ]
   model_instances_choices = [
-      'versions', 'get', 'files', 'init', 'create', 'delete', 'update'
-  ]
+    'versions', 'get', 'files', 'init', 'create', 'delete', 'update'
+    ]
   model_instance_versions_choices = [
-      'init', 'create', 'download', 'delete', 'files'
-  ]
+    'init', 'create', 'download', 'delete', 'files'
+    ]
   files_choices = ['upload']
   config_choices = ['view', 'set', 'unset']
 
   kaggle = 'Use one of:\ncompetitions {' + ', '.join(
       competitions_choices) + '}\ndatasets {' + ', '.join(
-          datasets_choices) + '}\nkernels {' + ', '.join(
-              kernels_choices) + '}\nmodels {' + ', '.join(
-                  models_choices) + '}\nmodels instances {' + ', '.join(
-                      model_instances_choices
-                  ) + '}\nmodels instances versions {' + ', '.join(
-                      model_instance_versions_choices
-                  ) + '}\nconfig {' + ', '.join(config_choices) + '}'
+      datasets_choices) + '}\nkernels {' + ', '.join(
+      kernels_choices) + '}\nmodels {' + ', '.join(
+      models_choices) + '}\nmodels instances {' + ', '.join(
+      model_instances_choices
+      ) + '}\nmodels instances versions {' + ', '.join(
+      model_instance_versions_choices
+      ) + '}\nconfig {' + ', '.join(config_choices) + '}'
 
   group_competitions = 'Commands related to Kaggle competitions'
   group_datasets = 'Commands related to Kaggle datasets'
@@ -1371,8 +1372,8 @@ class Help(object):
 
   # Kernels commands
   command_kernels_list = (
-      'List available kernels. By default, shows 20 results sorted by '
-      'hotness')
+    'List available kernels. By default, shows 20 results sorted by '
+    'hotness')
   command_kernels_files = 'List kernel output files'
   command_kernels_init = 'Initialize metadata file for a kernel'
   command_kernels_push = 'Push new code to a kernel and run the kernel'
@@ -1394,8 +1395,8 @@ class Help(object):
 
   # Config commands
   command_config_path = (
-      'Set folder where competition or dataset files will be '
-      'downloaded')
+    'Set folder where competition or dataset files will be '
+    'downloaded')
   command_config_proxy = 'Set proxy server'
   command_config_competition = 'Set default competition'
   command_config_view = 'View current config values'
@@ -1404,18 +1405,18 @@ class Help(object):
 
   # General params
   param_downfolder = (
-      'Folder where file(s) will be downloaded, defaults to current working '
-      'directory')
+    'Folder where file(s) will be downloaded, defaults to current working '
+    'directory')
   param_wp = 'Download files to current working path'
   param_proxy = 'Proxy for HTTP requests'
   param_quiet = (
-      'Suppress printing information about the upload/download progress')
+    'Suppress printing information about the upload/download progress')
   param_public = 'Create publicly (default is private)'
   param_keep_tabular = (
-      'Do not convert tabular files to CSV (default is to convert)')
+    'Do not convert tabular files to CSV (default is to convert)')
   param_dir_mode = (
-      'What to do with directories: "skip" - ignore; "zip" - compressed upload; "tar" - '
-      'uncompressed upload')
+    'What to do with directories: "skip" - ignore; "zip" - compressed upload; "tar" - '
+    'uncompressed upload')
   param_delete_old_version = 'Delete old versions of this dataset'
   param_force = ('Skip check whether local version of file is up to date, force'
                  ' file download')
@@ -1429,11 +1430,11 @@ class Help(object):
   param_search = 'Term(s) to search for'
   param_mine = 'Display only my items'
   param_unzip = (
-      'Unzip the downloaded file. Will delete the zip file when completed.')
+    'Unzip the downloaded file. Will delete the zip file when completed.')
   param_untar = (
-      'Untar the downloaded file. Will delete the tar file when completed.')
+    'Untar the downloaded file. Will delete the tar file when completed.')
   param_yes = (
-      'Sets any confirmation values to "yes" automatically. Users will not be asked to confirm.'
+    'Sets any confirmation values to "yes" automatically. Users will not be asked to confirm.'
   )
 
   # Competitions params
@@ -1441,25 +1442,25 @@ class Help(object):
                        'to show options)\nIf empty, the default competition '
                        'will be used (use "kaggle config set competition")"')
   param_competition_nonempty = (
-      'Competition URL suffix (use "kaggle competitions list" to show '
-      'options)')
+    'Competition URL suffix (use "kaggle competitions list" to show '
+    'options)')
   param_competition_leaderboard_view = 'Show the top of the leaderboard'
   param_competition_leaderboard_download = 'Download entire leaderboard'
   param_competition_file = (
-      'File name, all files downloaded if not provided\n(use "kaggle '
-      'competitions files -c <competition>" to show options)')
+    'File name, all files downloaded if not provided\n(use "kaggle '
+    'competitions files -c <competition>" to show options)')
   param_competition_message = 'Message describing this submission'
   param_competition_group = (
-      'Search for competitions in a specific group. Default is \'general\'. '
-      'Valid options are \'general\', \'entered\', and \'inClass\'')
+    'Search for competitions in a specific group. Default is \'general\'. '
+    'Valid options are \'general\', \'entered\', and \'inClass\'')
   param_competition_category = (
-      'Search for competitions of a specific category. Default is \'all\'. '
-      'Valid options are \'all\', \'featured\', \'research\', '
-      '\'recruitment\', \'gettingStarted\', \'masters\', and \'playground\'')
+    'Search for competitions of a specific category. Default is \'all\'. '
+    'Valid options are \'all\', \'featured\', \'research\', '
+    '\'recruitment\', \'gettingStarted\', \'masters\', and \'playground\'')
   param_competition_sort_by = (
-      'Sort list results. Default is \'latestDeadline\'. Valid options are '
-      '\'grouped\', \'prize\', \'earliestDeadline\', \'latestDeadline\', '
-      '\'numberOfTeams\', and \'recentlyCreated\'')
+    'Sort list results. Default is \'latestDeadline\'. Valid options are '
+    '\'grouped\', \'prize\', \'earliestDeadline\', \'latestDeadline\', '
+    '\'numberOfTeams\', and \'recentlyCreated\'')
 
   # Datasets params
   param_dataset = ('Dataset URL suffix in format <owner>/<dataset-name> (use '
@@ -1468,31 +1469,31 @@ class Help(object):
                         '"kaggle datasets files -d <dataset>" to show options)')
   param_dataset_version_notes = 'Message describing the new version'
   param_dataset_upfile = (
-      'Folder for upload, containing data files and a '
-      'special datasets-metadata.json file '
-      '(https://github.com/Kaggle/kaggle-api/wiki/Dataset-Metadata). '
-      'Defaults to current working directory')
+    'Folder for upload, containing data files and a '
+    'special datasets-metadata.json file '
+    '(https://github.com/Kaggle/kaggle-api/wiki/Dataset-Metadata). '
+    'Defaults to current working directory')
   param_dataset_sort_by = (
-      'Sort list results. Default is \'hottest\'. Valid options are '
-      '\'hottest\', \'votes\', \'updated\', and \'active\'')
+    'Sort list results. Default is \'hottest\'. Valid options are '
+    '\'hottest\', \'votes\', \'updated\', and \'active\'')
   param_dataset_size = (
-      'DEPRECATED. Please use --max-size and --min-size to filter dataset sizes.'
+    'DEPRECATED. Please use --max-size and --min-size to filter dataset sizes.'
   )
   param_dataset_file_type = (
-      'Search for datasets with a specific file type. Default is \'all\'. '
-      'Valid options are \'all\', \'csv\', \'sqlite\', \'json\', and '
-      '\'bigQuery\'. Please note that bigQuery datasets cannot be downloaded')
+    'Search for datasets with a specific file type. Default is \'all\'. '
+    'Valid options are \'all\', \'csv\', \'sqlite\', \'json\', and '
+    '\'bigQuery\'. Please note that bigQuery datasets cannot be downloaded')
   param_dataset_license = (
-      'Search for datasets with a specific license. Default is \'all\'. '
-      'Valid options are \'all\', \'cc\', \'gpl\', \'odb\', and \'other\'')
+    'Search for datasets with a specific license. Default is \'all\'. '
+    'Valid options are \'all\', \'cc\', \'gpl\', \'odb\', and \'other\'')
   param_dataset_tags = (
-      'Search for datasets that have specific tags. Tag list should be '
-      'comma separated')
+    'Search for datasets that have specific tags. Tag list should be '
+    'comma separated')
   param_dataset_user = (
-      'Find public datasets owned by a specific user or organization')
+    'Find public datasets owned by a specific user or organization')
   param_dataset_metadata_dir = (
-      'Location to download dataset metadata to. Defaults to current working '
-      'directory')
+    'Location to download dataset metadata to. Defaults to current working '
+    'directory')
   param_dataset_metadata_update = ('A flag to indicate whether the dataset'
                                    'metadata should be updated.')
   param_dataset_maxsize = 'Specify the maximum size of the dataset to return (bytes)'
@@ -1500,16 +1501,16 @@ class Help(object):
 
   # Kernels params
   param_kernel = (
-      'Kernel URL suffix in format <owner>/<kernel-name> (use "kaggle '
-      'kernels list" to show options)')
+    'Kernel URL suffix in format <owner>/<kernel-name> (use "kaggle '
+    'kernels list" to show options)')
   param_kernel_init = (
-      'Create a metadata file for an existing kernel URL suffix in format '
-      '<owner>/<kernel-name> (use "kaggle kernels list" to show options)')
+    'Create a metadata file for an existing kernel URL suffix in format '
+    '<owner>/<kernel-name> (use "kaggle kernels list" to show options)')
   param_kernel_upfile = (
-      'Folder for upload, containing data files and a '
-      'special kernel-metadata.json file '
-      '(https://github.com/Kaggle/kaggle-api/wiki/Kernel-Metadata). '
-      'Defaults to current working directory')
+    'Folder for upload, containing data files and a '
+    'special kernel-metadata.json file '
+    '(https://github.com/Kaggle/kaggle-api/wiki/Kernel-Metadata). '
+    'Defaults to current working directory')
   param_kernel_parent = 'Find children of the specified parent kernel'
   param_kernel_competition = 'Find kernels for a given competition slug'
   param_kernel_dataset = ('Find kernels for a given dataset slug. Format is '
@@ -1517,9 +1518,9 @@ class Help(object):
   param_kernel_user = 'Find kernels created by a given username'
   # TODO(b/129357583): Pull these from the same spot as the api impl
   param_kernel_language = (
-      'Specify the language the kernel is written in. Default is \'all\'. '
-      'Valid options are \'all\', \'python\', \'r\', \'sqlite\', and '
-      '\'julia\'')
+    'Specify the language the kernel is written in. Default is \'all\'. '
+    'Valid options are \'all\', \'python\', \'r\', \'sqlite\', and '
+    '\'julia\'')
   param_kernel_type = ('Specify the type of kernel. Default is \'all\'. Valid '
                        'options are \'all\', \'script\', and \'notebook\'')
   param_kernel_output_type = ('Search for specific kernel output types. '
@@ -1536,51 +1537,51 @@ class Help(object):
   # Models params
   param_model = ('Model URL suffix in format <owner>/<model-name>')
   param_model_sort_by = (
-      'Sort list results. Default is \'hotness\'. Valid options are '
-      '\'hotness\', \'downloadCount\', \'voteCount\', \'notebookCount\' and \'createTime\''
+    'Sort list results. Default is \'hotness\'. Valid options are '
+    '\'hotness\', \'downloadCount\', \'voteCount\', \'notebookCount\' and \'createTime\''
   )
   param_model_owner = (
-      'Find public models owned by a specific user or organization')
+    'Find public models owned by a specific user or organization')
   param_model_downfile = (
-      'Folder containing the special model-metadata.json file '
-      '(https://github.com/Kaggle/kaggle-api/wiki/Model-Metadata).')
+    'Folder containing the special model-metadata.json file '
+    '(https://github.com/Kaggle/kaggle-api/wiki/Model-Metadata).')
   param_model_upfile = (
-      'Folder containing the special model-metadata.json file '
-      '(https://github.com/Kaggle/kaggle-api/wiki/Model-Metadata). '
-      'Defaults to current working directory')
+    'Folder containing the special model-metadata.json file '
+    '(https://github.com/Kaggle/kaggle-api/wiki/Model-Metadata). '
+    'Defaults to current working directory')
 
   # Model Instances params
   param_model_instance = (
-      'Model Instance URL suffix in format <owner>/<model-name>/<framework>/<instance-slug>'
+    'Model Instance URL suffix in format <owner>/<model-name>/<framework>/<instance-slug>'
   )
   command_model_instances_get = 'Get a model instance'
   command_model_instances_init = 'Initialize metadata file for model instance creation'
   command_model_instances_files = 'List files for the current version of a model instance'
   command_model_instances_new = 'Create a new model instance'
   param_model_instance_downfile = (
-      'Folder for downloading the special model-instance-metadata.json file '
-      '(https://github.com/Kaggle/kaggle-api/wiki/Model-Metadata#model-instance). '
+    'Folder for downloading the special model-instance-metadata.json file '
+    '(https://github.com/Kaggle/kaggle-api/wiki/Model-Metadata#model-instance). '
   )
   param_model_instance_upfile = (
-      'Folder for upload, containing data files and a '
-      'special model-instance-metadata.json file '
-      '(https://github.com/Kaggle/kaggle-api/wiki/Model-Metadata#model-instance). '
-      'Defaults to current working directory')
+    'Folder for upload, containing data files and a '
+    'special model-instance-metadata.json file '
+    '(https://github.com/Kaggle/kaggle-api/wiki/Model-Metadata#model-instance). '
+    'Defaults to current working directory')
   command_model_instances_delete = 'Delete a model instance'
   command_model_instances_update = 'Update a model instance'
 
   # Model Instance Versions params
   param_model_instance_version = (
-      'Model Instance Version URL suffix in format <owner>/<model-name>/<framework>/<instance-slug>/<version-number>'
+    'Model Instance Version URL suffix in format <owner>/<model-name>/<framework>/<instance-slug>/<version-number>'
   )
 
   # Model Instance Versions params
   command_model_instance_versions_new = 'Create a new model instance version'
   param_model_instance_version_upfile = (
-      'Folder for upload, containing data files and a '
-      'special model-instance_version-metadata.json file '
-      '(https://github.com/Kaggle/kaggle-api/wiki/ModelInstanceVersion-Metadata). '
-      'Defaults to current working directory')
+    'Folder for upload, containing data files and a '
+    'special model-instance_version-metadata.json file '
+    '(https://github.com/Kaggle/kaggle-api/wiki/ModelInstanceVersion-Metadata). '
+    'Defaults to current working directory')
   command_model_instance_versions_delete = 'Delete a model instance version'
   command_model_instance_versions_download = 'Download model instance version files'
   command_model_instance_versions_files = 'List model instance version files'
@@ -1589,9 +1590,9 @@ class Help(object):
   # Files params
   param_files_upload_inbox_path = 'Virtual path on the server where the uploaded files will be stored'
   param_files_upload_local_paths = (
-      'List of local filesystem paths. Each path creates a separate file on the server. '
-      'Directories are uploaded as zip archives by default (e.g., a directory called '
-      '"data" will be uploaded as "data.zip")')
+    'List of local filesystem paths. Each path creates a separate file on the server. '
+    'Directories are uploaded as zip archives by default (e.g., a directory called '
+    '"data" will be uploaded as "data.zip")')
   param_files_upload_no_compress = 'Whether to compress directories (zip) or not (tar)'
   param_files_upload_no_resume = 'Whether to skip resumable uploads.'
 

@@ -1,5 +1,8 @@
 # Kaggle API
 
+CAUTION: Most of the files in this directory are obsolete and will be deleted. This file is valid,
+as are `model_card.md`, `modelinstance_usage.md`, and `models_metadata.md`.
+
 Official API for https://www.kaggle.com, accessible using a command line tool implemented in Python 3.  
 
 Beta release - Kaggle reserves the right to modify the API functionality currently offered.

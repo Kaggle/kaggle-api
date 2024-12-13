@@ -1,6 +1,6 @@
 from kagglesdk.common.types.http_redirect import HttpRedirect
 from kagglesdk.kaggle_http_client import KaggleHttpClient
-from kagglesdk.models.types.model_api_service import ApiCreateModelInstanceRequest, ApiCreateModelInstanceVersionRequest, ApiCreateModelRequest, ApiCreateModelResponse, ApiDeleteModelInstanceRequest, ApiDeleteModelInstanceVersionRequest, ApiDeleteModelRequest, ApiDeleteModelResponse, ApiDownloadModelInstanceVersionRequest, ApiGetModelInstanceRequest, ApiGetModelRequest, ApiListModelInstanceVersionFilesRequest, ApiListModelInstanceVersionFilesResponse, ApiListModelsRequest, ApiListModelsResponse, ApiModel, ApiModelInstance, ApiUpdateModelInstanceRequest, ApiUpdateModelRequest, ApiUpdateModelResponse, ApiUploadModelFileRequest, ApiUploadModelFileResponse
+from kagglesdk.models.types.model_api_service import ApiCreateModelInstanceRequest, ApiCreateModelInstanceVersionRequest, ApiCreateModelRequest, ApiCreateModelResponse, ApiDeleteModelInstanceRequest, ApiDeleteModelInstanceVersionRequest, ApiDeleteModelRequest, ApiDeleteModelResponse, ApiDownloadModelInstanceVersionRequest, ApiGetModelInstanceRequest, ApiGetModelRequest, ApiListModelInstanceVersionFilesRequest, ApiListModelInstanceVersionFilesResponse, ApiListModelsRequest, ApiListModelsResponse, ApiModel, ApiModelInstance, ApiUpdateModelInstanceRequest, ApiUpdateModelRequest, ApiUpdateModelResponse, ApiUploadModelFileRequest, ApiUploadModelFileResponse, CreateModelSigningTokenRequest, CreateModelSigningTokenResponse, KeysRequest, KeysResponse, WellKnowEndpointRequest, WellKnowEndpointResponse
 
 class ModelApiClient(object):
 
@@ -176,3 +176,50 @@ class ModelApiClient(object):
       request = ApiUploadModelFileRequest()
 
     return self._client.call("models.ModelApiService", "ApiUploadModelFile", request, ApiUploadModelFileResponse)
+
+  def create_model_signing_token(self, request: CreateModelSigningTokenRequest = None) -> CreateModelSigningTokenResponse:
+    r"""
+    Creates an Kaggle issued identity token. The token is signed using a
+    private key held in KMS that is only accessible by Kaggle model-signer
+    service account.
+
+    Args:
+      request (CreateModelSigningTokenRequest):
+        The request object; initialized to empty instance if not specified.
+    """
+
+    if request is None:
+      request = CreateModelSigningTokenRequest()
+
+    return self._client.call("models.ModelApiService", "CreateModelSigningToken", request, CreateModelSigningTokenResponse)
+
+  def well_know_endpoint(self, request: WellKnowEndpointRequest = None) -> WellKnowEndpointResponse:
+    r"""
+    see spec -
+    https://openid.net/specs/openid-connect-discovery-1_0.html#ProviderConfig.
+    Must support CORS. The service will have a path component.
+
+    Args:
+      request (WellKnowEndpointRequest):
+        The request object; initialized to empty instance if not specified.
+    """
+
+    if request is None:
+      request = WellKnowEndpointRequest()
+
+    return self._client.call("models.ModelApiService", "WellKnowEndpoint", request, WellKnowEndpointResponse)
+
+  def keys(self, request: KeysRequest = None) -> KeysResponse:
+    r"""
+    The JWKS endpoint containing the keys to validate the signature of a kaggle
+    issued signing identity token.
+
+    Args:
+      request (KeysRequest):
+        The request object; initialized to empty instance if not specified.
+    """
+
+    if request is None:
+      request = KeysRequest()
+
+    return self._client.call("models.ModelApiService", "Keys", request, KeysResponse)

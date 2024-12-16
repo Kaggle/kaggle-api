@@ -507,22 +507,6 @@ class KaggleApi:
 
     self.config_values = config_data
 
-    try:
-      self.api_client = None  # ApiClient(configuration)
-
-    except Exception as error:
-
-      if 'Proxy' in type(error).__name__:
-        raise ValueError('The specified proxy ' +
-                         config_data[self.CONFIG_NAME_PROXY] +
-                         ' is not valid, please check your proxy settings')
-      else:
-        raise ValueError(
-            'Unauthorized: you must download an API key or export '
-            'credentials to the environment. Please see\n ' +
-            'https://github.com/Kaggle/kaggle-api#api-credentials ' +
-            'for instructions.')
-
   def read_config_file(self, config_data=None, quiet=False):
     """read_config_file is the first effort to get a username
            and key to authenticate to the Kaggle API. Since we can get the
@@ -2840,8 +2824,7 @@ class KaggleApi:
       data['slug'] = model_ref_split[1]
       data['title'] = model.title
       data['subtitle'] = model.subtitle
-      data[
-          'isPrivate'] = model.isPrivate  # TODO Add a test to ensure default is True
+      data['isPrivate'] = model.isPrivate  # TODO Test to ensure True default
       data['description'] = model.description
       data['publishTime'] = model.publishTime
 
@@ -3935,7 +3918,7 @@ class KaggleApi:
         local_date = datetime.fromtimestamp(os.path.getmtime(outfile))
         remote_size = int(response.headers['Content-Length'])
         local_size = os.path.getsize(outfile)
-        if local_size < remote_size or True:  # DEBUG
+        if local_size < remote_size:
           return True
         if remote_date <= local_date:
           if not quiet:

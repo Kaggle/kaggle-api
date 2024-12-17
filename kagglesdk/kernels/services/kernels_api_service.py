@@ -1,5 +1,6 @@
+from kagglesdk.common.types.http_redirect import HttpRedirect
 from kagglesdk.kaggle_http_client import KaggleHttpClient
-from kagglesdk.kernels.types.kernels_api_service import ApiGetKernelRequest, ApiGetKernelResponse, ApiGetKernelSessionStatusRequest, ApiGetKernelSessionStatusResponse, ApiListKernelFilesRequest, ApiListKernelFilesResponse, ApiListKernelSessionOutputRequest, ApiListKernelSessionOutputResponse, ApiListKernelsRequest, ApiListKernelsResponse, ApiSaveKernelRequest, ApiSaveKernelResponse
+from kagglesdk.kernels.types.kernels_api_service import ApiDownloadKernelOutputRequest, ApiGetKernelRequest, ApiGetKernelResponse, ApiGetKernelSessionStatusRequest, ApiGetKernelSessionStatusResponse, ApiListKernelFilesRequest, ApiListKernelFilesResponse, ApiListKernelSessionOutputRequest, ApiListKernelSessionOutputResponse, ApiListKernelsRequest, ApiListKernelsResponse, ApiSaveKernelRequest, ApiSaveKernelResponse
 
 class KernelsApiClient(object):
 
@@ -77,3 +78,17 @@ class KernelsApiClient(object):
       request = ApiGetKernelSessionStatusRequest()
 
     return self._client.call("kernels.KernelsApiService", "ApiGetKernelSessionStatus", request, ApiGetKernelSessionStatusResponse)
+
+  def download_kernel_output(self, request: ApiDownloadKernelOutputRequest = None) -> HttpRedirect:
+    r"""
+    Meant for use by Kaggle Hub (http bindings and terminology align with that)
+
+    Args:
+      request (ApiDownloadKernelOutputRequest):
+        The request object; initialized to empty instance if not specified.
+    """
+
+    if request is None:
+      request = ApiDownloadKernelOutputRequest()
+
+    return self._client.call("kernels.KernelsApiService", "ApiDownloadKernelOutput", request, HttpRedirect)

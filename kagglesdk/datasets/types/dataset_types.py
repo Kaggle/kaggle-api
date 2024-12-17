@@ -540,17 +540,19 @@ class DatasetCollaborator(KaggleObject):
   r"""
   Attributes:
     username (str)
+    group_slug (str)
     role (CollaboratorType)
   """
 
   def __init__(self):
-    self._username = ""
+    self._username = None
+    self._group_slug = None
     self._role = CollaboratorType.COLLABORATOR_TYPE_UNSPECIFIED
     self._freeze()
 
   @property
   def username(self) -> str:
-    return self._username
+    return self._username or ""
 
   @username.setter
   def username(self, username: str):
@@ -559,7 +561,22 @@ class DatasetCollaborator(KaggleObject):
       return
     if not isinstance(username, str):
       raise TypeError('username must be of type str')
+    del self.group_slug
     self._username = username
+
+  @property
+  def group_slug(self) -> str:
+    return self._group_slug or ""
+
+  @group_slug.setter
+  def group_slug(self, group_slug: str):
+    if group_slug is None:
+      del self.group_slug
+      return
+    if not isinstance(group_slug, str):
+      raise TypeError('group_slug must be of type str')
+    del self.username
+    self._group_slug = group_slug
 
   @property
   def role(self) -> 'CollaboratorType':
@@ -622,7 +639,8 @@ SettingsLicense._fields = [
 ]
 
 DatasetCollaborator._fields = [
-  FieldMetadata("username", "username", "_username", str, "", PredefinedSerializer()),
+  FieldMetadata("username", "username", "_username", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("groupSlug", "group_slug", "_group_slug", str, None, PredefinedSerializer(), optional=True),
   FieldMetadata("role", "role", "_role", CollaboratorType, CollaboratorType.COLLABORATOR_TYPE_UNSPECIFIED, EnumSerializer()),
 ]
 

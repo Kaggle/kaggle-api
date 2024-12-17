@@ -3,6 +3,88 @@ from kagglesdk.kaggle_object import *
 from kagglesdk.kernels.types.kernels_enums import KernelsListSortType, KernelsListViewType, KernelWorkerStatus
 from typing import Optional, List
 
+class ApiDownloadKernelOutputRequest(KaggleObject):
+  r"""
+  Attributes:
+    owner_slug (str)
+    kernel_slug (str)
+    file_path (str)
+      Relative path to a specific file inside the databundle.
+    version_number (int)
+  """
+
+  def __init__(self):
+    self._owner_slug = ""
+    self._kernel_slug = ""
+    self._file_path = None
+    self._version_number = None
+    self._freeze()
+
+  @property
+  def owner_slug(self) -> str:
+    return self._owner_slug
+
+  @owner_slug.setter
+  def owner_slug(self, owner_slug: str):
+    if owner_slug is None:
+      del self.owner_slug
+      return
+    if not isinstance(owner_slug, str):
+      raise TypeError('owner_slug must be of type str')
+    self._owner_slug = owner_slug
+
+  @property
+  def kernel_slug(self) -> str:
+    return self._kernel_slug
+
+  @kernel_slug.setter
+  def kernel_slug(self, kernel_slug: str):
+    if kernel_slug is None:
+      del self.kernel_slug
+      return
+    if not isinstance(kernel_slug, str):
+      raise TypeError('kernel_slug must be of type str')
+    self._kernel_slug = kernel_slug
+
+  @property
+  def file_path(self) -> str:
+    """Relative path to a specific file inside the databundle."""
+    return self._file_path or ""
+
+  @file_path.setter
+  def file_path(self, file_path: str):
+    if file_path is None:
+      del self.file_path
+      return
+    if not isinstance(file_path, str):
+      raise TypeError('file_path must be of type str')
+    self._file_path = file_path
+
+  @property
+  def version_number(self) -> int:
+    return self._version_number or 0
+
+  @version_number.setter
+  def version_number(self, version_number: int):
+    if version_number is None:
+      del self.version_number
+      return
+    if not isinstance(version_number, int):
+      raise TypeError('version_number must be of type int')
+    self._version_number = version_number
+
+
+  def endpoint(self):
+    if self.file_path:
+      path = '/api/v1/kernels/output/download/{owner_slug}/{kernel_slug}/{file_path}'
+    else:
+      path = '/api/v1/kernels/output/download/{owner_slug}/{kernel_slug}'
+    return path.format_map(self.to_field_map(self))
+
+  @staticmethod
+  def endpoint_path():
+    return '/api/v1/kernels/output/download/{owner_slug}/{kernel_slug}'
+
 class ApiGetKernelRequest(KaggleObject):
   r"""
   Attributes:
@@ -257,6 +339,7 @@ class ApiKernelMetadata(KaggleObject):
     competition_data_sources (str)
     model_data_sources (str)
     total_votes (int)
+    current_version_number (int)
   """
 
   def __init__(self):
@@ -278,6 +361,7 @@ class ApiKernelMetadata(KaggleObject):
     self._competition_data_sources = []
     self._model_data_sources = []
     self._total_votes = 0
+    self._current_version_number = None
     self._freeze()
 
   @property
@@ -523,6 +607,19 @@ class ApiKernelMetadata(KaggleObject):
     if not isinstance(total_votes, int):
       raise TypeError('total_votes must be of type int')
     self._total_votes = total_votes
+
+  @property
+  def current_version_number(self) -> int:
+    return self._current_version_number or 0
+
+  @current_version_number.setter
+  def current_version_number(self, current_version_number: int):
+    if current_version_number is None:
+      del self.current_version_number
+      return
+    if not isinstance(current_version_number, int):
+      raise TypeError('current_version_number must be of type int')
+    self._current_version_number = current_version_number
 
 
 class ApiListKernelFilesRequest(KaggleObject):
@@ -1616,6 +1713,13 @@ class ApiListKernelFilesItem(KaggleObject):
     self._creation_date = creation_date
 
 
+ApiDownloadKernelOutputRequest._fields = [
+  FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "", PredefinedSerializer()),
+  FieldMetadata("kernelSlug", "kernel_slug", "_kernel_slug", str, "", PredefinedSerializer()),
+  FieldMetadata("filePath", "file_path", "_file_path", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("versionNumber", "version_number", "_version_number", int, None, PredefinedSerializer(), optional=True),
+]
+
 ApiGetKernelRequest._fields = [
   FieldMetadata("userName", "user_name", "_user_name", str, "", PredefinedSerializer()),
   FieldMetadata("kernelSlug", "kernel_slug", "_kernel_slug", str, "", PredefinedSerializer()),
@@ -1662,6 +1766,7 @@ ApiKernelMetadata._fields = [
   FieldMetadata("competitionDataSources", "competition_data_sources", "_competition_data_sources", str, [], ListSerializer(PredefinedSerializer())),
   FieldMetadata("modelDataSources", "model_data_sources", "_model_data_sources", str, [], ListSerializer(PredefinedSerializer())),
   FieldMetadata("totalVotes", "total_votes", "_total_votes", int, 0, PredefinedSerializer()),
+  FieldMetadata("currentVersionNumber", "current_version_number", "_current_version_number", int, None, PredefinedSerializer(), optional=True),
 ]
 
 ApiListKernelFilesRequest._fields = [

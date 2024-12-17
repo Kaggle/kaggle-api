@@ -7,7 +7,7 @@ import time
 
 from requests import HTTPError
 
-from kaggle.rest import ApiException
+# from kaggle.rest import ApiException
 from kagglesdk.datasets.types.dataset_api_service import ApiDownloadDatasetRequest
 
 sys.path.insert(0, '..')
@@ -15,7 +15,7 @@ sys.path.insert(0, '..')
 sys.path.insert(0, '..')
 
 from kaggle import api
-
+ApiException = IOError
 # Unit test names include a letter to sort them in run order.
 # That seemed easier and more obvious than defining a test suite.
 
@@ -40,7 +40,7 @@ model_title = 'testing'
 instance_name = 'test'
 framework_name = 'jax'
 kernel_name = 'testing'
-dataset_name = 'kaggleapitestdataset'
+dataset_name = 'kaggleapi-testdataset'
 up_file = 'sample_submission.csv'
 description = 'House prices submission message'
 competition = 'house-prices-advanced-regression-techniques'
@@ -206,6 +206,21 @@ class TestKaggleApi(unittest.TestCase):
   model_metadata_file = ''
   instance_metadata_file = ''
 
+  # Inbox
+
+  def test_files_upload(self):
+    a = 2 # Change this value to run this test.
+    if a - 1 == 1:
+      return # Only run this test when needed because it uploads an inbox file.
+    filename = 'tmp_file.test'
+    with open(filename, 'w') as f:
+      f.write('test')
+    try:
+      api.files_upload_cli([filename], 'kaggle-api-test', False, False)
+    finally:
+      if os.path.exists('tmp_file.test'):
+        os.remove('tmp_file.test')
+
   # Kernels
 
   def test_kernels_a_list(self):
@@ -231,10 +246,12 @@ class TestKaggleApi(unittest.TestCase):
       self.assertIsNotNone(push_result.ref)
       self.assertTrue(isinstance(push_result.version_number, int))
       self.kernel_slug = md['id']
+      time.sleep(30)
     except ApiException as e:
       self.fail(f"kernels_push failed: {e}")
 
   def test_kernels_d_status(self):
+    # AssertionError: kernels_status failed: 404 Client Error: Not Found for url: http://localhost/api/v1/kernels/status?username=stevemessick&kernelslug=testing
     if self.kernel_slug == '':
       self.test_kernels_c_push()
     try:
@@ -248,6 +265,8 @@ class TestKaggleApi(unittest.TestCase):
         time.sleep(5)
         status_result = api.kernels_status(self.kernel_slug)
         print(status_result.status)
+      if count >= max_status_tries:
+        self.fail(f"Could not get kernel status in allowed trys. Status: {status_result.status}")
       end_time = time.time()
       print(f'kernels_status ready in {end_time-start_time}s')
     except ApiException as e:
@@ -264,6 +283,7 @@ class TestKaggleApi(unittest.TestCase):
       self.fail(f"kernels_list_files failed: {e}")
 
   def test_kernels_f_output(self):
+    # AssertionError: kernels_output failed: 404 Client Error: Not Found for url: http://localhost/api/v1/kernels/output?username=stevemessick&kernelslug=testing
     fs = []
     if self.kernel_slug == '':
       self.test_kernels_c_push()
@@ -283,7 +303,7 @@ class TestKaggleApi(unittest.TestCase):
 
   def test_kernels_g_pull(self):
     if self.kernel_metadata_path == '':
-      self.test_kernels_b_initialize()
+      self.test_kernels_c_push()
     fs = ''
     try:
       fs = api.kernels_pull(f'{test_user}/testing', 'kernel/tmp', metadata=True)
@@ -371,6 +391,8 @@ class TestKaggleApi(unittest.TestCase):
       api.competition_download_file(
           competition, self.competition_file.ref, force=True)
       self.assertTrue(os.path.exists(self.competition_file.ref))
+      api.competition_download_file(
+          competition, self.competition_file.ref, force=False)
     except ApiException as e:
       self.fail(f"competition_download_file failed: {e}")
     finally:
@@ -454,10 +476,10 @@ class TestKaggleApi(unittest.TestCase):
     if self.dataset == '':
       self.test_dataset_a_list()
     try:
-      dataset_files = api.dataset_list_files(self.dataset)
-      self.assertIsInstance(dataset_files.files, list)
-      self.assertGreater(len(dataset_files.files), 0)
-      self.dataset_file = dataset_files.files[0]
+      response = api.dataset_list_files(self.dataset)
+      self.assertIsInstance(response.dataset_files, list)
+      self.assertGreater(len(response.dataset_files), 0)
+      self.dataset_file = response.dataset_files[0]
       [
           self.assertTrue(hasattr(self.dataset_file, api.camel_to_snake(f)))
           for f in api.dataset_file_fields
@@ -529,9 +551,7 @@ class TestKaggleApi(unittest.TestCase):
   def test_dataset_j_create_version(self):
     if not os.path.exists(
         os.path.join(dataset_directory, api.DATASET_METADATA_FILE)):
-      self.test_dataset_h_initialize()
-      update_dataset_metadata_file(self.meta_file, dataset_name,
-                                   self.version_number)
+      self.test_dataset_i_create_new()
     try:
       new_version = api.dataset_create_version(dataset_directory, "Notes")
       self.assertIsNotNone(new_version)
@@ -672,7 +692,7 @@ class TestKaggleApi(unittest.TestCase):
       self.assertIsInstance(inst_files_resp.files, list)
       self.assertGreater(len(inst_files_resp.files), 0)
       [self.assertTrue(hasattr(inst_files_resp.files[0], api.camel_to_snake(f)))
-       for f in api.dataset_file_fields]
+       for f in api.model_file_fields]
     except ApiException as e:
       self.fail(f"model_instance_files failed: {e}")
 
@@ -763,7 +783,9 @@ class TestKaggleApi(unittest.TestCase):
     try:
       inst_update_resp = api.model_instance_delete(self.model_instance, True)
       self.assertIsNotNone(inst_update_resp)
-      self.assertEqual(len(inst_update_resp.error), 0)
+      if len(inst_update_resp.error):
+        print(inst_update_resp.error)
+      self.assertEquals(len(inst_update_resp.error), 0)
     except ApiException as e:
       self.fail(f"model_instance_delete failed: {e}")
 

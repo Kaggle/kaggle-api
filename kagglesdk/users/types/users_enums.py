@@ -1,12 +1,5 @@
 import enum
 
-class CollaboratorType(enum.Enum):
-  COLLABORATOR_TYPE_UNSPECIFIED = 0
-  READER = 1
-  WRITER = 2
-  OWNER = 3
-  ADMIN = 4
-
 class UserAchievementTier(enum.Enum):
   NOVICE = 0
   CONTRIBUTOR = 1
@@ -19,4 +12,11 @@ class UserAchievementTier(enum.Enum):
   """Organizations"""
   RECALC = 21
   """Flag user for tier recalculation"""
+
+class CollaboratorType(enum.Enum):
+  COLLABORATOR_TYPE_UNSPECIFIED = 0
+  READER = 1
+  WRITER = 2
+  OWNER = 3
+  ADMIN = 4
 

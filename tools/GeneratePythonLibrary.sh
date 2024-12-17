@@ -109,9 +109,8 @@ function create-local-creds {
   chmod 600 $kaggle_config_file
 }
 
-function generate-from-swagger {
-  java -jar ./tools/swagger-codegen-cli.jar generate -i $SWAGGER_YAML -c $SWAGGER_CONFIG -l python || true
-
+function generate-package {
+  # TODO Remove this.
   if [[ -f "kaggle/api/__init__.py" ]]; then
     sed -i -e 's/kaggle_api/kaggle_api_extended/g' kaggle/api/__init__.py
   fi
@@ -133,20 +132,12 @@ def _get_endpoint_from_env():
     return endpoint + "/api/v1"    
 END
   fi
-
-  if [[ -f "kaggle/rest.py" ]]; then
-    sed -i -e "/if 'Content-Type' not in headers:/,+2d" kaggle/rest.py
-  fi
-
-  if [[ -f "kaggle/api_client.py" ]]; then
-    sed -i -e "/def __del__/,+3d" kaggle/api_client.py
-  fi
 }
 
 function copy-src {
   cp ./src/setup.py .
   cp ./src/setup.cfg .
-  cp -r ./src/kaggle/* ./kaggle/
+  cp -r ./src/kaggle .
 }
 
 function run-autogen {
@@ -184,7 +175,6 @@ function install-package {
 function cleanup {
   cd $SELF_DIR
   rm -rf tox.ini \
-    requirements.txt \
     test-requirements.txt \
     test \
     .swagger-codegen \
@@ -204,7 +194,7 @@ function cleanup {
 function run {
   reset
 
-  generate-from-swagger
+  generate-package
   copy-src
   run-autogen
   install-package
@@ -222,7 +212,7 @@ function watch-swagger {
   while inotifywait -q -r $WATCHED_EVENTS --format "%e %w%f" $watched_paths; do
     echo "Deleting $SELF_DIR/kaggle/ $SELF_DIR/kaggle/"
     rm -rf $SELF_DIR/kaggle/*
-    generate-from-swagger
+    generate-package
     run-autogen
     copy-src
     echo -e "\nWatching for changes to Swagger config..."
@@ -235,7 +225,7 @@ function watch-src {
   echo "Watching for changes under \"src\"..."
   while inotifywait -q -r $WATCHED_EVENTS --format "%e %w%f" $watched_paths; do
     # Do not delete the output directory when there is no Swagger change to avoid
-    # having to run generate-from-swagger for each small code change as Swagger code
+    # having to run generate-package for each small code change as Swagger code
     # generation is a bit slow (can take 2-3 seconds).
     echo "Copying changes..."
     copy-src

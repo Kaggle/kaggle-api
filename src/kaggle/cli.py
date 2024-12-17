@@ -24,7 +24,8 @@ import six
 
 from kaggle import KaggleApi
 from kaggle import api
-from .rest import ApiException
+# from rest import ApiException
+ApiException = IOError
 
 
 def main():

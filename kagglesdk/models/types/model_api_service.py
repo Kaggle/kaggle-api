@@ -2537,6 +2537,364 @@ class ApiUploadModelFileResponse(KaggleObject):
     self._create_url = create_url
 
 
+class CreateModelSigningTokenRequest(KaggleObject):
+  r"""
+  Attributes:
+    owner_slug (str)
+    model_slug (str)
+  """
+
+  def __init__(self):
+    self._owner_slug = ""
+    self._model_slug = ""
+    self._freeze()
+
+  @property
+  def owner_slug(self) -> str:
+    return self._owner_slug
+
+  @owner_slug.setter
+  def owner_slug(self, owner_slug: str):
+    if owner_slug is None:
+      del self.owner_slug
+      return
+    if not isinstance(owner_slug, str):
+      raise TypeError('owner_slug must be of type str')
+    self._owner_slug = owner_slug
+
+  @property
+  def model_slug(self) -> str:
+    return self._model_slug
+
+  @model_slug.setter
+  def model_slug(self, model_slug: str):
+    if model_slug is None:
+      del self.model_slug
+      return
+    if not isinstance(model_slug, str):
+      raise TypeError('model_slug must be of type str')
+    self._model_slug = model_slug
+
+
+  def endpoint(self):
+    path = '/api/v1/models/signing/token'
+    return path.format_map(self.to_field_map(self))
+
+
+  @staticmethod
+  def method():
+    return 'POST'
+
+  @staticmethod
+  def body_fields():
+    return '*'
+
+class CreateModelSigningTokenResponse(KaggleObject):
+  r"""
+  Attributes:
+    id_token (str)
+  """
+
+  def __init__(self):
+    self._id_token = ""
+    self._freeze()
+
+  @property
+  def id_token(self) -> str:
+    return self._id_token
+
+  @id_token.setter
+  def id_token(self, id_token: str):
+    if id_token is None:
+      del self.id_token
+      return
+    if not isinstance(id_token, str):
+      raise TypeError('id_token must be of type str')
+    self._id_token = id_token
+
+
+class KeysRequest(KaggleObject):
+  r"""
+  """
+
+  pass
+
+  def endpoint(self):
+    path = '/api/v1/models/signing/keys'
+    return path.format_map(self.to_field_map(self))
+
+class KeysResponse(KaggleObject):
+  r"""
+  JWKS specification can be found:
+  https://openid.net/specs/draft-jones-json-web-key-03.html//
+  https://datatracker.ietf.org/doc/html/rfc7517
+
+  Attributes:
+    keys (JWK)
+  """
+
+  def __init__(self):
+    self._keys = []
+    self._freeze()
+
+  @property
+  def keys(self) -> Optional[List[Optional['JWK']]]:
+    return self._keys
+
+  @keys.setter
+  def keys(self, keys: Optional[List[Optional['JWK']]]):
+    if keys is None:
+      del self.keys
+      return
+    if not isinstance(keys, list):
+      raise TypeError('keys must be of type list')
+    if not all([isinstance(t, JWK) for t in keys]):
+      raise TypeError('keys must contain only items of type JWK')
+    self._keys = keys
+
+
+class WellKnowEndpointRequest(KaggleObject):
+  r"""
+  """
+
+  pass
+
+  def endpoint(self):
+    path = '/api/v1/models/signing/.well-known/openid-configuration'
+    return path.format_map(self.to_field_map(self))
+
+class WellKnowEndpointResponse(KaggleObject):
+  r"""
+  More details about the response can be found at
+  https://openid.net/specs/openid-connect-discovery-1_0.html#MetadataContents
+
+  Attributes:
+    issuer (str)
+    jwks_uri (str)
+      The keys endpoint from rpc `ModelApiService.Keys`
+    token_endpoint (str)
+      The token endpoint from rpc `ModelApiService.CreateModelSigningToken`
+    id_token_signing_alg_values_supported (str)
+    claims_supported (str)
+    response_types_supported (str)
+    subject_types_supported (str)
+  """
+
+  def __init__(self):
+    self._issuer = ""
+    self._jwks_uri = ""
+    self._token_endpoint = ""
+    self._id_token_signing_alg_values_supported = []
+    self._claims_supported = []
+    self._response_types_supported = []
+    self._subject_types_supported = []
+    self._freeze()
+
+  @property
+  def issuer(self) -> str:
+    return self._issuer
+
+  @issuer.setter
+  def issuer(self, issuer: str):
+    if issuer is None:
+      del self.issuer
+      return
+    if not isinstance(issuer, str):
+      raise TypeError('issuer must be of type str')
+    self._issuer = issuer
+
+  @property
+  def jwks_uri(self) -> str:
+    """The keys endpoint from rpc `ModelApiService.Keys`"""
+    return self._jwks_uri
+
+  @jwks_uri.setter
+  def jwks_uri(self, jwks_uri: str):
+    if jwks_uri is None:
+      del self.jwks_uri
+      return
+    if not isinstance(jwks_uri, str):
+      raise TypeError('jwks_uri must be of type str')
+    self._jwks_uri = jwks_uri
+
+  @property
+  def token_endpoint(self) -> str:
+    """The token endpoint from rpc `ModelApiService.CreateModelSigningToken`"""
+    return self._token_endpoint
+
+  @token_endpoint.setter
+  def token_endpoint(self, token_endpoint: str):
+    if token_endpoint is None:
+      del self.token_endpoint
+      return
+    if not isinstance(token_endpoint, str):
+      raise TypeError('token_endpoint must be of type str')
+    self._token_endpoint = token_endpoint
+
+  @property
+  def id_token_signing_alg_values_supported(self) -> Optional[List[str]]:
+    return self._id_token_signing_alg_values_supported
+
+  @id_token_signing_alg_values_supported.setter
+  def id_token_signing_alg_values_supported(self, id_token_signing_alg_values_supported: Optional[List[str]]):
+    if id_token_signing_alg_values_supported is None:
+      del self.id_token_signing_alg_values_supported
+      return
+    if not isinstance(id_token_signing_alg_values_supported, list):
+      raise TypeError('id_token_signing_alg_values_supported must be of type list')
+    if not all([isinstance(t, str) for t in id_token_signing_alg_values_supported]):
+      raise TypeError('id_token_signing_alg_values_supported must contain only items of type str')
+    self._id_token_signing_alg_values_supported = id_token_signing_alg_values_supported
+
+  @property
+  def claims_supported(self) -> Optional[List[str]]:
+    return self._claims_supported
+
+  @claims_supported.setter
+  def claims_supported(self, claims_supported: Optional[List[str]]):
+    if claims_supported is None:
+      del self.claims_supported
+      return
+    if not isinstance(claims_supported, list):
+      raise TypeError('claims_supported must be of type list')
+    if not all([isinstance(t, str) for t in claims_supported]):
+      raise TypeError('claims_supported must contain only items of type str')
+    self._claims_supported = claims_supported
+
+  @property
+  def response_types_supported(self) -> Optional[List[str]]:
+    return self._response_types_supported
+
+  @response_types_supported.setter
+  def response_types_supported(self, response_types_supported: Optional[List[str]]):
+    if response_types_supported is None:
+      del self.response_types_supported
+      return
+    if not isinstance(response_types_supported, list):
+      raise TypeError('response_types_supported must be of type list')
+    if not all([isinstance(t, str) for t in response_types_supported]):
+      raise TypeError('response_types_supported must contain only items of type str')
+    self._response_types_supported = response_types_supported
+
+  @property
+  def subject_types_supported(self) -> Optional[List[str]]:
+    return self._subject_types_supported
+
+  @subject_types_supported.setter
+  def subject_types_supported(self, subject_types_supported: Optional[List[str]]):
+    if subject_types_supported is None:
+      del self.subject_types_supported
+      return
+    if not isinstance(subject_types_supported, list):
+      raise TypeError('subject_types_supported must be of type list')
+    if not all([isinstance(t, str) for t in subject_types_supported]):
+      raise TypeError('subject_types_supported must contain only items of type str')
+    self._subject_types_supported = subject_types_supported
+
+
+class JWK(KaggleObject):
+  r"""
+  Attributes:
+    kty (str)
+    alg (str)
+    use (str)
+    kid (str)
+    n (str)
+      modulus
+    e (str)
+      public exponent
+  """
+
+  def __init__(self):
+    self._kty = ""
+    self._alg = ""
+    self._use = ""
+    self._kid = ""
+    self._n = ""
+    self._e = ""
+    self._freeze()
+
+  @property
+  def kty(self) -> str:
+    return self._kty
+
+  @kty.setter
+  def kty(self, kty: str):
+    if kty is None:
+      del self.kty
+      return
+    if not isinstance(kty, str):
+      raise TypeError('kty must be of type str')
+    self._kty = kty
+
+  @property
+  def alg(self) -> str:
+    return self._alg
+
+  @alg.setter
+  def alg(self, alg: str):
+    if alg is None:
+      del self.alg
+      return
+    if not isinstance(alg, str):
+      raise TypeError('alg must be of type str')
+    self._alg = alg
+
+  @property
+  def use(self) -> str:
+    return self._use
+
+  @use.setter
+  def use(self, use: str):
+    if use is None:
+      del self.use
+      return
+    if not isinstance(use, str):
+      raise TypeError('use must be of type str')
+    self._use = use
+
+  @property
+  def kid(self) -> str:
+    return self._kid
+
+  @kid.setter
+  def kid(self, kid: str):
+    if kid is None:
+      del self.kid
+      return
+    if not isinstance(kid, str):
+      raise TypeError('kid must be of type str')
+    self._kid = kid
+
+  @property
+  def n(self) -> str:
+    """modulus"""
+    return self._n
+
+  @n.setter
+  def n(self, n: str):
+    if n is None:
+      del self.n
+      return
+    if not isinstance(n, str):
+      raise TypeError('n must be of type str')
+    self._n = n
+
+  @property
+  def e(self) -> str:
+    """public exponent"""
+    return self._e
+
+  @e.setter
+  def e(self, e: str):
+    if e is None:
+      del self.e
+      return
+    if not isinstance(e, str):
+      raise TypeError('e must be of type str')
+    self._e = e
+
+
 ApiCreateModelInstanceRequest._fields = [
   FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "", PredefinedSerializer()),
   FieldMetadata("modelSlug", "model_slug", "_model_slug", str, "", PredefinedSerializer()),
@@ -2751,5 +3109,41 @@ ApiUploadModelFileRequest._fields = [
 ApiUploadModelFileResponse._fields = [
   FieldMetadata("token", "token", "_token", str, "", PredefinedSerializer()),
   FieldMetadata("createUrl", "create_url", "_create_url", str, "", PredefinedSerializer()),
+]
+
+CreateModelSigningTokenRequest._fields = [
+  FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "", PredefinedSerializer()),
+  FieldMetadata("modelSlug", "model_slug", "_model_slug", str, "", PredefinedSerializer()),
+]
+
+CreateModelSigningTokenResponse._fields = [
+  FieldMetadata("id_token", "id_token", "_id_token", str, "", PredefinedSerializer()),
+]
+
+KeysRequest._fields = []
+
+KeysResponse._fields = [
+  FieldMetadata("keys", "keys", "_keys", JWK, [], ListSerializer(KaggleObjectSerializer())),
+]
+
+WellKnowEndpointRequest._fields = []
+
+WellKnowEndpointResponse._fields = [
+  FieldMetadata("issuer", "issuer", "_issuer", str, "", PredefinedSerializer()),
+  FieldMetadata("jwks_uri", "jwks_uri", "_jwks_uri", str, "", PredefinedSerializer()),
+  FieldMetadata("token_endpoint", "token_endpoint", "_token_endpoint", str, "", PredefinedSerializer()),
+  FieldMetadata("id_token_signing_alg_values_supported", "id_token_signing_alg_values_supported", "_id_token_signing_alg_values_supported", str, [], ListSerializer(PredefinedSerializer())),
+  FieldMetadata("claims_supported", "claims_supported", "_claims_supported", str, [], ListSerializer(PredefinedSerializer())),
+  FieldMetadata("response_types_supported", "response_types_supported", "_response_types_supported", str, [], ListSerializer(PredefinedSerializer())),
+  FieldMetadata("subject_types_supported", "subject_types_supported", "_subject_types_supported", str, [], ListSerializer(PredefinedSerializer())),
+]
+
+JWK._fields = [
+  FieldMetadata("kty", "kty", "_kty", str, "", PredefinedSerializer()),
+  FieldMetadata("alg", "alg", "_alg", str, "", PredefinedSerializer()),
+  FieldMetadata("use", "use", "_use", str, "", PredefinedSerializer()),
+  FieldMetadata("kid", "kid", "_kid", str, "", PredefinedSerializer()),
+  FieldMetadata("n", "n", "_n", str, "", PredefinedSerializer()),
+  FieldMetadata("e", "e", "_e", str, "", PredefinedSerializer()),
 ]
 

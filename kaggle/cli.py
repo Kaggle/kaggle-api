@@ -1578,8 +1578,7 @@ class Help(object):
   # Model Instance Versions params
   command_model_instance_versions_new = 'Create a new model instance version'
   param_model_instance_version_upfile = (
-      'Folder for upload. '
-      'Defaults to current working directory')
+      'Folder for upload. Defaults to current working directory')
   command_model_instance_versions_delete = 'Delete a model instance version'
   command_model_instance_versions_download = 'Download model instance version files'
   command_model_instance_versions_files = 'List model instance version files'

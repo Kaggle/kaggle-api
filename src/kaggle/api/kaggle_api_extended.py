@@ -288,7 +288,7 @@ class KaggleApi:
   config_values = {}
   already_printed_version_warning = False
 
-  args = {}  # DEBUG Add --local to use localhost
+  args = {'--local'}  # DEBUG Add --local to use localhost
 
   # Kernels valid types
   valid_push_kernel_types = ['script', 'notebook']

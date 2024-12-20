@@ -23,14 +23,8 @@ setup(
     keywords=['Kaggle', 'API'],
     entry_points={'console_scripts': ['kaggle = kaggle.cli:main']},
     install_requires=[
-        'six >= 1.10',
-        'certifi >= 2023.7.22',
-        'python-dateutil',
-        'requests',
-        'tqdm',
-        'python-slugify',
-        'urllib3',
-        'bleach',
+        'six >= 1.10', 'certifi >= 2023.7.22', 'python-dateutil', 'requests',
+        'tqdm', 'python-slugify', 'urllib3', 'bleach', 'protobuf'
     ],
     packages=find_packages(exclude=("src.*", "src")),
     license='Apache 2.0')

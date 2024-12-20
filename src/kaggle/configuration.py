@@ -41,8 +41,10 @@ class Configuration:
     self.password = ""
 
     # Logging Settings
-    self.logger = {"package_logger": logging.getLogger("kaggle"),
-                   "urllib3_logger": logging.getLogger("urllib3")}
+    self.logger = {
+        "package_logger": logging.getLogger("kaggle"),
+        "urllib3_logger": logging.getLogger("urllib3")
+    }
     # Log format
     self.logger_format = '%(asctime)s %(levelname)s %(message)s'
     # Log stream handler
@@ -53,7 +55,6 @@ class Configuration:
     self.logger_file = None
     # Debug switch
     self.debug = False
-
 
   @property
   def logger_file(self):
@@ -153,9 +154,9 @@ class Configuration:
     :param identifier: The identifier of apiKey.
     :return: The token for api key authentication.
     """
-    if (self.api_key.get(identifier) and
-        self.api_key_prefix.get(identifier)):
-      return self.api_key_prefix[identifier] + ' ' + self.api_key[identifier]  # noqa: E501
+    if (self.api_key.get(identifier) and self.api_key_prefix.get(identifier)):
+      return self.api_key_prefix[identifier] + ' ' + self.api_key[
+          identifier]  # noqa: E501
     elif self.api_key.get(identifier):
       return self.api_key[identifier]
 
@@ -164,9 +165,8 @@ class Configuration:
 
     :return: The token for basic HTTP authentication.
     """
-    return urllib3.util.make_headers(
-        basic_auth=self.username + ':' + self.password
-        ).get('authorization')
+    return urllib3.util.make_headers(basic_auth=self.username + ':' +
+                                     self.password).get('authorization')
 
   def auth_settings(self):
     """Gets Auth Settings dict for api client.
@@ -174,15 +174,13 @@ class Configuration:
     :return: The Auth Settings information dict.
     """
     return {
-      'basicAuth':
-        {
-          'type': 'basic',
-          'in': 'header',
-          'key': 'Authorization',
-          'value': self.get_basic_auth_token()
-          },
-
-      }
+        'basicAuth': {
+            'type': 'basic',
+            'in': 'header',
+            'key': 'Authorization',
+            'value': self.get_basic_auth_token()
+        },
+    }
 
   def to_debug_report(self):
     """Gets the essential information for debugging.
@@ -205,4 +203,4 @@ def _get_endpoint_from_env():
   endpoint = endpoint.rstrip("/")
   if endpoint.endswith("/api/v1"):
     return endpoint
-  return endpoint + "/api/v1"    
+  return endpoint + "/api/v1"

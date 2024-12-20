@@ -8,10 +8,10 @@ setup(
     name='kaggle',
     version='1.6.17',
     description='Kaggle API',
-    long_description=
-    ('Official API for https://www.kaggle.com, accessible using a command line '
-     'tool implemented in Python. Beta release - Kaggle reserves the right to '
-     'modify the API functionality currently offered.'),
+    long_description=(
+        'Official API for https://www.kaggle.com, accessible using a command line '
+        'tool implemented in Python. Beta release - Kaggle reserves the right to '
+        'modify the API functionality currently offered.'),
     author='Kaggle',
     author_email='support@kaggle.com',
     url='https://github.com/Kaggle/kaggle-api',
@@ -23,15 +23,8 @@ setup(
     keywords=['Kaggle', 'API'],
     entry_points={'console_scripts': ['kaggle = kaggle.cli:main']},
     install_requires=[
-        'six >= 1.10',
-        'certifi >= 2023.7.22',
-        'python-dateutil',
-        'requests',
-        'tqdm',
-        'python-slugify',
-        'urllib3',
-        'bleach',
-        'protobuf'
+        'six >= 1.10', 'certifi >= 2023.7.22', 'python-dateutil', 'requests',
+        'tqdm', 'python-slugify', 'urllib3', 'bleach', 'protobuf'
     ],
     packages=find_packages(exclude=("src.*", "src")),
     license='Apache 2.0')

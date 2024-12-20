@@ -25,12 +25,12 @@ import six
 class StartBlobUploadResponse(object):
   """
     Attributes:
-      swagger_types (dict): The key is attribute name
+      project_types (dict): The key is attribute name
                             and the value is attribute type.
       attribute_map (dict): The key is attribute name
                             and the value is json key in definition.
     """
-  swagger_types = {'token': 'str', 'create_url': 'str'}
+  project_types = {'token': 'str', 'create_url': 'str'}
 
   attribute_map = {'token': 'token', 'create_url': 'createUrl'}
 
@@ -100,7 +100,7 @@ class StartBlobUploadResponse(object):
     """Returns the model properties as a dict"""
     result = {}
 
-    for attr, _ in six.iteritems(self.swagger_types):
+    for attr, _ in six.iteritems(self.project_types):
       value = getattr(self, attr)
       if isinstance(value, list):
         result[attr] = list(

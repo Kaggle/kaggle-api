@@ -22,8 +22,6 @@ Obviously, this depends on Kaggle services. When you're extending the API and mo
 or adding to those services, you should be working in your Kaggle mid-tier development
 environment. You'll run Kaggle locally, in the container, and test the Python code by
 running it in the container so it can connect to your local testing environment.
-However, do not try to create a release from within the container. The code formatter
-(`yapf3`) changes much more than intended.
 
 Also, run the following command to get `autogen.sh` installed:
 ```bash

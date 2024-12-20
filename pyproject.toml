@@ -61,11 +61,11 @@ install-autogen = """curl -fsSL --output /tmp/autogen.zip "https://github.com/mb
 # TODO: install in Mac/Windows
 install-yapf = """pip3 install yapf==0.40.2 --break-system-packages || echo 'yapf could not be installed'"""
 install-toml = """sudo apt-get install -y python3-toml || echo 'toml could not be installed'"""
-install-java = """sudo apt-get install -y default-jre || echo 'java could not be installed'"""
-install-deps = "hatch run install-unzip && hatch run install-autogen && hatch run install-yapf && hatch run install-toml && hatch run install-java"
+install-deps = "hatch run install-unzip && hatch run install-autogen && hatch run install-yapf && hatch run install-toml"
 
 integration-test = "pytest {args:integration_tests}"
 
 compile = "./tools/GeneratePythonLibrary.sh"
 install = "./tools/GeneratePythonLibrary.sh --install"
 watch = "./tools/GeneratePythonLibrary.sh --watch"
+test = "./tools/GeneratePythonLibrary.sh --test local"

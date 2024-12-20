@@ -289,6 +289,8 @@ class KaggleApi:
   already_printed_version_warning = False
 
   args = {}  # DEBUG Add --local to use localhost
+  if os.environ.get('KAGGLE_API_ENVIRONMENT') == 'LOCALHOST':
+    args = {'--local'}
 
   # Kernels valid types
   valid_push_kernel_types = ['script', 'notebook']

@@ -251,7 +251,6 @@ class TestKaggleApi(unittest.TestCase):
       self.fail(f"kernels_push failed: {e}")
 
   def test_kernels_d_status(self):
-    # AssertionError: kernels_status failed: 404 Client Error: Not Found for url: http://localhost/api/v1/kernels/status?username=stevemessick&kernelslug=testing
     if self.kernel_slug == '':
       self.test_kernels_c_push()
     try:
@@ -283,7 +282,6 @@ class TestKaggleApi(unittest.TestCase):
       self.fail(f"kernels_list_files failed: {e}")
 
   def test_kernels_f_output(self):
-    # AssertionError: kernels_output failed: 404 Client Error: Not Found for url: http://localhost/api/v1/kernels/output?username=stevemessick&kernelslug=testing
     fs = []
     if self.kernel_slug == '':
       self.test_kernels_c_push()

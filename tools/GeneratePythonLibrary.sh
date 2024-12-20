@@ -63,8 +63,8 @@ SELF_DIR=$(dirname $(realpath $0))
 SELF_DIR=${SELF_DIR%/*} # remove the last directory (tools) from the path
 cd $SELF_DIR
 
-SWAGGER_YAML=$SELF_DIR/src/KaggleSwagger.yaml
-SWAGGER_CONFIG=$SELF_DIR/src/KaggleSwaggerConfig.json
+#SWAGGER_YAML=$SELF_DIR/src/KaggleSwagger.yaml
+#SWAGGER_CONFIG=$SELF_DIR/src/KaggleSwaggerConfig.json
 KAGGLE_XDG_CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/kaggle"
 mkdir -p "$KAGGLE_XDG_CONFIG_DIR"
 KAGGLE_DEV_CONFIG_DIR=$(realpath "$KAGGLE_XDG_CONFIG_DIR/dev")
@@ -158,9 +158,11 @@ function run-tests {
     return 0 # Nothing to do
   fi
 
-  cp ../python_api_tests.py ../sample_submission.csv ./
-  python3 python_api_tests.py
-  rm -f ./python_api_tests.py
+#  cp ../python_api_tests.py ../sample_submission.csv ./
+  cd tests
+  python3 unit_tests.py
+#  rm -f ./python_api_tests.py
+  cd ..
 }
 
 function install-package {
@@ -194,7 +196,7 @@ function cleanup {
 function run {
   reset
 
-  generate-package
+#  generate-package
   copy-src
   run-autogen
   install-package
@@ -206,13 +208,14 @@ function run {
 WATCHED_EVENTS="-e create -e modify -e delete"
 
 function watch-swagger {
+  # TODO Delete this
   local watched_paths="$SWAGGER_YAML $SWAGGER_CONFIG"
 
   echo "Watching for changes to Swagger config..."
   while inotifywait -q -r $WATCHED_EVENTS --format "%e %w%f" $watched_paths; do
     echo "Deleting $SELF_DIR/kaggle/ $SELF_DIR/kaggle/"
     rm -rf $SELF_DIR/kaggle/*
-    generate-package
+#    generate-package
     run-autogen
     copy-src
     echo -e "\nWatching for changes to Swagger config..."
@@ -224,9 +227,6 @@ function watch-src {
 
   echo "Watching for changes under \"src\"..."
   while inotifywait -q -r $WATCHED_EVENTS --format "%e %w%f" $watched_paths; do
-    # Do not delete the output directory when there is no Swagger change to avoid
-    # having to run generate-package for each small code change as Swagger code
-    # generation is a bit slow (can take 2-3 seconds).
     echo "Copying changes..."
     copy-src
     echo "Done!"
@@ -244,7 +244,7 @@ function watch {
   TEST="no"
 
   echo
-  watch-swagger &
+#  watch-swagger &
   local pid=$!
   watch-src
   wait $pid

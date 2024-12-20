@@ -1131,7 +1131,7 @@ def parse_model_instance_versions(subparsers):
       '--version-notes',
       dest='version_notes',
       required=False,
-      help=Help.param_model_instance_version_upfile)
+      help=Help.param_model_instance_version_notes)
   parser_model_instance_versions_create_optional.add_argument(
       '-q', '--quiet', dest='quiet', action='store_true', help=Help.param_quiet)
   parser_model_instance_versions_create_optional.add_argument(
@@ -1578,10 +1578,7 @@ class Help(object):
   # Model Instance Versions params
   command_model_instance_versions_new = 'Create a new model instance version'
   param_model_instance_version_upfile = (
-      'Folder for upload, containing data files and a '
-      'special model-instance_version-metadata.json file '
-      '(https://github.com/Kaggle/kaggle-api/wiki/ModelInstanceVersion-Metadata). '
-      'Defaults to current working directory')
+      'Folder for upload. Defaults to current working directory')
   command_model_instance_versions_delete = 'Delete a model instance version'
   command_model_instance_versions_download = 'Download model instance version files'
   command_model_instance_versions_files = 'List model instance version files'

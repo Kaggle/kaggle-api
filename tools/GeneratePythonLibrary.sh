@@ -12,7 +12,7 @@ function usage {
   echo "         --editable (-e): Make the installed package always reference your latest"
   echo "                          source code. Implies \"-i|--install\". Be aware that changes to the \"src\""
   echo "                          directory won't be reflected. See the README for details."
-  echo "         --test (-t) [$LOCAL_ENV|$PROD_ENV]: Run tests (python_api_tests.py) against http://localhost" 
+  echo "         --test (-t) [$LOCAL_ENV|$PROD_ENV]: Run tests (unit_tests.py) against http://localhost" 
   echo "                                   or https://www.kaggle.com."
   echo "         --watch (-w): Run the script in watch mode. It will watch the files under the \"template\""
   echo "                       directory and KaggleSwagger* files, and regenerate the package when there is a change."
@@ -124,15 +124,18 @@ function run-tests {
   fi
 
   if [[ "$TEST" == "$LOCAL_ENV" ]]; then
-    source ../use-localhost.sh
+    source tools/use-localhost.sh
   elif [[ "$TEST" == "$PROD_ENV" ]]; then
-    source ../use-prod.sh
+    source tools/use-prod.sh
   else
     return 0 # Nothing to do
   fi
 
   cd tests
+  ln -s ../kagglesdk .
+  ln -s ../kaggle .
   python3 unit_tests.py
+  rm kaggle kagglesdk
   cd ..
 }
 

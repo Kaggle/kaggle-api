@@ -63,8 +63,6 @@ SELF_DIR=$(dirname $(realpath $0))
 SELF_DIR=${SELF_DIR%/*} # remove the last directory (tools) from the path
 cd $SELF_DIR
 
-#SWAGGER_YAML=$SELF_DIR/src/KaggleSwagger.yaml
-#SWAGGER_CONFIG=$SELF_DIR/src/KaggleSwaggerConfig.json
 KAGGLE_XDG_CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/kaggle"
 mkdir -p "$KAGGLE_XDG_CONFIG_DIR"
 KAGGLE_DEV_CONFIG_DIR=$(realpath "$KAGGLE_XDG_CONFIG_DIR/dev")
@@ -109,31 +107,6 @@ function create-local-creds {
   chmod 600 $kaggle_config_file
 }
 
-function generate-package {
-  # TODO Remove this.
-  if [[ -f "kaggle/api/__init__.py" ]]; then
-    sed -i -e 's/kaggle_api/kaggle_api_extended/g' kaggle/api/__init__.py
-  fi
-
-  if [[ -f "kaggle/configuration.py" ]]; then
-    # Replace the hard-coded endpoint URL with an environment variable in configuration.py
-    # to allow talking to localhost, staging, prod etc.
-    sed -i 's|self.host = "http|self.host = _get_endpoint_from_env() or "http|g' kaggle/configuration.py
-    echo -e "\n" >> kaggle/configuration.py
-    cat <<-END >> kaggle/configuration.py
-def _get_endpoint_from_env():
-    import os
-    endpoint = os.environ.get("KAGGLE_API_ENDPOINT")
-    if endpoint is None:
-        return None
-    endpoint = endpoint.rstrip("/")
-    if endpoint.endswith("/api/v1"):
-        return endpoint
-    return endpoint + "/api/v1"    
-END
-  fi
-}
-
 function copy-src {
   cp ./src/setup.py .
   cp ./src/setup.cfg .
@@ -158,10 +131,8 @@ function run-tests {
     return 0 # Nothing to do
   fi
 
-#  cp ../python_api_tests.py ../sample_submission.csv ./
   cd tests
   python3 unit_tests.py
-#  rm -f ./python_api_tests.py
   cd ..
 }
 
@@ -176,27 +147,24 @@ function install-package {
 
 function cleanup {
   cd $SELF_DIR
-  rm -rf tox.ini \
-    test-requirements.txt \
-    test \
-    .swagger-codegen \
-    .travis.yml \
-    git_push.sh \
-    python_api_tests.py \
-    sample_submission.csv \
-    ds_salaries.csv \
-    test.csv \
-    house-prices-advanced-regression-techniques.zip \
-    data-science-salaries-2023.zip \
-    kaggle/*.py-e \
-    kaggle/api/*.py-e \
-    kaggle/*.py.bak
+#  rm -rf tox.ini \
+#    test-requirements.txt \
+#    test \
+#    .travis.yml \
+#    git_push.sh \
+#    sample_submission.csv \
+#    ds_salaries.csv \
+#    test.csv \
+#    house-prices-advanced-regression-techniques.zip \
+#    data-science-salaries-2023.zip \
+#    kaggle/*.py-e \
+#    kaggle/api/*.py-e \
+#    kaggle/*.py.bak
 }
 
 function run {
   reset
 
-#  generate-package
   copy-src
   run-autogen
   install-package
@@ -206,21 +174,6 @@ function run {
 }
 
 WATCHED_EVENTS="-e create -e modify -e delete"
-
-function watch-swagger {
-  # TODO Delete this
-  local watched_paths="$SWAGGER_YAML $SWAGGER_CONFIG"
-
-  echo "Watching for changes to Swagger config..."
-  while inotifywait -q -r $WATCHED_EVENTS --format "%e %w%f" $watched_paths; do
-    echo "Deleting $SELF_DIR/kaggle/ $SELF_DIR/kaggle/"
-    rm -rf $SELF_DIR/kaggle/*
-#    generate-package
-    run-autogen
-    copy-src
-    echo -e "\nWatching for changes to Swagger config..."
-  done
-}
 
 function watch-src {
   local watched_paths="$SELF_DIR/src"
@@ -244,9 +197,8 @@ function watch {
   TEST="no"
 
   echo
-#  watch-swagger &
-  local pid=$!
   watch-src
+  local pid=$!
   wait $pid
 }
 

@@ -150,19 +150,19 @@ function install-package {
 
 function cleanup {
   cd $SELF_DIR
-#  rm -rf tox.ini \
-#    test-requirements.txt \
-#    test \
-#    .travis.yml \
-#    git_push.sh \
-#    sample_submission.csv \
-#    ds_salaries.csv \
-#    test.csv \
-#    house-prices-advanced-regression-techniques.zip \
-#    data-science-salaries-2023.zip \
-#    kaggle/*.py-e \
-#    kaggle/api/*.py-e \
-#    kaggle/*.py.bak
+  rm -rf tox.ini \
+    test-requirements.txt \
+    test \
+    .travis.yml \
+    git_push.sh \
+    sample_submission.csv \
+    ds_salaries.csv \
+    test.csv \
+    house-prices-advanced-regression-techniques.zip \
+    data-science-salaries-2023.zip \
+    kaggle/*.py-e \
+    kaggle/api/*.py-e \
+    kaggle/*.py.bak
 }
 
 function run {

@@ -1,6 +1,8 @@
 #!/bin/bash
 
 # Verify all options are plumbed through to the MT.
+# TODO Replace "stevemessick" with "$USER" so others can run this script.
+# Use the web site to delete the dataset named "TestHere" before running.
 
 echo "kaggle competitions files"
 kaggle competitions files titanic --page-size=3 --page-token=abcd -v -q
@@ -23,7 +25,7 @@ echo "kaggle kernels list"
 kaggle k list -m -s Exercise --page-size 5 -p 2 -v  --sort-by dateRun
 kaggle k list --parent stevemessick/exercise-lists
 kaggle k list --competition house-prices-advanced-regression-techniques --page-size 5
-kaggle k list --dataset stevemessick/testing
+kaggle k list --dataset dansbecker/home-data-for-ml-course --page-size 5
 kaggle k list --user stevemessick --language python --kernel-type notebook --output-type data
 echo "kaggle kernels files"
 kaggle kernels files kerneler/sqlite-global-default -v --page-size=1

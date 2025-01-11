@@ -109,10 +109,9 @@ class KaggleApi(object):
     :param str id: Competition name (required)
     :return: Result
     """
-
-  print("competitions_submissions_submit() not implemented")
-  print("use kaggle_api_extended.KaggleApi.competition_submit() instead")
-  raise NotImplementedError()
+    print("competitions_submissions_submit() not implemented")
+    print("use kaggle_api_extended.KaggleApi.competition_submit() instead")
+    raise NotImplementedError()
 
   def competitions_submissions_upload(self, file, guid, content_length, last_modified_date_utc):  # noqa: E501
     """Upload competition submission file  # noqa: E501
@@ -124,7 +123,7 @@ class KaggleApi(object):
     :return: Result
     """
     print("competitions_submissions_upload() not implemented")
-    print("use kaggle_api_extended.KaggleApi.competition_submit() instead")
+    print("use kaggle_api_extended.KaggleApi.competitions_submissions_submit() instead")
     raise NotImplementedError()
 
   def competitions_submissions_url(self, id, content_length, last_modified_date_utc):  # noqa: E501
@@ -183,7 +182,7 @@ class KaggleApi(object):
     """
     dataset = f'{owner_slug}/{dataset_slug}'
     if dataset_version_number is not None:
-      dataset += f'@{dataset_version_number}'
+      dataset += f'/{dataset_version_number}'
     return self.api_client.dataset_download_files(dataset)
 
   def datasets_download_file(self, owner_slug, dataset_slug, file_name, dataset_version_number=None):  # noqa: E501

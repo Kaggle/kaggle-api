@@ -109,10 +109,9 @@ class KaggleApi(object):
     :param str id: Competition name (required)
     :return: Result
     """
-
-  print("competitions_submissions_submit() not implemented")
-  print("use kaggle_api_extended.KaggleApi.competition_submit() instead")
-  raise NotImplementedError()
+    print("competitions_submissions_submit() not implemented")
+    print("use kaggle_api_extended.KaggleApi.competition_submit() instead")
+    raise NotImplementedError()
 
   def competitions_submissions_upload(self, file, guid, content_length, last_modified_date_utc):  # noqa: E501
     """Upload competition submission file  # noqa: E501
@@ -124,7 +123,7 @@ class KaggleApi(object):
     :return: Result
     """
     print("competitions_submissions_upload() not implemented")
-    print("use kaggle_api_extended.KaggleApi.competition_submit() instead")
+    print("use kaggle_api_extended.KaggleApi.competitions_submissions_submit() instead")
     raise NotImplementedError()
 
   def competitions_submissions_url(self, id, content_length, last_modified_date_utc):  # noqa: E501
@@ -183,7 +182,7 @@ class KaggleApi(object):
     """
     dataset = f'{owner_slug}/{dataset_slug}'
     if dataset_version_number is not None:
-      dataset += f'@{dataset_version_number}'
+      dataset += f'/{dataset_version_number}'
     return self.api_client.dataset_download_files(dataset)
 
   def datasets_download_file(self, owner_slug, dataset_slug, file_name, dataset_version_number=None):  # noqa: E501
@@ -491,19 +490,19 @@ class KaggleApi(object):
                   owner=None,
                   page_size=20,
                   page_token=None):  # noqa: E501
-      """Lists models  # noqa: E501
-      :param str search: Search terms
-      :param str sort_by: Sort the results
-      :param str owner: Display models by a specific user or organization
-      :param int page_size: Page size
-      :param str page_token: Page token for pagination
-      :return: Result
-      """
-      return self.api_client.model_list(sort_by=sort_by,
-                                        search=search,
-                                        owner=owner,
-                                        page_size=page_size,
-                                        page_token=page_token)
+    """Lists models  # noqa: E501
+    :param str search: Search terms
+    :param str sort_by: Sort the results
+    :param str owner: Display models by a specific user or organization
+    :param int page_size: Page size
+    :param str page_token: Page token for pagination
+    :return: Result
+    """
+    return self.api_client.model_list(sort_by=sort_by,
+                                      search=search,
+                                      owner=owner,
+                                      page_size=page_size,
+                                      page_token=page_token)
 
   def update_model(self, owner_slug, model_slug, model_update_request,):  # noqa: E501
     """Update a model  # noqa: E501

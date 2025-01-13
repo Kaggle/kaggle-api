@@ -331,9 +331,9 @@ class KaggleApi(object):
     """
     with tempfile.TemporaryDirectory() as tmpdir:
       meta_file = os.path.join(tmpdir, 'kernel-metadata.json')
-      code_file = tempfile.mktemp('code','py', tmpdir)
-      with open(code_file, 'w') as c:
-        c.write(json.dumps(kernel_push_request.code))
+      (fd,code_file) = tempfile.mkstemp('code','py', tmpdir, text=True)
+      fd.write(json.dumps(kernel_push_request.code))
+      os.close(fd)
       with open(meta_file, 'w') as f:
         params = kernel_push_request.to_dict()
         params['code_file'] = code_file

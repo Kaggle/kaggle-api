@@ -52,6 +52,11 @@ dependencies = [
   "pytest",
 ]
 
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["kaggle*"]
+namespaces = false
+
 [tool.hatch.envs.default.scripts]
 install-unzip = """sudo apt-get install -y unzip || echo 'unzip could not be installed'"""
 install-autogen = """curl -fsSL --output /tmp/autogen.zip "https://github.com/mbrukman/autogen/archive/refs/heads/master.zip" && 

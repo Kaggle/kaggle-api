@@ -4,7 +4,6 @@ from kagglesdk.datasets.types.dataset_types import DatasetInfo, DatasetSettings
 from kagglesdk.kaggle_object import *
 from typing import Optional, List
 
-
 class ApiCreateDatasetRequest(KaggleObject):
   r"""
   Attributes:
@@ -167,9 +166,11 @@ class ApiCreateDatasetRequest(KaggleObject):
       raise TypeError('category_ids must contain only items of type str')
     self._category_ids = category_ids
 
+
   def endpoint(self):
     path = '/api/v1/datasets/create/new'
     return path.format_map(self.to_field_map(self))
+
 
   @staticmethod
   def method():
@@ -178,7 +179,6 @@ class ApiCreateDatasetRequest(KaggleObject):
   @staticmethod
   def body_fields():
     return '*'
-
 
 class ApiCreateDatasetResponse(KaggleObject):
   r"""
@@ -304,9 +304,11 @@ class ApiCreateDatasetVersionByIdRequest(KaggleObject):
       raise TypeError('body must be of type ApiCreateDatasetVersionRequestBody')
     self._body = body
 
+
   def endpoint(self):
     path = '/api/v1/datasets/create/version/{id}'
     return path.format_map(self.to_field_map(self))
+
 
   @staticmethod
   def method():
@@ -315,7 +317,6 @@ class ApiCreateDatasetVersionByIdRequest(KaggleObject):
   @staticmethod
   def body_fields():
     return 'body'
-
 
 class ApiCreateDatasetVersionRequest(KaggleObject):
   r"""
@@ -370,9 +371,11 @@ class ApiCreateDatasetVersionRequest(KaggleObject):
       raise TypeError('body must be of type ApiCreateDatasetVersionRequestBody')
     self._body = body
 
+
   def endpoint(self):
     path = '/api/v1/datasets/create/version/{owner_slug}/{dataset_slug}'
     return path.format_map(self.to_field_map(self))
+
 
   @staticmethod
   def method():
@@ -381,7 +384,6 @@ class ApiCreateDatasetVersionRequest(KaggleObject):
   @staticmethod
   def body_fields():
     return 'body'
-
 
 class ApiCreateDatasetVersionRequestBody(KaggleObject):
   r"""
@@ -872,8 +874,7 @@ class ApiDataset(KaggleObject):
     if not isinstance(versions, list):
       raise TypeError('versions must be of type list')
     if not all([isinstance(t, ApiDatasetVersion) for t in versions]):
-      raise TypeError(
-          'versions must contain only items of type ApiDatasetVersion')
+      raise TypeError('versions must contain only items of type ApiDatasetVersion')
     self._versions = versions
 
 
@@ -1034,8 +1035,7 @@ class ApiDatasetFile(KaggleObject):
     if not isinstance(columns, list):
       raise TypeError('columns must be of type list')
     if not all([isinstance(t, ApiDatasetColumn) for t in columns]):
-      raise TypeError(
-          'columns must contain only items of type ApiDatasetColumn')
+      raise TypeError('columns must contain only items of type ApiDatasetColumn')
     self._columns = columns
 
 
@@ -1091,8 +1091,7 @@ class ApiDatasetNewFile(KaggleObject):
     if not isinstance(columns, list):
       raise TypeError('columns must be of type list')
     if not all([isinstance(t, ApiDatasetColumn) for t in columns]):
-      raise TypeError(
-          'columns must contain only items of type ApiDatasetColumn')
+      raise TypeError('columns must contain only items of type ApiDatasetColumn')
     self._columns = columns
 
 
@@ -1233,14 +1232,15 @@ class ApiDeleteDatasetRequest(KaggleObject):
       raise TypeError('dataset_slug must be of type str')
     self._dataset_slug = dataset_slug
 
+
   def endpoint(self):
     path = '/api/v1/dataset/{owner_slug}/{dataset_slug}/delete'
     return path.format_map(self.to_field_map(self))
 
+
   @staticmethod
   def method():
     return 'POST'
-
 
 class ApiDeleteDatasetResponse(KaggleObject):
   r"""
@@ -1334,6 +1334,7 @@ class ApiDownloadDatasetRawRequest(KaggleObject):
       raise TypeError('dataset_version_number must be of type int')
     self._dataset_version_number = dataset_version_number
 
+
   def endpoint(self):
     path = '/api/v1/datasets/download-raw/{owner_slug}/{dataset_slug}/{file_name}'
     return path.format_map(self.to_field_map(self))
@@ -1341,7 +1342,6 @@ class ApiDownloadDatasetRawRequest(KaggleObject):
   @staticmethod
   def endpoint_path():
     return '/api/v1/datasets/download-raw/{owner_slug}/{dataset_slug}/{file_name}'
-
 
 class ApiDownloadDatasetRequest(KaggleObject):
   r"""
@@ -1426,6 +1426,7 @@ class ApiDownloadDatasetRequest(KaggleObject):
       raise TypeError('raw must be of type bool')
     self._raw = raw
 
+
   def endpoint(self):
     if self.file_name:
       path = '/api/v1/datasets/download/{owner_slug}/{dataset_slug}/{file_name}'
@@ -1436,7 +1437,6 @@ class ApiDownloadDatasetRequest(KaggleObject):
   @staticmethod
   def endpoint_path():
     return '/api/v1/datasets/download/{owner_slug}/{dataset_slug}'
-
 
 class ApiGetDatasetMetadataRequest(KaggleObject):
   r"""
@@ -1476,6 +1476,7 @@ class ApiGetDatasetMetadataRequest(KaggleObject):
       raise TypeError('dataset_slug must be of type str')
     self._dataset_slug = dataset_slug
 
+
   def endpoint(self):
     path = '/api/v1/datasets/metadata/{owner_slug}/{dataset_slug}'
     return path.format_map(self.to_field_map(self))
@@ -1483,7 +1484,6 @@ class ApiGetDatasetMetadataRequest(KaggleObject):
   @staticmethod
   def endpoint_path():
     return '/api/v1/datasets/metadata/{owner_slug}/{dataset_slug}'
-
 
 class ApiGetDatasetMetadataResponse(KaggleObject):
   r"""
@@ -1568,6 +1568,7 @@ class ApiGetDatasetRequest(KaggleObject):
       raise TypeError('dataset_slug must be of type str')
     self._dataset_slug = dataset_slug
 
+
   def endpoint(self):
     path = '/api/v1/datasets/view/{owner_slug}/{dataset_slug}'
     return path.format_map(self.to_field_map(self))
@@ -1575,7 +1576,6 @@ class ApiGetDatasetRequest(KaggleObject):
   @staticmethod
   def endpoint_path():
     return '/api/v1/datasets/view/{owner_slug}/{dataset_slug}'
-
 
 class ApiGetDatasetStatusRequest(KaggleObject):
   r"""
@@ -1615,6 +1615,7 @@ class ApiGetDatasetStatusRequest(KaggleObject):
       raise TypeError('dataset_slug must be of type str')
     self._dataset_slug = dataset_slug
 
+
   def endpoint(self):
     path = '/api/v1/datasets/status/{owner_slug}/{dataset_slug}'
     return path.format_map(self.to_field_map(self))
@@ -1622,7 +1623,6 @@ class ApiGetDatasetStatusRequest(KaggleObject):
   @staticmethod
   def endpoint_path():
     return '/api/v1/datasets/status/{owner_slug}/{dataset_slug}'
-
 
 class ApiGetDatasetStatusResponse(KaggleObject):
   r"""
@@ -1647,10 +1647,10 @@ class ApiGetDatasetStatusResponse(KaggleObject):
       raise TypeError('status must be of type DatabundleVersionStatus')
     self._status = status
 
+
   @classmethod
   def prepare_from(cls, http_response):
     return cls.from_dict({'status': json.loads(http_response.text)})
-
 
 class ApiListDatasetFilesRequest(KaggleObject):
   r"""
@@ -1735,6 +1735,7 @@ class ApiListDatasetFilesRequest(KaggleObject):
       raise TypeError('page_size must be of type int')
     self._page_size = page_size
 
+
   def endpoint(self):
     path = '/api/v1/datasets/list/{owner_slug}/{dataset_slug}'
     return path.format_map(self.to_field_map(self))
@@ -1742,7 +1743,6 @@ class ApiListDatasetFilesRequest(KaggleObject):
   @staticmethod
   def endpoint_path():
     return '/api/v1/datasets/list/{owner_slug}/{dataset_slug}'
-
 
 class ApiListDatasetFilesResponse(KaggleObject):
   r"""
@@ -1763,16 +1763,14 @@ class ApiListDatasetFilesResponse(KaggleObject):
     return self._dataset_files
 
   @dataset_files.setter
-  def dataset_files(self,
-                    dataset_files: Optional[List[Optional['ApiDatasetFile']]]):
+  def dataset_files(self, dataset_files: Optional[List[Optional['ApiDatasetFile']]]):
     if dataset_files is None:
       del self.dataset_files
       return
     if not isinstance(dataset_files, list):
       raise TypeError('dataset_files must be of type list')
     if not all([isinstance(t, ApiDatasetFile) for t in dataset_files]):
-      raise TypeError(
-          'dataset_files must contain only items of type ApiDatasetFile')
+      raise TypeError('dataset_files must contain only items of type ApiDatasetFile')
     self._dataset_files = dataset_files
 
   @property
@@ -2020,10 +2018,10 @@ class ApiListDatasetsRequest(KaggleObject):
       raise TypeError('page_size must be of type int')
     self._page_size = page_size
 
+
   def endpoint(self):
     path = '/api/v1/datasets/list'
     return path.format_map(self.to_field_map(self))
-
 
 class ApiListDatasetsResponse(KaggleObject):
   r"""
@@ -2050,10 +2048,10 @@ class ApiListDatasetsResponse(KaggleObject):
       raise TypeError('datasets must contain only items of type ApiDataset')
     self._datasets = datasets
 
+
   @classmethod
   def prepare_from(cls, http_response):
     return cls.from_dict({'datasets': json.loads(http_response.text)})
-
 
 class ApiUpdateDatasetMetadataRequest(KaggleObject):
   r"""
@@ -2108,9 +2106,11 @@ class ApiUpdateDatasetMetadataRequest(KaggleObject):
       raise TypeError('settings must be of type DatasetSettings')
     self._settings = settings
 
+
   def endpoint(self):
     path = '/api/v1/datasets/metadata/{owner_slug}/{dataset_slug}'
     return path.format_map(self.to_field_map(self))
+
 
   @staticmethod
   def method():
@@ -2119,7 +2119,6 @@ class ApiUpdateDatasetMetadataRequest(KaggleObject):
   @staticmethod
   def body_fields():
     return 'settings'
-
 
 class ApiUpdateDatasetMetadataResponse(KaggleObject):
   r"""
@@ -2202,14 +2201,15 @@ class ApiUploadDatasetFileRequest(KaggleObject):
       raise TypeError('last_modified_epoch_seconds must be of type int')
     self._last_modified_epoch_seconds = last_modified_epoch_seconds
 
+
   def endpoint(self):
     path = '/api/v1/datasets/upload/file/{content_length}/{last_modified_epoch_seconds}'
     return path.format_map(self.to_field_map(self))
 
+
   @staticmethod
   def method():
     return 'POST'
-
 
 class ApiUploadDatasetFileResponse(KaggleObject):
   r"""
@@ -2499,16 +2499,14 @@ class ApiUploadDirectoryInfo(KaggleObject):
     return self._directories
 
   @directories.setter
-  def directories(
-      self, directories: Optional[List[Optional['ApiUploadDirectoryInfo']]]):
+  def directories(self, directories: Optional[List[Optional['ApiUploadDirectoryInfo']]]):
     if directories is None:
       del self.directories
       return
     if not isinstance(directories, list):
       raise TypeError('directories must be of type list')
     if not all([isinstance(t, ApiUploadDirectoryInfo) for t in directories]):
-      raise TypeError(
-          'directories must contain only items of type ApiUploadDirectoryInfo')
+      raise TypeError('directories must contain only items of type ApiUploadDirectoryInfo')
     self._directories = directories
 
   @property
@@ -2528,724 +2526,228 @@ class ApiUploadDirectoryInfo(KaggleObject):
 
 
 ApiCreateDatasetRequest._fields = [
-    FieldMetadata(
-        "id", "id", "_id", int, None, PredefinedSerializer(), optional=True),
-    FieldMetadata(
-        "ownerSlug",
-        "owner_slug",
-        "_owner_slug",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "slug",
-        "slug",
-        "_slug",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "title",
-        "title",
-        "_title",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "licenseName",
-        "license_name",
-        "_license_name",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata("isPrivate", "is_private", "_is_private", bool, False,
-                  PredefinedSerializer()),
-    FieldMetadata("files", "files", "_files", ApiDatasetNewFile, [],
-                  ListSerializer(KaggleObjectSerializer())),
-    FieldMetadata(
-        "subtitle",
-        "subtitle",
-        "_subtitle",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "description",
-        "description",
-        "_description",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata("categoryIds", "category_ids", "_category_ids", str, [],
-                  ListSerializer(PredefinedSerializer())),
+  FieldMetadata("id", "id", "_id", int, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("slug", "slug", "_slug", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("title", "title", "_title", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("licenseName", "license_name", "_license_name", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("isPrivate", "is_private", "_is_private", bool, False, PredefinedSerializer()),
+  FieldMetadata("files", "files", "_files", ApiDatasetNewFile, [], ListSerializer(KaggleObjectSerializer())),
+  FieldMetadata("subtitle", "subtitle", "_subtitle", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("description", "description", "_description", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("categoryIds", "category_ids", "_category_ids", str, [], ListSerializer(PredefinedSerializer())),
 ]
 
 ApiCreateDatasetResponse._fields = [
-    FieldMetadata(
-        "ref", "ref", "_ref", str, None, PredefinedSerializer(), optional=True),
-    FieldMetadata(
-        "url", "url", "_url", str, None, PredefinedSerializer(), optional=True),
-    FieldMetadata(
-        "status",
-        "status",
-        "_status",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "error",
-        "error",
-        "_error",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata("invalidTags", "invalid_tags", "_invalid_tags", str, [],
-                  ListSerializer(PredefinedSerializer())),
+  FieldMetadata("ref", "ref", "_ref", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("url", "url", "_url", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("status", "status", "_status", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("error", "error", "_error", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("invalidTags", "invalid_tags", "_invalid_tags", str, [], ListSerializer(PredefinedSerializer())),
 ]
 
 ApiCreateDatasetVersionByIdRequest._fields = [
-    FieldMetadata("id", "id", "_id", int, 0, PredefinedSerializer()),
-    FieldMetadata("body", "body", "_body", ApiCreateDatasetVersionRequestBody,
-                  None, KaggleObjectSerializer()),
+  FieldMetadata("id", "id", "_id", int, 0, PredefinedSerializer()),
+  FieldMetadata("body", "body", "_body", ApiCreateDatasetVersionRequestBody, None, KaggleObjectSerializer()),
 ]
 
 ApiCreateDatasetVersionRequest._fields = [
-    FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "",
-                  PredefinedSerializer()),
-    FieldMetadata("datasetSlug", "dataset_slug", "_dataset_slug", str, "",
-                  PredefinedSerializer()),
-    FieldMetadata("body", "body", "_body", ApiCreateDatasetVersionRequestBody,
-                  None, KaggleObjectSerializer()),
+  FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "", PredefinedSerializer()),
+  FieldMetadata("datasetSlug", "dataset_slug", "_dataset_slug", str, "", PredefinedSerializer()),
+  FieldMetadata("body", "body", "_body", ApiCreateDatasetVersionRequestBody, None, KaggleObjectSerializer()),
 ]
 
 ApiCreateDatasetVersionRequestBody._fields = [
-    FieldMetadata(
-        "versionNotes",
-        "version_notes",
-        "_version_notes",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata("deleteOldVersions", "delete_old_versions",
-                  "_delete_old_versions", bool, False, PredefinedSerializer()),
-    FieldMetadata("files", "files", "_files", ApiDatasetNewFile, [],
-                  ListSerializer(KaggleObjectSerializer())),
-    FieldMetadata(
-        "subtitle",
-        "subtitle",
-        "_subtitle",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "description",
-        "description",
-        "_description",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata("categoryIds", "category_ids", "_category_ids", str, [],
-                  ListSerializer(PredefinedSerializer())),
+  FieldMetadata("versionNotes", "version_notes", "_version_notes", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("deleteOldVersions", "delete_old_versions", "_delete_old_versions", bool, False, PredefinedSerializer()),
+  FieldMetadata("files", "files", "_files", ApiDatasetNewFile, [], ListSerializer(KaggleObjectSerializer())),
+  FieldMetadata("subtitle", "subtitle", "_subtitle", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("description", "description", "_description", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("categoryIds", "category_ids", "_category_ids", str, [], ListSerializer(PredefinedSerializer())),
 ]
 
 ApiDataset._fields = [
-    FieldMetadata("id", "id", "_id", int, 0, PredefinedSerializer()),
-    FieldMetadata("ref", "ref", "_ref", str, "", PredefinedSerializer()),
-    FieldMetadata(
-        "subtitle",
-        "subtitle",
-        "_subtitle",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "creatorName",
-        "creator_name",
-        "_creator_name",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "creatorUrl",
-        "creator_url",
-        "_creator_url",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "totalBytes",
-        "total_bytes",
-        "_total_bytes",
-        int,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "url", "url", "_url", str, None, PredefinedSerializer(), optional=True),
-    FieldMetadata("lastUpdated", "last_updated", "_last_updated", datetime,
-                  None, DateTimeSerializer()),
-    FieldMetadata("downloadCount", "download_count", "_download_count", int, 0,
-                  PredefinedSerializer()),
-    FieldMetadata("isPrivate", "is_private", "_is_private", bool, False,
-                  PredefinedSerializer()),
-    FieldMetadata("isFeatured", "is_featured", "_is_featured", bool, False,
-                  PredefinedSerializer()),
-    FieldMetadata(
-        "licenseName",
-        "license_name",
-        "_license_name",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "description",
-        "description",
-        "_description",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "ownerName",
-        "owner_name",
-        "_owner_name",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "ownerRef",
-        "owner_ref",
-        "_owner_ref",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata("kernelCount", "kernel_count", "_kernel_count", int, 0,
-                  PredefinedSerializer()),
-    FieldMetadata(
-        "title",
-        "title",
-        "_title",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata("topicCount", "topic_count", "_topic_count", int, 0,
-                  PredefinedSerializer()),
-    FieldMetadata("viewCount", "view_count", "_view_count", int, 0,
-                  PredefinedSerializer()),
-    FieldMetadata("voteCount", "vote_count", "_vote_count", int, 0,
-                  PredefinedSerializer()),
-    FieldMetadata(
-        "currentVersionNumber",
-        "current_version_number",
-        "_current_version_number",
-        int,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "usabilityRating",
-        "usability_rating",
-        "_usability_rating",
-        float,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata("tags", "tags", "_tags", ApiCategory, [],
-                  ListSerializer(KaggleObjectSerializer())),
-    FieldMetadata("files", "files", "_files", ApiDatasetFile, [],
-                  ListSerializer(KaggleObjectSerializer())),
-    FieldMetadata("versions", "versions", "_versions", ApiDatasetVersion, [],
-                  ListSerializer(KaggleObjectSerializer())),
+  FieldMetadata("id", "id", "_id", int, 0, PredefinedSerializer()),
+  FieldMetadata("ref", "ref", "_ref", str, "", PredefinedSerializer()),
+  FieldMetadata("subtitle", "subtitle", "_subtitle", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("creatorName", "creator_name", "_creator_name", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("creatorUrl", "creator_url", "_creator_url", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("totalBytes", "total_bytes", "_total_bytes", int, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("url", "url", "_url", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("lastUpdated", "last_updated", "_last_updated", datetime, None, DateTimeSerializer()),
+  FieldMetadata("downloadCount", "download_count", "_download_count", int, 0, PredefinedSerializer()),
+  FieldMetadata("isPrivate", "is_private", "_is_private", bool, False, PredefinedSerializer()),
+  FieldMetadata("isFeatured", "is_featured", "_is_featured", bool, False, PredefinedSerializer()),
+  FieldMetadata("licenseName", "license_name", "_license_name", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("description", "description", "_description", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("ownerName", "owner_name", "_owner_name", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("ownerRef", "owner_ref", "_owner_ref", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("kernelCount", "kernel_count", "_kernel_count", int, 0, PredefinedSerializer()),
+  FieldMetadata("title", "title", "_title", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("topicCount", "topic_count", "_topic_count", int, 0, PredefinedSerializer()),
+  FieldMetadata("viewCount", "view_count", "_view_count", int, 0, PredefinedSerializer()),
+  FieldMetadata("voteCount", "vote_count", "_vote_count", int, 0, PredefinedSerializer()),
+  FieldMetadata("currentVersionNumber", "current_version_number", "_current_version_number", int, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("usabilityRating", "usability_rating", "_usability_rating", float, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("tags", "tags", "_tags", ApiCategory, [], ListSerializer(KaggleObjectSerializer())),
+  FieldMetadata("files", "files", "_files", ApiDatasetFile, [], ListSerializer(KaggleObjectSerializer())),
+  FieldMetadata("versions", "versions", "_versions", ApiDatasetVersion, [], ListSerializer(KaggleObjectSerializer())),
 ]
 
 ApiDatasetFile._fields = [
-    FieldMetadata("ref", "ref", "_ref", str, "", PredefinedSerializer()),
-    FieldMetadata(
-        "datasetRef",
-        "dataset_ref",
-        "_dataset_ref",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "ownerRef",
-        "owner_ref",
-        "_owner_ref",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "name",
-        "name",
-        "_name",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata("creationDate", "creation_date", "_creation_date", datetime,
-                  None, DateTimeSerializer()),
-    FieldMetadata(
-        "description",
-        "description",
-        "_description",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "fileType",
-        "file_type",
-        "_file_type",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "url", "url", "_url", str, None, PredefinedSerializer(), optional=True),
-    FieldMetadata("totalBytes", "total_bytes", "_total_bytes", int, 0,
-                  PredefinedSerializer()),
-    FieldMetadata("columns", "columns", "_columns", ApiDatasetColumn, [],
-                  ListSerializer(KaggleObjectSerializer())),
+  FieldMetadata("ref", "ref", "_ref", str, "", PredefinedSerializer()),
+  FieldMetadata("datasetRef", "dataset_ref", "_dataset_ref", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("ownerRef", "owner_ref", "_owner_ref", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("name", "name", "_name", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("creationDate", "creation_date", "_creation_date", datetime, None, DateTimeSerializer()),
+  FieldMetadata("description", "description", "_description", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("fileType", "file_type", "_file_type", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("url", "url", "_url", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("totalBytes", "total_bytes", "_total_bytes", int, 0, PredefinedSerializer()),
+  FieldMetadata("columns", "columns", "_columns", ApiDatasetColumn, [], ListSerializer(KaggleObjectSerializer())),
 ]
 
 ApiDatasetNewFile._fields = [
-    FieldMetadata(
-        "token",
-        "token",
-        "_token",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "description",
-        "description",
-        "_description",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata("columns", "columns", "_columns", ApiDatasetColumn, [],
-                  ListSerializer(KaggleObjectSerializer())),
+  FieldMetadata("token", "token", "_token", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("description", "description", "_description", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("columns", "columns", "_columns", ApiDatasetColumn, [], ListSerializer(KaggleObjectSerializer())),
 ]
 
 ApiDatasetVersion._fields = [
-    FieldMetadata("versionNumber", "version_number", "_version_number", int, 0,
-                  PredefinedSerializer()),
-    FieldMetadata("creationDate", "creation_date", "_creation_date", datetime,
-                  None, DateTimeSerializer()),
-    FieldMetadata(
-        "creatorName",
-        "creator_name",
-        "_creator_name",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "creatorRef",
-        "creator_ref",
-        "_creator_ref",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "versionNotes",
-        "version_notes",
-        "_version_notes",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "status",
-        "status",
-        "_status",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
+  FieldMetadata("versionNumber", "version_number", "_version_number", int, 0, PredefinedSerializer()),
+  FieldMetadata("creationDate", "creation_date", "_creation_date", datetime, None, DateTimeSerializer()),
+  FieldMetadata("creatorName", "creator_name", "_creator_name", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("creatorRef", "creator_ref", "_creator_ref", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("versionNotes", "version_notes", "_version_notes", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("status", "status", "_status", str, None, PredefinedSerializer(), optional=True),
 ]
 
 ApiDeleteDatasetRequest._fields = [
-    FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "",
-                  PredefinedSerializer()),
-    FieldMetadata("datasetSlug", "dataset_slug", "_dataset_slug", str, "",
-                  PredefinedSerializer()),
+  FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "", PredefinedSerializer()),
+  FieldMetadata("datasetSlug", "dataset_slug", "_dataset_slug", str, "", PredefinedSerializer()),
 ]
 
 ApiDeleteDatasetResponse._fields = [
-    FieldMetadata(
-        "error",
-        "error",
-        "_error",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
+  FieldMetadata("error", "error", "_error", str, None, PredefinedSerializer(), optional=True),
 ]
 
 ApiDownloadDatasetRawRequest._fields = [
-    FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "",
-                  PredefinedSerializer()),
-    FieldMetadata("datasetSlug", "dataset_slug", "_dataset_slug", str, "",
-                  PredefinedSerializer()),
-    FieldMetadata(
-        "fileName",
-        "file_name",
-        "_file_name",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "datasetVersionNumber",
-        "dataset_version_number",
-        "_dataset_version_number",
-        int,
-        None,
-        PredefinedSerializer(),
-        optional=True),
+  FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "", PredefinedSerializer()),
+  FieldMetadata("datasetSlug", "dataset_slug", "_dataset_slug", str, "", PredefinedSerializer()),
+  FieldMetadata("fileName", "file_name", "_file_name", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("datasetVersionNumber", "dataset_version_number", "_dataset_version_number", int, None, PredefinedSerializer(), optional=True),
 ]
 
 ApiDownloadDatasetRequest._fields = [
-    FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "",
-                  PredefinedSerializer()),
-    FieldMetadata("datasetSlug", "dataset_slug", "_dataset_slug", str, "",
-                  PredefinedSerializer()),
-    FieldMetadata(
-        "fileName",
-        "file_name",
-        "_file_name",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "datasetVersionNumber",
-        "dataset_version_number",
-        "_dataset_version_number",
-        int,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata("raw", "raw", "_raw", bool, False, PredefinedSerializer()),
+  FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "", PredefinedSerializer()),
+  FieldMetadata("datasetSlug", "dataset_slug", "_dataset_slug", str, "", PredefinedSerializer()),
+  FieldMetadata("fileName", "file_name", "_file_name", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("datasetVersionNumber", "dataset_version_number", "_dataset_version_number", int, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("raw", "raw", "_raw", bool, False, PredefinedSerializer()),
 ]
 
 ApiGetDatasetMetadataRequest._fields = [
-    FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "",
-                  PredefinedSerializer()),
-    FieldMetadata("datasetSlug", "dataset_slug", "_dataset_slug", str, "",
-                  PredefinedSerializer()),
+  FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "", PredefinedSerializer()),
+  FieldMetadata("datasetSlug", "dataset_slug", "_dataset_slug", str, "", PredefinedSerializer()),
 ]
 
 ApiGetDatasetMetadataResponse._fields = [
-    FieldMetadata("info", "info", "_info", DatasetInfo, None,
-                  KaggleObjectSerializer()),
-    FieldMetadata(
-        "errorMessage",
-        "error_message",
-        "_error_message",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
+  FieldMetadata("info", "info", "_info", DatasetInfo, None, KaggleObjectSerializer()),
+  FieldMetadata("errorMessage", "error_message", "_error_message", str, None, PredefinedSerializer(), optional=True),
 ]
 
 ApiGetDatasetRequest._fields = [
-    FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "",
-                  PredefinedSerializer()),
-    FieldMetadata("datasetSlug", "dataset_slug", "_dataset_slug", str, "",
-                  PredefinedSerializer()),
+  FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "", PredefinedSerializer()),
+  FieldMetadata("datasetSlug", "dataset_slug", "_dataset_slug", str, "", PredefinedSerializer()),
 ]
 
 ApiGetDatasetStatusRequest._fields = [
-    FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "",
-                  PredefinedSerializer()),
-    FieldMetadata("datasetSlug", "dataset_slug", "_dataset_slug", str, "",
-                  PredefinedSerializer()),
+  FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "", PredefinedSerializer()),
+  FieldMetadata("datasetSlug", "dataset_slug", "_dataset_slug", str, "", PredefinedSerializer()),
 ]
 
 ApiGetDatasetStatusResponse._fields = [
-    FieldMetadata("status", "status", "_status", DatabundleVersionStatus,
-                  DatabundleVersionStatus.NOT_YET_PERSISTED, EnumSerializer()),
+  FieldMetadata("status", "status", "_status", DatabundleVersionStatus, DatabundleVersionStatus.NOT_YET_PERSISTED, EnumSerializer()),
 ]
 
 ApiListDatasetFilesRequest._fields = [
-    FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "",
-                  PredefinedSerializer()),
-    FieldMetadata("datasetSlug", "dataset_slug", "_dataset_slug", str, "",
-                  PredefinedSerializer()),
-    FieldMetadata(
-        "datasetVersionNumber",
-        "dataset_version_number",
-        "_dataset_version_number",
-        int,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "pageToken",
-        "page_token",
-        "_page_token",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "pageSize",
-        "page_size",
-        "_page_size",
-        int,
-        None,
-        PredefinedSerializer(),
-        optional=True),
+  FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "", PredefinedSerializer()),
+  FieldMetadata("datasetSlug", "dataset_slug", "_dataset_slug", str, "", PredefinedSerializer()),
+  FieldMetadata("datasetVersionNumber", "dataset_version_number", "_dataset_version_number", int, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("pageToken", "page_token", "_page_token", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("pageSize", "page_size", "_page_size", int, None, PredefinedSerializer(), optional=True),
 ]
 
 ApiListDatasetFilesResponse._fields = [
-    FieldMetadata("datasetFiles", "dataset_files", "_dataset_files",
-                  ApiDatasetFile, [], ListSerializer(KaggleObjectSerializer())),
-    FieldMetadata(
-        "errorMessage",
-        "error_message",
-        "_error_message",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "nextPageToken",
-        "next_page_token",
-        "_next_page_token",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
+  FieldMetadata("datasetFiles", "dataset_files", "_dataset_files", ApiDatasetFile, [], ListSerializer(KaggleObjectSerializer())),
+  FieldMetadata("errorMessage", "error_message", "_error_message", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("nextPageToken", "next_page_token", "_next_page_token", str, None, PredefinedSerializer(), optional=True),
 ]
 
 ApiListDatasetsRequest._fields = [
-    FieldMetadata("group", "group", "_group", DatasetSelectionGroup,
-                  DatasetSelectionGroup.DATASET_SELECTION_GROUP_PUBLIC,
-                  EnumSerializer()),
-    FieldMetadata("sortBy", "sort_by", "_sort_by", DatasetSortBy,
-                  DatasetSortBy.DATASET_SORT_BY_HOTTEST, EnumSerializer()),
-    FieldMetadata("size", "size", "_size", DatasetSizeGroup,
-                  DatasetSizeGroup.DATASET_SIZE_GROUP_ALL, EnumSerializer()),
-    FieldMetadata("fileType", "file_type", "_file_type", DatasetFileTypeGroup,
-                  DatasetFileTypeGroup.DATASET_FILE_TYPE_GROUP_ALL,
-                  EnumSerializer()),
-    FieldMetadata("license", "license", "_license", DatasetLicenseGroup,
-                  DatasetLicenseGroup.DATASET_LICENSE_GROUP_ALL,
-                  EnumSerializer()),
-    FieldMetadata("viewed", "viewed", "_viewed", DatasetViewedGroup,
-                  DatasetViewedGroup.DATASET_VIEWED_GROUP_UNSPECIFIED,
-                  EnumSerializer()),
-    FieldMetadata(
-        "tagIds",
-        "tag_ids",
-        "_tag_ids",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "search",
-        "search",
-        "_search",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "user",
-        "user",
-        "_user",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "minSize",
-        "min_size",
-        "_min_size",
-        int,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "maxSize",
-        "max_size",
-        "_max_size",
-        int,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "page",
-        "page",
-        "_page",
-        int,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "pageToken",
-        "page_token",
-        "_page_token",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "pageSize",
-        "page_size",
-        "_page_size",
-        int,
-        None,
-        PredefinedSerializer(),
-        optional=True),
+  FieldMetadata("group", "group", "_group", DatasetSelectionGroup, DatasetSelectionGroup.DATASET_SELECTION_GROUP_PUBLIC, EnumSerializer()),
+  FieldMetadata("sortBy", "sort_by", "_sort_by", DatasetSortBy, DatasetSortBy.DATASET_SORT_BY_HOTTEST, EnumSerializer()),
+  FieldMetadata("size", "size", "_size", DatasetSizeGroup, DatasetSizeGroup.DATASET_SIZE_GROUP_ALL, EnumSerializer()),
+  FieldMetadata("fileType", "file_type", "_file_type", DatasetFileTypeGroup, DatasetFileTypeGroup.DATASET_FILE_TYPE_GROUP_ALL, EnumSerializer()),
+  FieldMetadata("license", "license", "_license", DatasetLicenseGroup, DatasetLicenseGroup.DATASET_LICENSE_GROUP_ALL, EnumSerializer()),
+  FieldMetadata("viewed", "viewed", "_viewed", DatasetViewedGroup, DatasetViewedGroup.DATASET_VIEWED_GROUP_UNSPECIFIED, EnumSerializer()),
+  FieldMetadata("tagIds", "tag_ids", "_tag_ids", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("search", "search", "_search", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("user", "user", "_user", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("minSize", "min_size", "_min_size", int, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("maxSize", "max_size", "_max_size", int, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("page", "page", "_page", int, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("pageToken", "page_token", "_page_token", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("pageSize", "page_size", "_page_size", int, None, PredefinedSerializer(), optional=True),
 ]
 
 ApiListDatasetsResponse._fields = [
-    FieldMetadata("datasets", "datasets", "_datasets", ApiDataset, [],
-                  ListSerializer(KaggleObjectSerializer())),
+  FieldMetadata("datasets", "datasets", "_datasets", ApiDataset, [], ListSerializer(KaggleObjectSerializer())),
 ]
 
 ApiUpdateDatasetMetadataRequest._fields = [
-    FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "",
-                  PredefinedSerializer()),
-    FieldMetadata("datasetSlug", "dataset_slug", "_dataset_slug", str, "",
-                  PredefinedSerializer()),
-    FieldMetadata("settings", "settings", "_settings", DatasetSettings, None,
-                  KaggleObjectSerializer()),
+  FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "", PredefinedSerializer()),
+  FieldMetadata("datasetSlug", "dataset_slug", "_dataset_slug", str, "", PredefinedSerializer()),
+  FieldMetadata("settings", "settings", "_settings", DatasetSettings, None, KaggleObjectSerializer()),
 ]
 
 ApiUpdateDatasetMetadataResponse._fields = [
-    FieldMetadata("errors", "errors", "_errors", str, [],
-                  ListSerializer(PredefinedSerializer())),
+  FieldMetadata("errors", "errors", "_errors", str, [], ListSerializer(PredefinedSerializer())),
 ]
 
 ApiUploadDatasetFileRequest._fields = [
-    FieldMetadata("fileName", "file_name", "_file_name", str, "",
-                  PredefinedSerializer()),
-    FieldMetadata("contentLength", "content_length", "_content_length", int, 0,
-                  PredefinedSerializer()),
-    FieldMetadata("lastModifiedEpochSeconds", "last_modified_epoch_seconds",
-                  "_last_modified_epoch_seconds", int, 0,
-                  PredefinedSerializer()),
+  FieldMetadata("fileName", "file_name", "_file_name", str, "", PredefinedSerializer()),
+  FieldMetadata("contentLength", "content_length", "_content_length", int, 0, PredefinedSerializer()),
+  FieldMetadata("lastModifiedEpochSeconds", "last_modified_epoch_seconds", "_last_modified_epoch_seconds", int, 0, PredefinedSerializer()),
 ]
 
 ApiUploadDatasetFileResponse._fields = [
-    FieldMetadata("token", "token", "_token", str, "", PredefinedSerializer()),
-    FieldMetadata("createUrl", "create_url", "_create_url", str, "",
-                  PredefinedSerializer()),
+  FieldMetadata("token", "token", "_token", str, "", PredefinedSerializer()),
+  FieldMetadata("createUrl", "create_url", "_create_url", str, "", PredefinedSerializer()),
 ]
 
 ApiCategory._fields = [
-    FieldMetadata("ref", "ref", "_ref", str, "", PredefinedSerializer()),
-    FieldMetadata(
-        "name",
-        "name",
-        "_name",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "description",
-        "description",
-        "_description",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "fullPath",
-        "full_path",
-        "_full_path",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata("competitionCount", "competition_count", "_competition_count",
-                  int, 0, PredefinedSerializer()),
-    FieldMetadata("datasetCount", "dataset_count", "_dataset_count", int, 0,
-                  PredefinedSerializer()),
-    FieldMetadata("scriptCount", "script_count", "_script_count", int, 0,
-                  PredefinedSerializer()),
-    FieldMetadata("totalCount", "total_count", "_total_count", int, 0,
-                  PredefinedSerializer()),
+  FieldMetadata("ref", "ref", "_ref", str, "", PredefinedSerializer()),
+  FieldMetadata("name", "name", "_name", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("description", "description", "_description", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("fullPath", "full_path", "_full_path", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("competitionCount", "competition_count", "_competition_count", int, 0, PredefinedSerializer()),
+  FieldMetadata("datasetCount", "dataset_count", "_dataset_count", int, 0, PredefinedSerializer()),
+  FieldMetadata("scriptCount", "script_count", "_script_count", int, 0, PredefinedSerializer()),
+  FieldMetadata("totalCount", "total_count", "_total_count", int, 0, PredefinedSerializer()),
 ]
 
 ApiDatasetColumn._fields = [
-    FieldMetadata(
-        "order",
-        "order",
-        "_order",
-        int,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "name",
-        "name",
-        "_name",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "type",
-        "type",
-        "_type",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "originalType",
-        "original_type",
-        "_original_type",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "description",
-        "description",
-        "_description",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
+  FieldMetadata("order", "order", "_order", int, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("name", "name", "_name", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("type", "type", "_type", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("originalType", "original_type", "_original_type", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("description", "description", "_description", str, None, PredefinedSerializer(), optional=True),
 ]
 
 ApiUploadDirectoryInfo._fields = [
-    FieldMetadata("name", "name", "_name", str, "", PredefinedSerializer()),
-    FieldMetadata("directories", "directories", "_directories",
-                  ApiUploadDirectoryInfo, [],
-                  ListSerializer(KaggleObjectSerializer())),
-    FieldMetadata("files", "files", "_files", ApiDatasetNewFile, [],
-                  ListSerializer(KaggleObjectSerializer())),
+  FieldMetadata("name", "name", "_name", str, "", PredefinedSerializer()),
+  FieldMetadata("directories", "directories", "_directories", ApiUploadDirectoryInfo, [], ListSerializer(KaggleObjectSerializer())),
+  FieldMetadata("files", "files", "_files", ApiDatasetNewFile, [], ListSerializer(KaggleObjectSerializer())),
 ]
+

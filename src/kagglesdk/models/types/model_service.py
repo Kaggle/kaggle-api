@@ -3,7 +3,6 @@ from kagglesdk.kaggle_object import *
 from kagglesdk.models.types.model_enums import ModelFramework
 from typing import Optional, List
 
-
 class GetModelMetricsRequest(KaggleObject):
   r"""
   Attributes:
@@ -59,6 +58,7 @@ class GetModelMetricsRequest(KaggleObject):
       raise TypeError('start_time must be of type datetime')
     self._start_time = start_time
 
+
   def endpoint(self):
     path = '/api/v1/models/{owner_slug}/{model_slug}/metrics'
     return path.format_map(self.to_field_map(self))
@@ -66,7 +66,6 @@ class GetModelMetricsRequest(KaggleObject):
   @staticmethod
   def endpoint_path():
     return '/models/{owner_slug}/{model_slug}/metrics'
-
 
 class GetModelMetricsResponse(KaggleObject):
   r"""
@@ -169,16 +168,14 @@ class ModelMetric(KaggleObject):
     return self._instances
 
   @instances.setter
-  def instances(self,
-                instances: Optional[List[Optional['ModelInstanceMetric']]]):
+  def instances(self, instances: Optional[List[Optional['ModelInstanceMetric']]]):
     if instances is None:
       del self.instances
       return
     if not isinstance(instances, list):
       raise TypeError('instances must be of type list')
     if not all([isinstance(t, ModelInstanceMetric) for t in instances]):
-      raise TypeError(
-          'instances must contain only items of type ModelInstanceMetric')
+      raise TypeError('instances must contain only items of type ModelInstanceMetric')
     self._instances = instances
 
 
@@ -252,43 +249,27 @@ class ModelInstanceMetric(KaggleObject):
 
 
 GetModelMetricsRequest._fields = [
-    FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "",
-                  PredefinedSerializer()),
-    FieldMetadata("modelSlug", "model_slug", "_model_slug", str, "",
-                  PredefinedSerializer()),
-    FieldMetadata(
-        "startTime",
-        "start_time",
-        "_start_time",
-        datetime,
-        None,
-        DateTimeSerializer(),
-        optional=True),
+  FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "", PredefinedSerializer()),
+  FieldMetadata("modelSlug", "model_slug", "_model_slug", str, "", PredefinedSerializer()),
+  FieldMetadata("startTime", "start_time", "_start_time", datetime, None, DateTimeSerializer(), optional=True),
 ]
 
 GetModelMetricsResponse._fields = [
-    FieldMetadata("metrics", "metrics", "_metrics", ModelMetric, [],
-                  ListSerializer(KaggleObjectSerializer())),
+  FieldMetadata("metrics", "metrics", "_metrics", ModelMetric, [], ListSerializer(KaggleObjectSerializer())),
 ]
 
 ModelMetric._fields = [
-    FieldMetadata("date", "date", "_date", str, "", PredefinedSerializer()),
-    FieldMetadata("views", "views", "_views", int, 0, PredefinedSerializer()),
-    FieldMetadata("downloads", "downloads", "_downloads", int, 0,
-                  PredefinedSerializer()),
-    FieldMetadata("notebooks", "notebooks", "_notebooks", int, 0,
-                  PredefinedSerializer()),
-    FieldMetadata("instances", "instances", "_instances", ModelInstanceMetric,
-                  [], ListSerializer(KaggleObjectSerializer())),
+  FieldMetadata("date", "date", "_date", str, "", PredefinedSerializer()),
+  FieldMetadata("views", "views", "_views", int, 0, PredefinedSerializer()),
+  FieldMetadata("downloads", "downloads", "_downloads", int, 0, PredefinedSerializer()),
+  FieldMetadata("notebooks", "notebooks", "_notebooks", int, 0, PredefinedSerializer()),
+  FieldMetadata("instances", "instances", "_instances", ModelInstanceMetric, [], ListSerializer(KaggleObjectSerializer())),
 ]
 
 ModelInstanceMetric._fields = [
-    FieldMetadata("variation", "variation", "_variation", str, "",
-                  PredefinedSerializer()),
-    FieldMetadata("framework", "framework", "_framework", ModelFramework,
-                  ModelFramework.MODEL_FRAMEWORK_UNSPECIFIED, EnumSerializer()),
-    FieldMetadata("downloads", "downloads", "_downloads", int, 0,
-                  PredefinedSerializer()),
-    FieldMetadata("notebooks", "notebooks", "_notebooks", int, 0,
-                  PredefinedSerializer()),
+  FieldMetadata("variation", "variation", "_variation", str, "", PredefinedSerializer()),
+  FieldMetadata("framework", "framework", "_framework", ModelFramework, ModelFramework.MODEL_FRAMEWORK_UNSPECIFIED, EnumSerializer()),
+  FieldMetadata("downloads", "downloads", "_downloads", int, 0, PredefinedSerializer()),
+  FieldMetadata("notebooks", "notebooks", "_notebooks", int, 0, PredefinedSerializer()),
 ]
+

@@ -1,6 +1,5 @@
 import enum
 
-
 class KernelsListSortType(enum.Enum):
   HOTNESS = 0
   COMMENT_COUNT = 1
@@ -11,7 +10,6 @@ class KernelsListSortType(enum.Enum):
   SCORE_DESCENDING = 6
   VIEW_COUNT = 7
   VOTE_COUNT = 8
-
 
 class KernelsListViewType(enum.Enum):
   KERNELS_LIST_VIEW_TYPE_UNSPECIFIED = 0
@@ -24,7 +22,6 @@ class KernelsListViewType(enum.Enum):
   RECENTLY_VIEWED = 7
   PUBLIC_AND_USERS_PRIVATE = 8
 
-
 class KernelWorkerStatus(enum.Enum):
   QUEUED = 0
   RUNNING = 1
@@ -33,3 +30,4 @@ class KernelWorkerStatus(enum.Enum):
   CANCEL_REQUESTED = 4
   CANCEL_ACKNOWLEDGED = 5
   NEW_SCRIPT = 6
+

@@ -1,7 +1,6 @@
 from kagglesdk.kaggle_object import *
 from typing import Optional
 
-
 class FileDownload(KaggleObject):
   r"""
   Standard response object representing a file download.
@@ -89,23 +88,15 @@ class FileDownload(KaggleObject):
       raise TypeError('content_length must be of type int')
     self._content_length = content_length
 
+
   @classmethod
   def prepare_from(cls, http_response):
     return http_response
 
-
 FileDownload._fields = [
-    FieldMetadata("contentType", "content_type", "_content_type", str, "",
-                  PredefinedSerializer()),
-    FieldMetadata("fileName", "file_name", "_file_name", str, "",
-                  PredefinedSerializer()),
-    FieldMetadata("token", "token", "_token", str, "", PredefinedSerializer()),
-    FieldMetadata(
-        "contentLength",
-        "content_length",
-        "_content_length",
-        int,
-        None,
-        PredefinedSerializer(),
-        optional=True),
+  FieldMetadata("contentType", "content_type", "_content_type", str, "", PredefinedSerializer()),
+  FieldMetadata("fileName", "file_name", "_file_name", str, "", PredefinedSerializer()),
+  FieldMetadata("token", "token", "_token", str, "", PredefinedSerializer()),
+  FieldMetadata("contentLength", "content_length", "_content_length", int, None, PredefinedSerializer(), optional=True),
 ]
+

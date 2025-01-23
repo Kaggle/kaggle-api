@@ -6,7 +6,6 @@ from kagglesdk.models.types.model_enums import ListModelsOrderBy, ModelFramework
 from kagglesdk.models.types.model_types import BaseModelInstanceInformation, ModelLink
 from typing import Optional, List
 
-
 class ApiCreateModelInstanceRequest(KaggleObject):
   r"""
   Attributes:
@@ -60,9 +59,11 @@ class ApiCreateModelInstanceRequest(KaggleObject):
       raise TypeError('body must be of type ApiCreateModelInstanceRequestBody')
     self._body = body
 
+
   def endpoint(self):
     path = '/api/v1/models/{owner_slug}/{model_slug}/create/instance'
     return path.format_map(self.to_field_map(self))
+
 
   @staticmethod
   def method():
@@ -71,7 +72,6 @@ class ApiCreateModelInstanceRequest(KaggleObject):
   @staticmethod
   def body_fields():
     return 'body'
-
 
 class ApiCreateModelInstanceRequestBody(KaggleObject):
   r"""
@@ -205,16 +205,14 @@ class ApiCreateModelInstanceRequestBody(KaggleObject):
     return self._directories
 
   @directories.setter
-  def directories(
-      self, directories: Optional[List[Optional['ApiUploadDirectoryInfo']]]):
+  def directories(self, directories: Optional[List[Optional['ApiUploadDirectoryInfo']]]):
     if directories is None:
       del self.directories
       return
     if not isinstance(directories, list):
       raise TypeError('directories must be of type list')
     if not all([isinstance(t, ApiUploadDirectoryInfo) for t in directories]):
-      raise TypeError(
-          'directories must contain only items of type ApiUploadDirectoryInfo')
+      raise TypeError('directories must contain only items of type ApiUploadDirectoryInfo')
     self._directories = directories
 
   @property
@@ -350,13 +348,14 @@ class ApiCreateModelInstanceVersionRequest(KaggleObject):
       del self.body
       return
     if not isinstance(body, ApiCreateModelInstanceVersionRequestBody):
-      raise TypeError(
-          'body must be of type ApiCreateModelInstanceVersionRequestBody')
+      raise TypeError('body must be of type ApiCreateModelInstanceVersionRequestBody')
     self._body = body
+
 
   def endpoint(self):
     path = '/api/v1/models/{owner_slug}/{model_slug}/{framework}/{instance_slug}/create/version'
     return path.format_map(self.to_field_map(self))
+
 
   @staticmethod
   def method():
@@ -365,7 +364,6 @@ class ApiCreateModelInstanceVersionRequest(KaggleObject):
   @staticmethod
   def body_fields():
     return 'body'
-
 
 class ApiCreateModelInstanceVersionRequestBody(KaggleObject):
   r"""
@@ -414,16 +412,14 @@ class ApiCreateModelInstanceVersionRequestBody(KaggleObject):
     return self._directories
 
   @directories.setter
-  def directories(
-      self, directories: Optional[List[Optional['ApiUploadDirectoryInfo']]]):
+  def directories(self, directories: Optional[List[Optional['ApiUploadDirectoryInfo']]]):
     if directories is None:
       del self.directories
       return
     if not isinstance(directories, list):
       raise TypeError('directories must be of type list')
     if not all([isinstance(t, ApiUploadDirectoryInfo) for t in directories]):
-      raise TypeError(
-          'directories must contain only items of type ApiUploadDirectoryInfo')
+      raise TypeError('directories must contain only items of type ApiUploadDirectoryInfo')
     self._directories = directories
 
 
@@ -555,9 +551,11 @@ class ApiCreateModelRequest(KaggleObject):
       raise TypeError('provenance_sources must be of type str')
     self._provenance_sources = provenance_sources
 
+
   def endpoint(self):
     path = '/api/v1/models/create/new'
     return path.format_map(self.to_field_map(self))
+
 
   @staticmethod
   def method():
@@ -566,7 +564,6 @@ class ApiCreateModelRequest(KaggleObject):
   @staticmethod
   def body_fields():
     return '*'
-
 
 class ApiCreateModelResponse(KaggleObject):
   r"""
@@ -720,14 +717,15 @@ class ApiDeleteModelInstanceRequest(KaggleObject):
       raise TypeError('instance_slug must be of type str')
     self._instance_slug = instance_slug
 
+
   def endpoint(self):
     path = '/api/v1/models/{owner_slug}/{model_slug}/{framework}/{instance_slug}/delete'
     return path.format_map(self.to_field_map(self))
 
+
   @staticmethod
   def method():
     return 'POST'
-
 
 class ApiDeleteModelInstanceVersionRequest(KaggleObject):
   r"""
@@ -812,14 +810,15 @@ class ApiDeleteModelInstanceVersionRequest(KaggleObject):
       raise TypeError('version_number must be of type int')
     self._version_number = version_number
 
+
   def endpoint(self):
     path = '/api/v1/models/{owner_slug}/{model_slug}/{framework}/{instance_slug}/{version_number}/delete'
     return path.format_map(self.to_field_map(self))
 
+
   @staticmethod
   def method():
     return 'POST'
-
 
 class ApiDeleteModelRequest(KaggleObject):
   r"""
@@ -859,14 +858,15 @@ class ApiDeleteModelRequest(KaggleObject):
       raise TypeError('model_slug must be of type str')
     self._model_slug = model_slug
 
+
   def endpoint(self):
     path = '/api/v1/models/{owner_slug}/{model_slug}/delete'
     return path.format_map(self.to_field_map(self))
 
+
   @staticmethod
   def method():
     return 'POST'
-
 
 class ApiDeleteModelResponse(KaggleObject):
   r"""
@@ -992,6 +992,7 @@ class ApiDownloadModelInstanceVersionRequest(KaggleObject):
       raise TypeError('path must be of type str')
     self._path = path
 
+
   def endpoint(self):
     if self.path:
       path = '/api/v1/models/{owner_slug}/{model_slug}/{framework}/{instance_slug}/{version_number}/download/{path}'
@@ -1002,7 +1003,6 @@ class ApiDownloadModelInstanceVersionRequest(KaggleObject):
   @staticmethod
   def endpoint_path():
     return '/api/v1/models/{owner_slug}/{model_slug}/{framework}/{instance_slug}/{version_number}/download'
-
 
 class ApiGetModelInstanceRequest(KaggleObject):
   r"""
@@ -1072,6 +1072,7 @@ class ApiGetModelInstanceRequest(KaggleObject):
       raise TypeError('instance_slug must be of type str')
     self._instance_slug = instance_slug
 
+
   def endpoint(self):
     path = '/api/v1/models/{owner_slug}/{model_slug}/{framework}/{instance_slug}/get'
     return path.format_map(self.to_field_map(self))
@@ -1079,7 +1080,6 @@ class ApiGetModelInstanceRequest(KaggleObject):
   @staticmethod
   def endpoint_path():
     return '/api/v1/models/{owner_slug}/{model_slug}/{framework}/{instance_slug}/get'
-
 
 class ApiGetModelRequest(KaggleObject):
   r"""
@@ -1119,6 +1119,7 @@ class ApiGetModelRequest(KaggleObject):
       raise TypeError('model_slug must be of type str')
     self._model_slug = model_slug
 
+
   def endpoint(self):
     path = '/api/v1/models/{owner_slug}/{model_slug}/get'
     return path.format_map(self.to_field_map(self))
@@ -1126,7 +1127,6 @@ class ApiGetModelRequest(KaggleObject):
   @staticmethod
   def endpoint_path():
     return '/api/v1/models/{owner_slug}/{model_slug}/get'
-
 
 class ApiListModelInstanceVersionFilesRequest(KaggleObject):
   r"""
@@ -1241,6 +1241,7 @@ class ApiListModelInstanceVersionFilesRequest(KaggleObject):
       raise TypeError('page_token must be of type str')
     self._page_token = page_token
 
+
   def endpoint(self):
     if self.version_number:
       path = '/api/v1/models/{owner_slug}/{model_slug}/{framework}/{instance_slug}/{version_number}/files'
@@ -1251,7 +1252,6 @@ class ApiListModelInstanceVersionFilesRequest(KaggleObject):
   @staticmethod
   def endpoint_path():
     return '/api/v1/models/{owner_slug}/{model_slug}/{framework}/{instance_slug}/files'
-
 
 class ApiListModelInstanceVersionFilesResponse(KaggleObject):
   r"""
@@ -1408,10 +1408,10 @@ class ApiListModelsRequest(KaggleObject):
       raise TypeError('only_vertex_models must be of type bool')
     self._only_vertex_models = only_vertex_models
 
+
   def endpoint(self):
     path = '/api/v1/models/list'
     return path.format_map(self.to_field_map(self))
-
 
 class ApiListModelsResponse(KaggleObject):
   r"""
@@ -1623,8 +1623,7 @@ class ApiModel(KaggleObject):
     if not isinstance(instances, list):
       raise TypeError('instances must be of type list')
     if not all([isinstance(t, ApiModelInstance) for t in instances]):
-      raise TypeError(
-          'instances must contain only items of type ApiModelInstance')
+      raise TypeError('instances must contain only items of type ApiModelInstance')
     self._instances = instances
 
   @property
@@ -1686,16 +1685,14 @@ class ApiModel(KaggleObject):
     return self._model_version_links
 
   @model_version_links.setter
-  def model_version_links(
-      self, model_version_links: Optional[List[Optional['ModelLink']]]):
+  def model_version_links(self, model_version_links: Optional[List[Optional['ModelLink']]]):
     if model_version_links is None:
       del self.model_version_links
       return
     if not isinstance(model_version_links, list):
       raise TypeError('model_version_links must be of type list')
     if not all([isinstance(t, ModelLink) for t in model_version_links]):
-      raise TypeError(
-          'model_version_links must contain only items of type ModelLink')
+      raise TypeError('model_version_links must contain only items of type ModelLink')
     self._model_version_links = model_version_links
 
 
@@ -1771,6 +1768,7 @@ class ApiModelInstance(KaggleObject):
     model_instance_type (ModelInstanceType)
     base_model_instance_information (BaseModelInstanceInformation)
     external_base_model_url (str)
+    total_uncompressed_bytes (int)
   """
 
   def __init__(self):
@@ -1789,6 +1787,7 @@ class ApiModelInstance(KaggleObject):
     self._model_instance_type = ModelInstanceType.MODEL_INSTANCE_TYPE_UNSPECIFIED
     self._base_model_instance_information = None
     self._external_base_model_url = ""
+    self._total_uncompressed_bytes = 0
     self._freeze()
 
   @property
@@ -1963,23 +1962,16 @@ class ApiModelInstance(KaggleObject):
     self._model_instance_type = model_instance_type
 
   @property
-  def base_model_instance_information(
-      self) -> Optional['BaseModelInstanceInformation']:
+  def base_model_instance_information(self) -> Optional['BaseModelInstanceInformation']:
     return self._base_model_instance_information or None
 
   @base_model_instance_information.setter
-  def base_model_instance_information(
-      self,
-      base_model_instance_information: Optional['BaseModelInstanceInformation']
-  ):
+  def base_model_instance_information(self, base_model_instance_information: Optional['BaseModelInstanceInformation']):
     if base_model_instance_information is None:
       del self.base_model_instance_information
       return
-    if not isinstance(base_model_instance_information,
-                      BaseModelInstanceInformation):
-      raise TypeError(
-          'base_model_instance_information must be of type BaseModelInstanceInformation'
-      )
+    if not isinstance(base_model_instance_information, BaseModelInstanceInformation):
+      raise TypeError('base_model_instance_information must be of type BaseModelInstanceInformation')
     self._base_model_instance_information = base_model_instance_information
 
   @property
@@ -1994,6 +1986,19 @@ class ApiModelInstance(KaggleObject):
     if not isinstance(external_base_model_url, str):
       raise TypeError('external_base_model_url must be of type str')
     self._external_base_model_url = external_base_model_url
+
+  @property
+  def total_uncompressed_bytes(self) -> int:
+    return self._total_uncompressed_bytes
+
+  @total_uncompressed_bytes.setter
+  def total_uncompressed_bytes(self, total_uncompressed_bytes: int):
+    if total_uncompressed_bytes is None:
+      del self.total_uncompressed_bytes
+      return
+    if not isinstance(total_uncompressed_bytes, int):
+      raise TypeError('total_uncompressed_bytes must be of type int')
+    self._total_uncompressed_bytes = total_uncompressed_bytes
 
 
 class ApiUpdateModelInstanceRequest(KaggleObject):
@@ -2201,9 +2206,11 @@ class ApiUpdateModelInstanceRequest(KaggleObject):
       raise TypeError('external_base_model_url must be of type str')
     self._external_base_model_url = external_base_model_url
 
+
   def endpoint(self):
     path = '/api/v1/models/{owner_slug}/{model_slug}/{framework}/{instance_slug}/update'
     return path.format_map(self.to_field_map(self))
+
 
   @staticmethod
   def method():
@@ -2212,7 +2219,6 @@ class ApiUpdateModelInstanceRequest(KaggleObject):
   @staticmethod
   def body_fields():
     return '*'
-
 
 class ApiUpdateModelRequest(KaggleObject):
   r"""
@@ -2357,9 +2363,11 @@ class ApiUpdateModelRequest(KaggleObject):
       raise TypeError('update_mask must be of type FieldMask')
     self._update_mask = update_mask
 
+
   def endpoint(self):
     path = '/api/v1/models/{owner_slug}/{model_slug}/update'
     return path.format_map(self.to_field_map(self))
+
 
   @staticmethod
   def method():
@@ -2368,7 +2376,6 @@ class ApiUpdateModelRequest(KaggleObject):
   @staticmethod
   def body_fields():
     return '*'
-
 
 class ApiUpdateModelResponse(KaggleObject):
   r"""
@@ -2492,14 +2499,15 @@ class ApiUploadModelFileRequest(KaggleObject):
       raise TypeError('last_modified_epoch_seconds must be of type int')
     self._last_modified_epoch_seconds = last_modified_epoch_seconds
 
+
   def endpoint(self):
     path = '/api/v1/models/upload/file/{content_length}/{last_modified_epoch_seconds}'
     return path.format_map(self.to_field_map(self))
 
+
   @staticmethod
   def method():
     return 'POST'
-
 
 class ApiUploadModelFileResponse(KaggleObject):
   r"""
@@ -2582,9 +2590,11 @@ class CreateModelSigningTokenRequest(KaggleObject):
       raise TypeError('model_slug must be of type str')
     self._model_slug = model_slug
 
+
   def endpoint(self):
     path = '/api/v1/models/signing/token'
     return path.format_map(self.to_field_map(self))
+
 
   @staticmethod
   def method():
@@ -2593,7 +2603,6 @@ class CreateModelSigningTokenRequest(KaggleObject):
   @staticmethod
   def body_fields():
     return '*'
-
 
 class CreateModelSigningTokenResponse(KaggleObject):
   r"""
@@ -2628,7 +2637,6 @@ class KeysRequest(KaggleObject):
   def endpoint(self):
     path = '/api/v1/models/signing/keys'
     return path.format_map(self.to_field_map(self))
-
 
 class KeysResponse(KaggleObject):
   r"""
@@ -2669,7 +2677,6 @@ class WellKnowEndpointRequest(KaggleObject):
   def endpoint(self):
     path = '/api/v1/models/signing/.well-known/openid-configuration'
     return path.format_map(self.to_field_map(self))
-
 
 class WellKnowEndpointResponse(KaggleObject):
   r"""
@@ -2744,19 +2751,14 @@ class WellKnowEndpointResponse(KaggleObject):
     return self._id_token_signing_alg_values_supported
 
   @id_token_signing_alg_values_supported.setter
-  def id_token_signing_alg_values_supported(
-      self, id_token_signing_alg_values_supported: Optional[List[str]]):
+  def id_token_signing_alg_values_supported(self, id_token_signing_alg_values_supported: Optional[List[str]]):
     if id_token_signing_alg_values_supported is None:
       del self.id_token_signing_alg_values_supported
       return
     if not isinstance(id_token_signing_alg_values_supported, list):
-      raise TypeError(
-          'id_token_signing_alg_values_supported must be of type list')
-    if not all(
-        [isinstance(t, str) for t in id_token_signing_alg_values_supported]):
-      raise TypeError(
-          'id_token_signing_alg_values_supported must contain only items of type str'
-      )
+      raise TypeError('id_token_signing_alg_values_supported must be of type list')
+    if not all([isinstance(t, str) for t in id_token_signing_alg_values_supported]):
+      raise TypeError('id_token_signing_alg_values_supported must contain only items of type str')
     self._id_token_signing_alg_values_supported = id_token_signing_alg_values_supported
 
   @property
@@ -2779,16 +2781,14 @@ class WellKnowEndpointResponse(KaggleObject):
     return self._response_types_supported
 
   @response_types_supported.setter
-  def response_types_supported(self,
-                               response_types_supported: Optional[List[str]]):
+  def response_types_supported(self, response_types_supported: Optional[List[str]]):
     if response_types_supported is None:
       del self.response_types_supported
       return
     if not isinstance(response_types_supported, list):
       raise TypeError('response_types_supported must be of type list')
     if not all([isinstance(t, str) for t in response_types_supported]):
-      raise TypeError(
-          'response_types_supported must contain only items of type str')
+      raise TypeError('response_types_supported must contain only items of type str')
     self._response_types_supported = response_types_supported
 
   @property
@@ -2796,16 +2796,14 @@ class WellKnowEndpointResponse(KaggleObject):
     return self._subject_types_supported
 
   @subject_types_supported.setter
-  def subject_types_supported(self,
-                              subject_types_supported: Optional[List[str]]):
+  def subject_types_supported(self, subject_types_supported: Optional[List[str]]):
     if subject_types_supported is None:
       del self.subject_types_supported
       return
     if not isinstance(subject_types_supported, list):
       raise TypeError('subject_types_supported must be of type list')
     if not all([isinstance(t, str) for t in subject_types_supported]):
-      raise TypeError(
-          'subject_types_supported must contain only items of type str')
+      raise TypeError('subject_types_supported must contain only items of type str')
     self._subject_types_supported = subject_types_supported
 
 
@@ -2913,603 +2911,255 @@ class JWK(KaggleObject):
 
 
 ApiCreateModelInstanceRequest._fields = [
-    FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "",
-                  PredefinedSerializer()),
-    FieldMetadata("modelSlug", "model_slug", "_model_slug", str, "",
-                  PredefinedSerializer()),
-    FieldMetadata("body", "body", "_body", ApiCreateModelInstanceRequestBody,
-                  None, KaggleObjectSerializer()),
+  FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "", PredefinedSerializer()),
+  FieldMetadata("modelSlug", "model_slug", "_model_slug", str, "", PredefinedSerializer()),
+  FieldMetadata("body", "body", "_body", ApiCreateModelInstanceRequestBody, None, KaggleObjectSerializer()),
 ]
 
 ApiCreateModelInstanceRequestBody._fields = [
-    FieldMetadata("instanceSlug", "instance_slug", "_instance_slug", str, "",
-                  PredefinedSerializer()),
-    FieldMetadata("framework", "framework", "_framework", ModelFramework,
-                  ModelFramework.MODEL_FRAMEWORK_UNSPECIFIED, EnumSerializer()),
-    FieldMetadata("overview", "overview", "_overview", str, "",
-                  PredefinedSerializer()),
-    FieldMetadata("usage", "usage", "_usage", str, "", PredefinedSerializer()),
-    FieldMetadata(
-        "fineTunable",
-        "fine_tunable",
-        "_fine_tunable",
-        bool,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata("trainingData", "training_data", "_training_data", str, [],
-                  ListSerializer(PredefinedSerializer())),
-    FieldMetadata("files", "files", "_files", ApiDatasetNewFile, [],
-                  ListSerializer(KaggleObjectSerializer())),
-    FieldMetadata("directories", "directories", "_directories",
-                  ApiUploadDirectoryInfo, [],
-                  ListSerializer(KaggleObjectSerializer())),
-    FieldMetadata(
-        "licenseName",
-        "license_name",
-        "_license_name",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "modelInstanceType",
-        "model_instance_type",
-        "_model_instance_type",
-        ModelInstanceType,
-        None,
-        EnumSerializer(),
-        optional=True),
-    FieldMetadata(
-        "baseModelInstance",
-        "base_model_instance",
-        "_base_model_instance",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "externalBaseModelUrl",
-        "external_base_model_url",
-        "_external_base_model_url",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
+  FieldMetadata("instanceSlug", "instance_slug", "_instance_slug", str, "", PredefinedSerializer()),
+  FieldMetadata("framework", "framework", "_framework", ModelFramework, ModelFramework.MODEL_FRAMEWORK_UNSPECIFIED, EnumSerializer()),
+  FieldMetadata("overview", "overview", "_overview", str, "", PredefinedSerializer()),
+  FieldMetadata("usage", "usage", "_usage", str, "", PredefinedSerializer()),
+  FieldMetadata("fineTunable", "fine_tunable", "_fine_tunable", bool, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("trainingData", "training_data", "_training_data", str, [], ListSerializer(PredefinedSerializer())),
+  FieldMetadata("files", "files", "_files", ApiDatasetNewFile, [], ListSerializer(KaggleObjectSerializer())),
+  FieldMetadata("directories", "directories", "_directories", ApiUploadDirectoryInfo, [], ListSerializer(KaggleObjectSerializer())),
+  FieldMetadata("licenseName", "license_name", "_license_name", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("modelInstanceType", "model_instance_type", "_model_instance_type", ModelInstanceType, None, EnumSerializer(), optional=True),
+  FieldMetadata("baseModelInstance", "base_model_instance", "_base_model_instance", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("externalBaseModelUrl", "external_base_model_url", "_external_base_model_url", str, None, PredefinedSerializer(), optional=True),
 ]
 
 ApiCreateModelInstanceVersionRequest._fields = [
-    FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "",
-                  PredefinedSerializer()),
-    FieldMetadata("modelSlug", "model_slug", "_model_slug", str, "",
-                  PredefinedSerializer()),
-    FieldMetadata("framework", "framework", "_framework", ModelFramework,
-                  ModelFramework.MODEL_FRAMEWORK_UNSPECIFIED, EnumSerializer()),
-    FieldMetadata("instanceSlug", "instance_slug", "_instance_slug", str, "",
-                  PredefinedSerializer()),
-    FieldMetadata("body", "body", "_body",
-                  ApiCreateModelInstanceVersionRequestBody, None,
-                  KaggleObjectSerializer()),
+  FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "", PredefinedSerializer()),
+  FieldMetadata("modelSlug", "model_slug", "_model_slug", str, "", PredefinedSerializer()),
+  FieldMetadata("framework", "framework", "_framework", ModelFramework, ModelFramework.MODEL_FRAMEWORK_UNSPECIFIED, EnumSerializer()),
+  FieldMetadata("instanceSlug", "instance_slug", "_instance_slug", str, "", PredefinedSerializer()),
+  FieldMetadata("body", "body", "_body", ApiCreateModelInstanceVersionRequestBody, None, KaggleObjectSerializer()),
 ]
 
 ApiCreateModelInstanceVersionRequestBody._fields = [
-    FieldMetadata(
-        "versionNotes",
-        "version_notes",
-        "_version_notes",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata("files", "files", "_files", ApiDatasetNewFile, [],
-                  ListSerializer(KaggleObjectSerializer())),
-    FieldMetadata("directories", "directories", "_directories",
-                  ApiUploadDirectoryInfo, [],
-                  ListSerializer(KaggleObjectSerializer())),
+  FieldMetadata("versionNotes", "version_notes", "_version_notes", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("files", "files", "_files", ApiDatasetNewFile, [], ListSerializer(KaggleObjectSerializer())),
+  FieldMetadata("directories", "directories", "_directories", ApiUploadDirectoryInfo, [], ListSerializer(KaggleObjectSerializer())),
 ]
 
 ApiCreateModelRequest._fields = [
-    FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "",
-                  PredefinedSerializer()),
-    FieldMetadata("slug", "slug", "_slug", str, "", PredefinedSerializer()),
-    FieldMetadata("title", "title", "_title", str, "", PredefinedSerializer()),
-    FieldMetadata(
-        "subtitle",
-        "subtitle",
-        "_subtitle",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "isPrivate",
-        "is_private",
-        "_is_private",
-        bool,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "description",
-        "description",
-        "_description",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata("publishTime", "publish_time", "_publish_time", datetime,
-                  None, DateTimeSerializer()),
-    FieldMetadata(
-        "provenanceSources",
-        "provenance_sources",
-        "_provenance_sources",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
+  FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "", PredefinedSerializer()),
+  FieldMetadata("slug", "slug", "_slug", str, "", PredefinedSerializer()),
+  FieldMetadata("title", "title", "_title", str, "", PredefinedSerializer()),
+  FieldMetadata("subtitle", "subtitle", "_subtitle", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("isPrivate", "is_private", "_is_private", bool, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("description", "description", "_description", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("publishTime", "publish_time", "_publish_time", datetime, None, DateTimeSerializer()),
+  FieldMetadata("provenanceSources", "provenance_sources", "_provenance_sources", str, None, PredefinedSerializer(), optional=True),
 ]
 
 ApiCreateModelResponse._fields = [
-    FieldMetadata(
-        "id", "id", "_id", int, None, PredefinedSerializer(), optional=True),
-    FieldMetadata(
-        "ref", "ref", "_ref", str, None, PredefinedSerializer(), optional=True),
-    FieldMetadata(
-        "error",
-        "error",
-        "_error",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "errorCode",
-        "error_code",
-        "_error_code",
-        int,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "url", "url", "_url", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("id", "id", "_id", int, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("ref", "ref", "_ref", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("error", "error", "_error", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("errorCode", "error_code", "_error_code", int, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("url", "url", "_url", str, None, PredefinedSerializer(), optional=True),
 ]
 
 ApiDeleteModelInstanceRequest._fields = [
-    FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "",
-                  PredefinedSerializer()),
-    FieldMetadata("modelSlug", "model_slug", "_model_slug", str, "",
-                  PredefinedSerializer()),
-    FieldMetadata("framework", "framework", "_framework", ModelFramework,
-                  ModelFramework.MODEL_FRAMEWORK_UNSPECIFIED, EnumSerializer()),
-    FieldMetadata("instanceSlug", "instance_slug", "_instance_slug", str, "",
-                  PredefinedSerializer()),
+  FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "", PredefinedSerializer()),
+  FieldMetadata("modelSlug", "model_slug", "_model_slug", str, "", PredefinedSerializer()),
+  FieldMetadata("framework", "framework", "_framework", ModelFramework, ModelFramework.MODEL_FRAMEWORK_UNSPECIFIED, EnumSerializer()),
+  FieldMetadata("instanceSlug", "instance_slug", "_instance_slug", str, "", PredefinedSerializer()),
 ]
 
 ApiDeleteModelInstanceVersionRequest._fields = [
-    FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "",
-                  PredefinedSerializer()),
-    FieldMetadata("modelSlug", "model_slug", "_model_slug", str, "",
-                  PredefinedSerializer()),
-    FieldMetadata("framework", "framework", "_framework", ModelFramework,
-                  ModelFramework.MODEL_FRAMEWORK_UNSPECIFIED, EnumSerializer()),
-    FieldMetadata("instanceSlug", "instance_slug", "_instance_slug", str, "",
-                  PredefinedSerializer()),
-    FieldMetadata("versionNumber", "version_number", "_version_number", int, 0,
-                  PredefinedSerializer()),
+  FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "", PredefinedSerializer()),
+  FieldMetadata("modelSlug", "model_slug", "_model_slug", str, "", PredefinedSerializer()),
+  FieldMetadata("framework", "framework", "_framework", ModelFramework, ModelFramework.MODEL_FRAMEWORK_UNSPECIFIED, EnumSerializer()),
+  FieldMetadata("instanceSlug", "instance_slug", "_instance_slug", str, "", PredefinedSerializer()),
+  FieldMetadata("versionNumber", "version_number", "_version_number", int, 0, PredefinedSerializer()),
 ]
 
 ApiDeleteModelRequest._fields = [
-    FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "",
-                  PredefinedSerializer()),
-    FieldMetadata("modelSlug", "model_slug", "_model_slug", str, "",
-                  PredefinedSerializer()),
+  FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "", PredefinedSerializer()),
+  FieldMetadata("modelSlug", "model_slug", "_model_slug", str, "", PredefinedSerializer()),
 ]
 
 ApiDeleteModelResponse._fields = [
-    FieldMetadata(
-        "error",
-        "error",
-        "_error",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
+  FieldMetadata("error", "error", "_error", str, None, PredefinedSerializer(), optional=True),
 ]
 
 ApiDownloadModelInstanceVersionRequest._fields = [
-    FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "",
-                  PredefinedSerializer()),
-    FieldMetadata("modelSlug", "model_slug", "_model_slug", str, "",
-                  PredefinedSerializer()),
-    FieldMetadata("framework", "framework", "_framework", ModelFramework,
-                  ModelFramework.MODEL_FRAMEWORK_UNSPECIFIED, EnumSerializer()),
-    FieldMetadata("instanceSlug", "instance_slug", "_instance_slug", str, "",
-                  PredefinedSerializer()),
-    FieldMetadata("versionNumber", "version_number", "_version_number", int, 0,
-                  PredefinedSerializer()),
-    FieldMetadata(
-        "path",
-        "path",
-        "_path",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
+  FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "", PredefinedSerializer()),
+  FieldMetadata("modelSlug", "model_slug", "_model_slug", str, "", PredefinedSerializer()),
+  FieldMetadata("framework", "framework", "_framework", ModelFramework, ModelFramework.MODEL_FRAMEWORK_UNSPECIFIED, EnumSerializer()),
+  FieldMetadata("instanceSlug", "instance_slug", "_instance_slug", str, "", PredefinedSerializer()),
+  FieldMetadata("versionNumber", "version_number", "_version_number", int, 0, PredefinedSerializer()),
+  FieldMetadata("path", "path", "_path", str, None, PredefinedSerializer(), optional=True),
 ]
 
 ApiGetModelInstanceRequest._fields = [
-    FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "",
-                  PredefinedSerializer()),
-    FieldMetadata("modelSlug", "model_slug", "_model_slug", str, "",
-                  PredefinedSerializer()),
-    FieldMetadata("framework", "framework", "_framework", ModelFramework,
-                  ModelFramework.MODEL_FRAMEWORK_UNSPECIFIED, EnumSerializer()),
-    FieldMetadata("instanceSlug", "instance_slug", "_instance_slug", str, "",
-                  PredefinedSerializer()),
+  FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "", PredefinedSerializer()),
+  FieldMetadata("modelSlug", "model_slug", "_model_slug", str, "", PredefinedSerializer()),
+  FieldMetadata("framework", "framework", "_framework", ModelFramework, ModelFramework.MODEL_FRAMEWORK_UNSPECIFIED, EnumSerializer()),
+  FieldMetadata("instanceSlug", "instance_slug", "_instance_slug", str, "", PredefinedSerializer()),
 ]
 
 ApiGetModelRequest._fields = [
-    FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "",
-                  PredefinedSerializer()),
-    FieldMetadata("modelSlug", "model_slug", "_model_slug", str, "",
-                  PredefinedSerializer()),
+  FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "", PredefinedSerializer()),
+  FieldMetadata("modelSlug", "model_slug", "_model_slug", str, "", PredefinedSerializer()),
 ]
 
 ApiListModelInstanceVersionFilesRequest._fields = [
-    FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "",
-                  PredefinedSerializer()),
-    FieldMetadata("modelSlug", "model_slug", "_model_slug", str, "",
-                  PredefinedSerializer()),
-    FieldMetadata("instanceSlug", "instance_slug", "_instance_slug", str, "",
-                  PredefinedSerializer()),
-    FieldMetadata("framework", "framework", "_framework", ModelFramework,
-                  ModelFramework.MODEL_FRAMEWORK_UNSPECIFIED, EnumSerializer()),
-    FieldMetadata(
-        "versionNumber",
-        "version_number",
-        "_version_number",
-        int,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "pageSize",
-        "page_size",
-        "_page_size",
-        int,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "pageToken",
-        "page_token",
-        "_page_token",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
+  FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "", PredefinedSerializer()),
+  FieldMetadata("modelSlug", "model_slug", "_model_slug", str, "", PredefinedSerializer()),
+  FieldMetadata("instanceSlug", "instance_slug", "_instance_slug", str, "", PredefinedSerializer()),
+  FieldMetadata("framework", "framework", "_framework", ModelFramework, ModelFramework.MODEL_FRAMEWORK_UNSPECIFIED, EnumSerializer()),
+  FieldMetadata("versionNumber", "version_number", "_version_number", int, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("pageSize", "page_size", "_page_size", int, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("pageToken", "page_token", "_page_token", str, None, PredefinedSerializer(), optional=True),
 ]
 
 ApiListModelInstanceVersionFilesResponse._fields = [
-    FieldMetadata("files", "files", "_files", ApiModelFile, [],
-                  ListSerializer(KaggleObjectSerializer())),
-    FieldMetadata("nextPageToken", "next_page_token", "_next_page_token", str,
-                  "", PredefinedSerializer()),
+  FieldMetadata("files", "files", "_files", ApiModelFile, [], ListSerializer(KaggleObjectSerializer())),
+  FieldMetadata("nextPageToken", "next_page_token", "_next_page_token", str, "", PredefinedSerializer()),
 ]
 
 ApiListModelsRequest._fields = [
-    FieldMetadata(
-        "search",
-        "search",
-        "_search",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "sortBy",
-        "sort_by",
-        "_sort_by",
-        ListModelsOrderBy,
-        None,
-        EnumSerializer(),
-        optional=True),
-    FieldMetadata(
-        "owner",
-        "owner",
-        "_owner",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "pageSize",
-        "page_size",
-        "_page_size",
-        int,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "pageToken",
-        "page_token",
-        "_page_token",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "onlyVertexModels",
-        "only_vertex_models",
-        "_only_vertex_models",
-        bool,
-        None,
-        PredefinedSerializer(),
-        optional=True),
+  FieldMetadata("search", "search", "_search", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("sortBy", "sort_by", "_sort_by", ListModelsOrderBy, None, EnumSerializer(), optional=True),
+  FieldMetadata("owner", "owner", "_owner", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("pageSize", "page_size", "_page_size", int, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("pageToken", "page_token", "_page_token", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("onlyVertexModels", "only_vertex_models", "_only_vertex_models", bool, None, PredefinedSerializer(), optional=True),
 ]
 
 ApiListModelsResponse._fields = [
-    FieldMetadata("models", "models", "_models", ApiModel, [],
-                  ListSerializer(KaggleObjectSerializer())),
-    FieldMetadata("nextPageToken", "next_page_token", "_next_page_token", str,
-                  "", PredefinedSerializer()),
-    FieldMetadata("totalResults", "total_results", "_total_results", int, 0,
-                  PredefinedSerializer()),
+  FieldMetadata("models", "models", "_models", ApiModel, [], ListSerializer(KaggleObjectSerializer())),
+  FieldMetadata("nextPageToken", "next_page_token", "_next_page_token", str, "", PredefinedSerializer()),
+  FieldMetadata("totalResults", "total_results", "_total_results", int, 0, PredefinedSerializer()),
 ]
 
 ApiModel._fields = [
-    FieldMetadata("id", "id", "_id", int, 0, PredefinedSerializer()),
-    FieldMetadata("ref", "ref", "_ref", str, "", PredefinedSerializer()),
-    FieldMetadata("title", "title", "_title", str, "", PredefinedSerializer()),
-    FieldMetadata("subtitle", "subtitle", "_subtitle", str, "",
-                  PredefinedSerializer()),
-    FieldMetadata("author", "author", "_author", str, "",
-                  PredefinedSerializer()),
-    FieldMetadata("slug", "slug", "_slug", str, "", PredefinedSerializer()),
-    FieldMetadata("isPrivate", "is_private", "_is_private", bool, False,
-                  PredefinedSerializer()),
-    FieldMetadata("description", "description", "_description", str, "",
-                  PredefinedSerializer()),
-    FieldMetadata("instances", "instances", "_instances", ApiModelInstance, [],
-                  ListSerializer(KaggleObjectSerializer())),
-    FieldMetadata("tags", "tags", "_tags", ApiCategory, [],
-                  ListSerializer(KaggleObjectSerializer())),
-    FieldMetadata("publishTime", "publish_time", "_publish_time", datetime,
-                  None, DateTimeSerializer()),
-    FieldMetadata("provenanceSources", "provenance_sources",
-                  "_provenance_sources", str, "", PredefinedSerializer()),
-    FieldMetadata("url", "url", "_url", str, "", PredefinedSerializer()),
-    FieldMetadata("modelVersionLinks", "model_version_links",
-                  "_model_version_links", ModelLink, [],
-                  ListSerializer(KaggleObjectSerializer())),
+  FieldMetadata("id", "id", "_id", int, 0, PredefinedSerializer()),
+  FieldMetadata("ref", "ref", "_ref", str, "", PredefinedSerializer()),
+  FieldMetadata("title", "title", "_title", str, "", PredefinedSerializer()),
+  FieldMetadata("subtitle", "subtitle", "_subtitle", str, "", PredefinedSerializer()),
+  FieldMetadata("author", "author", "_author", str, "", PredefinedSerializer()),
+  FieldMetadata("slug", "slug", "_slug", str, "", PredefinedSerializer()),
+  FieldMetadata("isPrivate", "is_private", "_is_private", bool, False, PredefinedSerializer()),
+  FieldMetadata("description", "description", "_description", str, "", PredefinedSerializer()),
+  FieldMetadata("instances", "instances", "_instances", ApiModelInstance, [], ListSerializer(KaggleObjectSerializer())),
+  FieldMetadata("tags", "tags", "_tags", ApiCategory, [], ListSerializer(KaggleObjectSerializer())),
+  FieldMetadata("publishTime", "publish_time", "_publish_time", datetime, None, DateTimeSerializer()),
+  FieldMetadata("provenanceSources", "provenance_sources", "_provenance_sources", str, "", PredefinedSerializer()),
+  FieldMetadata("url", "url", "_url", str, "", PredefinedSerializer()),
+  FieldMetadata("modelVersionLinks", "model_version_links", "_model_version_links", ModelLink, [], ListSerializer(KaggleObjectSerializer())),
 ]
 
 ApiModelFile._fields = [
-    FieldMetadata("name", "name", "_name", str, "", PredefinedSerializer()),
-    FieldMetadata("size", "size", "_size", int, 0, PredefinedSerializer()),
-    FieldMetadata(
-        "creationDate",
-        "creation_date",
-        "_creation_date",
-        datetime,
-        None,
-        DateTimeSerializer(),
-        optional=True),
+  FieldMetadata("name", "name", "_name", str, "", PredefinedSerializer()),
+  FieldMetadata("size", "size", "_size", int, 0, PredefinedSerializer()),
+  FieldMetadata("creationDate", "creation_date", "_creation_date", datetime, None, DateTimeSerializer(), optional=True),
 ]
 
 ApiModelInstance._fields = [
-    FieldMetadata("id", "id", "_id", int, 0, PredefinedSerializer()),
-    FieldMetadata("slug", "slug", "_slug", str, "", PredefinedSerializer()),
-    FieldMetadata("framework", "framework", "_framework", ModelFramework,
-                  ModelFramework.MODEL_FRAMEWORK_UNSPECIFIED, EnumSerializer()),
-    FieldMetadata("fineTunable", "fine_tunable", "_fine_tunable", bool, False,
-                  PredefinedSerializer()),
-    FieldMetadata("overview", "overview", "_overview", str, "",
-                  PredefinedSerializer()),
-    FieldMetadata("usage", "usage", "_usage", str, "", PredefinedSerializer()),
-    FieldMetadata("downloadUrl", "download_url", "_download_url", str, "",
-                  PredefinedSerializer()),
-    FieldMetadata("versionId", "version_id", "_version_id", int, 0,
-                  PredefinedSerializer()),
-    FieldMetadata("versionNumber", "version_number", "_version_number", int, 0,
-                  PredefinedSerializer()),
-    FieldMetadata("trainingData", "training_data", "_training_data", str, [],
-                  ListSerializer(PredefinedSerializer())),
-    FieldMetadata("url", "url", "_url", str, "", PredefinedSerializer()),
-    FieldMetadata("licenseName", "license_name", "_license_name", str, "",
-                  PredefinedSerializer()),
-    FieldMetadata("modelInstanceType", "model_instance_type",
-                  "_model_instance_type", ModelInstanceType,
-                  ModelInstanceType.MODEL_INSTANCE_TYPE_UNSPECIFIED,
-                  EnumSerializer()),
-    FieldMetadata(
-        "baseModelInstanceInformation",
-        "base_model_instance_information",
-        "_base_model_instance_information",
-        BaseModelInstanceInformation,
-        None,
-        KaggleObjectSerializer(),
-        optional=True),
-    FieldMetadata("externalBaseModelUrl", "external_base_model_url",
-                  "_external_base_model_url", str, "", PredefinedSerializer()),
+  FieldMetadata("id", "id", "_id", int, 0, PredefinedSerializer()),
+  FieldMetadata("slug", "slug", "_slug", str, "", PredefinedSerializer()),
+  FieldMetadata("framework", "framework", "_framework", ModelFramework, ModelFramework.MODEL_FRAMEWORK_UNSPECIFIED, EnumSerializer()),
+  FieldMetadata("fineTunable", "fine_tunable", "_fine_tunable", bool, False, PredefinedSerializer()),
+  FieldMetadata("overview", "overview", "_overview", str, "", PredefinedSerializer()),
+  FieldMetadata("usage", "usage", "_usage", str, "", PredefinedSerializer()),
+  FieldMetadata("downloadUrl", "download_url", "_download_url", str, "", PredefinedSerializer()),
+  FieldMetadata("versionId", "version_id", "_version_id", int, 0, PredefinedSerializer()),
+  FieldMetadata("versionNumber", "version_number", "_version_number", int, 0, PredefinedSerializer()),
+  FieldMetadata("trainingData", "training_data", "_training_data", str, [], ListSerializer(PredefinedSerializer())),
+  FieldMetadata("url", "url", "_url", str, "", PredefinedSerializer()),
+  FieldMetadata("licenseName", "license_name", "_license_name", str, "", PredefinedSerializer()),
+  FieldMetadata("modelInstanceType", "model_instance_type", "_model_instance_type", ModelInstanceType, ModelInstanceType.MODEL_INSTANCE_TYPE_UNSPECIFIED, EnumSerializer()),
+  FieldMetadata("baseModelInstanceInformation", "base_model_instance_information", "_base_model_instance_information", BaseModelInstanceInformation, None, KaggleObjectSerializer(), optional=True),
+  FieldMetadata("externalBaseModelUrl", "external_base_model_url", "_external_base_model_url", str, "", PredefinedSerializer()),
+  FieldMetadata("totalUncompressedBytes", "total_uncompressed_bytes", "_total_uncompressed_bytes", int, 0, PredefinedSerializer()),
 ]
 
 ApiUpdateModelInstanceRequest._fields = [
-    FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "",
-                  PredefinedSerializer()),
-    FieldMetadata("modelSlug", "model_slug", "_model_slug", str, "",
-                  PredefinedSerializer()),
-    FieldMetadata("framework", "framework", "_framework", ModelFramework,
-                  ModelFramework.MODEL_FRAMEWORK_UNSPECIFIED, EnumSerializer()),
-    FieldMetadata("instanceSlug", "instance_slug", "_instance_slug", str, "",
-                  PredefinedSerializer()),
-    FieldMetadata("overview", "overview", "_overview", str, "",
-                  PredefinedSerializer()),
-    FieldMetadata("usage", "usage", "_usage", str, "", PredefinedSerializer()),
-    FieldMetadata(
-        "fineTunable",
-        "fine_tunable",
-        "_fine_tunable",
-        bool,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata("trainingData", "training_data", "_training_data", str, [],
-                  ListSerializer(PredefinedSerializer())),
-    FieldMetadata("updateMask", "update_mask", "_update_mask", FieldMask, None,
-                  FieldMaskSerializer()),
-    FieldMetadata(
-        "licenseName",
-        "license_name",
-        "_license_name",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "modelInstanceType",
-        "model_instance_type",
-        "_model_instance_type",
-        ModelInstanceType,
-        None,
-        EnumSerializer(),
-        optional=True),
-    FieldMetadata(
-        "baseModelInstance",
-        "base_model_instance",
-        "_base_model_instance",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "externalBaseModelUrl",
-        "external_base_model_url",
-        "_external_base_model_url",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
+  FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "", PredefinedSerializer()),
+  FieldMetadata("modelSlug", "model_slug", "_model_slug", str, "", PredefinedSerializer()),
+  FieldMetadata("framework", "framework", "_framework", ModelFramework, ModelFramework.MODEL_FRAMEWORK_UNSPECIFIED, EnumSerializer()),
+  FieldMetadata("instanceSlug", "instance_slug", "_instance_slug", str, "", PredefinedSerializer()),
+  FieldMetadata("overview", "overview", "_overview", str, "", PredefinedSerializer()),
+  FieldMetadata("usage", "usage", "_usage", str, "", PredefinedSerializer()),
+  FieldMetadata("fineTunable", "fine_tunable", "_fine_tunable", bool, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("trainingData", "training_data", "_training_data", str, [], ListSerializer(PredefinedSerializer())),
+  FieldMetadata("updateMask", "update_mask", "_update_mask", FieldMask, None, FieldMaskSerializer()),
+  FieldMetadata("licenseName", "license_name", "_license_name", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("modelInstanceType", "model_instance_type", "_model_instance_type", ModelInstanceType, None, EnumSerializer(), optional=True),
+  FieldMetadata("baseModelInstance", "base_model_instance", "_base_model_instance", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("externalBaseModelUrl", "external_base_model_url", "_external_base_model_url", str, None, PredefinedSerializer(), optional=True),
 ]
 
 ApiUpdateModelRequest._fields = [
-    FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "",
-                  PredefinedSerializer()),
-    FieldMetadata("modelSlug", "model_slug", "_model_slug", str, "",
-                  PredefinedSerializer()),
-    FieldMetadata("title", "title", "_title", str, "", PredefinedSerializer()),
-    FieldMetadata(
-        "subtitle",
-        "subtitle",
-        "_subtitle",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata("isPrivate", "is_private", "_is_private", bool, False,
-                  PredefinedSerializer()),
-    FieldMetadata(
-        "description",
-        "description",
-        "_description",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata("publishTime", "publish_time", "_publish_time", datetime,
-                  None, DateTimeSerializer()),
-    FieldMetadata(
-        "provenanceSources",
-        "provenance_sources",
-        "_provenance_sources",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata("updateMask", "update_mask", "_update_mask", FieldMask, None,
-                  FieldMaskSerializer()),
+  FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "", PredefinedSerializer()),
+  FieldMetadata("modelSlug", "model_slug", "_model_slug", str, "", PredefinedSerializer()),
+  FieldMetadata("title", "title", "_title", str, "", PredefinedSerializer()),
+  FieldMetadata("subtitle", "subtitle", "_subtitle", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("isPrivate", "is_private", "_is_private", bool, False, PredefinedSerializer()),
+  FieldMetadata("description", "description", "_description", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("publishTime", "publish_time", "_publish_time", datetime, None, DateTimeSerializer()),
+  FieldMetadata("provenanceSources", "provenance_sources", "_provenance_sources", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("updateMask", "update_mask", "_update_mask", FieldMask, None, FieldMaskSerializer()),
 ]
 
 ApiUpdateModelResponse._fields = [
-    FieldMetadata(
-        "id", "id", "_id", int, None, PredefinedSerializer(), optional=True),
-    FieldMetadata(
-        "ref", "ref", "_ref", str, None, PredefinedSerializer(), optional=True),
-    FieldMetadata(
-        "error",
-        "error",
-        "_error",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "url", "url", "_url", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("id", "id", "_id", int, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("ref", "ref", "_ref", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("error", "error", "_error", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("url", "url", "_url", str, None, PredefinedSerializer(), optional=True),
 ]
 
 ApiUploadModelFileRequest._fields = [
-    FieldMetadata("fileName", "file_name", "_file_name", str, "",
-                  PredefinedSerializer()),
-    FieldMetadata("contentLength", "content_length", "_content_length", int, 0,
-                  PredefinedSerializer()),
-    FieldMetadata("lastModifiedEpochSeconds", "last_modified_epoch_seconds",
-                  "_last_modified_epoch_seconds", int, 0,
-                  PredefinedSerializer()),
+  FieldMetadata("fileName", "file_name", "_file_name", str, "", PredefinedSerializer()),
+  FieldMetadata("contentLength", "content_length", "_content_length", int, 0, PredefinedSerializer()),
+  FieldMetadata("lastModifiedEpochSeconds", "last_modified_epoch_seconds", "_last_modified_epoch_seconds", int, 0, PredefinedSerializer()),
 ]
 
 ApiUploadModelFileResponse._fields = [
-    FieldMetadata("token", "token", "_token", str, "", PredefinedSerializer()),
-    FieldMetadata("createUrl", "create_url", "_create_url", str, "",
-                  PredefinedSerializer()),
+  FieldMetadata("token", "token", "_token", str, "", PredefinedSerializer()),
+  FieldMetadata("createUrl", "create_url", "_create_url", str, "", PredefinedSerializer()),
 ]
 
 CreateModelSigningTokenRequest._fields = [
-    FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "",
-                  PredefinedSerializer()),
-    FieldMetadata("modelSlug", "model_slug", "_model_slug", str, "",
-                  PredefinedSerializer()),
+  FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "", PredefinedSerializer()),
+  FieldMetadata("modelSlug", "model_slug", "_model_slug", str, "", PredefinedSerializer()),
 ]
 
 CreateModelSigningTokenResponse._fields = [
-    FieldMetadata("id_token", "id_token", "_id_token", str, "",
-                  PredefinedSerializer()),
+  FieldMetadata("id_token", "id_token", "_id_token", str, "", PredefinedSerializer()),
 ]
 
 KeysRequest._fields = []
 
 KeysResponse._fields = [
-    FieldMetadata("keys", "keys", "_keys", JWK, [],
-                  ListSerializer(KaggleObjectSerializer())),
+  FieldMetadata("keys", "keys", "_keys", JWK, [], ListSerializer(KaggleObjectSerializer())),
 ]
 
 WellKnowEndpointRequest._fields = []
 
 WellKnowEndpointResponse._fields = [
-    FieldMetadata("issuer", "issuer", "_issuer", str, "",
-                  PredefinedSerializer()),
-    FieldMetadata("jwks_uri", "jwks_uri", "_jwks_uri", str, "",
-                  PredefinedSerializer()),
-    FieldMetadata("token_endpoint", "token_endpoint", "_token_endpoint", str,
-                  "", PredefinedSerializer()),
-    FieldMetadata("id_token_signing_alg_values_supported",
-                  "id_token_signing_alg_values_supported",
-                  "_id_token_signing_alg_values_supported", str, [],
-                  ListSerializer(PredefinedSerializer())),
-    FieldMetadata("claims_supported", "claims_supported", "_claims_supported",
-                  str, [], ListSerializer(PredefinedSerializer())),
-    FieldMetadata("response_types_supported", "response_types_supported",
-                  "_response_types_supported", str, [],
-                  ListSerializer(PredefinedSerializer())),
-    FieldMetadata("subject_types_supported", "subject_types_supported",
-                  "_subject_types_supported", str, [],
-                  ListSerializer(PredefinedSerializer())),
+  FieldMetadata("issuer", "issuer", "_issuer", str, "", PredefinedSerializer()),
+  FieldMetadata("jwks_uri", "jwks_uri", "_jwks_uri", str, "", PredefinedSerializer()),
+  FieldMetadata("token_endpoint", "token_endpoint", "_token_endpoint", str, "", PredefinedSerializer()),
+  FieldMetadata("id_token_signing_alg_values_supported", "id_token_signing_alg_values_supported", "_id_token_signing_alg_values_supported", str, [], ListSerializer(PredefinedSerializer())),
+  FieldMetadata("claims_supported", "claims_supported", "_claims_supported", str, [], ListSerializer(PredefinedSerializer())),
+  FieldMetadata("response_types_supported", "response_types_supported", "_response_types_supported", str, [], ListSerializer(PredefinedSerializer())),
+  FieldMetadata("subject_types_supported", "subject_types_supported", "_subject_types_supported", str, [], ListSerializer(PredefinedSerializer())),
 ]
 
 JWK._fields = [
-    FieldMetadata("kty", "kty", "_kty", str, "", PredefinedSerializer()),
-    FieldMetadata("alg", "alg", "_alg", str, "", PredefinedSerializer()),
-    FieldMetadata("use", "use", "_use", str, "", PredefinedSerializer()),
-    FieldMetadata("kid", "kid", "_kid", str, "", PredefinedSerializer()),
-    FieldMetadata("n", "n", "_n", str, "", PredefinedSerializer()),
-    FieldMetadata("e", "e", "_e", str, "", PredefinedSerializer()),
+  FieldMetadata("kty", "kty", "_kty", str, "", PredefinedSerializer()),
+  FieldMetadata("alg", "alg", "_alg", str, "", PredefinedSerializer()),
+  FieldMetadata("use", "use", "_use", str, "", PredefinedSerializer()),
+  FieldMetadata("kid", "kid", "_kid", str, "", PredefinedSerializer()),
+  FieldMetadata("n", "n", "_n", str, "", PredefinedSerializer()),
+  FieldMetadata("e", "e", "_e", str, "", PredefinedSerializer()),
 ]
+

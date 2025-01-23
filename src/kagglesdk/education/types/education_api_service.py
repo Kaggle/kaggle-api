@@ -2,7 +2,6 @@ from kagglesdk.education.types.education_service import LearnExerciseInteraction
 from kagglesdk.kaggle_object import *
 from typing import Optional
 
-
 class ApiTrackExerciseInteractionRequest(KaggleObject):
   r"""
   This is copied from TrackExerciseInteractionRequest in
@@ -74,8 +73,7 @@ class ApiTrackExerciseInteractionRequest(KaggleObject):
       del self.interaction_type
       return
     if not isinstance(interaction_type, LearnExerciseInteractionType):
-      raise TypeError(
-          'interaction_type must be of type LearnExerciseInteractionType')
+      raise TypeError('interaction_type must be of type LearnExerciseInteractionType')
     self._interaction_type = interaction_type
 
   @property
@@ -169,9 +167,11 @@ class ApiTrackExerciseInteractionRequest(KaggleObject):
       raise TypeError('value_towards_completion must be of type float')
     self._value_towards_completion = value_towards_completion
 
+
   def endpoint(self):
     path = '/api/v1/learn/track'
     return path.format_map(self.to_field_map(self))
+
 
   @staticmethod
   def method():
@@ -180,7 +180,6 @@ class ApiTrackExerciseInteractionRequest(KaggleObject):
   @staticmethod
   def body_fields():
     return '*'
-
 
 class ApiTrackExerciseInteractionResponse(KaggleObject):
   r"""
@@ -226,45 +225,20 @@ class ApiTrackExerciseInteractionResponse(KaggleObject):
 
 
 ApiTrackExerciseInteractionRequest._fields = [
-    FieldMetadata("exceptionClass", "exception_class", "_exception_class", str,
-                  "", PredefinedSerializer()),
-    FieldMetadata("failureMessage", "failure_message", "_failure_message", str,
-                  "", PredefinedSerializer()),
-    FieldMetadata(
-        "interactionType", "interaction_type", "_interaction_type",
-        LearnExerciseInteractionType, LearnExerciseInteractionType
-        .LEARN_EXERCISE_INTERACTION_TYPE_UNSPECIFIED, EnumSerializer()),
-    FieldMetadata("learnToolsVersion", "learn_tools_version",
-                  "_learn_tools_version", str, "", PredefinedSerializer()),
-    FieldMetadata("forkParentKernelSessionId", "fork_parent_kernel_session_id",
-                  "_fork_parent_kernel_session_id", int, 0,
-                  PredefinedSerializer()),
-    FieldMetadata(
-        "outcomeType", "outcome_type", "_outcome_type",
-        LearnExerciseOutcomeType,
-        LearnExerciseOutcomeType.LEARN_EXERCISE_OUTCOME_TYPE_UNSPECIFIED,
-        EnumSerializer()),
-    FieldMetadata("questionId", "question_id", "_question_id", str, "",
-                  PredefinedSerializer()),
-    FieldMetadata(
-        "questionType", "question_type", "_question_type",
-        LearnExerciseQuestionType,
-        LearnExerciseQuestionType.LEARN_EXERCISE_QUESTION_TYPE_UNSPECIFIED,
-        EnumSerializer()),
-    FieldMetadata("trace", "trace", "_trace", str, "", PredefinedSerializer()),
-    FieldMetadata(
-        "valueTowardsCompletion",
-        "value_towards_completion",
-        "_value_towards_completion",
-        float,
-        None,
-        PredefinedSerializer(),
-        optional=True),
+  FieldMetadata("exceptionClass", "exception_class", "_exception_class", str, "", PredefinedSerializer()),
+  FieldMetadata("failureMessage", "failure_message", "_failure_message", str, "", PredefinedSerializer()),
+  FieldMetadata("interactionType", "interaction_type", "_interaction_type", LearnExerciseInteractionType, LearnExerciseInteractionType.LEARN_EXERCISE_INTERACTION_TYPE_UNSPECIFIED, EnumSerializer()),
+  FieldMetadata("learnToolsVersion", "learn_tools_version", "_learn_tools_version", str, "", PredefinedSerializer()),
+  FieldMetadata("forkParentKernelSessionId", "fork_parent_kernel_session_id", "_fork_parent_kernel_session_id", int, 0, PredefinedSerializer()),
+  FieldMetadata("outcomeType", "outcome_type", "_outcome_type", LearnExerciseOutcomeType, LearnExerciseOutcomeType.LEARN_EXERCISE_OUTCOME_TYPE_UNSPECIFIED, EnumSerializer()),
+  FieldMetadata("questionId", "question_id", "_question_id", str, "", PredefinedSerializer()),
+  FieldMetadata("questionType", "question_type", "_question_type", LearnExerciseQuestionType, LearnExerciseQuestionType.LEARN_EXERCISE_QUESTION_TYPE_UNSPECIFIED, EnumSerializer()),
+  FieldMetadata("trace", "trace", "_trace", str, "", PredefinedSerializer()),
+  FieldMetadata("valueTowardsCompletion", "value_towards_completion", "_value_towards_completion", float, None, PredefinedSerializer(), optional=True),
 ]
 
 ApiTrackExerciseInteractionResponse._fields = [
-    FieldMetadata("nudge", "nudge", "_nudge", LearnNudge, None,
-                  KaggleObjectSerializer()),
-    FieldMetadata("showLoginPrompt", "show_login_prompt", "_show_login_prompt",
-                  bool, False, PredefinedSerializer()),
+  FieldMetadata("nudge", "nudge", "_nudge", LearnNudge, None, KaggleObjectSerializer()),
+  FieldMetadata("showLoginPrompt", "show_login_prompt", "_show_login_prompt", bool, False, PredefinedSerializer()),
 ]
+

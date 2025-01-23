@@ -1,6 +1,5 @@
 from kagglesdk.kaggle_object import *
 
-
 class CreateInboxFileRequest(KaggleObject):
   r"""
   Attributes:
@@ -43,9 +42,11 @@ class CreateInboxFileRequest(KaggleObject):
       raise TypeError('blob_file_token must be of type str')
     self._blob_file_token = blob_file_token
 
+
   def endpoint(self):
     path = '/api/v1/inbox/files/create'
     return path.format_map(self.to_field_map(self))
+
 
   @staticmethod
   def method():
@@ -54,7 +55,6 @@ class CreateInboxFileRequest(KaggleObject):
   @staticmethod
   def body_fields():
     return '*'
-
 
 class CreateInboxFileResponse(KaggleObject):
   r"""
@@ -65,12 +65,10 @@ class CreateInboxFileResponse(KaggleObject):
 
   pass
 
-
 CreateInboxFileRequest._fields = [
-    FieldMetadata("virtualDirectory", "virtual_directory", "_virtual_directory",
-                  str, "", PredefinedSerializer()),
-    FieldMetadata("blobFileToken", "blob_file_token", "_blob_file_token", str,
-                  "", PredefinedSerializer()),
+  FieldMetadata("virtualDirectory", "virtual_directory", "_virtual_directory", str, "", PredefinedSerializer()),
+  FieldMetadata("blobFileToken", "blob_file_token", "_blob_file_token", str, "", PredefinedSerializer()),
 ]
 
 CreateInboxFileResponse._fields = []
+

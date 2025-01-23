@@ -2,15 +2,12 @@ from kagglesdk.common.types.http_redirect import HttpRedirect
 from kagglesdk.kaggle_http_client import KaggleHttpClient
 from kagglesdk.models.types.model_api_service import ApiCreateModelInstanceRequest, ApiCreateModelInstanceVersionRequest, ApiCreateModelRequest, ApiCreateModelResponse, ApiDeleteModelInstanceRequest, ApiDeleteModelInstanceVersionRequest, ApiDeleteModelRequest, ApiDeleteModelResponse, ApiDownloadModelInstanceVersionRequest, ApiGetModelInstanceRequest, ApiGetModelRequest, ApiListModelInstanceVersionFilesRequest, ApiListModelInstanceVersionFilesResponse, ApiListModelsRequest, ApiListModelsResponse, ApiModel, ApiModelInstance, ApiUpdateModelInstanceRequest, ApiUpdateModelRequest, ApiUpdateModelResponse, ApiUploadModelFileRequest, ApiUploadModelFileResponse, CreateModelSigningTokenRequest, CreateModelSigningTokenResponse, KeysRequest, KeysResponse, WellKnowEndpointRequest, WellKnowEndpointResponse
 
-
 class ModelApiClient(object):
 
   def __init__(self, client: KaggleHttpClient):
     self._client = client
 
-  def create_model(self,
-                   request: ApiCreateModelRequest = None
-                  ) -> ApiCreateModelResponse:
+  def create_model(self, request: ApiCreateModelRequest = None) -> ApiCreateModelResponse:
     r"""
     Args:
       request (ApiCreateModelRequest):
@@ -20,12 +17,9 @@ class ModelApiClient(object):
     if request is None:
       request = ApiCreateModelRequest()
 
-    return self._client.call("models.ModelApiService", "ApiCreateModel",
-                             request, ApiCreateModelResponse)
+    return self._client.call("models.ModelApiService", "ApiCreateModel", request, ApiCreateModelResponse)
 
-  def create_model_instance(
-      self,
-      request: ApiCreateModelInstanceRequest = None) -> ApiCreateModelResponse:
+  def create_model_instance(self, request: ApiCreateModelInstanceRequest = None) -> ApiCreateModelResponse:
     r"""
     Args:
       request (ApiCreateModelInstanceRequest):
@@ -35,13 +29,9 @@ class ModelApiClient(object):
     if request is None:
       request = ApiCreateModelInstanceRequest()
 
-    return self._client.call("models.ModelApiService", "ApiCreateModelInstance",
-                             request, ApiCreateModelResponse)
+    return self._client.call("models.ModelApiService", "ApiCreateModelInstance", request, ApiCreateModelResponse)
 
-  def create_model_instance_version(
-      self,
-      request: ApiCreateModelInstanceVersionRequest = None
-  ) -> ApiCreateModelResponse:
+  def create_model_instance_version(self, request: ApiCreateModelInstanceVersionRequest = None) -> ApiCreateModelResponse:
     r"""
     Args:
       request (ApiCreateModelInstanceVersionRequest):
@@ -51,13 +41,9 @@ class ModelApiClient(object):
     if request is None:
       request = ApiCreateModelInstanceVersionRequest()
 
-    return self._client.call("models.ModelApiService",
-                             "ApiCreateModelInstanceVersion", request,
-                             ApiCreateModelResponse)
+    return self._client.call("models.ModelApiService", "ApiCreateModelInstanceVersion", request, ApiCreateModelResponse)
 
-  def delete_model(self,
-                   request: ApiDeleteModelRequest = None
-                  ) -> ApiDeleteModelResponse:
+  def delete_model(self, request: ApiDeleteModelRequest = None) -> ApiDeleteModelResponse:
     r"""
     Args:
       request (ApiDeleteModelRequest):
@@ -67,12 +53,9 @@ class ModelApiClient(object):
     if request is None:
       request = ApiDeleteModelRequest()
 
-    return self._client.call("models.ModelApiService", "ApiDeleteModel",
-                             request, ApiDeleteModelResponse)
+    return self._client.call("models.ModelApiService", "ApiDeleteModel", request, ApiDeleteModelResponse)
 
-  def delete_model_instance(
-      self,
-      request: ApiDeleteModelInstanceRequest = None) -> ApiDeleteModelResponse:
+  def delete_model_instance(self, request: ApiDeleteModelInstanceRequest = None) -> ApiDeleteModelResponse:
     r"""
     Args:
       request (ApiDeleteModelInstanceRequest):
@@ -82,13 +65,9 @@ class ModelApiClient(object):
     if request is None:
       request = ApiDeleteModelInstanceRequest()
 
-    return self._client.call("models.ModelApiService", "ApiDeleteModelInstance",
-                             request, ApiDeleteModelResponse)
+    return self._client.call("models.ModelApiService", "ApiDeleteModelInstance", request, ApiDeleteModelResponse)
 
-  def delete_model_instance_version(
-      self,
-      request: ApiDeleteModelInstanceVersionRequest = None
-  ) -> ApiDeleteModelResponse:
+  def delete_model_instance_version(self, request: ApiDeleteModelInstanceVersionRequest = None) -> ApiDeleteModelResponse:
     r"""
     Args:
       request (ApiDeleteModelInstanceVersionRequest):
@@ -98,9 +77,7 @@ class ModelApiClient(object):
     if request is None:
       request = ApiDeleteModelInstanceVersionRequest()
 
-    return self._client.call("models.ModelApiService",
-                             "ApiDeleteModelInstanceVersion", request,
-                             ApiDeleteModelResponse)
+    return self._client.call("models.ModelApiService", "ApiDeleteModelInstanceVersion", request, ApiDeleteModelResponse)
 
   def get_model(self, request: ApiGetModelRequest = None) -> ApiModel:
     r"""
@@ -112,12 +89,9 @@ class ModelApiClient(object):
     if request is None:
       request = ApiGetModelRequest()
 
-    return self._client.call("models.ModelApiService", "ApiGetModel", request,
-                             ApiModel)
+    return self._client.call("models.ModelApiService", "ApiGetModel", request, ApiModel)
 
-  def get_model_instance(self,
-                         request: ApiGetModelInstanceRequest = None
-                        ) -> ApiModelInstance:
+  def get_model_instance(self, request: ApiGetModelInstanceRequest = None) -> ApiModelInstance:
     r"""
     Args:
       request (ApiGetModelInstanceRequest):
@@ -127,12 +101,9 @@ class ModelApiClient(object):
     if request is None:
       request = ApiGetModelInstanceRequest()
 
-    return self._client.call("models.ModelApiService", "ApiGetModelInstance",
-                             request, ApiModelInstance)
+    return self._client.call("models.ModelApiService", "ApiGetModelInstance", request, ApiModelInstance)
 
-  def download_model_instance_version(
-      self,
-      request: ApiDownloadModelInstanceVersionRequest = None) -> HttpRedirect:
+  def download_model_instance_version(self, request: ApiDownloadModelInstanceVersionRequest = None) -> HttpRedirect:
     r"""
     Args:
       request (ApiDownloadModelInstanceVersionRequest):
@@ -142,12 +113,9 @@ class ModelApiClient(object):
     if request is None:
       request = ApiDownloadModelInstanceVersionRequest()
 
-    return self._client.call("models.ModelApiService",
-                             "ApiDownloadModelInstanceVersion", request,
-                             HttpRedirect)
+    return self._client.call("models.ModelApiService", "ApiDownloadModelInstanceVersion", request, HttpRedirect)
 
-  def list_models(
-      self, request: ApiListModelsRequest = None) -> ApiListModelsResponse:
+  def list_models(self, request: ApiListModelsRequest = None) -> ApiListModelsResponse:
     r"""
     Args:
       request (ApiListModelsRequest):
@@ -157,13 +125,9 @@ class ModelApiClient(object):
     if request is None:
       request = ApiListModelsRequest()
 
-    return self._client.call("models.ModelApiService", "ApiListModels", request,
-                             ApiListModelsResponse)
+    return self._client.call("models.ModelApiService", "ApiListModels", request, ApiListModelsResponse)
 
-  def list_model_instance_version_files(
-      self,
-      request: ApiListModelInstanceVersionFilesRequest = None
-  ) -> ApiListModelInstanceVersionFilesResponse:
+  def list_model_instance_version_files(self, request: ApiListModelInstanceVersionFilesRequest = None) -> ApiListModelInstanceVersionFilesResponse:
     r"""
     Args:
       request (ApiListModelInstanceVersionFilesRequest):
@@ -173,13 +137,9 @@ class ModelApiClient(object):
     if request is None:
       request = ApiListModelInstanceVersionFilesRequest()
 
-    return self._client.call("models.ModelApiService",
-                             "ApiListModelInstanceVersionFiles", request,
-                             ApiListModelInstanceVersionFilesResponse)
+    return self._client.call("models.ModelApiService", "ApiListModelInstanceVersionFiles", request, ApiListModelInstanceVersionFilesResponse)
 
-  def update_model(self,
-                   request: ApiUpdateModelRequest = None
-                  ) -> ApiUpdateModelResponse:
+  def update_model(self, request: ApiUpdateModelRequest = None) -> ApiUpdateModelResponse:
     r"""
     Args:
       request (ApiUpdateModelRequest):
@@ -189,12 +149,9 @@ class ModelApiClient(object):
     if request is None:
       request = ApiUpdateModelRequest()
 
-    return self._client.call("models.ModelApiService", "ApiUpdateModel",
-                             request, ApiUpdateModelResponse)
+    return self._client.call("models.ModelApiService", "ApiUpdateModel", request, ApiUpdateModelResponse)
 
-  def update_model_instance(
-      self,
-      request: ApiUpdateModelInstanceRequest = None) -> ApiUpdateModelResponse:
+  def update_model_instance(self, request: ApiUpdateModelInstanceRequest = None) -> ApiUpdateModelResponse:
     r"""
     Args:
       request (ApiUpdateModelInstanceRequest):
@@ -204,12 +161,9 @@ class ModelApiClient(object):
     if request is None:
       request = ApiUpdateModelInstanceRequest()
 
-    return self._client.call("models.ModelApiService", "ApiUpdateModelInstance",
-                             request, ApiUpdateModelResponse)
+    return self._client.call("models.ModelApiService", "ApiUpdateModelInstance", request, ApiUpdateModelResponse)
 
-  def upload_model_file(
-      self,
-      request: ApiUploadModelFileRequest = None) -> ApiUploadModelFileResponse:
+  def upload_model_file(self, request: ApiUploadModelFileRequest = None) -> ApiUploadModelFileResponse:
     r"""
     Deprecated. Use the new unified BlobApiService#StartBlobUpload rpc.
 
@@ -221,13 +175,9 @@ class ModelApiClient(object):
     if request is None:
       request = ApiUploadModelFileRequest()
 
-    return self._client.call("models.ModelApiService", "ApiUploadModelFile",
-                             request, ApiUploadModelFileResponse)
+    return self._client.call("models.ModelApiService", "ApiUploadModelFile", request, ApiUploadModelFileResponse)
 
-  def create_model_signing_token(
-      self,
-      request: CreateModelSigningTokenRequest = None
-  ) -> CreateModelSigningTokenResponse:
+  def create_model_signing_token(self, request: CreateModelSigningTokenRequest = None) -> CreateModelSigningTokenResponse:
     r"""
     Creates an Kaggle issued identity token. The token is signed using a
     private key held in KMS that is only accessible by Kaggle model-signer
@@ -241,13 +191,9 @@ class ModelApiClient(object):
     if request is None:
       request = CreateModelSigningTokenRequest()
 
-    return self._client.call("models.ModelApiService",
-                             "CreateModelSigningToken", request,
-                             CreateModelSigningTokenResponse)
+    return self._client.call("models.ModelApiService", "CreateModelSigningToken", request, CreateModelSigningTokenResponse)
 
-  def well_know_endpoint(
-      self,
-      request: WellKnowEndpointRequest = None) -> WellKnowEndpointResponse:
+  def well_know_endpoint(self, request: WellKnowEndpointRequest = None) -> WellKnowEndpointResponse:
     r"""
     see spec -
     https://openid.net/specs/openid-connect-discovery-1_0.html#ProviderConfig.
@@ -261,8 +207,7 @@ class ModelApiClient(object):
     if request is None:
       request = WellKnowEndpointRequest()
 
-    return self._client.call("models.ModelApiService", "WellKnowEndpoint",
-                             request, WellKnowEndpointResponse)
+    return self._client.call("models.ModelApiService", "WellKnowEndpoint", request, WellKnowEndpointResponse)
 
   def keys(self, request: KeysRequest = None) -> KeysResponse:
     r"""
@@ -277,5 +222,4 @@ class ModelApiClient(object):
     if request is None:
       request = KeysRequest()
 
-    return self._client.call("models.ModelApiService", "Keys", request,
-                             KeysResponse)
+    return self._client.call("models.ModelApiService", "Keys", request, KeysResponse)

@@ -2,7 +2,6 @@ from datetime import timedelta
 from kagglesdk.kaggle_object import *
 from typing import Optional
 
-
 class HttpRedirect(KaggleObject):
   r"""
   Represents an HTTP redirect (e.g. 301 or 302) response.
@@ -92,23 +91,15 @@ class HttpRedirect(KaggleObject):
       raise TypeError('expiry must be of type timedelta')
     self._expiry = expiry
 
+
   @classmethod
   def prepare_from(cls, http_response):
     return http_response
 
-
 HttpRedirect._fields = [
-    FieldMetadata("url", "url", "_url", str, "", PredefinedSerializer()),
-    FieldMetadata("permanent", "permanent", "_permanent", bool, False,
-                  PredefinedSerializer()),
-    FieldMetadata(
-        "bypassEncoding",
-        "bypass_encoding",
-        "_bypass_encoding",
-        bool,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata("expiry", "expiry", "_expiry", timedelta, None,
-                  TimeDeltaSerializer()),
+  FieldMetadata("url", "url", "_url", str, "", PredefinedSerializer()),
+  FieldMetadata("permanent", "permanent", "_permanent", bool, False, PredefinedSerializer()),
+  FieldMetadata("bypassEncoding", "bypass_encoding", "_bypass_encoding", bool, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("expiry", "expiry", "_expiry", timedelta, None, TimeDeltaSerializer()),
 ]
+

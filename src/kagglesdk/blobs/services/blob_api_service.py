@@ -1,7 +1,6 @@
 from kagglesdk.blobs.types.blob_api_service import ApiStartBlobUploadRequest, ApiStartBlobUploadResponse
 from kagglesdk.kaggle_http_client import KaggleHttpClient
 
-
 class BlobApiClient(object):
   r"""
   Binary Large OBject (BLOB) service used for uploading files to Google Cloud
@@ -11,9 +10,7 @@ class BlobApiClient(object):
   def __init__(self, client: KaggleHttpClient):
     self._client = client
 
-  def start_blob_upload(
-      self,
-      request: ApiStartBlobUploadRequest = None) -> ApiStartBlobUploadResponse:
+  def start_blob_upload(self, request: ApiStartBlobUploadRequest = None) -> ApiStartBlobUploadResponse:
     r"""
     Starts a blob upload (i.e. reserves a spot for the upload on GCS).
 
@@ -25,5 +22,4 @@ class BlobApiClient(object):
     if request is None:
       request = ApiStartBlobUploadRequest()
 
-    return self._client.call("blobs.BlobApiService", "ApiStartBlobUpload",
-                             request, ApiStartBlobUploadResponse)
+    return self._client.call("blobs.BlobApiService", "ApiStartBlobUpload", request, ApiStartBlobUploadResponse)

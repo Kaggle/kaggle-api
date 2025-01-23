@@ -2,13 +2,11 @@ import enum
 from kagglesdk.kaggle_object import *
 from typing import Optional
 
-
 class LearnExerciseInteractionType(enum.Enum):
   LEARN_EXERCISE_INTERACTION_TYPE_UNSPECIFIED = 0
   CHECK = 1
   HINT = 2
   SOLUTION = 3
-
 
 class LearnExerciseOutcomeType(enum.Enum):
   LEARN_EXERCISE_OUTCOME_TYPE_UNSPECIFIED = 0
@@ -17,7 +15,6 @@ class LearnExerciseOutcomeType(enum.Enum):
   EXCEPTION = 3
   UNATTEMPTED = 4
 
-
 class LearnExerciseQuestionType(enum.Enum):
   LEARN_EXERCISE_QUESTION_TYPE_UNSPECIFIED = 0
   EQUALITY_CHECK_PROBLEM = 1
@@ -25,14 +22,12 @@ class LearnExerciseQuestionType(enum.Enum):
   FUNCTION_PROBLEM = 3
   THOUGHT_EXPERIMENT = 4
 
-
 class LearnNudgeType(enum.Enum):
   COURSE_COMPLETE_NO_BONUS_LESSONS = 0
   COURSE_COMPLETE_WITH_BONUS_LESSONS = 1
   COURSE_INCOMPLETE = 2
   DO_EXERCISE = 3
   DO_TUTORIAL = 4
-
 
 class LearnNudge(KaggleObject):
   r"""
@@ -134,18 +129,11 @@ class LearnNudge(KaggleObject):
 
 
 LearnNudge._fields = [
-    FieldMetadata("courseIndex", "course_index", "_course_index", int, 0,
-                  PredefinedSerializer()),
-    FieldMetadata("courseName", "course_name", "_course_name", str, "",
-                  PredefinedSerializer()),
-    FieldMetadata("courseSlug", "course_slug", "_course_slug", str, "",
-                  PredefinedSerializer()),
-    FieldMetadata("nextItemName", "next_item_name", "_next_item_name", str, "",
-                  PredefinedSerializer()),
-    FieldMetadata("nextItemUrl", "next_item_url", "_next_item_url", str, "",
-                  PredefinedSerializer()),
-    FieldMetadata("nextItemType", "next_item_type", "_next_item_type",
-                  LearnNudgeType,
-                  LearnNudgeType.COURSE_COMPLETE_NO_BONUS_LESSONS,
-                  EnumSerializer()),
+  FieldMetadata("courseIndex", "course_index", "_course_index", int, 0, PredefinedSerializer()),
+  FieldMetadata("courseName", "course_name", "_course_name", str, "", PredefinedSerializer()),
+  FieldMetadata("courseSlug", "course_slug", "_course_slug", str, "", PredefinedSerializer()),
+  FieldMetadata("nextItemName", "next_item_name", "_next_item_name", str, "", PredefinedSerializer()),
+  FieldMetadata("nextItemUrl", "next_item_url", "_next_item_url", str, "", PredefinedSerializer()),
+  FieldMetadata("nextItemType", "next_item_type", "_next_item_type", LearnNudgeType, LearnNudgeType.COURSE_COMPLETE_NO_BONUS_LESSONS, EnumSerializer()),
 ]
+

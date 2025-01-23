@@ -4,7 +4,6 @@ from kagglesdk.competitions.types.submission_status import SubmissionStatus
 from kagglesdk.kaggle_object import *
 from typing import Optional, List
 
-
 class ApiCreateSubmissionRequest(KaggleObject):
   r"""
   Attributes:
@@ -64,14 +63,15 @@ class ApiCreateSubmissionRequest(KaggleObject):
       raise TypeError('submission_description must be of type str')
     self._submission_description = submission_description
 
+
   def endpoint(self):
     path = '/api/v1/competitions/submissions/submit/{competition_name}'
     return path.format_map(self.to_field_map(self))
 
+
   @staticmethod
   def method():
     return 'POST'
-
 
 class ApiCreateSubmissionResponse(KaggleObject):
   r"""
@@ -139,6 +139,7 @@ class ApiDownloadDataFileRequest(KaggleObject):
       raise TypeError('file_name must be of type str')
     self._file_name = file_name
 
+
   def endpoint(self):
     path = '/api/v1/competitions/data/download/{competition_name}/{file_name}'
     return path.format_map(self.to_field_map(self))
@@ -146,7 +147,6 @@ class ApiDownloadDataFileRequest(KaggleObject):
   @staticmethod
   def endpoint_path():
     return '/api/v1/competitions/data/download/{competition_name}/{file_name}'
-
 
 class ApiDownloadDataFilesRequest(KaggleObject):
   r"""
@@ -173,6 +173,7 @@ class ApiDownloadDataFilesRequest(KaggleObject):
       raise TypeError('competition_name must be of type str')
     self._competition_name = competition_name
 
+
   def endpoint(self):
     path = '/api/v1/competitions/data/download-all/{competition_name}'
     return path.format_map(self.to_field_map(self))
@@ -180,7 +181,6 @@ class ApiDownloadDataFilesRequest(KaggleObject):
   @staticmethod
   def endpoint_path():
     return '/api/v1/competitions/data/download-all/{competition_name}'
-
 
 class ApiDownloadLeaderboardRequest(KaggleObject):
   r"""
@@ -205,6 +205,7 @@ class ApiDownloadLeaderboardRequest(KaggleObject):
       raise TypeError('competition_name must be of type str')
     self._competition_name = competition_name
 
+
   def endpoint(self):
     path = '/api/v1/competitions/{competition_name}/leaderboard/download'
     return path.format_map(self.to_field_map(self))
@@ -212,7 +213,6 @@ class ApiDownloadLeaderboardRequest(KaggleObject):
   @staticmethod
   def endpoint_path():
     return '/api/v1/competitions/{competition_name}/leaderboard/download'
-
 
 class ApiGetLeaderboardRequest(KaggleObject):
   r"""
@@ -239,6 +239,7 @@ class ApiGetLeaderboardRequest(KaggleObject):
       raise TypeError('competition_name must be of type str')
     self._competition_name = competition_name
 
+
   def endpoint(self):
     path = '/api/v1/competitions/{competition_name}/leaderboard/view'
     return path.format_map(self.to_field_map(self))
@@ -246,7 +247,6 @@ class ApiGetLeaderboardRequest(KaggleObject):
   @staticmethod
   def endpoint_path():
     return '/api/v1/competitions/{competition_name}/leaderboard/view'
-
 
 class ApiGetLeaderboardResponse(KaggleObject):
   r"""
@@ -263,17 +263,14 @@ class ApiGetLeaderboardResponse(KaggleObject):
     return self._submissions
 
   @submissions.setter
-  def submissions(
-      self, submissions: Optional[List[Optional['ApiLeaderboardSubmission']]]):
+  def submissions(self, submissions: Optional[List[Optional['ApiLeaderboardSubmission']]]):
     if submissions is None:
       del self.submissions
       return
     if not isinstance(submissions, list):
       raise TypeError('submissions must be of type list')
     if not all([isinstance(t, ApiLeaderboardSubmission) for t in submissions]):
-      raise TypeError(
-          'submissions must contain only items of type ApiLeaderboardSubmission'
-      )
+      raise TypeError('submissions must contain only items of type ApiLeaderboardSubmission')
     self._submissions = submissions
 
 
@@ -455,10 +452,10 @@ class ApiListCompetitionsRequest(KaggleObject):
       raise TypeError('page must be of type int')
     self._page = page
 
+
   def endpoint(self):
     path = '/api/v1/competitions/list'
     return path.format_map(self.to_field_map(self))
-
 
 class ApiListCompetitionsResponse(KaggleObject):
   r"""
@@ -475,22 +472,20 @@ class ApiListCompetitionsResponse(KaggleObject):
     return self._competitions
 
   @competitions.setter
-  def competitions(self,
-                   competitions: Optional[List[Optional['ApiCompetition']]]):
+  def competitions(self, competitions: Optional[List[Optional['ApiCompetition']]]):
     if competitions is None:
       del self.competitions
       return
     if not isinstance(competitions, list):
       raise TypeError('competitions must be of type list')
     if not all([isinstance(t, ApiCompetition) for t in competitions]):
-      raise TypeError(
-          'competitions must contain only items of type ApiCompetition')
+      raise TypeError('competitions must contain only items of type ApiCompetition')
     self._competitions = competitions
+
 
   @classmethod
   def prepare_from(cls, http_response):
     return cls.from_dict({'competitions': json.loads(http_response.text)})
-
 
 class ApiListDataFilesRequest(KaggleObject):
   r"""
@@ -547,6 +542,7 @@ class ApiListDataFilesRequest(KaggleObject):
       raise TypeError('page_token must be of type str')
     self._page_token = page_token
 
+
   def endpoint(self):
     path = '/api/v1/competitions/data/list/{competition_name}'
     return path.format_map(self.to_field_map(self))
@@ -554,7 +550,6 @@ class ApiListDataFilesRequest(KaggleObject):
   @staticmethod
   def endpoint_path():
     return '/api/v1/competitions/data/list/{competition_name}'
-
 
 class ApiListDataFilesResponse(KaggleObject):
   r"""
@@ -665,6 +660,7 @@ class ApiListSubmissionsRequest(KaggleObject):
       raise TypeError('page must be of type int')
     self._page = page
 
+
   def endpoint(self):
     path = '/api/v1/competitions/submissions/list/{competition_name}'
     return path.format_map(self.to_field_map(self))
@@ -672,7 +668,6 @@ class ApiListSubmissionsRequest(KaggleObject):
   @staticmethod
   def endpoint_path():
     return '/api/v1/competitions/submissions/list/{competition_name}'
-
 
 class ApiListSubmissionsResponse(KaggleObject):
   r"""
@@ -696,14 +691,13 @@ class ApiListSubmissionsResponse(KaggleObject):
     if not isinstance(submissions, list):
       raise TypeError('submissions must be of type list')
     if not all([isinstance(t, ApiSubmission) for t in submissions]):
-      raise TypeError(
-          'submissions must contain only items of type ApiSubmission')
+      raise TypeError('submissions must contain only items of type ApiSubmission')
     self._submissions = submissions
+
 
   @classmethod
   def prepare_from(cls, http_response):
     return cls.from_dict({'submissions': json.loads(http_response.text)})
-
 
 class ApiStartSubmissionUploadRequest(KaggleObject):
   r"""
@@ -775,14 +769,15 @@ class ApiStartSubmissionUploadRequest(KaggleObject):
       raise TypeError('file_name must be of type str')
     self._file_name = file_name
 
+
   def endpoint(self):
-    path = '/api/v1/competitions/{competition_name}/submissions/url/{content_length}/{last_modified_epoch_seconds}'
+    path = '/api/v1/competitions/submission-url'
     return path.format_map(self.to_field_map(self))
+
 
   @staticmethod
   def method():
     return 'POST'
-
 
 class ApiStartSubmissionUploadResponse(KaggleObject):
   r"""
@@ -1632,443 +1627,149 @@ class ApiCategory(KaggleObject):
 
 
 ApiCreateSubmissionRequest._fields = [
-    FieldMetadata("competitionName", "competition_name", "_competition_name",
-                  str, "", PredefinedSerializer()),
-    FieldMetadata("blobFileTokens", "blob_file_tokens", "_blob_file_tokens",
-                  str, "", PredefinedSerializer()),
-    FieldMetadata(
-        "submissionDescription",
-        "submission_description",
-        "_submission_description",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
+  FieldMetadata("competitionName", "competition_name", "_competition_name", str, "", PredefinedSerializer()),
+  FieldMetadata("blobFileTokens", "blob_file_tokens", "_blob_file_tokens", str, "", PredefinedSerializer()),
+  FieldMetadata("submissionDescription", "submission_description", "_submission_description", str, None, PredefinedSerializer(), optional=True),
 ]
 
 ApiCreateSubmissionResponse._fields = [
-    FieldMetadata("message", "message", "_message", str, "",
-                  PredefinedSerializer()),
+  FieldMetadata("message", "message", "_message", str, "", PredefinedSerializer()),
 ]
 
 ApiDownloadDataFileRequest._fields = [
-    FieldMetadata("competitionName", "competition_name", "_competition_name",
-                  str, "", PredefinedSerializer()),
-    FieldMetadata("fileName", "file_name", "_file_name", str, "",
-                  PredefinedSerializer()),
+  FieldMetadata("competitionName", "competition_name", "_competition_name", str, "", PredefinedSerializer()),
+  FieldMetadata("fileName", "file_name", "_file_name", str, "", PredefinedSerializer()),
 ]
 
 ApiDownloadDataFilesRequest._fields = [
-    FieldMetadata("competitionName", "competition_name", "_competition_name",
-                  str, "", PredefinedSerializer()),
+  FieldMetadata("competitionName", "competition_name", "_competition_name", str, "", PredefinedSerializer()),
 ]
 
 ApiDownloadLeaderboardRequest._fields = [
-    FieldMetadata("competitionName", "competition_name", "_competition_name",
-                  str, "", PredefinedSerializer()),
+  FieldMetadata("competitionName", "competition_name", "_competition_name", str, "", PredefinedSerializer()),
 ]
 
 ApiGetLeaderboardRequest._fields = [
-    FieldMetadata("competitionName", "competition_name", "_competition_name",
-                  str, "", PredefinedSerializer()),
+  FieldMetadata("competitionName", "competition_name", "_competition_name", str, "", PredefinedSerializer()),
 ]
 
 ApiGetLeaderboardResponse._fields = [
-    FieldMetadata("submissions", "submissions", "_submissions",
-                  ApiLeaderboardSubmission, [],
-                  ListSerializer(KaggleObjectSerializer())),
+  FieldMetadata("submissions", "submissions", "_submissions", ApiLeaderboardSubmission, [], ListSerializer(KaggleObjectSerializer())),
 ]
 
 ApiLeaderboardSubmission._fields = [
-    FieldMetadata("teamId", "team_id", "_team_id", int, 0,
-                  PredefinedSerializer()),
-    FieldMetadata(
-        "teamName",
-        "team_name",
-        "_team_name",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata("submissionDate", "submission_date", "_submission_date",
-                  datetime, None, DateTimeSerializer()),
-    FieldMetadata(
-        "score",
-        "score",
-        "_score",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
+  FieldMetadata("teamId", "team_id", "_team_id", int, 0, PredefinedSerializer()),
+  FieldMetadata("teamName", "team_name", "_team_name", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("submissionDate", "submission_date", "_submission_date", datetime, None, DateTimeSerializer()),
+  FieldMetadata("score", "score", "_score", str, None, PredefinedSerializer(), optional=True),
 ]
 
 ApiListCompetitionsRequest._fields = [
-    FieldMetadata(
-        "group",
-        "group",
-        "_group",
-        CompetitionListTab,
-        None,
-        EnumSerializer(),
-        optional=True),
-    FieldMetadata(
-        "category",
-        "category",
-        "_category",
-        HostSegment,
-        None,
-        EnumSerializer(),
-        optional=True),
-    FieldMetadata(
-        "sortBy",
-        "sort_by",
-        "_sort_by",
-        CompetitionSortBy,
-        None,
-        EnumSerializer(),
-        optional=True),
-    FieldMetadata(
-        "search",
-        "search",
-        "_search",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "page",
-        "page",
-        "_page",
-        int,
-        None,
-        PredefinedSerializer(),
-        optional=True),
+  FieldMetadata("group", "group", "_group", CompetitionListTab, None, EnumSerializer(), optional=True),
+  FieldMetadata("category", "category", "_category", HostSegment, None, EnumSerializer(), optional=True),
+  FieldMetadata("sortBy", "sort_by", "_sort_by", CompetitionSortBy, None, EnumSerializer(), optional=True),
+  FieldMetadata("search", "search", "_search", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("page", "page", "_page", int, None, PredefinedSerializer(), optional=True),
 ]
 
 ApiListCompetitionsResponse._fields = [
-    FieldMetadata("competitions", "competitions", "_competitions",
-                  ApiCompetition, [], ListSerializer(KaggleObjectSerializer())),
+  FieldMetadata("competitions", "competitions", "_competitions", ApiCompetition, [], ListSerializer(KaggleObjectSerializer())),
 ]
 
 ApiListDataFilesRequest._fields = [
-    FieldMetadata("competitionName", "competition_name", "_competition_name",
-                  str, "", PredefinedSerializer()),
-    FieldMetadata(
-        "pageSize",
-        "page_size",
-        "_page_size",
-        int,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "pageToken",
-        "page_token",
-        "_page_token",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
+  FieldMetadata("competitionName", "competition_name", "_competition_name", str, "", PredefinedSerializer()),
+  FieldMetadata("pageSize", "page_size", "_page_size", int, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("pageToken", "page_token", "_page_token", str, None, PredefinedSerializer(), optional=True),
 ]
 
 ApiListDataFilesResponse._fields = [
-    FieldMetadata("files", "files", "_files", ApiDataFile, [],
-                  ListSerializer(KaggleObjectSerializer())),
-    FieldMetadata("nextPageToken", "next_page_token", "_next_page_token", str,
-                  "", PredefinedSerializer()),
+  FieldMetadata("files", "files", "_files", ApiDataFile, [], ListSerializer(KaggleObjectSerializer())),
+  FieldMetadata("nextPageToken", "next_page_token", "_next_page_token", str, "", PredefinedSerializer()),
 ]
 
 ApiListSubmissionsRequest._fields = [
-    FieldMetadata("competitionName", "competition_name", "_competition_name",
-                  str, "", PredefinedSerializer()),
-    FieldMetadata("sortBy", "sort_by", "_sort_by", SubmissionSortBy,
-                  SubmissionSortBy.SUBMISSION_SORT_BY_DATE, EnumSerializer()),
-    FieldMetadata("group", "group", "_group", SubmissionGroup,
-                  SubmissionGroup.SUBMISSION_GROUP_ALL, EnumSerializer()),
-    FieldMetadata(
-        "page",
-        "page",
-        "_page",
-        int,
-        None,
-        PredefinedSerializer(),
-        optional=True),
+  FieldMetadata("competitionName", "competition_name", "_competition_name", str, "", PredefinedSerializer()),
+  FieldMetadata("sortBy", "sort_by", "_sort_by", SubmissionSortBy, SubmissionSortBy.SUBMISSION_SORT_BY_DATE, EnumSerializer()),
+  FieldMetadata("group", "group", "_group", SubmissionGroup, SubmissionGroup.SUBMISSION_GROUP_ALL, EnumSerializer()),
+  FieldMetadata("page", "page", "_page", int, None, PredefinedSerializer(), optional=True),
 ]
 
 ApiListSubmissionsResponse._fields = [
-    FieldMetadata("submissions", "submissions", "_submissions", ApiSubmission,
-                  [], ListSerializer(KaggleObjectSerializer())),
+  FieldMetadata("submissions", "submissions", "_submissions", ApiSubmission, [], ListSerializer(KaggleObjectSerializer())),
 ]
 
 ApiStartSubmissionUploadRequest._fields = [
-    FieldMetadata(
-        "competitionName",
-        "competition_name",
-        "_competition_name",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata("contentLength", "content_length", "_content_length", int, 0,
-                  PredefinedSerializer()),
-    FieldMetadata("lastModifiedEpochSeconds", "last_modified_epoch_seconds",
-                  "_last_modified_epoch_seconds", int, 0,
-                  PredefinedSerializer()),
-    FieldMetadata("fileName", "file_name", "_file_name", str, "",
-                  PredefinedSerializer()),
+  FieldMetadata("competitionName", "competition_name", "_competition_name", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("contentLength", "content_length", "_content_length", int, 0, PredefinedSerializer()),
+  FieldMetadata("lastModifiedEpochSeconds", "last_modified_epoch_seconds", "_last_modified_epoch_seconds", int, 0, PredefinedSerializer()),
+  FieldMetadata("fileName", "file_name", "_file_name", str, "", PredefinedSerializer()),
 ]
 
 ApiStartSubmissionUploadResponse._fields = [
-    FieldMetadata("token", "token", "_token", str, "", PredefinedSerializer()),
-    FieldMetadata("createUrl", "create_url", "_create_url", str, "",
-                  PredefinedSerializer()),
+  FieldMetadata("token", "token", "_token", str, "", PredefinedSerializer()),
+  FieldMetadata("createUrl", "create_url", "_create_url", str, "", PredefinedSerializer()),
 ]
 
 ApiSubmission._fields = [
-    FieldMetadata("ref", "ref", "_ref", int, 0, PredefinedSerializer()),
-    FieldMetadata(
-        "totalBytes",
-        "total_bytes",
-        "_total_bytes",
-        int,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata("date", "date", "_date", datetime, None,
-                  DateTimeSerializer()),
-    FieldMetadata(
-        "description",
-        "description",
-        "_description",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "errorDescription",
-        "error_description",
-        "_error_description",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "fileName",
-        "file_name",
-        "_file_name",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "publicScore",
-        "public_score",
-        "_public_score",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "privateScore",
-        "private_score",
-        "_private_score",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata("status", "status", "_status", SubmissionStatus,
-                  SubmissionStatus.PENDING, EnumSerializer()),
-    FieldMetadata(
-        "submittedBy",
-        "submitted_by",
-        "_submitted_by",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "submittedByRef",
-        "submitted_by_ref",
-        "_submitted_by_ref",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "teamName",
-        "team_name",
-        "_team_name",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "url", "url", "_url", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("ref", "ref", "_ref", int, 0, PredefinedSerializer()),
+  FieldMetadata("totalBytes", "total_bytes", "_total_bytes", int, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("date", "date", "_date", datetime, None, DateTimeSerializer()),
+  FieldMetadata("description", "description", "_description", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("errorDescription", "error_description", "_error_description", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("fileName", "file_name", "_file_name", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("publicScore", "public_score", "_public_score", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("privateScore", "private_score", "_private_score", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("status", "status", "_status", SubmissionStatus, SubmissionStatus.PENDING, EnumSerializer()),
+  FieldMetadata("submittedBy", "submitted_by", "_submitted_by", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("submittedByRef", "submitted_by_ref", "_submitted_by_ref", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("teamName", "team_name", "_team_name", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("url", "url", "_url", str, None, PredefinedSerializer(), optional=True),
 ]
 
 ApiCompetition._fields = [
-    FieldMetadata("id", "id", "_id", int, 0, PredefinedSerializer()),
-    FieldMetadata("ref", "ref", "_ref", str, "", PredefinedSerializer()),
-    FieldMetadata(
-        "title",
-        "title",
-        "_title",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "url", "url", "_url", str, None, PredefinedSerializer(), optional=True),
-    FieldMetadata(
-        "description",
-        "description",
-        "_description",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "organizationName",
-        "organization_name",
-        "_organization_name",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "organizationRef",
-        "organization_ref",
-        "_organization_ref",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "category",
-        "category",
-        "_category",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "reward",
-        "reward",
-        "_reward",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata("tags", "tags", "_tags", ApiCategory, [],
-                  ListSerializer(KaggleObjectSerializer())),
-    FieldMetadata("deadline", "deadline", "_deadline", datetime, None,
-                  DateTimeSerializer()),
-    FieldMetadata("kernelCount", "kernel_count", "_kernel_count", int, 0,
-                  PredefinedSerializer()),
-    FieldMetadata("teamCount", "team_count", "_team_count", int, 0,
-                  PredefinedSerializer()),
-    FieldMetadata("userHasEntered", "user_has_entered", "_user_has_entered",
-                  bool, False, PredefinedSerializer()),
-    FieldMetadata(
-        "userRank",
-        "user_rank",
-        "_user_rank",
-        int,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata("mergerDeadline", "merger_deadline", "_merger_deadline",
-                  datetime, None, DateTimeSerializer()),
-    FieldMetadata("newEntrantDeadline", "new_entrant_deadline",
-                  "_new_entrant_deadline", datetime, None,
-                  DateTimeSerializer()),
-    FieldMetadata("enabledDate", "enabled_date", "_enabled_date", datetime,
-                  None, DateTimeSerializer()),
-    FieldMetadata("maxDailySubmissions", "max_daily_submissions",
-                  "_max_daily_submissions", int, 0, PredefinedSerializer()),
-    FieldMetadata(
-        "maxTeamSize",
-        "max_team_size",
-        "_max_team_size",
-        int,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "evaluationMetric",
-        "evaluation_metric",
-        "_evaluation_metric",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata("awardsPoints", "awards_points", "_awards_points", bool,
-                  False, PredefinedSerializer()),
-    FieldMetadata("isKernelsSubmissionsOnly", "is_kernels_submissions_only",
-                  "_is_kernels_submissions_only", bool, False,
-                  PredefinedSerializer()),
-    FieldMetadata("submissionsDisabled", "submissions_disabled",
-                  "_submissions_disabled", bool, False, PredefinedSerializer()),
+  FieldMetadata("id", "id", "_id", int, 0, PredefinedSerializer()),
+  FieldMetadata("ref", "ref", "_ref", str, "", PredefinedSerializer()),
+  FieldMetadata("title", "title", "_title", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("url", "url", "_url", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("description", "description", "_description", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("organizationName", "organization_name", "_organization_name", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("organizationRef", "organization_ref", "_organization_ref", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("category", "category", "_category", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("reward", "reward", "_reward", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("tags", "tags", "_tags", ApiCategory, [], ListSerializer(KaggleObjectSerializer())),
+  FieldMetadata("deadline", "deadline", "_deadline", datetime, None, DateTimeSerializer()),
+  FieldMetadata("kernelCount", "kernel_count", "_kernel_count", int, 0, PredefinedSerializer()),
+  FieldMetadata("teamCount", "team_count", "_team_count", int, 0, PredefinedSerializer()),
+  FieldMetadata("userHasEntered", "user_has_entered", "_user_has_entered", bool, False, PredefinedSerializer()),
+  FieldMetadata("userRank", "user_rank", "_user_rank", int, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("mergerDeadline", "merger_deadline", "_merger_deadline", datetime, None, DateTimeSerializer()),
+  FieldMetadata("newEntrantDeadline", "new_entrant_deadline", "_new_entrant_deadline", datetime, None, DateTimeSerializer()),
+  FieldMetadata("enabledDate", "enabled_date", "_enabled_date", datetime, None, DateTimeSerializer()),
+  FieldMetadata("maxDailySubmissions", "max_daily_submissions", "_max_daily_submissions", int, 0, PredefinedSerializer()),
+  FieldMetadata("maxTeamSize", "max_team_size", "_max_team_size", int, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("evaluationMetric", "evaluation_metric", "_evaluation_metric", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("awardsPoints", "awards_points", "_awards_points", bool, False, PredefinedSerializer()),
+  FieldMetadata("isKernelsSubmissionsOnly", "is_kernels_submissions_only", "_is_kernels_submissions_only", bool, False, PredefinedSerializer()),
+  FieldMetadata("submissionsDisabled", "submissions_disabled", "_submissions_disabled", bool, False, PredefinedSerializer()),
 ]
 
 ApiDataFile._fields = [
-    FieldMetadata("ref", "ref", "_ref", str, "", PredefinedSerializer()),
-    FieldMetadata(
-        "name",
-        "name",
-        "_name",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "description",
-        "description",
-        "_description",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata("totalBytes", "total_bytes", "_total_bytes", int, 0,
-                  PredefinedSerializer()),
-    FieldMetadata(
-        "url", "url", "_url", str, None, PredefinedSerializer(), optional=True),
-    FieldMetadata("creationDate", "creation_date", "_creation_date", datetime,
-                  None, DateTimeSerializer()),
+  FieldMetadata("ref", "ref", "_ref", str, "", PredefinedSerializer()),
+  FieldMetadata("name", "name", "_name", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("description", "description", "_description", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("totalBytes", "total_bytes", "_total_bytes", int, 0, PredefinedSerializer()),
+  FieldMetadata("url", "url", "_url", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("creationDate", "creation_date", "_creation_date", datetime, None, DateTimeSerializer()),
 ]
 
 ApiCategory._fields = [
-    FieldMetadata("ref", "ref", "_ref", str, "", PredefinedSerializer()),
-    FieldMetadata(
-        "name",
-        "name",
-        "_name",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "description",
-        "description",
-        "_description",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "fullPath",
-        "full_path",
-        "_full_path",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata("competitionCount", "competition_count", "_competition_count",
-                  int, 0, PredefinedSerializer()),
-    FieldMetadata("datasetCount", "dataset_count", "_dataset_count", int, 0,
-                  PredefinedSerializer()),
-    FieldMetadata("scriptCount", "script_count", "_script_count", int, 0,
-                  PredefinedSerializer()),
-    FieldMetadata("totalCount", "total_count", "_total_count", int, 0,
-                  PredefinedSerializer()),
+  FieldMetadata("ref", "ref", "_ref", str, "", PredefinedSerializer()),
+  FieldMetadata("name", "name", "_name", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("description", "description", "_description", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("fullPath", "full_path", "_full_path", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("competitionCount", "competition_count", "_competition_count", int, 0, PredefinedSerializer()),
+  FieldMetadata("datasetCount", "dataset_count", "_dataset_count", int, 0, PredefinedSerializer()),
+  FieldMetadata("scriptCount", "script_count", "_script_count", int, 0, PredefinedSerializer()),
+  FieldMetadata("totalCount", "total_count", "_total_count", int, 0, PredefinedSerializer()),
 ]
+

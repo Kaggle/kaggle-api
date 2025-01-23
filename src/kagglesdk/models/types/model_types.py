@@ -3,7 +3,6 @@ from kagglesdk.models.types.model_enums import ModelFramework, ModelVersionLinkT
 from kagglesdk.users.types.users_enums import UserAchievementTier
 from typing import Optional
 
-
 class BaseModelInstanceInformation(KaggleObject):
   r"""
   Attributes:
@@ -247,46 +246,25 @@ class Owner(KaggleObject):
 
 
 BaseModelInstanceInformation._fields = [
-    FieldMetadata("id", "id", "_id", int, 0, PredefinedSerializer()),
-    FieldMetadata("owner", "owner", "_owner", Owner, None,
-                  KaggleObjectSerializer()),
-    FieldMetadata("modelSlug", "model_slug", "_model_slug", str, "",
-                  PredefinedSerializer()),
-    FieldMetadata("instanceSlug", "instance_slug", "_instance_slug", str, "",
-                  PredefinedSerializer()),
-    FieldMetadata("framework", "framework", "_framework", ModelFramework,
-                  ModelFramework.MODEL_FRAMEWORK_UNSPECIFIED, EnumSerializer()),
+  FieldMetadata("id", "id", "_id", int, 0, PredefinedSerializer()),
+  FieldMetadata("owner", "owner", "_owner", Owner, None, KaggleObjectSerializer()),
+  FieldMetadata("modelSlug", "model_slug", "_model_slug", str, "", PredefinedSerializer()),
+  FieldMetadata("instanceSlug", "instance_slug", "_instance_slug", str, "", PredefinedSerializer()),
+  FieldMetadata("framework", "framework", "_framework", ModelFramework, ModelFramework.MODEL_FRAMEWORK_UNSPECIFIED, EnumSerializer()),
 ]
 
 ModelLink._fields = [
-    FieldMetadata("type", "type", "_type", ModelVersionLinkType,
-                  ModelVersionLinkType.MODEL_VERSION_LINK_TYPE_UNSPECIFIED,
-                  EnumSerializer()),
-    FieldMetadata("url", "url", "_url", str, "", PredefinedSerializer()),
+  FieldMetadata("type", "type", "_type", ModelVersionLinkType, ModelVersionLinkType.MODEL_VERSION_LINK_TYPE_UNSPECIFIED, EnumSerializer()),
+  FieldMetadata("url", "url", "_url", str, "", PredefinedSerializer()),
 ]
 
 Owner._fields = [
-    FieldMetadata("id", "id", "_id", int, 0, PredefinedSerializer()),
-    FieldMetadata(
-        "imageUrl",
-        "image_url",
-        "_image_url",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata("isOrganization", "is_organization", "_is_organization", bool,
-                  False, PredefinedSerializer()),
-    FieldMetadata("name", "name", "_name", str, "", PredefinedSerializer()),
-    FieldMetadata(
-        "profileUrl",
-        "profile_url",
-        "_profile_url",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata("slug", "slug", "_slug", str, "", PredefinedSerializer()),
-    FieldMetadata("userTier", "user_tier", "_user_tier", UserAchievementTier,
-                  UserAchievementTier.NOVICE, EnumSerializer()),
+  FieldMetadata("id", "id", "_id", int, 0, PredefinedSerializer()),
+  FieldMetadata("imageUrl", "image_url", "_image_url", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("isOrganization", "is_organization", "_is_organization", bool, False, PredefinedSerializer()),
+  FieldMetadata("name", "name", "_name", str, "", PredefinedSerializer()),
+  FieldMetadata("profileUrl", "profile_url", "_profile_url", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("slug", "slug", "_slug", str, "", PredefinedSerializer()),
+  FieldMetadata("userTier", "user_tier", "_user_tier", UserAchievementTier, UserAchievementTier.NOVICE, EnumSerializer()),
 ]
+

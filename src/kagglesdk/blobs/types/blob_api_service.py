@@ -2,13 +2,11 @@ import enum
 from kagglesdk.kaggle_object import *
 from typing import Optional
 
-
 class ApiBlobType(enum.Enum):
   API_BLOB_TYPE_UNSPECIFIED = 0
   DATASET = 1
   MODEL = 2
   INBOX = 3
-
 
 class ApiStartBlobUploadRequest(KaggleObject):
   r"""
@@ -103,9 +101,11 @@ class ApiStartBlobUploadRequest(KaggleObject):
       raise TypeError('last_modified_epoch_seconds must be of type int')
     self._last_modified_epoch_seconds = last_modified_epoch_seconds
 
+
   def endpoint(self):
     path = '/api/v1/blobs/upload'
     return path.format_map(self.to_field_map(self))
+
 
   @staticmethod
   def method():
@@ -114,7 +114,6 @@ class ApiStartBlobUploadRequest(KaggleObject):
   @staticmethod
   def body_fields():
     return '*'
-
 
 class ApiStartBlobUploadResponse(KaggleObject):
   r"""
@@ -160,31 +159,15 @@ class ApiStartBlobUploadResponse(KaggleObject):
 
 
 ApiStartBlobUploadRequest._fields = [
-    FieldMetadata("type", "type", "_type", ApiBlobType,
-                  ApiBlobType.API_BLOB_TYPE_UNSPECIFIED, EnumSerializer()),
-    FieldMetadata("name", "name", "_name", str, "", PredefinedSerializer()),
-    FieldMetadata(
-        "contentType",
-        "content_type",
-        "_content_type",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata("contentLength", "content_length", "_content_length", int, 0,
-                  PredefinedSerializer()),
-    FieldMetadata(
-        "lastModifiedEpochSeconds",
-        "last_modified_epoch_seconds",
-        "_last_modified_epoch_seconds",
-        int,
-        None,
-        PredefinedSerializer(),
-        optional=True),
+  FieldMetadata("type", "type", "_type", ApiBlobType, ApiBlobType.API_BLOB_TYPE_UNSPECIFIED, EnumSerializer()),
+  FieldMetadata("name", "name", "_name", str, "", PredefinedSerializer()),
+  FieldMetadata("contentType", "content_type", "_content_type", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("contentLength", "content_length", "_content_length", int, 0, PredefinedSerializer()),
+  FieldMetadata("lastModifiedEpochSeconds", "last_modified_epoch_seconds", "_last_modified_epoch_seconds", int, None, PredefinedSerializer(), optional=True),
 ]
 
 ApiStartBlobUploadResponse._fields = [
-    FieldMetadata("token", "token", "_token", str, "", PredefinedSerializer()),
-    FieldMetadata("createUrl", "create_url", "_create_url", str, "",
-                  PredefinedSerializer()),
+  FieldMetadata("token", "token", "_token", str, "", PredefinedSerializer()),
+  FieldMetadata("createUrl", "create_url", "_create_url", str, "", PredefinedSerializer()),
 ]
+

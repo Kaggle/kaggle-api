@@ -3,7 +3,6 @@ from kagglesdk.kaggle_object import *
 from kagglesdk.kernels.types.kernels_enums import KernelsListSortType, KernelsListViewType, KernelWorkerStatus
 from typing import Optional, List
 
-
 class ApiDownloadKernelOutputRequest(KaggleObject):
   r"""
   Attributes:
@@ -74,6 +73,7 @@ class ApiDownloadKernelOutputRequest(KaggleObject):
       raise TypeError('version_number must be of type int')
     self._version_number = version_number
 
+
   def endpoint(self):
     if self.file_path:
       path = '/api/v1/kernels/output/download/{owner_slug}/{kernel_slug}/{file_path}'
@@ -85,6 +85,37 @@ class ApiDownloadKernelOutputRequest(KaggleObject):
   def endpoint_path():
     return '/api/v1/kernels/output/download/{owner_slug}/{kernel_slug}'
 
+class ApiDownloadKernelOutputZipRequest(KaggleObject):
+  r"""
+  Attributes:
+    kernel_session_id (int)
+  """
+
+  def __init__(self):
+    self._kernel_session_id = 0
+    self._freeze()
+
+  @property
+  def kernel_session_id(self) -> int:
+    return self._kernel_session_id
+
+  @kernel_session_id.setter
+  def kernel_session_id(self, kernel_session_id: int):
+    if kernel_session_id is None:
+      del self.kernel_session_id
+      return
+    if not isinstance(kernel_session_id, int):
+      raise TypeError('kernel_session_id must be of type int')
+    self._kernel_session_id = kernel_session_id
+
+
+  def endpoint(self):
+    path = '/api/v1/kernels/output/download_zip/{kernel_session_id}'
+    return path.format_map(self.to_field_map(self))
+
+  @staticmethod
+  def endpoint_path():
+    return '/api/v1/kernels/output/download_zip/{kernel_session_id}'
 
 class ApiGetKernelRequest(KaggleObject):
   r"""
@@ -124,10 +155,10 @@ class ApiGetKernelRequest(KaggleObject):
       raise TypeError('kernel_slug must be of type str')
     self._kernel_slug = kernel_slug
 
+
   def endpoint(self):
     path = '/api/v1/kernels/pull'
     return path.format_map(self.to_field_map(self))
-
 
 class ApiGetKernelResponse(KaggleObject):
   r"""
@@ -206,10 +237,10 @@ class ApiGetKernelSessionStatusRequest(KaggleObject):
       raise TypeError('kernel_slug must be of type str')
     self._kernel_slug = kernel_slug
 
+
   def endpoint(self):
     path = '/api/v1/kernels/status'
     return path.format_map(self.to_field_map(self))
-
 
 class ApiGetKernelSessionStatusResponse(KaggleObject):
   r"""
@@ -548,8 +579,7 @@ class ApiKernelMetadata(KaggleObject):
     if not isinstance(dataset_data_sources, list):
       raise TypeError('dataset_data_sources must be of type list')
     if not all([isinstance(t, str) for t in dataset_data_sources]):
-      raise TypeError(
-          'dataset_data_sources must contain only items of type str')
+      raise TypeError('dataset_data_sources must contain only items of type str')
     self._dataset_data_sources = dataset_data_sources
 
   @property
@@ -572,16 +602,14 @@ class ApiKernelMetadata(KaggleObject):
     return self._competition_data_sources
 
   @competition_data_sources.setter
-  def competition_data_sources(self,
-                               competition_data_sources: Optional[List[str]]):
+  def competition_data_sources(self, competition_data_sources: Optional[List[str]]):
     if competition_data_sources is None:
       del self.competition_data_sources
       return
     if not isinstance(competition_data_sources, list):
       raise TypeError('competition_data_sources must be of type list')
     if not all([isinstance(t, str) for t in competition_data_sources]):
-      raise TypeError(
-          'competition_data_sources must contain only items of type str')
+      raise TypeError('competition_data_sources must contain only items of type str')
     self._competition_data_sources = competition_data_sources
 
   @property
@@ -694,10 +722,10 @@ class ApiListKernelFilesRequest(KaggleObject):
       raise TypeError('page_token must be of type str')
     self._page_token = page_token
 
+
   def endpoint(self):
     path = '/api/v1/kernels/files'
     return path.format_map(self.to_field_map(self))
-
 
 class ApiListKernelFilesResponse(KaggleObject):
   r"""
@@ -723,8 +751,7 @@ class ApiListKernelFilesResponse(KaggleObject):
     if not isinstance(files, list):
       raise TypeError('files must be of type list')
     if not all([isinstance(t, ApiListKernelFilesItem) for t in files]):
-      raise TypeError(
-          'files must contain only items of type ApiListKernelFilesItem')
+      raise TypeError('files must contain only items of type ApiListKernelFilesItem')
     self._files = files
 
   @property
@@ -809,10 +836,10 @@ class ApiListKernelSessionOutputRequest(KaggleObject):
       raise TypeError('page_token must be of type str')
     self._page_token = page_token
 
+
   def endpoint(self):
     path = '/api/v1/kernels/output'
     return path.format_map(self.to_field_map(self))
-
 
 class ApiListKernelSessionOutputResponse(KaggleObject):
   r"""
@@ -833,16 +860,14 @@ class ApiListKernelSessionOutputResponse(KaggleObject):
     return self._files
 
   @files.setter
-  def files(self,
-            files: Optional[List[Optional['ApiKernelSessionOutputFile']]]):
+  def files(self, files: Optional[List[Optional['ApiKernelSessionOutputFile']]]):
     if files is None:
       del self.files
       return
     if not isinstance(files, list):
       raise TypeError('files must be of type list')
     if not all([isinstance(t, ApiKernelSessionOutputFile) for t in files]):
-      raise TypeError(
-          'files must contain only items of type ApiKernelSessionOutputFile')
+      raise TypeError('files must contain only items of type ApiKernelSessionOutputFile')
     self._files = files
 
   @property
@@ -1096,10 +1121,10 @@ class ApiListKernelsRequest(KaggleObject):
       raise TypeError('page_size must be of type int')
     self._page_size = page_size
 
+
   def endpoint(self):
     path = '/api/v1/kernels/list'
     return path.format_map(self.to_field_map(self))
-
 
 class ApiListKernelsResponse(KaggleObject):
   r"""
@@ -1123,14 +1148,13 @@ class ApiListKernelsResponse(KaggleObject):
     if not isinstance(kernels, list):
       raise TypeError('kernels must be of type list')
     if not all([isinstance(t, ApiKernelMetadata) for t in kernels]):
-      raise TypeError(
-          'kernels must contain only items of type ApiKernelMetadata')
+      raise TypeError('kernels must contain only items of type ApiKernelMetadata')
     self._kernels = kernels
+
 
   @classmethod
   def prepare_from(cls, http_response):
     return cls.from_dict({'kernels': json.loads(http_response.text)})
-
 
 class ApiSaveKernelRequest(KaggleObject):
   r"""
@@ -1313,8 +1337,7 @@ class ApiSaveKernelRequest(KaggleObject):
     if not isinstance(dataset_data_sources, list):
       raise TypeError('dataset_data_sources must be of type list')
     if not all([isinstance(t, str) for t in dataset_data_sources]):
-      raise TypeError(
-          'dataset_data_sources must contain only items of type str')
+      raise TypeError('dataset_data_sources must contain only items of type str')
     self._dataset_data_sources = dataset_data_sources
 
   @property
@@ -1343,16 +1366,14 @@ class ApiSaveKernelRequest(KaggleObject):
     return self._competition_data_sources
 
   @competition_data_sources.setter
-  def competition_data_sources(self,
-                               competition_data_sources: Optional[List[str]]):
+  def competition_data_sources(self, competition_data_sources: Optional[List[str]]):
     if competition_data_sources is None:
       del self.competition_data_sources
       return
     if not isinstance(competition_data_sources, list):
       raise TypeError('competition_data_sources must be of type list')
     if not all([isinstance(t, str) for t in competition_data_sources]):
-      raise TypeError(
-          'competition_data_sources must contain only items of type str')
+      raise TypeError('competition_data_sources must contain only items of type str')
     self._competition_data_sources = competition_data_sources
 
   @property
@@ -1463,9 +1484,11 @@ class ApiSaveKernelRequest(KaggleObject):
       raise TypeError('model_data_sources must contain only items of type str')
     self._model_data_sources = model_data_sources
 
+
   def endpoint(self):
     path = '/api/v1/kernels/push'
     return path.format_map(self.to_field_map(self))
+
 
   @staticmethod
   def method():
@@ -1474,7 +1497,6 @@ class ApiSaveKernelRequest(KaggleObject):
   @staticmethod
   def body_fields():
     return '*'
-
 
 class ApiSaveKernelResponse(KaggleObject):
   r"""
@@ -1574,16 +1596,14 @@ class ApiSaveKernelResponse(KaggleObject):
     return self._invalid_dataset_sources
 
   @invalid_dataset_sources.setter
-  def invalid_dataset_sources(self,
-                              invalid_dataset_sources: Optional[List[str]]):
+  def invalid_dataset_sources(self, invalid_dataset_sources: Optional[List[str]]):
     if invalid_dataset_sources is None:
       del self.invalid_dataset_sources
       return
     if not isinstance(invalid_dataset_sources, list):
       raise TypeError('invalid_dataset_sources must be of type list')
     if not all([isinstance(t, str) for t in invalid_dataset_sources]):
-      raise TypeError(
-          'invalid_dataset_sources must contain only items of type str')
+      raise TypeError('invalid_dataset_sources must contain only items of type str')
     self._invalid_dataset_sources = invalid_dataset_sources
 
   @property
@@ -1591,16 +1611,14 @@ class ApiSaveKernelResponse(KaggleObject):
     return self._invalid_competition_sources
 
   @invalid_competition_sources.setter
-  def invalid_competition_sources(
-      self, invalid_competition_sources: Optional[List[str]]):
+  def invalid_competition_sources(self, invalid_competition_sources: Optional[List[str]]):
     if invalid_competition_sources is None:
       del self.invalid_competition_sources
       return
     if not isinstance(invalid_competition_sources, list):
       raise TypeError('invalid_competition_sources must be of type list')
     if not all([isinstance(t, str) for t in invalid_competition_sources]):
-      raise TypeError(
-          'invalid_competition_sources must contain only items of type str')
+      raise TypeError('invalid_competition_sources must contain only items of type str')
     self._invalid_competition_sources = invalid_competition_sources
 
   @property
@@ -1615,8 +1633,7 @@ class ApiSaveKernelResponse(KaggleObject):
     if not isinstance(invalid_kernel_sources, list):
       raise TypeError('invalid_kernel_sources must be of type list')
     if not all([isinstance(t, str) for t in invalid_kernel_sources]):
-      raise TypeError(
-          'invalid_kernel_sources must contain only items of type str')
+      raise TypeError('invalid_kernel_sources must contain only items of type str')
     self._invalid_kernel_sources = invalid_kernel_sources
 
   @property
@@ -1631,8 +1648,7 @@ class ApiSaveKernelResponse(KaggleObject):
     if not isinstance(invalid_model_sources, list):
       raise TypeError('invalid_model_sources must be of type list')
     if not all([isinstance(t, str) for t in invalid_model_sources]):
-      raise TypeError(
-          'invalid_model_sources must contain only items of type str')
+      raise TypeError('invalid_model_sources must contain only items of type str')
     self._invalid_model_sources = invalid_model_sources
 
 
@@ -1730,497 +1746,148 @@ class ApiListKernelFilesItem(KaggleObject):
 
 
 ApiDownloadKernelOutputRequest._fields = [
-    FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "",
-                  PredefinedSerializer()),
-    FieldMetadata("kernelSlug", "kernel_slug", "_kernel_slug", str, "",
-                  PredefinedSerializer()),
-    FieldMetadata(
-        "filePath",
-        "file_path",
-        "_file_path",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "versionNumber",
-        "version_number",
-        "_version_number",
-        int,
-        None,
-        PredefinedSerializer(),
-        optional=True),
+  FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "", PredefinedSerializer()),
+  FieldMetadata("kernelSlug", "kernel_slug", "_kernel_slug", str, "", PredefinedSerializer()),
+  FieldMetadata("filePath", "file_path", "_file_path", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("versionNumber", "version_number", "_version_number", int, None, PredefinedSerializer(), optional=True),
+]
+
+ApiDownloadKernelOutputZipRequest._fields = [
+  FieldMetadata("kernelSessionId", "kernel_session_id", "_kernel_session_id", int, 0, PredefinedSerializer()),
 ]
 
 ApiGetKernelRequest._fields = [
-    FieldMetadata("userName", "user_name", "_user_name", str, "",
-                  PredefinedSerializer()),
-    FieldMetadata("kernelSlug", "kernel_slug", "_kernel_slug", str, "",
-                  PredefinedSerializer()),
+  FieldMetadata("userName", "user_name", "_user_name", str, "", PredefinedSerializer()),
+  FieldMetadata("kernelSlug", "kernel_slug", "_kernel_slug", str, "", PredefinedSerializer()),
 ]
 
 ApiGetKernelResponse._fields = [
-    FieldMetadata("metadata", "metadata", "_metadata", ApiKernelMetadata, None,
-                  KaggleObjectSerializer()),
-    FieldMetadata("blob", "blob", "_blob", ApiKernelBlob, None,
-                  KaggleObjectSerializer()),
+  FieldMetadata("metadata", "metadata", "_metadata", ApiKernelMetadata, None, KaggleObjectSerializer()),
+  FieldMetadata("blob", "blob", "_blob", ApiKernelBlob, None, KaggleObjectSerializer()),
 ]
 
 ApiGetKernelSessionStatusRequest._fields = [
-    FieldMetadata("userName", "user_name", "_user_name", str, "",
-                  PredefinedSerializer()),
-    FieldMetadata("kernelSlug", "kernel_slug", "_kernel_slug", str, "",
-                  PredefinedSerializer()),
+  FieldMetadata("userName", "user_name", "_user_name", str, "", PredefinedSerializer()),
+  FieldMetadata("kernelSlug", "kernel_slug", "_kernel_slug", str, "", PredefinedSerializer()),
 ]
 
 ApiGetKernelSessionStatusResponse._fields = [
-    FieldMetadata("status", "status", "_status", KernelWorkerStatus,
-                  KernelWorkerStatus.QUEUED, EnumSerializer()),
-    FieldMetadata(
-        "failureMessage",
-        "failure_message",
-        "_failure_message",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
+  FieldMetadata("status", "status", "_status", KernelWorkerStatus, KernelWorkerStatus.QUEUED, EnumSerializer()),
+  FieldMetadata("failureMessage", "failure_message", "_failure_message", str, None, PredefinedSerializer(), optional=True),
 ]
 
 ApiKernelBlob._fields = [
-    FieldMetadata(
-        "source",
-        "source",
-        "_source",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "language",
-        "language",
-        "_language",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "kernelType",
-        "kernel_type",
-        "_kernel_type",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "slug",
-        "slug",
-        "_slug",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
+  FieldMetadata("source", "source", "_source", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("language", "language", "_language", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("kernelType", "kernel_type", "_kernel_type", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("slug", "slug", "_slug", str, None, PredefinedSerializer(), optional=True),
 ]
 
 ApiKernelMetadata._fields = [
-    FieldMetadata("id", "id", "_id", int, 0, PredefinedSerializer()),
-    FieldMetadata("ref", "ref", "_ref", str, "", PredefinedSerializer()),
-    FieldMetadata("title", "title", "_title", str, "", PredefinedSerializer()),
-    FieldMetadata("author", "author", "_author", str, "",
-                  PredefinedSerializer()),
-    FieldMetadata("slug", "slug", "_slug", str, "", PredefinedSerializer()),
-    FieldMetadata("lastRunTime", "last_run_time", "_last_run_time", datetime,
-                  None, DateTimeSerializer()),
-    FieldMetadata(
-        "language",
-        "language",
-        "_language",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "kernelType",
-        "kernel_type",
-        "_kernel_type",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "isPrivate",
-        "is_private",
-        "_is_private",
-        bool,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "enableGpu",
-        "enable_gpu",
-        "_enable_gpu",
-        bool,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "enableTpu",
-        "enable_tpu",
-        "_enable_tpu",
-        bool,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "enableInternet",
-        "enable_internet",
-        "_enable_internet",
-        bool,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata("categoryIds", "category_ids", "_category_ids", str, [],
-                  ListSerializer(PredefinedSerializer())),
-    FieldMetadata("datasetDataSources", "dataset_data_sources",
-                  "_dataset_data_sources", str, [],
-                  ListSerializer(PredefinedSerializer())),
-    FieldMetadata("kernelDataSources", "kernel_data_sources",
-                  "_kernel_data_sources", str, [],
-                  ListSerializer(PredefinedSerializer())),
-    FieldMetadata("competitionDataSources", "competition_data_sources",
-                  "_competition_data_sources", str, [],
-                  ListSerializer(PredefinedSerializer())),
-    FieldMetadata("modelDataSources", "model_data_sources",
-                  "_model_data_sources", str, [],
-                  ListSerializer(PredefinedSerializer())),
-    FieldMetadata("totalVotes", "total_votes", "_total_votes", int, 0,
-                  PredefinedSerializer()),
-    FieldMetadata(
-        "currentVersionNumber",
-        "current_version_number",
-        "_current_version_number",
-        int,
-        None,
-        PredefinedSerializer(),
-        optional=True),
+  FieldMetadata("id", "id", "_id", int, 0, PredefinedSerializer()),
+  FieldMetadata("ref", "ref", "_ref", str, "", PredefinedSerializer()),
+  FieldMetadata("title", "title", "_title", str, "", PredefinedSerializer()),
+  FieldMetadata("author", "author", "_author", str, "", PredefinedSerializer()),
+  FieldMetadata("slug", "slug", "_slug", str, "", PredefinedSerializer()),
+  FieldMetadata("lastRunTime", "last_run_time", "_last_run_time", datetime, None, DateTimeSerializer()),
+  FieldMetadata("language", "language", "_language", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("kernelType", "kernel_type", "_kernel_type", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("isPrivate", "is_private", "_is_private", bool, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("enableGpu", "enable_gpu", "_enable_gpu", bool, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("enableTpu", "enable_tpu", "_enable_tpu", bool, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("enableInternet", "enable_internet", "_enable_internet", bool, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("categoryIds", "category_ids", "_category_ids", str, [], ListSerializer(PredefinedSerializer())),
+  FieldMetadata("datasetDataSources", "dataset_data_sources", "_dataset_data_sources", str, [], ListSerializer(PredefinedSerializer())),
+  FieldMetadata("kernelDataSources", "kernel_data_sources", "_kernel_data_sources", str, [], ListSerializer(PredefinedSerializer())),
+  FieldMetadata("competitionDataSources", "competition_data_sources", "_competition_data_sources", str, [], ListSerializer(PredefinedSerializer())),
+  FieldMetadata("modelDataSources", "model_data_sources", "_model_data_sources", str, [], ListSerializer(PredefinedSerializer())),
+  FieldMetadata("totalVotes", "total_votes", "_total_votes", int, 0, PredefinedSerializer()),
+  FieldMetadata("currentVersionNumber", "current_version_number", "_current_version_number", int, None, PredefinedSerializer(), optional=True),
 ]
 
 ApiListKernelFilesRequest._fields = [
-    FieldMetadata("userName", "user_name", "_user_name", str, "",
-                  PredefinedSerializer()),
-    FieldMetadata("kernelSlug", "kernel_slug", "_kernel_slug", str, "",
-                  PredefinedSerializer()),
-    FieldMetadata(
-        "pageSize",
-        "page_size",
-        "_page_size",
-        int,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "pageToken",
-        "page_token",
-        "_page_token",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
+  FieldMetadata("userName", "user_name", "_user_name", str, "", PredefinedSerializer()),
+  FieldMetadata("kernelSlug", "kernel_slug", "_kernel_slug", str, "", PredefinedSerializer()),
+  FieldMetadata("pageSize", "page_size", "_page_size", int, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("pageToken", "page_token", "_page_token", str, None, PredefinedSerializer(), optional=True),
 ]
 
 ApiListKernelFilesResponse._fields = [
-    FieldMetadata("files", "files", "_files", ApiListKernelFilesItem, [],
-                  ListSerializer(KaggleObjectSerializer())),
-    FieldMetadata(
-        "nextPageToken",
-        "next_page_token",
-        "_next_page_token",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
+  FieldMetadata("files", "files", "_files", ApiListKernelFilesItem, [], ListSerializer(KaggleObjectSerializer())),
+  FieldMetadata("nextPageToken", "next_page_token", "_next_page_token", str, None, PredefinedSerializer(), optional=True),
 ]
 
 ApiListKernelSessionOutputRequest._fields = [
-    FieldMetadata("userName", "user_name", "_user_name", str, "",
-                  PredefinedSerializer()),
-    FieldMetadata("kernelSlug", "kernel_slug", "_kernel_slug", str, "",
-                  PredefinedSerializer()),
-    FieldMetadata(
-        "pageSize",
-        "page_size",
-        "_page_size",
-        int,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "pageToken",
-        "page_token",
-        "_page_token",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
+  FieldMetadata("userName", "user_name", "_user_name", str, "", PredefinedSerializer()),
+  FieldMetadata("kernelSlug", "kernel_slug", "_kernel_slug", str, "", PredefinedSerializer()),
+  FieldMetadata("pageSize", "page_size", "_page_size", int, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("pageToken", "page_token", "_page_token", str, None, PredefinedSerializer(), optional=True),
 ]
 
 ApiListKernelSessionOutputResponse._fields = [
-    FieldMetadata("files", "files", "_files", ApiKernelSessionOutputFile, [],
-                  ListSerializer(KaggleObjectSerializer())),
-    FieldMetadata(
-        "log", "log", "_log", str, None, PredefinedSerializer(), optional=True),
-    FieldMetadata(
-        "nextPageToken",
-        "next_page_token",
-        "_next_page_token",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
+  FieldMetadata("files", "files", "_files", ApiKernelSessionOutputFile, [], ListSerializer(KaggleObjectSerializer())),
+  FieldMetadata("log", "log", "_log", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("nextPageToken", "next_page_token", "_next_page_token", str, None, PredefinedSerializer(), optional=True),
 ]
 
 ApiListKernelsRequest._fields = [
-    FieldMetadata(
-        "competition",
-        "competition",
-        "_competition",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "dataset",
-        "dataset",
-        "_dataset",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "parentKernel",
-        "parent_kernel",
-        "_parent_kernel",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata("group", "group", "_group", KernelsListViewType,
-                  KernelsListViewType.KERNELS_LIST_VIEW_TYPE_UNSPECIFIED,
-                  EnumSerializer()),
-    FieldMetadata(
-        "kernelType",
-        "kernel_type",
-        "_kernel_type",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "language",
-        "language",
-        "_language",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "outputType",
-        "output_type",
-        "_output_type",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "search",
-        "search",
-        "_search",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata("sortBy", "sort_by", "_sort_by", KernelsListSortType,
-                  KernelsListSortType.HOTNESS, EnumSerializer()),
-    FieldMetadata(
-        "user",
-        "user",
-        "_user",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "page",
-        "page",
-        "_page",
-        int,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "pageSize",
-        "page_size",
-        "_page_size",
-        int,
-        None,
-        PredefinedSerializer(),
-        optional=True),
+  FieldMetadata("competition", "competition", "_competition", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("dataset", "dataset", "_dataset", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("parentKernel", "parent_kernel", "_parent_kernel", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("group", "group", "_group", KernelsListViewType, KernelsListViewType.KERNELS_LIST_VIEW_TYPE_UNSPECIFIED, EnumSerializer()),
+  FieldMetadata("kernelType", "kernel_type", "_kernel_type", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("language", "language", "_language", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("outputType", "output_type", "_output_type", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("search", "search", "_search", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("sortBy", "sort_by", "_sort_by", KernelsListSortType, KernelsListSortType.HOTNESS, EnumSerializer()),
+  FieldMetadata("user", "user", "_user", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("page", "page", "_page", int, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("pageSize", "page_size", "_page_size", int, None, PredefinedSerializer(), optional=True),
 ]
 
 ApiListKernelsResponse._fields = [
-    FieldMetadata("kernels", "kernels", "_kernels", ApiKernelMetadata, [],
-                  ListSerializer(KaggleObjectSerializer())),
+  FieldMetadata("kernels", "kernels", "_kernels", ApiKernelMetadata, [], ListSerializer(KaggleObjectSerializer())),
 ]
 
 ApiSaveKernelRequest._fields = [
-    FieldMetadata(
-        "id", "id", "_id", int, None, PredefinedSerializer(), optional=True),
-    FieldMetadata(
-        "slug",
-        "slug",
-        "_slug",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "newTitle",
-        "new_title",
-        "_new_title",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "text",
-        "text",
-        "_text",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "language",
-        "language",
-        "_language",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "kernelType",
-        "kernel_type",
-        "_kernel_type",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata("datasetDataSources", "dataset_data_sources",
-                  "_dataset_data_sources", str, [],
-                  ListSerializer(PredefinedSerializer())),
-    FieldMetadata("kernelDataSources", "kernel_data_sources",
-                  "_kernel_data_sources", str, [],
-                  ListSerializer(PredefinedSerializer())),
-    FieldMetadata("competitionDataSources", "competition_data_sources",
-                  "_competition_data_sources", str, [],
-                  ListSerializer(PredefinedSerializer())),
-    FieldMetadata("categoryIds", "category_ids", "_category_ids", str, [],
-                  ListSerializer(PredefinedSerializer())),
-    FieldMetadata(
-        "isPrivate",
-        "is_private",
-        "_is_private",
-        bool,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "enableGpu",
-        "enable_gpu",
-        "_enable_gpu",
-        bool,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "enableTpu",
-        "enable_tpu",
-        "_enable_tpu",
-        bool,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "enableInternet",
-        "enable_internet",
-        "_enable_internet",
-        bool,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "dockerImagePinningType",
-        "docker_image_pinning_type",
-        "_docker_image_pinning_type",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata("modelDataSources", "model_data_sources",
-                  "_model_data_sources", str, [],
-                  ListSerializer(PredefinedSerializer())),
+  FieldMetadata("id", "id", "_id", int, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("slug", "slug", "_slug", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("newTitle", "new_title", "_new_title", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("text", "text", "_text", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("language", "language", "_language", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("kernelType", "kernel_type", "_kernel_type", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("datasetDataSources", "dataset_data_sources", "_dataset_data_sources", str, [], ListSerializer(PredefinedSerializer())),
+  FieldMetadata("kernelDataSources", "kernel_data_sources", "_kernel_data_sources", str, [], ListSerializer(PredefinedSerializer())),
+  FieldMetadata("competitionDataSources", "competition_data_sources", "_competition_data_sources", str, [], ListSerializer(PredefinedSerializer())),
+  FieldMetadata("categoryIds", "category_ids", "_category_ids", str, [], ListSerializer(PredefinedSerializer())),
+  FieldMetadata("isPrivate", "is_private", "_is_private", bool, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("enableGpu", "enable_gpu", "_enable_gpu", bool, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("enableTpu", "enable_tpu", "_enable_tpu", bool, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("enableInternet", "enable_internet", "_enable_internet", bool, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("dockerImagePinningType", "docker_image_pinning_type", "_docker_image_pinning_type", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("modelDataSources", "model_data_sources", "_model_data_sources", str, [], ListSerializer(PredefinedSerializer())),
 ]
 
 ApiSaveKernelResponse._fields = [
-    FieldMetadata("ref", "ref", "_ref", str, "", PredefinedSerializer()),
-    FieldMetadata("url", "url", "_url", str, "", PredefinedSerializer()),
-    FieldMetadata(
-        "versionNumber",
-        "version_number",
-        "_version_number",
-        int,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "error",
-        "error",
-        "_error",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata("invalidTags", "invalid_tags", "_invalid_tags", str, [],
-                  ListSerializer(PredefinedSerializer())),
-    FieldMetadata("invalidDatasetSources", "invalid_dataset_sources",
-                  "_invalid_dataset_sources", str, [],
-                  ListSerializer(PredefinedSerializer())),
-    FieldMetadata("invalidCompetitionSources", "invalid_competition_sources",
-                  "_invalid_competition_sources", str, [],
-                  ListSerializer(PredefinedSerializer())),
-    FieldMetadata("invalidKernelSources", "invalid_kernel_sources",
-                  "_invalid_kernel_sources", str, [],
-                  ListSerializer(PredefinedSerializer())),
-    FieldMetadata("invalidModelSources", "invalid_model_sources",
-                  "_invalid_model_sources", str, [],
-                  ListSerializer(PredefinedSerializer())),
+  FieldMetadata("ref", "ref", "_ref", str, "", PredefinedSerializer()),
+  FieldMetadata("url", "url", "_url", str, "", PredefinedSerializer()),
+  FieldMetadata("versionNumber", "version_number", "_version_number", int, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("error", "error", "_error", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("invalidTags", "invalid_tags", "_invalid_tags", str, [], ListSerializer(PredefinedSerializer())),
+  FieldMetadata("invalidDatasetSources", "invalid_dataset_sources", "_invalid_dataset_sources", str, [], ListSerializer(PredefinedSerializer())),
+  FieldMetadata("invalidCompetitionSources", "invalid_competition_sources", "_invalid_competition_sources", str, [], ListSerializer(PredefinedSerializer())),
+  FieldMetadata("invalidKernelSources", "invalid_kernel_sources", "_invalid_kernel_sources", str, [], ListSerializer(PredefinedSerializer())),
+  FieldMetadata("invalidModelSources", "invalid_model_sources", "_invalid_model_sources", str, [], ListSerializer(PredefinedSerializer())),
 ]
 
 ApiKernelSessionOutputFile._fields = [
-    FieldMetadata(
-        "url", "url", "_url", str, None, PredefinedSerializer(), optional=True),
-    FieldMetadata(
-        "fileName",
-        "file_name",
-        "_file_name",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
+  FieldMetadata("url", "url", "_url", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("fileName", "file_name", "_file_name", str, None, PredefinedSerializer(), optional=True),
 ]
 
 ApiListKernelFilesItem._fields = [
-    FieldMetadata("name", "name", "_name", str, "", PredefinedSerializer()),
-    FieldMetadata("size", "size", "_size", int, 0, PredefinedSerializer()),
-    FieldMetadata("creationDate", "creation_date", "_creation_date", str, "",
-                  PredefinedSerializer()),
+  FieldMetadata("name", "name", "_name", str, "", PredefinedSerializer()),
+  FieldMetadata("size", "size", "_size", int, 0, PredefinedSerializer()),
+  FieldMetadata("creationDate", "creation_date", "_creation_date", str, "", PredefinedSerializer()),
 ]
+

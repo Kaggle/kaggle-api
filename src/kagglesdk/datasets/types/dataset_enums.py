@@ -1,6 +1,5 @@
 import enum
 
-
 class DatabundleVersionStatus(enum.Enum):
   NOT_YET_PERSISTED = 0
   BLOBS_RECEIVED = 1
@@ -11,7 +10,6 @@ class DatabundleVersionStatus(enum.Enum):
   FAILED = 6
   DELETED = 7
   REPROCESSING = 8
-
 
 class DatasetFileTypeGroup(enum.Enum):
   r"""
@@ -24,7 +22,6 @@ class DatasetFileTypeGroup(enum.Enum):
   DATASET_FILE_TYPE_GROUP_JSON = 3
   DATASET_FILE_TYPE_GROUP_BIG_QUERY = 4
 
-
 class DatasetLicenseGroup(enum.Enum):
   r"""
   This enum drives acceptable values from the python API, so avoid changing
@@ -35,7 +32,6 @@ class DatasetLicenseGroup(enum.Enum):
   DATASET_LICENSE_GROUP_GPL = 2
   DATASET_LICENSE_GROUP_ODB = 3
   DATASET_LICENSE_GROUP_OTHER = 4
-
 
 class DatasetSelectionGroup(enum.Enum):
   DATASET_SELECTION_GROUP_PUBLIC = 0
@@ -54,7 +50,6 @@ class DatasetSelectionGroup(enum.Enum):
   DATASET_SELECTION_GROUP_ALL = 8
   DATASET_SELECTION_GROUP_UNFEATURED = 9
 
-
 class DatasetSizeGroup(enum.Enum):
   r"""
   This enum drives acceptable values from the python API, so avoid changing
@@ -64,7 +59,6 @@ class DatasetSizeGroup(enum.Enum):
   DATASET_SIZE_GROUP_SMALL = 1
   DATASET_SIZE_GROUP_MEDIUM = 2
   DATASET_SIZE_GROUP_LARGE = 3
-
 
 class DatasetSortBy(enum.Enum):
   r"""
@@ -82,7 +76,7 @@ class DatasetSortBy(enum.Enum):
   DATASET_SORT_BY_LAST_VIEWED = 6
   DATASET_SORT_BY_USABILITY = 7
 
-
 class DatasetViewedGroup(enum.Enum):
   DATASET_VIEWED_GROUP_UNSPECIFIED = 0
   DATASET_VIEWED_GROUP_VIEWED = 1
+

@@ -2,7 +2,6 @@ from kagglesdk.kaggle_object import *
 from kagglesdk.users.types.users_enums import CollaboratorType
 from typing import Optional, List
 
-
 class DatasetInfo(KaggleObject):
   r"""
   Attributes:
@@ -217,8 +216,7 @@ class DatasetInfo(KaggleObject):
     if not isinstance(licenses, list):
       raise TypeError('licenses must be of type list')
     if not all([isinstance(t, SettingsLicense) for t in licenses]):
-      raise TypeError(
-          'licenses must contain only items of type SettingsLicense')
+      raise TypeError('licenses must contain only items of type SettingsLicense')
     self._licenses = licenses
 
   @property
@@ -226,16 +224,14 @@ class DatasetInfo(KaggleObject):
     return self._collaborators
 
   @collaborators.setter
-  def collaborators(
-      self, collaborators: Optional[List[Optional['DatasetCollaborator']]]):
+  def collaborators(self, collaborators: Optional[List[Optional['DatasetCollaborator']]]):
     if collaborators is None:
       del self.collaborators
       return
     if not isinstance(collaborators, list):
       raise TypeError('collaborators must be of type list')
     if not all([isinstance(t, DatasetCollaborator) for t in collaborators]):
-      raise TypeError(
-          'collaborators must contain only items of type DatasetCollaborator')
+      raise TypeError('collaborators must contain only items of type DatasetCollaborator')
     self._collaborators = collaborators
 
   @property
@@ -250,8 +246,7 @@ class DatasetInfo(KaggleObject):
     if not isinstance(data, list):
       raise TypeError('data must be of type list')
     if not all([isinstance(t, DatasetSettingsFile) for t in data]):
-      raise TypeError(
-          'data must contain only items of type DatasetSettingsFile')
+      raise TypeError('data must contain only items of type DatasetSettingsFile')
     self._data = data
 
 
@@ -358,8 +353,7 @@ class DatasetSettings(KaggleObject):
     if not isinstance(licenses, list):
       raise TypeError('licenses must be of type list')
     if not all([isinstance(t, SettingsLicense) for t in licenses]):
-      raise TypeError(
-          'licenses must contain only items of type SettingsLicense')
+      raise TypeError('licenses must contain only items of type SettingsLicense')
     self._licenses = licenses
 
   @property
@@ -367,16 +361,14 @@ class DatasetSettings(KaggleObject):
     return self._collaborators
 
   @collaborators.setter
-  def collaborators(
-      self, collaborators: Optional[List[Optional['DatasetCollaborator']]]):
+  def collaborators(self, collaborators: Optional[List[Optional['DatasetCollaborator']]]):
     if collaborators is None:
       del self.collaborators
       return
     if not isinstance(collaborators, list):
       raise TypeError('collaborators must be of type list')
     if not all([isinstance(t, DatasetCollaborator) for t in collaborators]):
-      raise TypeError(
-          'collaborators must contain only items of type DatasetCollaborator')
+      raise TypeError('collaborators must contain only items of type DatasetCollaborator')
     self._collaborators = collaborators
 
   @property
@@ -391,8 +383,7 @@ class DatasetSettings(KaggleObject):
     if not isinstance(data, list):
       raise TypeError('data must be of type list')
     if not all([isinstance(t, DatasetSettingsFile) for t in data]):
-      raise TypeError(
-          'data must contain only items of type DatasetSettingsFile')
+      raise TypeError('data must contain only items of type DatasetSettingsFile')
     self._data = data
 
 
@@ -456,16 +447,14 @@ class DatasetSettingsFile(KaggleObject):
     return self._columns
 
   @columns.setter
-  def columns(self,
-              columns: Optional[List[Optional['DatasetSettingsFileColumn']]]):
+  def columns(self, columns: Optional[List[Optional['DatasetSettingsFileColumn']]]):
     if columns is None:
       del self.columns
       return
     if not isinstance(columns, list):
       raise TypeError('columns must be of type list')
     if not all([isinstance(t, DatasetSettingsFileColumn) for t in columns]):
-      raise TypeError(
-          'columns must contain only items of type DatasetSettingsFileColumn')
+      raise TypeError('columns must contain only items of type DatasetSettingsFileColumn')
     self._columns = columns
 
 
@@ -604,178 +593,54 @@ class DatasetCollaborator(KaggleObject):
 
 
 DatasetInfo._fields = [
-    FieldMetadata("datasetId", "dataset_id", "_dataset_id", int, 0,
-                  PredefinedSerializer()),
-    FieldMetadata(
-        "datasetSlug",
-        "dataset_slug",
-        "_dataset_slug",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "ownerUser",
-        "owner_user",
-        "_owner_user",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "usabilityRating",
-        "usability_rating",
-        "_usability_rating",
-        float,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata("totalViews", "total_views", "_total_views", int, 0,
-                  PredefinedSerializer()),
-    FieldMetadata("totalVotes", "total_votes", "_total_votes", int, 0,
-                  PredefinedSerializer()),
-    FieldMetadata("totalDownloads", "total_downloads", "_total_downloads", int,
-                  0, PredefinedSerializer()),
-    FieldMetadata(
-        "title",
-        "title",
-        "_title",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "subtitle",
-        "subtitle",
-        "_subtitle",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "description",
-        "description",
-        "_description",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata("isPrivate", "is_private", "_is_private", bool, False,
-                  PredefinedSerializer()),
-    FieldMetadata("keywords", "keywords", "_keywords", str, [],
-                  ListSerializer(PredefinedSerializer())),
-    FieldMetadata("licenses", "licenses", "_licenses", SettingsLicense, [],
-                  ListSerializer(KaggleObjectSerializer())),
-    FieldMetadata("collaborators", "collaborators", "_collaborators",
-                  DatasetCollaborator, [],
-                  ListSerializer(KaggleObjectSerializer())),
-    FieldMetadata("data", "data", "_data", DatasetSettingsFile, [],
-                  ListSerializer(KaggleObjectSerializer())),
+  FieldMetadata("datasetId", "dataset_id", "_dataset_id", int, 0, PredefinedSerializer()),
+  FieldMetadata("datasetSlug", "dataset_slug", "_dataset_slug", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("ownerUser", "owner_user", "_owner_user", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("usabilityRating", "usability_rating", "_usability_rating", float, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("totalViews", "total_views", "_total_views", int, 0, PredefinedSerializer()),
+  FieldMetadata("totalVotes", "total_votes", "_total_votes", int, 0, PredefinedSerializer()),
+  FieldMetadata("totalDownloads", "total_downloads", "_total_downloads", int, 0, PredefinedSerializer()),
+  FieldMetadata("title", "title", "_title", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("subtitle", "subtitle", "_subtitle", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("description", "description", "_description", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("isPrivate", "is_private", "_is_private", bool, False, PredefinedSerializer()),
+  FieldMetadata("keywords", "keywords", "_keywords", str, [], ListSerializer(PredefinedSerializer())),
+  FieldMetadata("licenses", "licenses", "_licenses", SettingsLicense, [], ListSerializer(KaggleObjectSerializer())),
+  FieldMetadata("collaborators", "collaborators", "_collaborators", DatasetCollaborator, [], ListSerializer(KaggleObjectSerializer())),
+  FieldMetadata("data", "data", "_data", DatasetSettingsFile, [], ListSerializer(KaggleObjectSerializer())),
 ]
 
 DatasetSettings._fields = [
-    FieldMetadata(
-        "title",
-        "title",
-        "_title",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "subtitle",
-        "subtitle",
-        "_subtitle",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "description",
-        "description",
-        "_description",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata("isPrivate", "is_private", "_is_private", bool, False,
-                  PredefinedSerializer()),
-    FieldMetadata("keywords", "keywords", "_keywords", str, [],
-                  ListSerializer(PredefinedSerializer())),
-    FieldMetadata("licenses", "licenses", "_licenses", SettingsLicense, [],
-                  ListSerializer(KaggleObjectSerializer())),
-    FieldMetadata("collaborators", "collaborators", "_collaborators",
-                  DatasetCollaborator, [],
-                  ListSerializer(KaggleObjectSerializer())),
-    FieldMetadata("data", "data", "_data", DatasetSettingsFile, [],
-                  ListSerializer(KaggleObjectSerializer())),
+  FieldMetadata("title", "title", "_title", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("subtitle", "subtitle", "_subtitle", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("description", "description", "_description", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("isPrivate", "is_private", "_is_private", bool, False, PredefinedSerializer()),
+  FieldMetadata("keywords", "keywords", "_keywords", str, [], ListSerializer(PredefinedSerializer())),
+  FieldMetadata("licenses", "licenses", "_licenses", SettingsLicense, [], ListSerializer(KaggleObjectSerializer())),
+  FieldMetadata("collaborators", "collaborators", "_collaborators", DatasetCollaborator, [], ListSerializer(KaggleObjectSerializer())),
+  FieldMetadata("data", "data", "_data", DatasetSettingsFile, [], ListSerializer(KaggleObjectSerializer())),
 ]
 
 DatasetSettingsFile._fields = [
-    FieldMetadata("name", "name", "_name", str, "", PredefinedSerializer()),
-    FieldMetadata(
-        "description",
-        "description",
-        "_description",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata("totalBytes", "total_bytes", "_total_bytes", int, 0,
-                  PredefinedSerializer()),
-    FieldMetadata("columns", "columns", "_columns", DatasetSettingsFileColumn,
-                  [], ListSerializer(KaggleObjectSerializer())),
+  FieldMetadata("name", "name", "_name", str, "", PredefinedSerializer()),
+  FieldMetadata("description", "description", "_description", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("totalBytes", "total_bytes", "_total_bytes", int, 0, PredefinedSerializer()),
+  FieldMetadata("columns", "columns", "_columns", DatasetSettingsFileColumn, [], ListSerializer(KaggleObjectSerializer())),
 ]
 
 DatasetSettingsFileColumn._fields = [
-    FieldMetadata("name", "name", "_name", str, "", PredefinedSerializer()),
-    FieldMetadata(
-        "description",
-        "description",
-        "_description",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "type",
-        "type",
-        "_type",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
+  FieldMetadata("name", "name", "_name", str, "", PredefinedSerializer()),
+  FieldMetadata("description", "description", "_description", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("type", "type", "_type", str, None, PredefinedSerializer(), optional=True),
 ]
 
 SettingsLicense._fields = [
-    FieldMetadata(
-        "name",
-        "name",
-        "_name",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
+  FieldMetadata("name", "name", "_name", str, None, PredefinedSerializer(), optional=True),
 ]
 
 DatasetCollaborator._fields = [
-    FieldMetadata(
-        "username",
-        "username",
-        "_username",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata(
-        "groupSlug",
-        "group_slug",
-        "_group_slug",
-        str,
-        None,
-        PredefinedSerializer(),
-        optional=True),
-    FieldMetadata("role", "role", "_role", CollaboratorType,
-                  CollaboratorType.COLLABORATOR_TYPE_UNSPECIFIED,
-                  EnumSerializer()),
+  FieldMetadata("username", "username", "_username", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("groupSlug", "group_slug", "_group_slug", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("role", "role", "_role", CollaboratorType, CollaboratorType.COLLABORATOR_TYPE_UNSPECIFIED, EnumSerializer()),
 ]
+

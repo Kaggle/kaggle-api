@@ -1,8 +1,13 @@
+import binascii
+import codecs
 import json
 import os
 import urllib.parse
+from io import BytesIO
 
 import requests
+from urllib3.fields import RequestField
+
 from kagglesdk.kaggle_env import get_endpoint, get_env, KaggleEnv
 from kagglesdk.kaggle_object import KaggleObject
 from typing import Type
@@ -12,6 +17,8 @@ from typing import Type
 # auth handling. The new client requires KAGGLE_API_TOKEN, so it is not
 # currently usable by the CLI.
 
+# TODO: Extend kapigen to add a boolean to these requests indicating that they use forms.
+REQUESTS_REQUIRING_FORMS = ['ApiUploadDatasetFileRequest', 'ApiCreateSubmissionRequest', 'ApiStartSubmissionUploadRequest', 'ApiUploadModelFileRequest']
 
 def _headers_to_str(headers):
   return '\n'.join(f'{k}: {v}' for k, v in headers.items())
@@ -117,18 +124,22 @@ class KaggleHttpClient(object):
         'Content-Type': 'text/plain',
       })
     elif method == 'POST':
-      self._session.headers.update({
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      })
-      data = request.to_field_map(request, ignore_defaults=False)
+      data = request.to_field_map(request, ignore_defaults=True)
       if isinstance(data, dict):
         fields = request.body_fields()
         if fields is not None:
           if fields != '*':
             data = data[fields]
         data = clean_data(data)
-        data = json.dumps(data)
+        if self.requires_form(request):
+          data, content_type = self.make_form(data)
+        else:
+          content_type = 'application/json'
+          data = json.dumps(data)
+        self._session.headers.update({
+          'Accept': 'application/json',
+          'Content-Type': content_type,
+          })
     http_request = requests.Request(
       method=method,
       url=request_url,
@@ -270,3 +281,36 @@ class KaggleHttpClient(object):
 
   def _get_request_url(self, request):
     return f'{self._endpoint}{request.endpoint()}'
+
+  @staticmethod
+  def make_form(fields):
+    body = BytesIO()
+    boundary = binascii.hexlify(os.urandom(16)).decode()
+    writer = codecs.lookup("utf-8")[3]
+
+    for field in fields.items():
+      field = RequestField.from_tuples(*field)
+      body.write(f"--{boundary}\r\n".encode("latin-1"))
+
+      writer(body).write(field.render_headers())
+      data = field.data
+
+      if isinstance(data, int):
+        data = str(data)
+
+      if isinstance(data, str):
+        writer(body).write(data)
+      else:
+        body.write(data)
+
+      body.write(b"\r\n")
+
+    body.write(f"--{boundary}--\r\n".encode("latin-1"))
+
+    content_type = f"multipart/form-data; boundary={boundary}"
+
+    return body.getvalue(), content_type
+
+  @staticmethod
+  def requires_form(request):
+    return type(request).__name__ in REQUESTS_REQUIRING_FORMS

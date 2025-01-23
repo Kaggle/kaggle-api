@@ -85,6 +85,38 @@ class ApiDownloadKernelOutputRequest(KaggleObject):
   def endpoint_path():
     return '/api/v1/kernels/output/download/{owner_slug}/{kernel_slug}'
 
+class ApiDownloadKernelOutputZipRequest(KaggleObject):
+  r"""
+  Attributes:
+    kernel_session_id (int)
+  """
+
+  def __init__(self):
+    self._kernel_session_id = 0
+    self._freeze()
+
+  @property
+  def kernel_session_id(self) -> int:
+    return self._kernel_session_id
+
+  @kernel_session_id.setter
+  def kernel_session_id(self, kernel_session_id: int):
+    if kernel_session_id is None:
+      del self.kernel_session_id
+      return
+    if not isinstance(kernel_session_id, int):
+      raise TypeError('kernel_session_id must be of type int')
+    self._kernel_session_id = kernel_session_id
+
+
+  def endpoint(self):
+    path = '/api/v1/kernels/output/download_zip/{kernel_session_id}'
+    return path.format_map(self.to_field_map(self))
+
+  @staticmethod
+  def endpoint_path():
+    return '/api/v1/kernels/output/download_zip/{kernel_session_id}'
+
 class ApiGetKernelRequest(KaggleObject):
   r"""
   Attributes:
@@ -1718,6 +1750,10 @@ ApiDownloadKernelOutputRequest._fields = [
   FieldMetadata("kernelSlug", "kernel_slug", "_kernel_slug", str, "", PredefinedSerializer()),
   FieldMetadata("filePath", "file_path", "_file_path", str, None, PredefinedSerializer(), optional=True),
   FieldMetadata("versionNumber", "version_number", "_version_number", int, None, PredefinedSerializer(), optional=True),
+]
+
+ApiDownloadKernelOutputZipRequest._fields = [
+  FieldMetadata("kernelSessionId", "kernel_session_id", "_kernel_session_id", int, 0, PredefinedSerializer()),
 ]
 
 ApiGetKernelRequest._fields = [

@@ -771,7 +771,7 @@ class ApiStartSubmissionUploadRequest(KaggleObject):
 
 
   def endpoint(self):
-    path = '/api/v1/competitions/{competition_name}/submissions/url/{content_length}/{last_modified_epoch_seconds}'
+    path = '/api/v1/competitions/submission-url'
     return path.format_map(self.to_field_map(self))
 
 

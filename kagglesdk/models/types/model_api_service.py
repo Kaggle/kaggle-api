@@ -1768,6 +1768,7 @@ class ApiModelInstance(KaggleObject):
     model_instance_type (ModelInstanceType)
     base_model_instance_information (BaseModelInstanceInformation)
     external_base_model_url (str)
+    total_uncompressed_bytes (int)
   """
 
   def __init__(self):
@@ -1786,6 +1787,7 @@ class ApiModelInstance(KaggleObject):
     self._model_instance_type = ModelInstanceType.MODEL_INSTANCE_TYPE_UNSPECIFIED
     self._base_model_instance_information = None
     self._external_base_model_url = ""
+    self._total_uncompressed_bytes = 0
     self._freeze()
 
   @property
@@ -1984,6 +1986,19 @@ class ApiModelInstance(KaggleObject):
     if not isinstance(external_base_model_url, str):
       raise TypeError('external_base_model_url must be of type str')
     self._external_base_model_url = external_base_model_url
+
+  @property
+  def total_uncompressed_bytes(self) -> int:
+    return self._total_uncompressed_bytes
+
+  @total_uncompressed_bytes.setter
+  def total_uncompressed_bytes(self, total_uncompressed_bytes: int):
+    if total_uncompressed_bytes is None:
+      del self.total_uncompressed_bytes
+      return
+    if not isinstance(total_uncompressed_bytes, int):
+      raise TypeError('total_uncompressed_bytes must be of type int')
+    self._total_uncompressed_bytes = total_uncompressed_bytes
 
 
 class ApiUpdateModelInstanceRequest(KaggleObject):
@@ -3063,6 +3078,7 @@ ApiModelInstance._fields = [
   FieldMetadata("modelInstanceType", "model_instance_type", "_model_instance_type", ModelInstanceType, ModelInstanceType.MODEL_INSTANCE_TYPE_UNSPECIFIED, EnumSerializer()),
   FieldMetadata("baseModelInstanceInformation", "base_model_instance_information", "_base_model_instance_information", BaseModelInstanceInformation, None, KaggleObjectSerializer(), optional=True),
   FieldMetadata("externalBaseModelUrl", "external_base_model_url", "_external_base_model_url", str, "", PredefinedSerializer()),
+  FieldMetadata("totalUncompressedBytes", "total_uncompressed_bytes", "_total_uncompressed_bytes", int, 0, PredefinedSerializer()),
 ]
 
 ApiUpdateModelInstanceRequest._fields = [

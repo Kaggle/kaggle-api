@@ -1,6 +1,7 @@
+from kagglesdk.common.types.file_download import FileDownload
 from kagglesdk.common.types.http_redirect import HttpRedirect
 from kagglesdk.kaggle_http_client import KaggleHttpClient
-from kagglesdk.kernels.types.kernels_api_service import ApiDownloadKernelOutputRequest, ApiGetKernelRequest, ApiGetKernelResponse, ApiGetKernelSessionStatusRequest, ApiGetKernelSessionStatusResponse, ApiListKernelFilesRequest, ApiListKernelFilesResponse, ApiListKernelSessionOutputRequest, ApiListKernelSessionOutputResponse, ApiListKernelsRequest, ApiListKernelsResponse, ApiSaveKernelRequest, ApiSaveKernelResponse
+from kagglesdk.kernels.types.kernels_api_service import ApiDownloadKernelOutputRequest, ApiDownloadKernelOutputZipRequest, ApiGetKernelRequest, ApiGetKernelResponse, ApiGetKernelSessionStatusRequest, ApiGetKernelSessionStatusResponse, ApiListKernelFilesRequest, ApiListKernelFilesResponse, ApiListKernelSessionOutputRequest, ApiListKernelSessionOutputResponse, ApiListKernelsRequest, ApiListKernelsResponse, ApiSaveKernelRequest, ApiSaveKernelResponse
 
 class KernelsApiClient(object):
 
@@ -92,3 +93,17 @@ class KernelsApiClient(object):
       request = ApiDownloadKernelOutputRequest()
 
     return self._client.call("kernels.KernelsApiService", "ApiDownloadKernelOutput", request, HttpRedirect)
+
+  def download_kernel_output_zip(self, request: ApiDownloadKernelOutputZipRequest = None) -> FileDownload:
+    r"""
+    Meant for use by Kaggle Hub (and DownloadKernelOutput above)
+
+    Args:
+      request (ApiDownloadKernelOutputZipRequest):
+        The request object; initialized to empty instance if not specified.
+    """
+
+    if request is None:
+      request = ApiDownloadKernelOutputZipRequest()
+
+    return self._client.call("kernels.KernelsApiService", "ApiDownloadKernelOutputZip", request, FileDownload)

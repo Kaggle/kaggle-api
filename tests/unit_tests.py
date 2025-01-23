@@ -541,8 +541,11 @@ class TestKaggleApi(unittest.TestCase):
       new_dataset = api.dataset_create_new(dataset_directory)
       self.assertIsNotNone(new_dataset)
       if new_dataset.error is not None:
-        print(new_dataset.error)  # This is likely to happen, and that's OK.
-        # self.skip_create_version = True
+        if 'already in use' in new_dataset.error:
+          print(new_dataset.error)  # This is likely to happen, and that's OK.
+          self.skip_create_version = True
+        else:
+          self.fail(f"dataset_create_new failed: {new_dataset.error}")
     except ApiException as e:
       self.fail(f"dataset_create_new failed: {e}")
 
@@ -783,7 +786,7 @@ class TestKaggleApi(unittest.TestCase):
       self.assertIsNotNone(inst_update_resp)
       if len(inst_update_resp.error):
         print(inst_update_resp.error)
-      self.assertEquals(len(inst_update_resp.error), 0)
+      self.assertEqual(len(inst_update_resp.error), 0)
     except ApiException as e:
       self.fail(f"model_instance_delete failed: {e}")
 

@@ -21,20 +21,20 @@ classifiers = [
 keywords = ["Kaggle", "API"]
 requires-python = ">=3.7"
 dependencies = [
-  "bleach", 
-  "certifi>=14.05.14",
-  "charset-normalizer",
-  "idna",
-  "python-dateutil>=2.5.3",
-  "python-slugify",
-  "requests",
-  "setuptools>=21.0.0",
-  "six>=1.10",
-  "text-unidecode",
-  "tqdm",
-  "urllib3>=1.15.1",
-  "webencodings", 
-  "protobuf"
+    "bleach",
+    "certifi>=14.05.14",
+    "charset-normalizer",
+    "idna",
+    "python-dateutil>=2.5.3",
+    "python-slugify",
+    "requests",
+    "setuptools>=21.0.0",
+    "six>=1.10",
+    "text-unidecode",
+    "tqdm",
+    "urllib3>=1.15.1",
+    "webencodings",
+    "protobuf"
 ]
 
 [project.scripts]
@@ -49,13 +49,11 @@ path = "src/__init__.py"
 
 [tool.hatch.envs.default]
 dependencies = [
-  "pytest",
+    "pytest",
 ]
 
-[tool.setuptools.packages.find]
-where = ["src"]
-include = ["kaggle*"]
-namespaces = false
+[tool.hatch.build.targets.wheel]
+packages = ["src/kaggle", "src/kagglesdk"]
 
 [tool.hatch.envs.default.scripts]
 install-unzip = """sudo apt-get install -y unzip || echo 'unzip could not be installed'"""

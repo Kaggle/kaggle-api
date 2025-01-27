@@ -1,5 +1,13 @@
 Changelog
 ====
+### 1.7
+
+* Remove Swagger. No user-visible changes to the command-line tool. However, projects that
+use `kaggle/api/kaggle_api.py` may be affected. That file is deprecated and will be removed.
+Most of it functions still work, but those that involve uploading files no longer work.
+The command-line tool uses a higher-level abstraction for uploading and client code needs 
+to be converted to use that.
+
 ### 1.6.17
 
 * No changes; release 1.6.16 did not complete.

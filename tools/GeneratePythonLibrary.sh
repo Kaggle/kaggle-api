@@ -74,8 +74,8 @@ function init {
 
   mkdir -p "$KAGGLE_XDG_CONFIG_DIR" && chmod 700 "$KAGGLE_XDG_CONFIG_DIR"
 
-  echo "rm -rf kaggle"
-  rm -rf kaggle
+  echo "rm -rf kaggle kagglesdk"
+  rm -rf kaggle kagglesdk
 
   create-local-creds
 }
@@ -83,8 +83,8 @@ function init {
 function reset {
   cd $SELF_DIR
 
-  echo rm -rf kaggle/*
-  rm -rf kaggle/*
+  echo "rm -rf kaggle/* kagglesdk/*"
+  rm -rf kaggle/* kagglesdk/*
 
   echo "yapf3 -ir src/"
   if [ -x "$(command -v yapf3)" ]; then
@@ -111,6 +111,7 @@ function copy-src {
   cp ./src/setup.py .
   cp ./src/setup.cfg .
   cp -r ./src/kaggle .
+  cp -r ./src/kagglesdk .
 }
 
 function run-autogen {

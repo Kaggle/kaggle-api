@@ -77,14 +77,22 @@ class ApiCreateSubmissionResponse(KaggleObject):
   r"""
   Attributes:
     message (str)
+      TODO: Remove when we feel okay with the breaking change, this adds no
+      value.
+    ref (int)
   """
 
   def __init__(self):
     self._message = ""
+    self._ref = 0
     self._freeze()
 
   @property
   def message(self) -> str:
+    r"""
+    TODO: Remove when we feel okay with the breaking change, this adds no
+    value.
+    """
     return self._message
 
   @message.setter
@@ -95,6 +103,19 @@ class ApiCreateSubmissionResponse(KaggleObject):
     if not isinstance(message, str):
       raise TypeError('message must be of type str')
     self._message = message
+
+  @property
+  def ref(self) -> int:
+    return self._ref
+
+  @ref.setter
+  def ref(self, ref: int):
+    if ref is None:
+      del self.ref
+      return
+    if not isinstance(ref, int):
+      raise TypeError('ref must be of type int')
+    self._ref = ref
 
 
 class ApiDownloadDataFileRequest(KaggleObject):
@@ -219,10 +240,15 @@ class ApiGetLeaderboardRequest(KaggleObject):
   Attributes:
     competition_name (str)
       Competition name. Example: 'titanic'.
+    override_public (bool)
+      By default we return the private leaderboard if it's available, otherwise
+      the public LB. This flag lets you override to get public even if private
+      is available.
   """
 
   def __init__(self):
     self._competition_name = ""
+    self._override_public = None
     self._freeze()
 
   @property
@@ -238,6 +264,24 @@ class ApiGetLeaderboardRequest(KaggleObject):
     if not isinstance(competition_name, str):
       raise TypeError('competition_name must be of type str')
     self._competition_name = competition_name
+
+  @property
+  def override_public(self) -> bool:
+    r"""
+    By default we return the private leaderboard if it's available, otherwise
+    the public LB. This flag lets you override to get public even if private
+    is available.
+    """
+    return self._override_public or False
+
+  @override_public.setter
+  def override_public(self, override_public: bool):
+    if override_public is None:
+      del self.override_public
+      return
+    if not isinstance(override_public, bool):
+      raise TypeError('override_public must be of type bool')
+    self._override_public = override_public
 
 
   def endpoint(self):
@@ -273,6 +317,41 @@ class ApiGetLeaderboardResponse(KaggleObject):
       raise TypeError('submissions must contain only items of type ApiLeaderboardSubmission')
     self._submissions = submissions
 
+
+class ApiGetSubmissionRequest(KaggleObject):
+  r"""
+  Attributes:
+    ref (int)
+      SubmissionId.
+  """
+
+  def __init__(self):
+    self._ref = 0
+    self._freeze()
+
+  @property
+  def ref(self) -> int:
+    """SubmissionId."""
+    return self._ref
+
+  @ref.setter
+  def ref(self, ref: int):
+    if ref is None:
+      del self.ref
+      return
+    if not isinstance(ref, int):
+      raise TypeError('ref must be of type int')
+    self._ref = ref
+
+
+  def endpoint(self):
+    path = '/api/v1/competitions/submissions/get/{ref}'
+    return path.format_map(self.to_field_map(self))
+
+
+  @staticmethod
+  def method():
+    return 'POST'
 
 class ApiLeaderboardSubmission(KaggleObject):
   r"""
@@ -837,6 +916,8 @@ class ApiSubmission(KaggleObject):
     submitted_by_ref (str)
     team_name (str)
     url (str)
+      Minor note: ListSubmissions and GetSubmission may differ in setting this
+      field.
   """
 
   def __init__(self):
@@ -1013,6 +1094,10 @@ class ApiSubmission(KaggleObject):
 
   @property
   def url(self) -> str:
+    r"""
+    Minor note: ListSubmissions and GetSubmission may differ in setting this
+    field.
+    """
     return self._url or ""
 
   @url.setter
@@ -1634,6 +1719,7 @@ ApiCreateSubmissionRequest._fields = [
 
 ApiCreateSubmissionResponse._fields = [
   FieldMetadata("message", "message", "_message", str, "", PredefinedSerializer()),
+  FieldMetadata("ref", "ref", "_ref", int, 0, PredefinedSerializer()),
 ]
 
 ApiDownloadDataFileRequest._fields = [
@@ -1651,10 +1737,15 @@ ApiDownloadLeaderboardRequest._fields = [
 
 ApiGetLeaderboardRequest._fields = [
   FieldMetadata("competitionName", "competition_name", "_competition_name", str, "", PredefinedSerializer()),
+  FieldMetadata("overridePublic", "override_public", "_override_public", bool, None, PredefinedSerializer(), optional=True),
 ]
 
 ApiGetLeaderboardResponse._fields = [
   FieldMetadata("submissions", "submissions", "_submissions", ApiLeaderboardSubmission, [], ListSerializer(KaggleObjectSerializer())),
+]
+
+ApiGetSubmissionRequest._fields = [
+  FieldMetadata("ref", "ref", "_ref", int, 0, PredefinedSerializer()),
 ]
 
 ApiLeaderboardSubmission._fields = [

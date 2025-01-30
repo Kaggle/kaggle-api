@@ -88,7 +88,7 @@ function reset {
 
   echo "yapf3 -ir src/"
   if [ -x "$(command -v yapf3)" ]; then
-    yapf3 -ir --style yapf src/
+#    yapf3 -ir --style yapf src/
   else
     echo "yapf3 is not installed on your system"
   fi

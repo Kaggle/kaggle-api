@@ -83,11 +83,7 @@ def main():
   try:
     out = args.func(**command_args)
   except ApiException as e:
-    msg = '{} - {}'.format(str(e.status), e.reason)
-    body = __parse_body(e.body)
-    if body and 'message' in body:
-      msg += ' - {}'.format(body['message'])
-    print(msg)
+    print(e)
     out = None
     error = True
   except ValueError as e:

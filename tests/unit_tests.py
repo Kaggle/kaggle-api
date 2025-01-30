@@ -227,6 +227,7 @@ class TestKaggleApi(unittest.TestCase):
     try:
       kernels = api.kernels_list(sort_by='dateCreated', user='stevemessick', language='python')
       self.assertGreater(len(kernels), 0)
+      api.kernels_list_cli(user='stevemessick', csv_display=True)
     except ApiException as e:
       self.fail(f"kernels_list failed: {e}")
 
@@ -482,6 +483,7 @@ class TestKaggleApi(unittest.TestCase):
           self.assertTrue(hasattr(self.dataset_file, api.camel_to_snake(f)))
           for f in api.dataset_file_fields
       ]
+      api.dataset_list_files_cli(self.dataset)
     except ApiException as e:
       self.fail(f"dataset_list_files failed: {e}")
 

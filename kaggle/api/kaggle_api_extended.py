@@ -1,21 +1,5 @@
 #!/usr/bin/python
 #
-# Copyright 2025 Kaggle Inc
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#      http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
-#!/usr/bin/python
-#
 # Copyright 2024 Kaggle Inc
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -70,7 +54,7 @@ from kagglesdk.datasets.types.dataset_api_service import ApiListDatasetsRequest,
   ApiCreateDatasetRequest, ApiCreateDatasetVersionRequestBody, \
   ApiCreateDatasetVersionByIdRequest, ApiCreateDatasetVersionRequest, \
   ApiDatasetNewFile, ApiUpdateDatasetMetadataRequest, \
-  ApiGetDatasetMetadataRequest, ApiListDatasetFilesResponse, ApiDatasetFile
+  ApiGetDatasetMetadataRequest
 from kagglesdk.datasets.types.dataset_enums import DatasetSelectionGroup, \
   DatasetSortBy, DatasetFileTypeGroup, DatasetLicenseGroup
 from kagglesdk.datasets.types.dataset_types import DatasetSettings, \
@@ -1474,8 +1458,6 @@ class KaggleApi:
         if next_page_token:
           print('Next Page Token = {}'.format(next_page_token))
         fields = ['name', 'size', 'creationDate']
-        ApiListDatasetFilesResponse.files = ApiListDatasetFilesResponse.dataset_files
-        ApiDatasetFile.size = ApiDatasetFile.total_bytes
         if csv_display:
           self.print_csv(result.files, fields)
         else:

@@ -2,8 +2,8 @@ from datetime import datetime
 from google.protobuf.field_mask_pb2 import FieldMask
 from kagglesdk.datasets.types.dataset_api_service import ApiCategory, ApiDatasetNewFile, ApiUploadDirectoryInfo
 from kagglesdk.kaggle_object import *
-from kagglesdk.models.types.model_enums import ListModelsOrderBy, ModelFramework, ModelInstanceType
-from kagglesdk.models.types.model_types import BaseModelInstanceInformation, ModelLink
+from kagglesdk.models.types.model_enums import GatingAgreementRequestsExpiryStatus, GatingAgreementRequestsReviewStatus, ListModelsOrderBy, ModelFramework, ModelInstanceType
+from kagglesdk.models.types.model_types import BaseModelInstanceInformation, GatingUserConsent, ModelLink
 from typing import Optional, List
 
 class ApiCreateModelInstanceRequest(KaggleObject):
@@ -88,6 +88,7 @@ class ApiCreateModelInstanceRequestBody(KaggleObject):
     model_instance_type (ModelInstanceType)
     base_model_instance (str)
     external_base_model_url (str)
+    sigstore (bool)
   """
 
   def __init__(self):
@@ -103,6 +104,7 @@ class ApiCreateModelInstanceRequestBody(KaggleObject):
     self._model_instance_type = None
     self._base_model_instance = None
     self._external_base_model_url = None
+    self._sigstore = None
     self._freeze()
 
   @property
@@ -267,6 +269,19 @@ class ApiCreateModelInstanceRequestBody(KaggleObject):
       raise TypeError('external_base_model_url must be of type str')
     self._external_base_model_url = external_base_model_url
 
+  @property
+  def sigstore(self) -> bool:
+    return self._sigstore or False
+
+  @sigstore.setter
+  def sigstore(self, sigstore: bool):
+    if sigstore is None:
+      del self.sigstore
+      return
+    if not isinstance(sigstore, bool):
+      raise TypeError('sigstore must be of type bool')
+    self._sigstore = sigstore
+
 
 class ApiCreateModelInstanceVersionRequest(KaggleObject):
   r"""
@@ -371,12 +386,14 @@ class ApiCreateModelInstanceVersionRequestBody(KaggleObject):
     version_notes (str)
     files (ApiDatasetNewFile)
     directories (ApiUploadDirectoryInfo)
+    sigstore (bool)
   """
 
   def __init__(self):
     self._version_notes = None
     self._files = []
     self._directories = []
+    self._sigstore = None
     self._freeze()
 
   @property
@@ -421,6 +438,19 @@ class ApiCreateModelInstanceVersionRequestBody(KaggleObject):
     if not all([isinstance(t, ApiUploadDirectoryInfo) for t in directories]):
       raise TypeError('directories must contain only items of type ApiUploadDirectoryInfo')
     self._directories = directories
+
+  @property
+  def sigstore(self) -> bool:
+    return self._sigstore or False
+
+  @sigstore.setter
+  def sigstore(self, sigstore: bool):
+    if sigstore is None:
+      del self.sigstore
+      return
+    if not isinstance(sigstore, bool):
+      raise TypeError('sigstore must be of type bool')
+    self._sigstore = sigstore
 
 
 class ApiCreateModelRequest(KaggleObject):
@@ -1127,6 +1157,190 @@ class ApiGetModelRequest(KaggleObject):
   @staticmethod
   def endpoint_path():
     return '/api/v1/models/{owner_slug}/{model_slug}/get'
+
+class ApiListModelGatingUserConsentsRequest(KaggleObject):
+  r"""
+  Attributes:
+    owner_slug (str)
+    model_slug (str)
+    review_status (GatingAgreementRequestsReviewStatus)
+      filters: a null value means the filter is off.
+    expiry_status (GatingAgreementRequestsExpiryStatus)
+    is_user_request_data_expired (bool)
+    page_size (int)
+      paging
+    page_token (str)
+  """
+
+  def __init__(self):
+    self._owner_slug = ""
+    self._model_slug = ""
+    self._review_status = None
+    self._expiry_status = None
+    self._is_user_request_data_expired = None
+    self._page_size = None
+    self._page_token = None
+    self._freeze()
+
+  @property
+  def owner_slug(self) -> str:
+    return self._owner_slug
+
+  @owner_slug.setter
+  def owner_slug(self, owner_slug: str):
+    if owner_slug is None:
+      del self.owner_slug
+      return
+    if not isinstance(owner_slug, str):
+      raise TypeError('owner_slug must be of type str')
+    self._owner_slug = owner_slug
+
+  @property
+  def model_slug(self) -> str:
+    return self._model_slug
+
+  @model_slug.setter
+  def model_slug(self, model_slug: str):
+    if model_slug is None:
+      del self.model_slug
+      return
+    if not isinstance(model_slug, str):
+      raise TypeError('model_slug must be of type str')
+    self._model_slug = model_slug
+
+  @property
+  def review_status(self) -> 'GatingAgreementRequestsReviewStatus':
+    """filters: a null value means the filter is off."""
+    return self._review_status or GatingAgreementRequestsReviewStatus.GATING_AGREEMENT_REQUESTS_REVIEW_STATUS_UNSPECIFIED
+
+  @review_status.setter
+  def review_status(self, review_status: 'GatingAgreementRequestsReviewStatus'):
+    if review_status is None:
+      del self.review_status
+      return
+    if not isinstance(review_status, GatingAgreementRequestsReviewStatus):
+      raise TypeError('review_status must be of type GatingAgreementRequestsReviewStatus')
+    self._review_status = review_status
+
+  @property
+  def expiry_status(self) -> 'GatingAgreementRequestsExpiryStatus':
+    return self._expiry_status or GatingAgreementRequestsExpiryStatus.GATING_AGREEMENT_REQUESTS_EXPIRY_STATUS_UNSPECIFIED
+
+  @expiry_status.setter
+  def expiry_status(self, expiry_status: 'GatingAgreementRequestsExpiryStatus'):
+    if expiry_status is None:
+      del self.expiry_status
+      return
+    if not isinstance(expiry_status, GatingAgreementRequestsExpiryStatus):
+      raise TypeError('expiry_status must be of type GatingAgreementRequestsExpiryStatus')
+    self._expiry_status = expiry_status
+
+  @property
+  def is_user_request_data_expired(self) -> bool:
+    return self._is_user_request_data_expired or False
+
+  @is_user_request_data_expired.setter
+  def is_user_request_data_expired(self, is_user_request_data_expired: bool):
+    if is_user_request_data_expired is None:
+      del self.is_user_request_data_expired
+      return
+    if not isinstance(is_user_request_data_expired, bool):
+      raise TypeError('is_user_request_data_expired must be of type bool')
+    self._is_user_request_data_expired = is_user_request_data_expired
+
+  @property
+  def page_size(self) -> int:
+    """paging"""
+    return self._page_size or 0
+
+  @page_size.setter
+  def page_size(self, page_size: int):
+    if page_size is None:
+      del self.page_size
+      return
+    if not isinstance(page_size, int):
+      raise TypeError('page_size must be of type int')
+    self._page_size = page_size
+
+  @property
+  def page_token(self) -> str:
+    return self._page_token or ""
+
+  @page_token.setter
+  def page_token(self, page_token: str):
+    if page_token is None:
+      del self.page_token
+      return
+    if not isinstance(page_token, str):
+      raise TypeError('page_token must be of type str')
+    self._page_token = page_token
+
+
+  def endpoint(self):
+    path = '/api/v1/models/{owner_slug}/{model_slug}/user-consents'
+    return path.format_map(self.to_field_map(self))
+
+  @staticmethod
+  def endpoint_path():
+    return '/api/v1/models/{owner_slug}/{model_slug}/user-consents'
+
+class ApiListModelGatingUserConsentsResponse(KaggleObject):
+  r"""
+  Attributes:
+    gating_user_consents (GatingUserConsent)
+      gating_user_consents.request_data is AUDIT_EXEMPT.
+    total_size (int)
+    next_page_token (str)
+  """
+
+  def __init__(self):
+    self._gating_user_consents = []
+    self._total_size = 0
+    self._next_page_token = ""
+    self._freeze()
+
+  @property
+  def gating_user_consents(self) -> Optional[List[Optional['GatingUserConsent']]]:
+    """gating_user_consents.request_data is AUDIT_EXEMPT."""
+    return self._gating_user_consents
+
+  @gating_user_consents.setter
+  def gating_user_consents(self, gating_user_consents: Optional[List[Optional['GatingUserConsent']]]):
+    if gating_user_consents is None:
+      del self.gating_user_consents
+      return
+    if not isinstance(gating_user_consents, list):
+      raise TypeError('gating_user_consents must be of type list')
+    if not all([isinstance(t, GatingUserConsent) for t in gating_user_consents]):
+      raise TypeError('gating_user_consents must contain only items of type GatingUserConsent')
+    self._gating_user_consents = gating_user_consents
+
+  @property
+  def total_size(self) -> int:
+    return self._total_size
+
+  @total_size.setter
+  def total_size(self, total_size: int):
+    if total_size is None:
+      del self.total_size
+      return
+    if not isinstance(total_size, int):
+      raise TypeError('total_size must be of type int')
+    self._total_size = total_size
+
+  @property
+  def next_page_token(self) -> str:
+    return self._next_page_token
+
+  @next_page_token.setter
+  def next_page_token(self, next_page_token: str):
+    if next_page_token is None:
+      del self.next_page_token
+      return
+    if not isinstance(next_page_token, str):
+      raise TypeError('next_page_token must be of type str')
+    self._next_page_token = next_page_token
+
 
 class ApiListModelInstanceVersionFilesRequest(KaggleObject):
   r"""
@@ -2914,7 +3128,7 @@ ApiCreateModelInstanceRequest._fields = [
   FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "", PredefinedSerializer()),
   FieldMetadata("modelSlug", "model_slug", "_model_slug", str, "", PredefinedSerializer()),
   FieldMetadata("body", "body", "_body", ApiCreateModelInstanceRequestBody, None, KaggleObjectSerializer()),
-]
+  ]
 
 ApiCreateModelInstanceRequestBody._fields = [
   FieldMetadata("instanceSlug", "instance_slug", "_instance_slug", str, "", PredefinedSerializer()),
@@ -2929,7 +3143,8 @@ ApiCreateModelInstanceRequestBody._fields = [
   FieldMetadata("modelInstanceType", "model_instance_type", "_model_instance_type", ModelInstanceType, None, EnumSerializer(), optional=True),
   FieldMetadata("baseModelInstance", "base_model_instance", "_base_model_instance", str, None, PredefinedSerializer(), optional=True),
   FieldMetadata("externalBaseModelUrl", "external_base_model_url", "_external_base_model_url", str, None, PredefinedSerializer(), optional=True),
-]
+  FieldMetadata("sigstore", "sigstore", "_sigstore", bool, None, PredefinedSerializer(), optional=True),
+  ]
 
 ApiCreateModelInstanceVersionRequest._fields = [
   FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "", PredefinedSerializer()),
@@ -2937,13 +3152,14 @@ ApiCreateModelInstanceVersionRequest._fields = [
   FieldMetadata("framework", "framework", "_framework", ModelFramework, ModelFramework.MODEL_FRAMEWORK_UNSPECIFIED, EnumSerializer()),
   FieldMetadata("instanceSlug", "instance_slug", "_instance_slug", str, "", PredefinedSerializer()),
   FieldMetadata("body", "body", "_body", ApiCreateModelInstanceVersionRequestBody, None, KaggleObjectSerializer()),
-]
+  ]
 
 ApiCreateModelInstanceVersionRequestBody._fields = [
   FieldMetadata("versionNotes", "version_notes", "_version_notes", str, None, PredefinedSerializer(), optional=True),
   FieldMetadata("files", "files", "_files", ApiDatasetNewFile, [], ListSerializer(KaggleObjectSerializer())),
   FieldMetadata("directories", "directories", "_directories", ApiUploadDirectoryInfo, [], ListSerializer(KaggleObjectSerializer())),
-]
+  FieldMetadata("sigstore", "sigstore", "_sigstore", bool, None, PredefinedSerializer(), optional=True),
+  ]
 
 ApiCreateModelRequest._fields = [
   FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "", PredefinedSerializer()),
@@ -2954,7 +3170,7 @@ ApiCreateModelRequest._fields = [
   FieldMetadata("description", "description", "_description", str, None, PredefinedSerializer(), optional=True),
   FieldMetadata("publishTime", "publish_time", "_publish_time", datetime, None, DateTimeSerializer()),
   FieldMetadata("provenanceSources", "provenance_sources", "_provenance_sources", str, None, PredefinedSerializer(), optional=True),
-]
+  ]
 
 ApiCreateModelResponse._fields = [
   FieldMetadata("id", "id", "_id", int, None, PredefinedSerializer(), optional=True),
@@ -2962,14 +3178,14 @@ ApiCreateModelResponse._fields = [
   FieldMetadata("error", "error", "_error", str, None, PredefinedSerializer(), optional=True),
   FieldMetadata("errorCode", "error_code", "_error_code", int, None, PredefinedSerializer(), optional=True),
   FieldMetadata("url", "url", "_url", str, None, PredefinedSerializer(), optional=True),
-]
+  ]
 
 ApiDeleteModelInstanceRequest._fields = [
   FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "", PredefinedSerializer()),
   FieldMetadata("modelSlug", "model_slug", "_model_slug", str, "", PredefinedSerializer()),
   FieldMetadata("framework", "framework", "_framework", ModelFramework, ModelFramework.MODEL_FRAMEWORK_UNSPECIFIED, EnumSerializer()),
   FieldMetadata("instanceSlug", "instance_slug", "_instance_slug", str, "", PredefinedSerializer()),
-]
+  ]
 
 ApiDeleteModelInstanceVersionRequest._fields = [
   FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "", PredefinedSerializer()),
@@ -2977,16 +3193,16 @@ ApiDeleteModelInstanceVersionRequest._fields = [
   FieldMetadata("framework", "framework", "_framework", ModelFramework, ModelFramework.MODEL_FRAMEWORK_UNSPECIFIED, EnumSerializer()),
   FieldMetadata("instanceSlug", "instance_slug", "_instance_slug", str, "", PredefinedSerializer()),
   FieldMetadata("versionNumber", "version_number", "_version_number", int, 0, PredefinedSerializer()),
-]
+  ]
 
 ApiDeleteModelRequest._fields = [
   FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "", PredefinedSerializer()),
   FieldMetadata("modelSlug", "model_slug", "_model_slug", str, "", PredefinedSerializer()),
-]
+  ]
 
 ApiDeleteModelResponse._fields = [
   FieldMetadata("error", "error", "_error", str, None, PredefinedSerializer(), optional=True),
-]
+  ]
 
 ApiDownloadModelInstanceVersionRequest._fields = [
   FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "", PredefinedSerializer()),
@@ -2995,19 +3211,35 @@ ApiDownloadModelInstanceVersionRequest._fields = [
   FieldMetadata("instanceSlug", "instance_slug", "_instance_slug", str, "", PredefinedSerializer()),
   FieldMetadata("versionNumber", "version_number", "_version_number", int, 0, PredefinedSerializer()),
   FieldMetadata("path", "path", "_path", str, None, PredefinedSerializer(), optional=True),
-]
+  ]
 
 ApiGetModelInstanceRequest._fields = [
   FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "", PredefinedSerializer()),
   FieldMetadata("modelSlug", "model_slug", "_model_slug", str, "", PredefinedSerializer()),
   FieldMetadata("framework", "framework", "_framework", ModelFramework, ModelFramework.MODEL_FRAMEWORK_UNSPECIFIED, EnumSerializer()),
   FieldMetadata("instanceSlug", "instance_slug", "_instance_slug", str, "", PredefinedSerializer()),
-]
+  ]
 
 ApiGetModelRequest._fields = [
   FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "", PredefinedSerializer()),
   FieldMetadata("modelSlug", "model_slug", "_model_slug", str, "", PredefinedSerializer()),
-]
+  ]
+
+ApiListModelGatingUserConsentsRequest._fields = [
+  FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "", PredefinedSerializer()),
+  FieldMetadata("modelSlug", "model_slug", "_model_slug", str, "", PredefinedSerializer()),
+  FieldMetadata("reviewStatus", "review_status", "_review_status", GatingAgreementRequestsReviewStatus, None, EnumSerializer(), optional=True),
+  FieldMetadata("expiryStatus", "expiry_status", "_expiry_status", GatingAgreementRequestsExpiryStatus, None, EnumSerializer(), optional=True),
+  FieldMetadata("isUserRequestDataExpired", "is_user_request_data_expired", "_is_user_request_data_expired", bool, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("pageSize", "page_size", "_page_size", int, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("pageToken", "page_token", "_page_token", str, None, PredefinedSerializer(), optional=True),
+  ]
+
+ApiListModelGatingUserConsentsResponse._fields = [
+  FieldMetadata("gatingUserConsents", "gating_user_consents", "_gating_user_consents", GatingUserConsent, [], ListSerializer(KaggleObjectSerializer())),
+  FieldMetadata("totalSize", "total_size", "_total_size", int, 0, PredefinedSerializer()),
+  FieldMetadata("nextPageToken", "next_page_token", "_next_page_token", str, "", PredefinedSerializer()),
+  ]
 
 ApiListModelInstanceVersionFilesRequest._fields = [
   FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "", PredefinedSerializer()),
@@ -3017,12 +3249,12 @@ ApiListModelInstanceVersionFilesRequest._fields = [
   FieldMetadata("versionNumber", "version_number", "_version_number", int, None, PredefinedSerializer(), optional=True),
   FieldMetadata("pageSize", "page_size", "_page_size", int, None, PredefinedSerializer(), optional=True),
   FieldMetadata("pageToken", "page_token", "_page_token", str, None, PredefinedSerializer(), optional=True),
-]
+  ]
 
 ApiListModelInstanceVersionFilesResponse._fields = [
   FieldMetadata("files", "files", "_files", ApiModelFile, [], ListSerializer(KaggleObjectSerializer())),
   FieldMetadata("nextPageToken", "next_page_token", "_next_page_token", str, "", PredefinedSerializer()),
-]
+  ]
 
 ApiListModelsRequest._fields = [
   FieldMetadata("search", "search", "_search", str, None, PredefinedSerializer(), optional=True),
@@ -3031,13 +3263,13 @@ ApiListModelsRequest._fields = [
   FieldMetadata("pageSize", "page_size", "_page_size", int, None, PredefinedSerializer(), optional=True),
   FieldMetadata("pageToken", "page_token", "_page_token", str, None, PredefinedSerializer(), optional=True),
   FieldMetadata("onlyVertexModels", "only_vertex_models", "_only_vertex_models", bool, None, PredefinedSerializer(), optional=True),
-]
+  ]
 
 ApiListModelsResponse._fields = [
   FieldMetadata("models", "models", "_models", ApiModel, [], ListSerializer(KaggleObjectSerializer())),
   FieldMetadata("nextPageToken", "next_page_token", "_next_page_token", str, "", PredefinedSerializer()),
   FieldMetadata("totalResults", "total_results", "_total_results", int, 0, PredefinedSerializer()),
-]
+  ]
 
 ApiModel._fields = [
   FieldMetadata("id", "id", "_id", int, 0, PredefinedSerializer()),
@@ -3054,13 +3286,13 @@ ApiModel._fields = [
   FieldMetadata("provenanceSources", "provenance_sources", "_provenance_sources", str, "", PredefinedSerializer()),
   FieldMetadata("url", "url", "_url", str, "", PredefinedSerializer()),
   FieldMetadata("modelVersionLinks", "model_version_links", "_model_version_links", ModelLink, [], ListSerializer(KaggleObjectSerializer())),
-]
+  ]
 
 ApiModelFile._fields = [
   FieldMetadata("name", "name", "_name", str, "", PredefinedSerializer()),
   FieldMetadata("size", "size", "_size", int, 0, PredefinedSerializer()),
   FieldMetadata("creationDate", "creation_date", "_creation_date", datetime, None, DateTimeSerializer(), optional=True),
-]
+  ]
 
 ApiModelInstance._fields = [
   FieldMetadata("id", "id", "_id", int, 0, PredefinedSerializer()),
@@ -3079,7 +3311,7 @@ ApiModelInstance._fields = [
   FieldMetadata("baseModelInstanceInformation", "base_model_instance_information", "_base_model_instance_information", BaseModelInstanceInformation, None, KaggleObjectSerializer(), optional=True),
   FieldMetadata("externalBaseModelUrl", "external_base_model_url", "_external_base_model_url", str, "", PredefinedSerializer()),
   FieldMetadata("totalUncompressedBytes", "total_uncompressed_bytes", "_total_uncompressed_bytes", int, 0, PredefinedSerializer()),
-]
+  ]
 
 ApiUpdateModelInstanceRequest._fields = [
   FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "", PredefinedSerializer()),
@@ -3095,7 +3327,7 @@ ApiUpdateModelInstanceRequest._fields = [
   FieldMetadata("modelInstanceType", "model_instance_type", "_model_instance_type", ModelInstanceType, None, EnumSerializer(), optional=True),
   FieldMetadata("baseModelInstance", "base_model_instance", "_base_model_instance", str, None, PredefinedSerializer(), optional=True),
   FieldMetadata("externalBaseModelUrl", "external_base_model_url", "_external_base_model_url", str, None, PredefinedSerializer(), optional=True),
-]
+  ]
 
 ApiUpdateModelRequest._fields = [
   FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "", PredefinedSerializer()),
@@ -3107,40 +3339,40 @@ ApiUpdateModelRequest._fields = [
   FieldMetadata("publishTime", "publish_time", "_publish_time", datetime, None, DateTimeSerializer()),
   FieldMetadata("provenanceSources", "provenance_sources", "_provenance_sources", str, None, PredefinedSerializer(), optional=True),
   FieldMetadata("updateMask", "update_mask", "_update_mask", FieldMask, None, FieldMaskSerializer()),
-]
+  ]
 
 ApiUpdateModelResponse._fields = [
   FieldMetadata("id", "id", "_id", int, None, PredefinedSerializer(), optional=True),
   FieldMetadata("ref", "ref", "_ref", str, None, PredefinedSerializer(), optional=True),
   FieldMetadata("error", "error", "_error", str, None, PredefinedSerializer(), optional=True),
   FieldMetadata("url", "url", "_url", str, None, PredefinedSerializer(), optional=True),
-]
+  ]
 
 ApiUploadModelFileRequest._fields = [
   FieldMetadata("fileName", "file_name", "_file_name", str, "", PredefinedSerializer()),
   FieldMetadata("contentLength", "content_length", "_content_length", int, 0, PredefinedSerializer()),
   FieldMetadata("lastModifiedEpochSeconds", "last_modified_epoch_seconds", "_last_modified_epoch_seconds", int, 0, PredefinedSerializer()),
-]
+  ]
 
 ApiUploadModelFileResponse._fields = [
   FieldMetadata("token", "token", "_token", str, "", PredefinedSerializer()),
   FieldMetadata("createUrl", "create_url", "_create_url", str, "", PredefinedSerializer()),
-]
+  ]
 
 CreateModelSigningTokenRequest._fields = [
   FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "", PredefinedSerializer()),
   FieldMetadata("modelSlug", "model_slug", "_model_slug", str, "", PredefinedSerializer()),
-]
+  ]
 
 CreateModelSigningTokenResponse._fields = [
   FieldMetadata("id_token", "id_token", "_id_token", str, "", PredefinedSerializer()),
-]
+  ]
 
 KeysRequest._fields = []
 
 KeysResponse._fields = [
   FieldMetadata("keys", "keys", "_keys", JWK, [], ListSerializer(KaggleObjectSerializer())),
-]
+  ]
 
 WellKnowEndpointRequest._fields = []
 
@@ -3152,7 +3384,7 @@ WellKnowEndpointResponse._fields = [
   FieldMetadata("claims_supported", "claims_supported", "_claims_supported", str, [], ListSerializer(PredefinedSerializer())),
   FieldMetadata("response_types_supported", "response_types_supported", "_response_types_supported", str, [], ListSerializer(PredefinedSerializer())),
   FieldMetadata("subject_types_supported", "subject_types_supported", "_subject_types_supported", str, [], ListSerializer(PredefinedSerializer())),
-]
+  ]
 
 JWK._fields = [
   FieldMetadata("kty", "kty", "_kty", str, "", PredefinedSerializer()),
@@ -3161,5 +3393,5 @@ JWK._fields = [
   FieldMetadata("kid", "kid", "_kid", str, "", PredefinedSerializer()),
   FieldMetadata("n", "n", "_n", str, "", PredefinedSerializer()),
   FieldMetadata("e", "e", "_e", str, "", PredefinedSerializer()),
-]
+  ]
 

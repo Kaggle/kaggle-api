@@ -224,7 +224,7 @@ class ApiTrackExerciseInteractionResponse(KaggleObject):
     self._show_login_prompt = show_login_prompt
 
   @property
-  def (self):
+  def showLoginPrompt(self):
     return self.show_login_prompt
 
 

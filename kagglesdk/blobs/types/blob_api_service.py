@@ -158,7 +158,7 @@ class ApiStartBlobUploadResponse(KaggleObject):
     self._create_url = create_url
 
   @property
-  def (self):
+  def createUrl(self):
     return self.create_url
 
 

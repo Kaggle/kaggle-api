@@ -679,7 +679,7 @@ class ApiCreateModelResponse(KaggleObject):
     self._url = url
 
   @property
-  def (self):
+  def errorCode(self):
     return self.error_code
 
 
@@ -1346,15 +1346,15 @@ class ApiListModelGatingUserConsentsResponse(KaggleObject):
     self._next_page_token = next_page_token
 
   @property
-  def (self):
+  def gatingUserConsents(self):
     return self.gating_user_consents
 
   @property
-  def (self):
+  def totalSize(self):
     return self.total_size
 
   @property
-  def (self):
+  def nextPageToken(self):
     return self.next_page_token
 
 
@@ -1524,7 +1524,7 @@ class ApiListModelInstanceVersionFilesResponse(KaggleObject):
     self._next_page_token = next_page_token
 
   @property
-  def (self):
+  def nextPageToken(self):
     return self.next_page_token
 
 
@@ -1703,11 +1703,11 @@ class ApiListModelsResponse(KaggleObject):
     self._total_results = total_results
 
   @property
-  def (self):
+  def nextPageToken(self):
     return self.next_page_token
 
   @property
-  def (self):
+  def totalResults(self):
     return self.total_results
 
 
@@ -2794,7 +2794,7 @@ class ApiUploadModelFileResponse(KaggleObject):
     self._create_url = create_url
 
   @property
-  def (self):
+  def createUrl(self):
     return self.create_url
 
 
@@ -2874,7 +2874,7 @@ class CreateModelSigningTokenResponse(KaggleObject):
     self._id_token = id_token
 
   @property
-  def (self):
+  def idToken(self):
     return self.id_token
 
 
@@ -3057,27 +3057,27 @@ class WellKnowEndpointResponse(KaggleObject):
     self._subject_types_supported = subject_types_supported
 
   @property
-  def (self):
+  def jwksUri(self):
     return self.jwks_uri
 
   @property
-  def (self):
+  def tokenEndpoint(self):
     return self.token_endpoint
 
   @property
-  def (self):
+  def idTokenSigningAlgValuesSupported(self):
     return self.id_token_signing_alg_values_supported
 
   @property
-  def (self):
+  def claimsSupported(self):
     return self.claims_supported
 
   @property
-  def (self):
+  def responseTypesSupported(self):
     return self.response_types_supported
 
   @property
-  def (self):
+  def subjectTypesSupported(self):
     return self.subject_types_supported
 
 

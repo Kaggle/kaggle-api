@@ -281,7 +281,7 @@ class ApiGetKernelSessionStatusResponse(KaggleObject):
     self._failure_message = failure_message
 
   @property
-  def (self):
+  def failureMessage(self):
     return self.failure_message
 
 
@@ -772,7 +772,7 @@ class ApiListKernelFilesResponse(KaggleObject):
     self._next_page_token = next_page_token
 
   @property
-  def (self):
+  def nextPageToken(self):
     return self.next_page_token
 
 
@@ -905,7 +905,7 @@ class ApiListKernelSessionOutputResponse(KaggleObject):
     self._next_page_token = next_page_token
 
   @property
-  def (self):
+  def nextPageToken(self):
     return self.next_page_token
 
 
@@ -1664,27 +1664,27 @@ class ApiSaveKernelResponse(KaggleObject):
     self._invalid_model_sources = invalid_model_sources
 
   @property
-  def (self):
+  def versionNumber(self):
     return self.version_number
 
   @property
-  def (self):
+  def invalidTags(self):
     return self.invalid_tags
 
   @property
-  def (self):
+  def invalidDatasetSources(self):
     return self.invalid_dataset_sources
 
   @property
-  def (self):
+  def invalidCompetitionSources(self):
     return self.invalid_competition_sources
 
   @property
-  def (self):
+  def invalidKernelSources(self):
     return self.invalid_kernel_sources
 
   @property
-  def (self):
+  def invalidModelSources(self):
     return self.invalid_model_sources
 
 

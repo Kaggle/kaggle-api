@@ -671,7 +671,7 @@ class ApiListDataFilesResponse(KaggleObject):
     self._next_page_token = next_page_token
 
   @property
-  def (self):
+  def nextPageToken(self):
     return self.next_page_token
 
 
@@ -904,7 +904,7 @@ class ApiStartSubmissionUploadResponse(KaggleObject):
     self._create_url = create_url
 
   @property
-  def (self):
+  def createUrl(self):
     return self.create_url
 
 

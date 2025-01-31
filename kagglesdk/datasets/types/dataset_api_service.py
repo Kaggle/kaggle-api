@@ -266,7 +266,7 @@ class ApiCreateDatasetResponse(KaggleObject):
     self._invalid_tags = invalid_tags
 
   @property
-  def (self):
+  def invalidTags(self):
     return self.invalid_tags
 
 
@@ -1534,7 +1534,7 @@ class ApiGetDatasetMetadataResponse(KaggleObject):
     self._error_message = error_message
 
   @property
-  def (self):
+  def errorMessage(self):
     return self.error_message
 
 
@@ -1808,15 +1808,15 @@ class ApiListDatasetFilesResponse(KaggleObject):
     self._next_page_token = next_page_token
 
   @property
-  def datasetFiles(self):
+  def files(self):
     return self.dataset_files
 
   @property
-  def (self):
+  def errorMessage(self):
     return self.error_message
 
   @property
-  def (self):
+  def nextPageToken(self):
     return self.next_page_token
 
 
@@ -2274,7 +2274,7 @@ class ApiUploadDatasetFileResponse(KaggleObject):
     self._create_url = create_url
 
   @property
-  def (self):
+  def createUrl(self):
     return self.create_url
 
 

@@ -59,7 +59,6 @@ class ApiCreateModelInstanceRequest(KaggleObject):
       raise TypeError('body must be of type ApiCreateModelInstanceRequestBody')
     self._body = body
 
-
   def endpoint(self):
     path = '/api/v1/models/{owner_slug}/{model_slug}/create/instance'
     return path.format_map(self.to_field_map(self))
@@ -72,6 +71,7 @@ class ApiCreateModelInstanceRequest(KaggleObject):
   @staticmethod
   def body_fields():
     return 'body'
+
 
 class ApiCreateModelInstanceRequestBody(KaggleObject):
   r"""
@@ -366,7 +366,6 @@ class ApiCreateModelInstanceVersionRequest(KaggleObject):
       raise TypeError('body must be of type ApiCreateModelInstanceVersionRequestBody')
     self._body = body
 
-
   def endpoint(self):
     path = '/api/v1/models/{owner_slug}/{model_slug}/{framework}/{instance_slug}/create/version'
     return path.format_map(self.to_field_map(self))
@@ -379,6 +378,7 @@ class ApiCreateModelInstanceVersionRequest(KaggleObject):
   @staticmethod
   def body_fields():
     return 'body'
+
 
 class ApiCreateModelInstanceVersionRequestBody(KaggleObject):
   r"""
@@ -581,7 +581,6 @@ class ApiCreateModelRequest(KaggleObject):
       raise TypeError('provenance_sources must be of type str')
     self._provenance_sources = provenance_sources
 
-
   def endpoint(self):
     path = '/api/v1/models/create/new'
     return path.format_map(self.to_field_map(self))
@@ -594,6 +593,7 @@ class ApiCreateModelRequest(KaggleObject):
   @staticmethod
   def body_fields():
     return '*'
+
 
 class ApiCreateModelResponse(KaggleObject):
   r"""
@@ -678,6 +678,10 @@ class ApiCreateModelResponse(KaggleObject):
       raise TypeError('url must be of type str')
     self._url = url
 
+  @property
+  def (self):
+    return self.error_code
+
 
 class ApiDeleteModelInstanceRequest(KaggleObject):
   r"""
@@ -747,7 +751,6 @@ class ApiDeleteModelInstanceRequest(KaggleObject):
       raise TypeError('instance_slug must be of type str')
     self._instance_slug = instance_slug
 
-
   def endpoint(self):
     path = '/api/v1/models/{owner_slug}/{model_slug}/{framework}/{instance_slug}/delete'
     return path.format_map(self.to_field_map(self))
@@ -756,6 +759,7 @@ class ApiDeleteModelInstanceRequest(KaggleObject):
   @staticmethod
   def method():
     return 'POST'
+
 
 class ApiDeleteModelInstanceVersionRequest(KaggleObject):
   r"""
@@ -840,7 +844,6 @@ class ApiDeleteModelInstanceVersionRequest(KaggleObject):
       raise TypeError('version_number must be of type int')
     self._version_number = version_number
 
-
   def endpoint(self):
     path = '/api/v1/models/{owner_slug}/{model_slug}/{framework}/{instance_slug}/{version_number}/delete'
     return path.format_map(self.to_field_map(self))
@@ -849,6 +852,7 @@ class ApiDeleteModelInstanceVersionRequest(KaggleObject):
   @staticmethod
   def method():
     return 'POST'
+
 
 class ApiDeleteModelRequest(KaggleObject):
   r"""
@@ -888,7 +892,6 @@ class ApiDeleteModelRequest(KaggleObject):
       raise TypeError('model_slug must be of type str')
     self._model_slug = model_slug
 
-
   def endpoint(self):
     path = '/api/v1/models/{owner_slug}/{model_slug}/delete'
     return path.format_map(self.to_field_map(self))
@@ -897,6 +900,7 @@ class ApiDeleteModelRequest(KaggleObject):
   @staticmethod
   def method():
     return 'POST'
+
 
 class ApiDeleteModelResponse(KaggleObject):
   r"""
@@ -1022,7 +1026,6 @@ class ApiDownloadModelInstanceVersionRequest(KaggleObject):
       raise TypeError('path must be of type str')
     self._path = path
 
-
   def endpoint(self):
     if self.path:
       path = '/api/v1/models/{owner_slug}/{model_slug}/{framework}/{instance_slug}/{version_number}/download/{path}'
@@ -1033,6 +1036,7 @@ class ApiDownloadModelInstanceVersionRequest(KaggleObject):
   @staticmethod
   def endpoint_path():
     return '/api/v1/models/{owner_slug}/{model_slug}/{framework}/{instance_slug}/{version_number}/download'
+
 
 class ApiGetModelInstanceRequest(KaggleObject):
   r"""
@@ -1102,7 +1106,6 @@ class ApiGetModelInstanceRequest(KaggleObject):
       raise TypeError('instance_slug must be of type str')
     self._instance_slug = instance_slug
 
-
   def endpoint(self):
     path = '/api/v1/models/{owner_slug}/{model_slug}/{framework}/{instance_slug}/get'
     return path.format_map(self.to_field_map(self))
@@ -1110,6 +1113,7 @@ class ApiGetModelInstanceRequest(KaggleObject):
   @staticmethod
   def endpoint_path():
     return '/api/v1/models/{owner_slug}/{model_slug}/{framework}/{instance_slug}/get'
+
 
 class ApiGetModelRequest(KaggleObject):
   r"""
@@ -1149,7 +1153,6 @@ class ApiGetModelRequest(KaggleObject):
       raise TypeError('model_slug must be of type str')
     self._model_slug = model_slug
 
-
   def endpoint(self):
     path = '/api/v1/models/{owner_slug}/{model_slug}/get'
     return path.format_map(self.to_field_map(self))
@@ -1157,6 +1160,7 @@ class ApiGetModelRequest(KaggleObject):
   @staticmethod
   def endpoint_path():
     return '/api/v1/models/{owner_slug}/{model_slug}/get'
+
 
 class ApiListModelGatingUserConsentsRequest(KaggleObject):
   r"""
@@ -1275,7 +1279,6 @@ class ApiListModelGatingUserConsentsRequest(KaggleObject):
       raise TypeError('page_token must be of type str')
     self._page_token = page_token
 
-
   def endpoint(self):
     path = '/api/v1/models/{owner_slug}/{model_slug}/user-consents'
     return path.format_map(self.to_field_map(self))
@@ -1283,6 +1286,7 @@ class ApiListModelGatingUserConsentsRequest(KaggleObject):
   @staticmethod
   def endpoint_path():
     return '/api/v1/models/{owner_slug}/{model_slug}/user-consents'
+
 
 class ApiListModelGatingUserConsentsResponse(KaggleObject):
   r"""
@@ -1340,6 +1344,18 @@ class ApiListModelGatingUserConsentsResponse(KaggleObject):
     if not isinstance(next_page_token, str):
       raise TypeError('next_page_token must be of type str')
     self._next_page_token = next_page_token
+
+  @property
+  def (self):
+    return self.gating_user_consents
+
+  @property
+  def (self):
+    return self.total_size
+
+  @property
+  def (self):
+    return self.next_page_token
 
 
 class ApiListModelInstanceVersionFilesRequest(KaggleObject):
@@ -1455,7 +1471,6 @@ class ApiListModelInstanceVersionFilesRequest(KaggleObject):
       raise TypeError('page_token must be of type str')
     self._page_token = page_token
 
-
   def endpoint(self):
     if self.version_number:
       path = '/api/v1/models/{owner_slug}/{model_slug}/{framework}/{instance_slug}/{version_number}/files'
@@ -1466,6 +1481,7 @@ class ApiListModelInstanceVersionFilesRequest(KaggleObject):
   @staticmethod
   def endpoint_path():
     return '/api/v1/models/{owner_slug}/{model_slug}/{framework}/{instance_slug}/files'
+
 
 class ApiListModelInstanceVersionFilesResponse(KaggleObject):
   r"""
@@ -1506,6 +1522,10 @@ class ApiListModelInstanceVersionFilesResponse(KaggleObject):
     if not isinstance(next_page_token, str):
       raise TypeError('next_page_token must be of type str')
     self._next_page_token = next_page_token
+
+  @property
+  def (self):
+    return self.next_page_token
 
 
 class ApiListModelsRequest(KaggleObject):
@@ -1622,10 +1642,10 @@ class ApiListModelsRequest(KaggleObject):
       raise TypeError('only_vertex_models must be of type bool')
     self._only_vertex_models = only_vertex_models
 
-
   def endpoint(self):
     path = '/api/v1/models/list'
     return path.format_map(self.to_field_map(self))
+
 
 class ApiListModelsResponse(KaggleObject):
   r"""
@@ -1681,6 +1701,14 @@ class ApiListModelsResponse(KaggleObject):
     if not isinstance(total_results, int):
       raise TypeError('total_results must be of type int')
     self._total_results = total_results
+
+  @property
+  def (self):
+    return self.next_page_token
+
+  @property
+  def (self):
+    return self.total_results
 
 
 class ApiModel(KaggleObject):
@@ -2420,7 +2448,6 @@ class ApiUpdateModelInstanceRequest(KaggleObject):
       raise TypeError('external_base_model_url must be of type str')
     self._external_base_model_url = external_base_model_url
 
-
   def endpoint(self):
     path = '/api/v1/models/{owner_slug}/{model_slug}/{framework}/{instance_slug}/update'
     return path.format_map(self.to_field_map(self))
@@ -2433,6 +2460,7 @@ class ApiUpdateModelInstanceRequest(KaggleObject):
   @staticmethod
   def body_fields():
     return '*'
+
 
 class ApiUpdateModelRequest(KaggleObject):
   r"""
@@ -2577,7 +2605,6 @@ class ApiUpdateModelRequest(KaggleObject):
       raise TypeError('update_mask must be of type FieldMask')
     self._update_mask = update_mask
 
-
   def endpoint(self):
     path = '/api/v1/models/{owner_slug}/{model_slug}/update'
     return path.format_map(self.to_field_map(self))
@@ -2590,6 +2617,7 @@ class ApiUpdateModelRequest(KaggleObject):
   @staticmethod
   def body_fields():
     return '*'
+
 
 class ApiUpdateModelResponse(KaggleObject):
   r"""
@@ -2713,7 +2741,6 @@ class ApiUploadModelFileRequest(KaggleObject):
       raise TypeError('last_modified_epoch_seconds must be of type int')
     self._last_modified_epoch_seconds = last_modified_epoch_seconds
 
-
   def endpoint(self):
     path = '/api/v1/models/upload/file/{content_length}/{last_modified_epoch_seconds}'
     return path.format_map(self.to_field_map(self))
@@ -2722,6 +2749,7 @@ class ApiUploadModelFileRequest(KaggleObject):
   @staticmethod
   def method():
     return 'POST'
+
 
 class ApiUploadModelFileResponse(KaggleObject):
   r"""
@@ -2765,6 +2793,10 @@ class ApiUploadModelFileResponse(KaggleObject):
       raise TypeError('create_url must be of type str')
     self._create_url = create_url
 
+  @property
+  def (self):
+    return self.create_url
+
 
 class CreateModelSigningTokenRequest(KaggleObject):
   r"""
@@ -2804,7 +2836,6 @@ class CreateModelSigningTokenRequest(KaggleObject):
       raise TypeError('model_slug must be of type str')
     self._model_slug = model_slug
 
-
   def endpoint(self):
     path = '/api/v1/models/signing/token'
     return path.format_map(self.to_field_map(self))
@@ -2817,6 +2848,7 @@ class CreateModelSigningTokenRequest(KaggleObject):
   @staticmethod
   def body_fields():
     return '*'
+
 
 class CreateModelSigningTokenResponse(KaggleObject):
   r"""
@@ -2841,16 +2873,20 @@ class CreateModelSigningTokenResponse(KaggleObject):
       raise TypeError('id_token must be of type str')
     self._id_token = id_token
 
+  @property
+  def (self):
+    return self.id_token
+
 
 class KeysRequest(KaggleObject):
   r"""
   """
 
   pass
-
   def endpoint(self):
     path = '/api/v1/models/signing/keys'
     return path.format_map(self.to_field_map(self))
+
 
 class KeysResponse(KaggleObject):
   r"""
@@ -2887,10 +2923,10 @@ class WellKnowEndpointRequest(KaggleObject):
   """
 
   pass
-
   def endpoint(self):
     path = '/api/v1/models/signing/.well-known/openid-configuration'
     return path.format_map(self.to_field_map(self))
+
 
 class WellKnowEndpointResponse(KaggleObject):
   r"""
@@ -3019,6 +3055,30 @@ class WellKnowEndpointResponse(KaggleObject):
     if not all([isinstance(t, str) for t in subject_types_supported]):
       raise TypeError('subject_types_supported must contain only items of type str')
     self._subject_types_supported = subject_types_supported
+
+  @property
+  def (self):
+    return self.jwks_uri
+
+  @property
+  def (self):
+    return self.token_endpoint
+
+  @property
+  def (self):
+    return self.id_token_signing_alg_values_supported
+
+  @property
+  def (self):
+    return self.claims_supported
+
+  @property
+  def (self):
+    return self.response_types_supported
+
+  @property
+  def (self):
+    return self.subject_types_supported
 
 
 class JWK(KaggleObject):

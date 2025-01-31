@@ -73,7 +73,6 @@ class ApiDownloadKernelOutputRequest(KaggleObject):
       raise TypeError('version_number must be of type int')
     self._version_number = version_number
 
-
   def endpoint(self):
     if self.file_path:
       path = '/api/v1/kernels/output/download/{owner_slug}/{kernel_slug}/{file_path}'
@@ -84,6 +83,7 @@ class ApiDownloadKernelOutputRequest(KaggleObject):
   @staticmethod
   def endpoint_path():
     return '/api/v1/kernels/output/download/{owner_slug}/{kernel_slug}'
+
 
 class ApiDownloadKernelOutputZipRequest(KaggleObject):
   r"""
@@ -108,7 +108,6 @@ class ApiDownloadKernelOutputZipRequest(KaggleObject):
       raise TypeError('kernel_session_id must be of type int')
     self._kernel_session_id = kernel_session_id
 
-
   def endpoint(self):
     path = '/api/v1/kernels/output/download_zip/{kernel_session_id}'
     return path.format_map(self.to_field_map(self))
@@ -116,6 +115,7 @@ class ApiDownloadKernelOutputZipRequest(KaggleObject):
   @staticmethod
   def endpoint_path():
     return '/api/v1/kernels/output/download_zip/{kernel_session_id}'
+
 
 class ApiGetKernelRequest(KaggleObject):
   r"""
@@ -155,10 +155,10 @@ class ApiGetKernelRequest(KaggleObject):
       raise TypeError('kernel_slug must be of type str')
     self._kernel_slug = kernel_slug
 
-
   def endpoint(self):
     path = '/api/v1/kernels/pull'
     return path.format_map(self.to_field_map(self))
+
 
 class ApiGetKernelResponse(KaggleObject):
   r"""
@@ -237,10 +237,10 @@ class ApiGetKernelSessionStatusRequest(KaggleObject):
       raise TypeError('kernel_slug must be of type str')
     self._kernel_slug = kernel_slug
 
-
   def endpoint(self):
     path = '/api/v1/kernels/status'
     return path.format_map(self.to_field_map(self))
+
 
 class ApiGetKernelSessionStatusResponse(KaggleObject):
   r"""
@@ -279,6 +279,10 @@ class ApiGetKernelSessionStatusResponse(KaggleObject):
     if not isinstance(failure_message, str):
       raise TypeError('failure_message must be of type str')
     self._failure_message = failure_message
+
+  @property
+  def (self):
+    return self.failure_message
 
 
 class ApiKernelBlob(KaggleObject):
@@ -722,10 +726,10 @@ class ApiListKernelFilesRequest(KaggleObject):
       raise TypeError('page_token must be of type str')
     self._page_token = page_token
 
-
   def endpoint(self):
     path = '/api/v1/kernels/files'
     return path.format_map(self.to_field_map(self))
+
 
 class ApiListKernelFilesResponse(KaggleObject):
   r"""
@@ -766,6 +770,10 @@ class ApiListKernelFilesResponse(KaggleObject):
     if not isinstance(next_page_token, str):
       raise TypeError('next_page_token must be of type str')
     self._next_page_token = next_page_token
+
+  @property
+  def (self):
+    return self.next_page_token
 
 
 class ApiListKernelSessionOutputRequest(KaggleObject):
@@ -836,10 +844,10 @@ class ApiListKernelSessionOutputRequest(KaggleObject):
       raise TypeError('page_token must be of type str')
     self._page_token = page_token
 
-
   def endpoint(self):
     path = '/api/v1/kernels/output'
     return path.format_map(self.to_field_map(self))
+
 
 class ApiListKernelSessionOutputResponse(KaggleObject):
   r"""
@@ -895,6 +903,10 @@ class ApiListKernelSessionOutputResponse(KaggleObject):
     if not isinstance(next_page_token, str):
       raise TypeError('next_page_token must be of type str')
     self._next_page_token = next_page_token
+
+  @property
+  def (self):
+    return self.next_page_token
 
 
 class ApiListKernelsRequest(KaggleObject):
@@ -1121,10 +1133,10 @@ class ApiListKernelsRequest(KaggleObject):
       raise TypeError('page_size must be of type int')
     self._page_size = page_size
 
-
   def endpoint(self):
     path = '/api/v1/kernels/list'
     return path.format_map(self.to_field_map(self))
+
 
 class ApiListKernelsResponse(KaggleObject):
   r"""
@@ -1151,10 +1163,10 @@ class ApiListKernelsResponse(KaggleObject):
       raise TypeError('kernels must contain only items of type ApiKernelMetadata')
     self._kernels = kernels
 
-
   @classmethod
   def prepare_from(cls, http_response):
     return cls.from_dict({'kernels': json.loads(http_response.text)})
+
 
 class ApiSaveKernelRequest(KaggleObject):
   r"""
@@ -1484,7 +1496,6 @@ class ApiSaveKernelRequest(KaggleObject):
       raise TypeError('model_data_sources must contain only items of type str')
     self._model_data_sources = model_data_sources
 
-
   def endpoint(self):
     path = '/api/v1/kernels/push'
     return path.format_map(self.to_field_map(self))
@@ -1497,6 +1508,7 @@ class ApiSaveKernelRequest(KaggleObject):
   @staticmethod
   def body_fields():
     return '*'
+
 
 class ApiSaveKernelResponse(KaggleObject):
   r"""
@@ -1650,6 +1662,30 @@ class ApiSaveKernelResponse(KaggleObject):
     if not all([isinstance(t, str) for t in invalid_model_sources]):
       raise TypeError('invalid_model_sources must contain only items of type str')
     self._invalid_model_sources = invalid_model_sources
+
+  @property
+  def (self):
+    return self.version_number
+
+  @property
+  def (self):
+    return self.invalid_tags
+
+  @property
+  def (self):
+    return self.invalid_dataset_sources
+
+  @property
+  def (self):
+    return self.invalid_competition_sources
+
+  @property
+  def (self):
+    return self.invalid_kernel_sources
+
+  @property
+  def (self):
+    return self.invalid_model_sources
 
 
 class ApiKernelSessionOutputFile(KaggleObject):

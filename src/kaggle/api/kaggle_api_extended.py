@@ -54,7 +54,7 @@ from kagglesdk.datasets.types.dataset_api_service import ApiListDatasetsRequest,
   ApiCreateDatasetRequest, ApiCreateDatasetVersionRequestBody, \
   ApiCreateDatasetVersionByIdRequest, ApiCreateDatasetVersionRequest, \
   ApiDatasetNewFile, ApiUpdateDatasetMetadataRequest, \
-  ApiGetDatasetMetadataRequest, ApiListDatasetFilesResponse
+  ApiGetDatasetMetadataRequest, ApiListDatasetFilesResponse, ApiDatasetFile
 from kagglesdk.datasets.types.dataset_enums import DatasetSelectionGroup, \
   DatasetSortBy, DatasetFileTypeGroup, DatasetLicenseGroup
 from kagglesdk.datasets.types.dataset_types import DatasetSettings, \
@@ -1459,6 +1459,7 @@ class KaggleApi:
           print('Next Page Token = {}'.format(next_page_token))
         fields = ['name', 'size', 'creationDate']
         ApiListDatasetFilesResponse.files = ApiListDatasetFilesResponse.dataset_files
+        ApiDatasetFile.size = ApiDatasetFile.total_bytes
         if csv_display:
           self.print_csv(result.files, fields)
         else:

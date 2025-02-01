@@ -129,7 +129,10 @@ class DateTimeSerializer(ObjectSerializer):
       return datetime.fromisoformat(v)
     (dt, nanos) = fields
     millis = nanos[:3]
-    return datetime.fromisoformat(f'{dt}.{millis}')
+    try:
+      return datetime.fromisoformat(f'{dt}.{millis}')
+    except ValueError:
+      return datetime.fromisoformat(dt) # Python 3.9, 3.10
 
 
 class TimeDeltaSerializer(ObjectSerializer):

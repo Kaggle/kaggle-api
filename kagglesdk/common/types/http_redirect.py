@@ -91,10 +91,10 @@ class HttpRedirect(KaggleObject):
       raise TypeError('expiry must be of type timedelta')
     self._expiry = expiry
 
-
   @classmethod
   def prepare_from(cls, http_response):
     return http_response
+
 
 HttpRedirect._fields = [
   FieldMetadata("url", "url", "_url", str, "", PredefinedSerializer()),

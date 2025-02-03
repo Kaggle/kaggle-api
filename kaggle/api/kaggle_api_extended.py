@@ -862,7 +862,7 @@ class KaggleApi:
         return None
       else:
         raise e
-    return submit_result
+    return submit_result.message
 
   def competition_submissions(self,
                               competition,

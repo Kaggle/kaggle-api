@@ -88,10 +88,10 @@ class FileDownload(KaggleObject):
       raise TypeError('content_length must be of type int')
     self._content_length = content_length
 
-
   @classmethod
   def prepare_from(cls, http_response):
     return http_response
+
 
 FileDownload._fields = [
   FieldMetadata("contentType", "content_type", "_content_type", str, "", PredefinedSerializer()),

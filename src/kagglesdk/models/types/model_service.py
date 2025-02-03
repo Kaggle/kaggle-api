@@ -58,7 +58,6 @@ class GetModelMetricsRequest(KaggleObject):
       raise TypeError('start_time must be of type datetime')
     self._start_time = start_time
 
-
   def endpoint(self):
     path = '/api/v1/models/{owner_slug}/{model_slug}/metrics'
     return path.format_map(self.to_field_map(self))
@@ -66,6 +65,7 @@ class GetModelMetricsRequest(KaggleObject):
   @staticmethod
   def endpoint_path():
     return '/models/{owner_slug}/{model_slug}/metrics'
+
 
 class GetModelMetricsResponse(KaggleObject):
   r"""

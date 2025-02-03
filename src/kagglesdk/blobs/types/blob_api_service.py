@@ -101,7 +101,6 @@ class ApiStartBlobUploadRequest(KaggleObject):
       raise TypeError('last_modified_epoch_seconds must be of type int')
     self._last_modified_epoch_seconds = last_modified_epoch_seconds
 
-
   def endpoint(self):
     path = '/api/v1/blobs/upload'
     return path.format_map(self.to_field_map(self))
@@ -114,6 +113,7 @@ class ApiStartBlobUploadRequest(KaggleObject):
   @staticmethod
   def body_fields():
     return '*'
+
 
 class ApiStartBlobUploadResponse(KaggleObject):
   r"""
@@ -156,6 +156,10 @@ class ApiStartBlobUploadResponse(KaggleObject):
     if not isinstance(create_url, str):
       raise TypeError('create_url must be of type str')
     self._create_url = create_url
+
+  @property
+  def createUrl(self):
+    return self.create_url
 
 
 ApiStartBlobUploadRequest._fields = [

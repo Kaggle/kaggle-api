@@ -63,7 +63,6 @@ class ApiCreateSubmissionRequest(KaggleObject):
       raise TypeError('submission_description must be of type str')
     self._submission_description = submission_description
 
-
   def endpoint(self):
     path = '/api/v1/competitions/submissions/submit/{competition_name}'
     return path.format_map(self.to_field_map(self))
@@ -73,18 +72,27 @@ class ApiCreateSubmissionRequest(KaggleObject):
   def method():
     return 'POST'
 
+
 class ApiCreateSubmissionResponse(KaggleObject):
   r"""
   Attributes:
     message (str)
+      TODO: Remove when we feel okay with the breaking change, this adds no
+      value.
+    ref (int)
   """
 
   def __init__(self):
     self._message = ""
+    self._ref = 0
     self._freeze()
 
   @property
   def message(self) -> str:
+    r"""
+    TODO: Remove when we feel okay with the breaking change, this adds no
+    value.
+    """
     return self._message
 
   @message.setter
@@ -95,6 +103,19 @@ class ApiCreateSubmissionResponse(KaggleObject):
     if not isinstance(message, str):
       raise TypeError('message must be of type str')
     self._message = message
+
+  @property
+  def ref(self) -> int:
+    return self._ref
+
+  @ref.setter
+  def ref(self, ref: int):
+    if ref is None:
+      del self.ref
+      return
+    if not isinstance(ref, int):
+      raise TypeError('ref must be of type int')
+    self._ref = ref
 
 
 class ApiDownloadDataFileRequest(KaggleObject):
@@ -139,7 +160,6 @@ class ApiDownloadDataFileRequest(KaggleObject):
       raise TypeError('file_name must be of type str')
     self._file_name = file_name
 
-
   def endpoint(self):
     path = '/api/v1/competitions/data/download/{competition_name}/{file_name}'
     return path.format_map(self.to_field_map(self))
@@ -147,6 +167,7 @@ class ApiDownloadDataFileRequest(KaggleObject):
   @staticmethod
   def endpoint_path():
     return '/api/v1/competitions/data/download/{competition_name}/{file_name}'
+
 
 class ApiDownloadDataFilesRequest(KaggleObject):
   r"""
@@ -173,7 +194,6 @@ class ApiDownloadDataFilesRequest(KaggleObject):
       raise TypeError('competition_name must be of type str')
     self._competition_name = competition_name
 
-
   def endpoint(self):
     path = '/api/v1/competitions/data/download-all/{competition_name}'
     return path.format_map(self.to_field_map(self))
@@ -181,6 +201,7 @@ class ApiDownloadDataFilesRequest(KaggleObject):
   @staticmethod
   def endpoint_path():
     return '/api/v1/competitions/data/download-all/{competition_name}'
+
 
 class ApiDownloadLeaderboardRequest(KaggleObject):
   r"""
@@ -205,7 +226,6 @@ class ApiDownloadLeaderboardRequest(KaggleObject):
       raise TypeError('competition_name must be of type str')
     self._competition_name = competition_name
 
-
   def endpoint(self):
     path = '/api/v1/competitions/{competition_name}/leaderboard/download'
     return path.format_map(self.to_field_map(self))
@@ -214,15 +234,21 @@ class ApiDownloadLeaderboardRequest(KaggleObject):
   def endpoint_path():
     return '/api/v1/competitions/{competition_name}/leaderboard/download'
 
+
 class ApiGetLeaderboardRequest(KaggleObject):
   r"""
   Attributes:
     competition_name (str)
       Competition name. Example: 'titanic'.
+    override_public (bool)
+      By default we return the private leaderboard if it's available, otherwise
+      the public LB. This flag lets you override to get public even if private
+      is available.
   """
 
   def __init__(self):
     self._competition_name = ""
+    self._override_public = None
     self._freeze()
 
   @property
@@ -239,6 +265,23 @@ class ApiGetLeaderboardRequest(KaggleObject):
       raise TypeError('competition_name must be of type str')
     self._competition_name = competition_name
 
+  @property
+  def override_public(self) -> bool:
+    r"""
+    By default we return the private leaderboard if it's available, otherwise
+    the public LB. This flag lets you override to get public even if private
+    is available.
+    """
+    return self._override_public or False
+
+  @override_public.setter
+  def override_public(self, override_public: bool):
+    if override_public is None:
+      del self.override_public
+      return
+    if not isinstance(override_public, bool):
+      raise TypeError('override_public must be of type bool')
+    self._override_public = override_public
 
   def endpoint(self):
     path = '/api/v1/competitions/{competition_name}/leaderboard/view'
@@ -247,6 +290,7 @@ class ApiGetLeaderboardRequest(KaggleObject):
   @staticmethod
   def endpoint_path():
     return '/api/v1/competitions/{competition_name}/leaderboard/view'
+
 
 class ApiGetLeaderboardResponse(KaggleObject):
   r"""
@@ -272,6 +316,41 @@ class ApiGetLeaderboardResponse(KaggleObject):
     if not all([isinstance(t, ApiLeaderboardSubmission) for t in submissions]):
       raise TypeError('submissions must contain only items of type ApiLeaderboardSubmission')
     self._submissions = submissions
+
+
+class ApiGetSubmissionRequest(KaggleObject):
+  r"""
+  Attributes:
+    ref (int)
+      SubmissionId.
+  """
+
+  def __init__(self):
+    self._ref = 0
+    self._freeze()
+
+  @property
+  def ref(self) -> int:
+    """SubmissionId."""
+    return self._ref
+
+  @ref.setter
+  def ref(self, ref: int):
+    if ref is None:
+      del self.ref
+      return
+    if not isinstance(ref, int):
+      raise TypeError('ref must be of type int')
+    self._ref = ref
+
+  def endpoint(self):
+    path = '/api/v1/competitions/submissions/get/{ref}'
+    return path.format_map(self.to_field_map(self))
+
+
+  @staticmethod
+  def method():
+    return 'POST'
 
 
 class ApiLeaderboardSubmission(KaggleObject):
@@ -452,10 +531,10 @@ class ApiListCompetitionsRequest(KaggleObject):
       raise TypeError('page must be of type int')
     self._page = page
 
-
   def endpoint(self):
     path = '/api/v1/competitions/list'
     return path.format_map(self.to_field_map(self))
+
 
 class ApiListCompetitionsResponse(KaggleObject):
   r"""
@@ -482,10 +561,10 @@ class ApiListCompetitionsResponse(KaggleObject):
       raise TypeError('competitions must contain only items of type ApiCompetition')
     self._competitions = competitions
 
-
   @classmethod
   def prepare_from(cls, http_response):
     return cls.from_dict({'competitions': json.loads(http_response.text)})
+
 
 class ApiListDataFilesRequest(KaggleObject):
   r"""
@@ -542,7 +621,6 @@ class ApiListDataFilesRequest(KaggleObject):
       raise TypeError('page_token must be of type str')
     self._page_token = page_token
 
-
   def endpoint(self):
     path = '/api/v1/competitions/data/list/{competition_name}'
     return path.format_map(self.to_field_map(self))
@@ -550,6 +628,7 @@ class ApiListDataFilesRequest(KaggleObject):
   @staticmethod
   def endpoint_path():
     return '/api/v1/competitions/data/list/{competition_name}'
+
 
 class ApiListDataFilesResponse(KaggleObject):
   r"""
@@ -590,6 +669,10 @@ class ApiListDataFilesResponse(KaggleObject):
     if not isinstance(next_page_token, str):
       raise TypeError('next_page_token must be of type str')
     self._next_page_token = next_page_token
+
+  @property
+  def nextPageToken(self):
+    return self.next_page_token
 
 
 class ApiListSubmissionsRequest(KaggleObject):
@@ -660,7 +743,6 @@ class ApiListSubmissionsRequest(KaggleObject):
       raise TypeError('page must be of type int')
     self._page = page
 
-
   def endpoint(self):
     path = '/api/v1/competitions/submissions/list/{competition_name}'
     return path.format_map(self.to_field_map(self))
@@ -668,6 +750,7 @@ class ApiListSubmissionsRequest(KaggleObject):
   @staticmethod
   def endpoint_path():
     return '/api/v1/competitions/submissions/list/{competition_name}'
+
 
 class ApiListSubmissionsResponse(KaggleObject):
   r"""
@@ -694,10 +777,10 @@ class ApiListSubmissionsResponse(KaggleObject):
       raise TypeError('submissions must contain only items of type ApiSubmission')
     self._submissions = submissions
 
-
   @classmethod
   def prepare_from(cls, http_response):
     return cls.from_dict({'submissions': json.loads(http_response.text)})
+
 
 class ApiStartSubmissionUploadRequest(KaggleObject):
   r"""
@@ -769,7 +852,6 @@ class ApiStartSubmissionUploadRequest(KaggleObject):
       raise TypeError('file_name must be of type str')
     self._file_name = file_name
 
-
   def endpoint(self):
     path = '/api/v1/competitions/submission-url'
     return path.format_map(self.to_field_map(self))
@@ -778,6 +860,7 @@ class ApiStartSubmissionUploadRequest(KaggleObject):
   @staticmethod
   def method():
     return 'POST'
+
 
 class ApiStartSubmissionUploadResponse(KaggleObject):
   r"""
@@ -820,6 +903,10 @@ class ApiStartSubmissionUploadResponse(KaggleObject):
       raise TypeError('create_url must be of type str')
     self._create_url = create_url
 
+  @property
+  def createUrl(self):
+    return self.create_url
+
 
 class ApiSubmission(KaggleObject):
   r"""
@@ -837,6 +924,8 @@ class ApiSubmission(KaggleObject):
     submitted_by_ref (str)
     team_name (str)
     url (str)
+      Minor note: ListSubmissions and GetSubmission may differ in setting this
+      field.
   """
 
   def __init__(self):
@@ -1013,6 +1102,10 @@ class ApiSubmission(KaggleObject):
 
   @property
   def url(self) -> str:
+    r"""
+    Minor note: ListSubmissions and GetSubmission may differ in setting this
+    field.
+    """
     return self._url or ""
 
   @url.setter
@@ -1634,6 +1727,7 @@ ApiCreateSubmissionRequest._fields = [
 
 ApiCreateSubmissionResponse._fields = [
   FieldMetadata("message", "message", "_message", str, "", PredefinedSerializer()),
+  FieldMetadata("ref", "ref", "_ref", int, 0, PredefinedSerializer()),
 ]
 
 ApiDownloadDataFileRequest._fields = [
@@ -1651,10 +1745,15 @@ ApiDownloadLeaderboardRequest._fields = [
 
 ApiGetLeaderboardRequest._fields = [
   FieldMetadata("competitionName", "competition_name", "_competition_name", str, "", PredefinedSerializer()),
+  FieldMetadata("overridePublic", "override_public", "_override_public", bool, None, PredefinedSerializer(), optional=True),
 ]
 
 ApiGetLeaderboardResponse._fields = [
   FieldMetadata("submissions", "submissions", "_submissions", ApiLeaderboardSubmission, [], ListSerializer(KaggleObjectSerializer())),
+]
+
+ApiGetSubmissionRequest._fields = [
+  FieldMetadata("ref", "ref", "_ref", int, 0, PredefinedSerializer()),
 ]
 
 ApiLeaderboardSubmission._fields = [

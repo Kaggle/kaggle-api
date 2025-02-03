@@ -3,7 +3,7 @@ from google.protobuf.field_mask_pb2 import FieldMask
 from kagglesdk.datasets.types.dataset_api_service import ApiCategory, ApiDatasetNewFile, ApiUploadDirectoryInfo
 from kagglesdk.kaggle_object import *
 from kagglesdk.models.types.model_enums import GatingAgreementRequestsExpiryStatus, GatingAgreementRequestsReviewStatus, ListModelsOrderBy, ModelFramework, ModelInstanceType
-from kagglesdk.models.types.model_types import BaseModelInstanceInformation, GatingUserConsent, ModelLink
+from kagglesdk.models.types.model_types import BaseModelInstanceInformation, ModelLink
 from typing import Optional, List
 
 class ApiCreateModelInstanceRequest(KaggleObject):
@@ -59,7 +59,6 @@ class ApiCreateModelInstanceRequest(KaggleObject):
       raise TypeError('body must be of type ApiCreateModelInstanceRequestBody')
     self._body = body
 
-
   def endpoint(self):
     path = '/api/v1/models/{owner_slug}/{model_slug}/create/instance'
     return path.format_map(self.to_field_map(self))
@@ -72,6 +71,7 @@ class ApiCreateModelInstanceRequest(KaggleObject):
   @staticmethod
   def body_fields():
     return 'body'
+
 
 class ApiCreateModelInstanceRequestBody(KaggleObject):
   r"""
@@ -366,7 +366,6 @@ class ApiCreateModelInstanceVersionRequest(KaggleObject):
       raise TypeError('body must be of type ApiCreateModelInstanceVersionRequestBody')
     self._body = body
 
-
   def endpoint(self):
     path = '/api/v1/models/{owner_slug}/{model_slug}/{framework}/{instance_slug}/create/version'
     return path.format_map(self.to_field_map(self))
@@ -379,6 +378,7 @@ class ApiCreateModelInstanceVersionRequest(KaggleObject):
   @staticmethod
   def body_fields():
     return 'body'
+
 
 class ApiCreateModelInstanceVersionRequestBody(KaggleObject):
   r"""
@@ -581,7 +581,6 @@ class ApiCreateModelRequest(KaggleObject):
       raise TypeError('provenance_sources must be of type str')
     self._provenance_sources = provenance_sources
 
-
   def endpoint(self):
     path = '/api/v1/models/create/new'
     return path.format_map(self.to_field_map(self))
@@ -594,6 +593,7 @@ class ApiCreateModelRequest(KaggleObject):
   @staticmethod
   def body_fields():
     return '*'
+
 
 class ApiCreateModelResponse(KaggleObject):
   r"""
@@ -678,6 +678,10 @@ class ApiCreateModelResponse(KaggleObject):
       raise TypeError('url must be of type str')
     self._url = url
 
+  @property
+  def errorCode(self):
+    return self.error_code
+
 
 class ApiDeleteModelInstanceRequest(KaggleObject):
   r"""
@@ -747,7 +751,6 @@ class ApiDeleteModelInstanceRequest(KaggleObject):
       raise TypeError('instance_slug must be of type str')
     self._instance_slug = instance_slug
 
-
   def endpoint(self):
     path = '/api/v1/models/{owner_slug}/{model_slug}/{framework}/{instance_slug}/delete'
     return path.format_map(self.to_field_map(self))
@@ -756,6 +759,7 @@ class ApiDeleteModelInstanceRequest(KaggleObject):
   @staticmethod
   def method():
     return 'POST'
+
 
 class ApiDeleteModelInstanceVersionRequest(KaggleObject):
   r"""
@@ -840,7 +844,6 @@ class ApiDeleteModelInstanceVersionRequest(KaggleObject):
       raise TypeError('version_number must be of type int')
     self._version_number = version_number
 
-
   def endpoint(self):
     path = '/api/v1/models/{owner_slug}/{model_slug}/{framework}/{instance_slug}/{version_number}/delete'
     return path.format_map(self.to_field_map(self))
@@ -849,6 +852,7 @@ class ApiDeleteModelInstanceVersionRequest(KaggleObject):
   @staticmethod
   def method():
     return 'POST'
+
 
 class ApiDeleteModelRequest(KaggleObject):
   r"""
@@ -888,7 +892,6 @@ class ApiDeleteModelRequest(KaggleObject):
       raise TypeError('model_slug must be of type str')
     self._model_slug = model_slug
 
-
   def endpoint(self):
     path = '/api/v1/models/{owner_slug}/{model_slug}/delete'
     return path.format_map(self.to_field_map(self))
@@ -897,6 +900,7 @@ class ApiDeleteModelRequest(KaggleObject):
   @staticmethod
   def method():
     return 'POST'
+
 
 class ApiDeleteModelResponse(KaggleObject):
   r"""
@@ -1022,7 +1026,6 @@ class ApiDownloadModelInstanceVersionRequest(KaggleObject):
       raise TypeError('path must be of type str')
     self._path = path
 
-
   def endpoint(self):
     if self.path:
       path = '/api/v1/models/{owner_slug}/{model_slug}/{framework}/{instance_slug}/{version_number}/download/{path}'
@@ -1033,6 +1036,7 @@ class ApiDownloadModelInstanceVersionRequest(KaggleObject):
   @staticmethod
   def endpoint_path():
     return '/api/v1/models/{owner_slug}/{model_slug}/{framework}/{instance_slug}/{version_number}/download'
+
 
 class ApiGetModelInstanceRequest(KaggleObject):
   r"""
@@ -1102,7 +1106,6 @@ class ApiGetModelInstanceRequest(KaggleObject):
       raise TypeError('instance_slug must be of type str')
     self._instance_slug = instance_slug
 
-
   def endpoint(self):
     path = '/api/v1/models/{owner_slug}/{model_slug}/{framework}/{instance_slug}/get'
     return path.format_map(self.to_field_map(self))
@@ -1110,6 +1113,7 @@ class ApiGetModelInstanceRequest(KaggleObject):
   @staticmethod
   def endpoint_path():
     return '/api/v1/models/{owner_slug}/{model_slug}/{framework}/{instance_slug}/get'
+
 
 class ApiGetModelRequest(KaggleObject):
   r"""
@@ -1149,7 +1153,6 @@ class ApiGetModelRequest(KaggleObject):
       raise TypeError('model_slug must be of type str')
     self._model_slug = model_slug
 
-
   def endpoint(self):
     path = '/api/v1/models/{owner_slug}/{model_slug}/get'
     return path.format_map(self.to_field_map(self))
@@ -1157,6 +1160,7 @@ class ApiGetModelRequest(KaggleObject):
   @staticmethod
   def endpoint_path():
     return '/api/v1/models/{owner_slug}/{model_slug}/get'
+
 
 class ApiListModelGatingUserConsentsRequest(KaggleObject):
   r"""
@@ -1275,7 +1279,6 @@ class ApiListModelGatingUserConsentsRequest(KaggleObject):
       raise TypeError('page_token must be of type str')
     self._page_token = page_token
 
-
   def endpoint(self):
     path = '/api/v1/models/{owner_slug}/{model_slug}/user-consents'
     return path.format_map(self.to_field_map(self))
@@ -1284,11 +1287,11 @@ class ApiListModelGatingUserConsentsRequest(KaggleObject):
   def endpoint_path():
     return '/api/v1/models/{owner_slug}/{model_slug}/user-consents'
 
+
 class ApiListModelGatingUserConsentsResponse(KaggleObject):
   r"""
   Attributes:
-    gating_user_consents (GatingUserConsent)
-      gating_user_consents.request_data is AUDIT_EXEMPT.
+    gating_user_consents (ApiGatingUserConsent)
     total_size (int)
     next_page_token (str)
   """
@@ -1300,19 +1303,18 @@ class ApiListModelGatingUserConsentsResponse(KaggleObject):
     self._freeze()
 
   @property
-  def gating_user_consents(self) -> Optional[List[Optional['GatingUserConsent']]]:
-    """gating_user_consents.request_data is AUDIT_EXEMPT."""
+  def gating_user_consents(self) -> Optional[List[Optional['ApiGatingUserConsent']]]:
     return self._gating_user_consents
 
   @gating_user_consents.setter
-  def gating_user_consents(self, gating_user_consents: Optional[List[Optional['GatingUserConsent']]]):
+  def gating_user_consents(self, gating_user_consents: Optional[List[Optional['ApiGatingUserConsent']]]):
     if gating_user_consents is None:
       del self.gating_user_consents
       return
     if not isinstance(gating_user_consents, list):
       raise TypeError('gating_user_consents must be of type list')
-    if not all([isinstance(t, GatingUserConsent) for t in gating_user_consents]):
-      raise TypeError('gating_user_consents must contain only items of type GatingUserConsent')
+    if not all([isinstance(t, ApiGatingUserConsent) for t in gating_user_consents]):
+      raise TypeError('gating_user_consents must contain only items of type ApiGatingUserConsent')
     self._gating_user_consents = gating_user_consents
 
   @property
@@ -1340,6 +1342,18 @@ class ApiListModelGatingUserConsentsResponse(KaggleObject):
     if not isinstance(next_page_token, str):
       raise TypeError('next_page_token must be of type str')
     self._next_page_token = next_page_token
+
+  @property
+  def gatingUserConsents(self):
+    return self.gating_user_consents
+
+  @property
+  def totalSize(self):
+    return self.total_size
+
+  @property
+  def nextPageToken(self):
+    return self.next_page_token
 
 
 class ApiListModelInstanceVersionFilesRequest(KaggleObject):
@@ -1455,7 +1469,6 @@ class ApiListModelInstanceVersionFilesRequest(KaggleObject):
       raise TypeError('page_token must be of type str')
     self._page_token = page_token
 
-
   def endpoint(self):
     if self.version_number:
       path = '/api/v1/models/{owner_slug}/{model_slug}/{framework}/{instance_slug}/{version_number}/files'
@@ -1466,6 +1479,7 @@ class ApiListModelInstanceVersionFilesRequest(KaggleObject):
   @staticmethod
   def endpoint_path():
     return '/api/v1/models/{owner_slug}/{model_slug}/{framework}/{instance_slug}/files'
+
 
 class ApiListModelInstanceVersionFilesResponse(KaggleObject):
   r"""
@@ -1506,6 +1520,10 @@ class ApiListModelInstanceVersionFilesResponse(KaggleObject):
     if not isinstance(next_page_token, str):
       raise TypeError('next_page_token must be of type str')
     self._next_page_token = next_page_token
+
+  @property
+  def nextPageToken(self):
+    return self.next_page_token
 
 
 class ApiListModelsRequest(KaggleObject):
@@ -1622,10 +1640,10 @@ class ApiListModelsRequest(KaggleObject):
       raise TypeError('only_vertex_models must be of type bool')
     self._only_vertex_models = only_vertex_models
 
-
   def endpoint(self):
     path = '/api/v1/models/list'
     return path.format_map(self.to_field_map(self))
+
 
 class ApiListModelsResponse(KaggleObject):
   r"""
@@ -1681,6 +1699,14 @@ class ApiListModelsResponse(KaggleObject):
     if not isinstance(total_results, int):
       raise TypeError('total_results must be of type int')
     self._total_results = total_results
+
+  @property
+  def nextPageToken(self):
+    return self.next_page_token
+
+  @property
+  def totalResults(self):
+    return self.total_results
 
 
 class ApiModel(KaggleObject):
@@ -2215,6 +2241,88 @@ class ApiModelInstance(KaggleObject):
     self._total_uncompressed_bytes = total_uncompressed_bytes
 
 
+class ApiReviewGatingUserConsentRequest(KaggleObject):
+  r"""
+  Attributes:
+    agreement_id (int)
+    user_name (str)
+    review_status (GatingAgreementRequestsReviewStatus)
+    publisher_notes (str)
+  """
+
+  def __init__(self):
+    self._agreement_id = 0
+    self._user_name = ""
+    self._review_status = GatingAgreementRequestsReviewStatus.GATING_AGREEMENT_REQUESTS_REVIEW_STATUS_UNSPECIFIED
+    self._publisher_notes = None
+    self._freeze()
+
+  @property
+  def agreement_id(self) -> int:
+    return self._agreement_id
+
+  @agreement_id.setter
+  def agreement_id(self, agreement_id: int):
+    if agreement_id is None:
+      del self.agreement_id
+      return
+    if not isinstance(agreement_id, int):
+      raise TypeError('agreement_id must be of type int')
+    self._agreement_id = agreement_id
+
+  @property
+  def user_name(self) -> str:
+    return self._user_name
+
+  @user_name.setter
+  def user_name(self, user_name: str):
+    if user_name is None:
+      del self.user_name
+      return
+    if not isinstance(user_name, str):
+      raise TypeError('user_name must be of type str')
+    self._user_name = user_name
+
+  @property
+  def review_status(self) -> 'GatingAgreementRequestsReviewStatus':
+    return self._review_status
+
+  @review_status.setter
+  def review_status(self, review_status: 'GatingAgreementRequestsReviewStatus'):
+    if review_status is None:
+      del self.review_status
+      return
+    if not isinstance(review_status, GatingAgreementRequestsReviewStatus):
+      raise TypeError('review_status must be of type GatingAgreementRequestsReviewStatus')
+    self._review_status = review_status
+
+  @property
+  def publisher_notes(self) -> str:
+    return self._publisher_notes or ""
+
+  @publisher_notes.setter
+  def publisher_notes(self, publisher_notes: str):
+    if publisher_notes is None:
+      del self.publisher_notes
+      return
+    if not isinstance(publisher_notes, str):
+      raise TypeError('publisher_notes must be of type str')
+    self._publisher_notes = publisher_notes
+
+  def endpoint(self):
+    path = '/api/v1/gating/{agreement_id}/user-consent/review'
+    return path.format_map(self.to_field_map(self))
+
+
+  @staticmethod
+  def method():
+    return 'POST'
+
+  @staticmethod
+  def body_fields():
+    return '*'
+
+
 class ApiUpdateModelInstanceRequest(KaggleObject):
   r"""
   Attributes:
@@ -2420,7 +2528,6 @@ class ApiUpdateModelInstanceRequest(KaggleObject):
       raise TypeError('external_base_model_url must be of type str')
     self._external_base_model_url = external_base_model_url
 
-
   def endpoint(self):
     path = '/api/v1/models/{owner_slug}/{model_slug}/{framework}/{instance_slug}/update'
     return path.format_map(self.to_field_map(self))
@@ -2433,6 +2540,7 @@ class ApiUpdateModelInstanceRequest(KaggleObject):
   @staticmethod
   def body_fields():
     return '*'
+
 
 class ApiUpdateModelRequest(KaggleObject):
   r"""
@@ -2577,7 +2685,6 @@ class ApiUpdateModelRequest(KaggleObject):
       raise TypeError('update_mask must be of type FieldMask')
     self._update_mask = update_mask
 
-
   def endpoint(self):
     path = '/api/v1/models/{owner_slug}/{model_slug}/update'
     return path.format_map(self.to_field_map(self))
@@ -2590,6 +2697,7 @@ class ApiUpdateModelRequest(KaggleObject):
   @staticmethod
   def body_fields():
     return '*'
+
 
 class ApiUpdateModelResponse(KaggleObject):
   r"""
@@ -2713,7 +2821,6 @@ class ApiUploadModelFileRequest(KaggleObject):
       raise TypeError('last_modified_epoch_seconds must be of type int')
     self._last_modified_epoch_seconds = last_modified_epoch_seconds
 
-
   def endpoint(self):
     path = '/api/v1/models/upload/file/{content_length}/{last_modified_epoch_seconds}'
     return path.format_map(self.to_field_map(self))
@@ -2722,6 +2829,7 @@ class ApiUploadModelFileRequest(KaggleObject):
   @staticmethod
   def method():
     return 'POST'
+
 
 class ApiUploadModelFileResponse(KaggleObject):
   r"""
@@ -2765,6 +2873,10 @@ class ApiUploadModelFileResponse(KaggleObject):
       raise TypeError('create_url must be of type str')
     self._create_url = create_url
 
+  @property
+  def createUrl(self):
+    return self.create_url
+
 
 class CreateModelSigningTokenRequest(KaggleObject):
   r"""
@@ -2804,7 +2916,6 @@ class CreateModelSigningTokenRequest(KaggleObject):
       raise TypeError('model_slug must be of type str')
     self._model_slug = model_slug
 
-
   def endpoint(self):
     path = '/api/v1/models/signing/token'
     return path.format_map(self.to_field_map(self))
@@ -2817,6 +2928,7 @@ class CreateModelSigningTokenRequest(KaggleObject):
   @staticmethod
   def body_fields():
     return '*'
+
 
 class CreateModelSigningTokenResponse(KaggleObject):
   r"""
@@ -2841,16 +2953,20 @@ class CreateModelSigningTokenResponse(KaggleObject):
       raise TypeError('id_token must be of type str')
     self._id_token = id_token
 
+  @property
+  def idToken(self):
+    return self.id_token
+
 
 class KeysRequest(KaggleObject):
   r"""
   """
 
   pass
-
   def endpoint(self):
     path = '/api/v1/models/signing/keys'
     return path.format_map(self.to_field_map(self))
+
 
 class KeysResponse(KaggleObject):
   r"""
@@ -2887,10 +3003,10 @@ class WellKnowEndpointRequest(KaggleObject):
   """
 
   pass
-
   def endpoint(self):
     path = '/api/v1/models/signing/.well-known/openid-configuration'
     return path.format_map(self.to_field_map(self))
+
 
 class WellKnowEndpointResponse(KaggleObject):
   r"""
@@ -3020,6 +3136,192 @@ class WellKnowEndpointResponse(KaggleObject):
       raise TypeError('subject_types_supported must contain only items of type str')
     self._subject_types_supported = subject_types_supported
 
+  @property
+  def jwksUri(self):
+    return self.jwks_uri
+
+  @property
+  def tokenEndpoint(self):
+    return self.token_endpoint
+
+  @property
+  def idTokenSigningAlgValuesSupported(self):
+    return self.id_token_signing_alg_values_supported
+
+  @property
+  def claimsSupported(self):
+    return self.claims_supported
+
+  @property
+  def responseTypesSupported(self):
+    return self.response_types_supported
+
+  @property
+  def subjectTypesSupported(self):
+    return self.subject_types_supported
+
+
+class ApiGatingUserConsent(KaggleObject):
+  r"""
+  ApiGatingUserConsent presents GatingUserConsent data for publisher access,
+  omitting or modifying certain fields as needed such as user_id.
+
+  Attributes:
+    id (int)
+    agreement_id (int)
+    user_name (str)
+    request_data (str)
+    request_time (datetime)
+    review_time (datetime)
+    review_status (GatingAgreementRequestsReviewStatus)
+    expiry_status (GatingAgreementRequestsExpiryStatus)
+    expiry_time (datetime)
+    publisher_notes (str)
+  """
+
+  def __init__(self):
+    self._id = 0
+    self._agreement_id = 0
+    self._user_name = ""
+    self._request_data = None
+    self._request_time = None
+    self._review_time = None
+    self._review_status = GatingAgreementRequestsReviewStatus.GATING_AGREEMENT_REQUESTS_REVIEW_STATUS_UNSPECIFIED
+    self._expiry_status = GatingAgreementRequestsExpiryStatus.GATING_AGREEMENT_REQUESTS_EXPIRY_STATUS_UNSPECIFIED
+    self._expiry_time = None
+    self._publisher_notes = None
+    self._freeze()
+
+  @property
+  def id(self) -> int:
+    return self._id
+
+  @id.setter
+  def id(self, id: int):
+    if id is None:
+      del self.id
+      return
+    if not isinstance(id, int):
+      raise TypeError('id must be of type int')
+    self._id = id
+
+  @property
+  def agreement_id(self) -> int:
+    return self._agreement_id
+
+  @agreement_id.setter
+  def agreement_id(self, agreement_id: int):
+    if agreement_id is None:
+      del self.agreement_id
+      return
+    if not isinstance(agreement_id, int):
+      raise TypeError('agreement_id must be of type int')
+    self._agreement_id = agreement_id
+
+  @property
+  def user_name(self) -> str:
+    return self._user_name
+
+  @user_name.setter
+  def user_name(self, user_name: str):
+    if user_name is None:
+      del self.user_name
+      return
+    if not isinstance(user_name, str):
+      raise TypeError('user_name must be of type str')
+    self._user_name = user_name
+
+  @property
+  def request_data(self) -> str:
+    return self._request_data or ""
+
+  @request_data.setter
+  def request_data(self, request_data: str):
+    if request_data is None:
+      del self.request_data
+      return
+    if not isinstance(request_data, str):
+      raise TypeError('request_data must be of type str')
+    self._request_data = request_data
+
+  @property
+  def request_time(self) -> datetime:
+    return self._request_time
+
+  @request_time.setter
+  def request_time(self, request_time: datetime):
+    if request_time is None:
+      del self.request_time
+      return
+    if not isinstance(request_time, datetime):
+      raise TypeError('request_time must be of type datetime')
+    self._request_time = request_time
+
+  @property
+  def review_time(self) -> datetime:
+    return self._review_time or None
+
+  @review_time.setter
+  def review_time(self, review_time: datetime):
+    if review_time is None:
+      del self.review_time
+      return
+    if not isinstance(review_time, datetime):
+      raise TypeError('review_time must be of type datetime')
+    self._review_time = review_time
+
+  @property
+  def review_status(self) -> 'GatingAgreementRequestsReviewStatus':
+    return self._review_status
+
+  @review_status.setter
+  def review_status(self, review_status: 'GatingAgreementRequestsReviewStatus'):
+    if review_status is None:
+      del self.review_status
+      return
+    if not isinstance(review_status, GatingAgreementRequestsReviewStatus):
+      raise TypeError('review_status must be of type GatingAgreementRequestsReviewStatus')
+    self._review_status = review_status
+
+  @property
+  def expiry_status(self) -> 'GatingAgreementRequestsExpiryStatus':
+    return self._expiry_status
+
+  @expiry_status.setter
+  def expiry_status(self, expiry_status: 'GatingAgreementRequestsExpiryStatus'):
+    if expiry_status is None:
+      del self.expiry_status
+      return
+    if not isinstance(expiry_status, GatingAgreementRequestsExpiryStatus):
+      raise TypeError('expiry_status must be of type GatingAgreementRequestsExpiryStatus')
+    self._expiry_status = expiry_status
+
+  @property
+  def expiry_time(self) -> datetime:
+    return self._expiry_time or None
+
+  @expiry_time.setter
+  def expiry_time(self, expiry_time: datetime):
+    if expiry_time is None:
+      del self.expiry_time
+      return
+    if not isinstance(expiry_time, datetime):
+      raise TypeError('expiry_time must be of type datetime')
+    self._expiry_time = expiry_time
+
+  @property
+  def publisher_notes(self) -> str:
+    return self._publisher_notes or ""
+
+  @publisher_notes.setter
+  def publisher_notes(self, publisher_notes: str):
+    if publisher_notes is None:
+      del self.publisher_notes
+      return
+    if not isinstance(publisher_notes, str):
+      raise TypeError('publisher_notes must be of type str')
+    self._publisher_notes = publisher_notes
+
 
 class JWK(KaggleObject):
   r"""
@@ -3128,7 +3430,7 @@ ApiCreateModelInstanceRequest._fields = [
   FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "", PredefinedSerializer()),
   FieldMetadata("modelSlug", "model_slug", "_model_slug", str, "", PredefinedSerializer()),
   FieldMetadata("body", "body", "_body", ApiCreateModelInstanceRequestBody, None, KaggleObjectSerializer()),
-  ]
+]
 
 ApiCreateModelInstanceRequestBody._fields = [
   FieldMetadata("instanceSlug", "instance_slug", "_instance_slug", str, "", PredefinedSerializer()),
@@ -3144,7 +3446,7 @@ ApiCreateModelInstanceRequestBody._fields = [
   FieldMetadata("baseModelInstance", "base_model_instance", "_base_model_instance", str, None, PredefinedSerializer(), optional=True),
   FieldMetadata("externalBaseModelUrl", "external_base_model_url", "_external_base_model_url", str, None, PredefinedSerializer(), optional=True),
   FieldMetadata("sigstore", "sigstore", "_sigstore", bool, None, PredefinedSerializer(), optional=True),
-  ]
+]
 
 ApiCreateModelInstanceVersionRequest._fields = [
   FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "", PredefinedSerializer()),
@@ -3152,14 +3454,14 @@ ApiCreateModelInstanceVersionRequest._fields = [
   FieldMetadata("framework", "framework", "_framework", ModelFramework, ModelFramework.MODEL_FRAMEWORK_UNSPECIFIED, EnumSerializer()),
   FieldMetadata("instanceSlug", "instance_slug", "_instance_slug", str, "", PredefinedSerializer()),
   FieldMetadata("body", "body", "_body", ApiCreateModelInstanceVersionRequestBody, None, KaggleObjectSerializer()),
-  ]
+]
 
 ApiCreateModelInstanceVersionRequestBody._fields = [
   FieldMetadata("versionNotes", "version_notes", "_version_notes", str, None, PredefinedSerializer(), optional=True),
   FieldMetadata("files", "files", "_files", ApiDatasetNewFile, [], ListSerializer(KaggleObjectSerializer())),
   FieldMetadata("directories", "directories", "_directories", ApiUploadDirectoryInfo, [], ListSerializer(KaggleObjectSerializer())),
   FieldMetadata("sigstore", "sigstore", "_sigstore", bool, None, PredefinedSerializer(), optional=True),
-  ]
+]
 
 ApiCreateModelRequest._fields = [
   FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "", PredefinedSerializer()),
@@ -3170,7 +3472,7 @@ ApiCreateModelRequest._fields = [
   FieldMetadata("description", "description", "_description", str, None, PredefinedSerializer(), optional=True),
   FieldMetadata("publishTime", "publish_time", "_publish_time", datetime, None, DateTimeSerializer()),
   FieldMetadata("provenanceSources", "provenance_sources", "_provenance_sources", str, None, PredefinedSerializer(), optional=True),
-  ]
+]
 
 ApiCreateModelResponse._fields = [
   FieldMetadata("id", "id", "_id", int, None, PredefinedSerializer(), optional=True),
@@ -3178,14 +3480,14 @@ ApiCreateModelResponse._fields = [
   FieldMetadata("error", "error", "_error", str, None, PredefinedSerializer(), optional=True),
   FieldMetadata("errorCode", "error_code", "_error_code", int, None, PredefinedSerializer(), optional=True),
   FieldMetadata("url", "url", "_url", str, None, PredefinedSerializer(), optional=True),
-  ]
+]
 
 ApiDeleteModelInstanceRequest._fields = [
   FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "", PredefinedSerializer()),
   FieldMetadata("modelSlug", "model_slug", "_model_slug", str, "", PredefinedSerializer()),
   FieldMetadata("framework", "framework", "_framework", ModelFramework, ModelFramework.MODEL_FRAMEWORK_UNSPECIFIED, EnumSerializer()),
   FieldMetadata("instanceSlug", "instance_slug", "_instance_slug", str, "", PredefinedSerializer()),
-  ]
+]
 
 ApiDeleteModelInstanceVersionRequest._fields = [
   FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "", PredefinedSerializer()),
@@ -3193,16 +3495,16 @@ ApiDeleteModelInstanceVersionRequest._fields = [
   FieldMetadata("framework", "framework", "_framework", ModelFramework, ModelFramework.MODEL_FRAMEWORK_UNSPECIFIED, EnumSerializer()),
   FieldMetadata("instanceSlug", "instance_slug", "_instance_slug", str, "", PredefinedSerializer()),
   FieldMetadata("versionNumber", "version_number", "_version_number", int, 0, PredefinedSerializer()),
-  ]
+]
 
 ApiDeleteModelRequest._fields = [
   FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "", PredefinedSerializer()),
   FieldMetadata("modelSlug", "model_slug", "_model_slug", str, "", PredefinedSerializer()),
-  ]
+]
 
 ApiDeleteModelResponse._fields = [
   FieldMetadata("error", "error", "_error", str, None, PredefinedSerializer(), optional=True),
-  ]
+]
 
 ApiDownloadModelInstanceVersionRequest._fields = [
   FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "", PredefinedSerializer()),
@@ -3211,19 +3513,19 @@ ApiDownloadModelInstanceVersionRequest._fields = [
   FieldMetadata("instanceSlug", "instance_slug", "_instance_slug", str, "", PredefinedSerializer()),
   FieldMetadata("versionNumber", "version_number", "_version_number", int, 0, PredefinedSerializer()),
   FieldMetadata("path", "path", "_path", str, None, PredefinedSerializer(), optional=True),
-  ]
+]
 
 ApiGetModelInstanceRequest._fields = [
   FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "", PredefinedSerializer()),
   FieldMetadata("modelSlug", "model_slug", "_model_slug", str, "", PredefinedSerializer()),
   FieldMetadata("framework", "framework", "_framework", ModelFramework, ModelFramework.MODEL_FRAMEWORK_UNSPECIFIED, EnumSerializer()),
   FieldMetadata("instanceSlug", "instance_slug", "_instance_slug", str, "", PredefinedSerializer()),
-  ]
+]
 
 ApiGetModelRequest._fields = [
   FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "", PredefinedSerializer()),
   FieldMetadata("modelSlug", "model_slug", "_model_slug", str, "", PredefinedSerializer()),
-  ]
+]
 
 ApiListModelGatingUserConsentsRequest._fields = [
   FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "", PredefinedSerializer()),
@@ -3233,13 +3535,13 @@ ApiListModelGatingUserConsentsRequest._fields = [
   FieldMetadata("isUserRequestDataExpired", "is_user_request_data_expired", "_is_user_request_data_expired", bool, None, PredefinedSerializer(), optional=True),
   FieldMetadata("pageSize", "page_size", "_page_size", int, None, PredefinedSerializer(), optional=True),
   FieldMetadata("pageToken", "page_token", "_page_token", str, None, PredefinedSerializer(), optional=True),
-  ]
+]
 
 ApiListModelGatingUserConsentsResponse._fields = [
-  FieldMetadata("gatingUserConsents", "gating_user_consents", "_gating_user_consents", GatingUserConsent, [], ListSerializer(KaggleObjectSerializer())),
+  FieldMetadata("gatingUserConsents", "gating_user_consents", "_gating_user_consents", ApiGatingUserConsent, [], ListSerializer(KaggleObjectSerializer())),
   FieldMetadata("totalSize", "total_size", "_total_size", int, 0, PredefinedSerializer()),
   FieldMetadata("nextPageToken", "next_page_token", "_next_page_token", str, "", PredefinedSerializer()),
-  ]
+]
 
 ApiListModelInstanceVersionFilesRequest._fields = [
   FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "", PredefinedSerializer()),
@@ -3249,12 +3551,12 @@ ApiListModelInstanceVersionFilesRequest._fields = [
   FieldMetadata("versionNumber", "version_number", "_version_number", int, None, PredefinedSerializer(), optional=True),
   FieldMetadata("pageSize", "page_size", "_page_size", int, None, PredefinedSerializer(), optional=True),
   FieldMetadata("pageToken", "page_token", "_page_token", str, None, PredefinedSerializer(), optional=True),
-  ]
+]
 
 ApiListModelInstanceVersionFilesResponse._fields = [
   FieldMetadata("files", "files", "_files", ApiModelFile, [], ListSerializer(KaggleObjectSerializer())),
   FieldMetadata("nextPageToken", "next_page_token", "_next_page_token", str, "", PredefinedSerializer()),
-  ]
+]
 
 ApiListModelsRequest._fields = [
   FieldMetadata("search", "search", "_search", str, None, PredefinedSerializer(), optional=True),
@@ -3263,13 +3565,13 @@ ApiListModelsRequest._fields = [
   FieldMetadata("pageSize", "page_size", "_page_size", int, None, PredefinedSerializer(), optional=True),
   FieldMetadata("pageToken", "page_token", "_page_token", str, None, PredefinedSerializer(), optional=True),
   FieldMetadata("onlyVertexModels", "only_vertex_models", "_only_vertex_models", bool, None, PredefinedSerializer(), optional=True),
-  ]
+]
 
 ApiListModelsResponse._fields = [
   FieldMetadata("models", "models", "_models", ApiModel, [], ListSerializer(KaggleObjectSerializer())),
   FieldMetadata("nextPageToken", "next_page_token", "_next_page_token", str, "", PredefinedSerializer()),
   FieldMetadata("totalResults", "total_results", "_total_results", int, 0, PredefinedSerializer()),
-  ]
+]
 
 ApiModel._fields = [
   FieldMetadata("id", "id", "_id", int, 0, PredefinedSerializer()),
@@ -3286,13 +3588,13 @@ ApiModel._fields = [
   FieldMetadata("provenanceSources", "provenance_sources", "_provenance_sources", str, "", PredefinedSerializer()),
   FieldMetadata("url", "url", "_url", str, "", PredefinedSerializer()),
   FieldMetadata("modelVersionLinks", "model_version_links", "_model_version_links", ModelLink, [], ListSerializer(KaggleObjectSerializer())),
-  ]
+]
 
 ApiModelFile._fields = [
   FieldMetadata("name", "name", "_name", str, "", PredefinedSerializer()),
   FieldMetadata("size", "size", "_size", int, 0, PredefinedSerializer()),
   FieldMetadata("creationDate", "creation_date", "_creation_date", datetime, None, DateTimeSerializer(), optional=True),
-  ]
+]
 
 ApiModelInstance._fields = [
   FieldMetadata("id", "id", "_id", int, 0, PredefinedSerializer()),
@@ -3311,7 +3613,14 @@ ApiModelInstance._fields = [
   FieldMetadata("baseModelInstanceInformation", "base_model_instance_information", "_base_model_instance_information", BaseModelInstanceInformation, None, KaggleObjectSerializer(), optional=True),
   FieldMetadata("externalBaseModelUrl", "external_base_model_url", "_external_base_model_url", str, "", PredefinedSerializer()),
   FieldMetadata("totalUncompressedBytes", "total_uncompressed_bytes", "_total_uncompressed_bytes", int, 0, PredefinedSerializer()),
-  ]
+]
+
+ApiReviewGatingUserConsentRequest._fields = [
+  FieldMetadata("agreementId", "agreement_id", "_agreement_id", int, 0, PredefinedSerializer()),
+  FieldMetadata("userName", "user_name", "_user_name", str, "", PredefinedSerializer()),
+  FieldMetadata("reviewStatus", "review_status", "_review_status", GatingAgreementRequestsReviewStatus, GatingAgreementRequestsReviewStatus.GATING_AGREEMENT_REQUESTS_REVIEW_STATUS_UNSPECIFIED, EnumSerializer()),
+  FieldMetadata("publisherNotes", "publisher_notes", "_publisher_notes", str, None, PredefinedSerializer(), optional=True),
+]
 
 ApiUpdateModelInstanceRequest._fields = [
   FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "", PredefinedSerializer()),
@@ -3327,7 +3636,7 @@ ApiUpdateModelInstanceRequest._fields = [
   FieldMetadata("modelInstanceType", "model_instance_type", "_model_instance_type", ModelInstanceType, None, EnumSerializer(), optional=True),
   FieldMetadata("baseModelInstance", "base_model_instance", "_base_model_instance", str, None, PredefinedSerializer(), optional=True),
   FieldMetadata("externalBaseModelUrl", "external_base_model_url", "_external_base_model_url", str, None, PredefinedSerializer(), optional=True),
-  ]
+]
 
 ApiUpdateModelRequest._fields = [
   FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "", PredefinedSerializer()),
@@ -3339,40 +3648,40 @@ ApiUpdateModelRequest._fields = [
   FieldMetadata("publishTime", "publish_time", "_publish_time", datetime, None, DateTimeSerializer()),
   FieldMetadata("provenanceSources", "provenance_sources", "_provenance_sources", str, None, PredefinedSerializer(), optional=True),
   FieldMetadata("updateMask", "update_mask", "_update_mask", FieldMask, None, FieldMaskSerializer()),
-  ]
+]
 
 ApiUpdateModelResponse._fields = [
   FieldMetadata("id", "id", "_id", int, None, PredefinedSerializer(), optional=True),
   FieldMetadata("ref", "ref", "_ref", str, None, PredefinedSerializer(), optional=True),
   FieldMetadata("error", "error", "_error", str, None, PredefinedSerializer(), optional=True),
   FieldMetadata("url", "url", "_url", str, None, PredefinedSerializer(), optional=True),
-  ]
+]
 
 ApiUploadModelFileRequest._fields = [
   FieldMetadata("fileName", "file_name", "_file_name", str, "", PredefinedSerializer()),
   FieldMetadata("contentLength", "content_length", "_content_length", int, 0, PredefinedSerializer()),
   FieldMetadata("lastModifiedEpochSeconds", "last_modified_epoch_seconds", "_last_modified_epoch_seconds", int, 0, PredefinedSerializer()),
-  ]
+]
 
 ApiUploadModelFileResponse._fields = [
   FieldMetadata("token", "token", "_token", str, "", PredefinedSerializer()),
   FieldMetadata("createUrl", "create_url", "_create_url", str, "", PredefinedSerializer()),
-  ]
+]
 
 CreateModelSigningTokenRequest._fields = [
   FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "", PredefinedSerializer()),
   FieldMetadata("modelSlug", "model_slug", "_model_slug", str, "", PredefinedSerializer()),
-  ]
+]
 
 CreateModelSigningTokenResponse._fields = [
   FieldMetadata("id_token", "id_token", "_id_token", str, "", PredefinedSerializer()),
-  ]
+]
 
 KeysRequest._fields = []
 
 KeysResponse._fields = [
   FieldMetadata("keys", "keys", "_keys", JWK, [], ListSerializer(KaggleObjectSerializer())),
-  ]
+]
 
 WellKnowEndpointRequest._fields = []
 
@@ -3384,7 +3693,20 @@ WellKnowEndpointResponse._fields = [
   FieldMetadata("claims_supported", "claims_supported", "_claims_supported", str, [], ListSerializer(PredefinedSerializer())),
   FieldMetadata("response_types_supported", "response_types_supported", "_response_types_supported", str, [], ListSerializer(PredefinedSerializer())),
   FieldMetadata("subject_types_supported", "subject_types_supported", "_subject_types_supported", str, [], ListSerializer(PredefinedSerializer())),
-  ]
+]
+
+ApiGatingUserConsent._fields = [
+  FieldMetadata("id", "id", "_id", int, 0, PredefinedSerializer()),
+  FieldMetadata("agreementId", "agreement_id", "_agreement_id", int, 0, PredefinedSerializer()),
+  FieldMetadata("userName", "user_name", "_user_name", str, "", PredefinedSerializer()),
+  FieldMetadata("requestData", "request_data", "_request_data", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("requestTime", "request_time", "_request_time", datetime, None, DateTimeSerializer()),
+  FieldMetadata("reviewTime", "review_time", "_review_time", datetime, None, DateTimeSerializer(), optional=True),
+  FieldMetadata("reviewStatus", "review_status", "_review_status", GatingAgreementRequestsReviewStatus, GatingAgreementRequestsReviewStatus.GATING_AGREEMENT_REQUESTS_REVIEW_STATUS_UNSPECIFIED, EnumSerializer()),
+  FieldMetadata("expiryStatus", "expiry_status", "_expiry_status", GatingAgreementRequestsExpiryStatus, GatingAgreementRequestsExpiryStatus.GATING_AGREEMENT_REQUESTS_EXPIRY_STATUS_UNSPECIFIED, EnumSerializer()),
+  FieldMetadata("expiryTime", "expiry_time", "_expiry_time", datetime, None, DateTimeSerializer(), optional=True),
+  FieldMetadata("publisherNotes", "publisher_notes", "_publisher_notes", str, None, PredefinedSerializer(), optional=True),
+]
 
 JWK._fields = [
   FieldMetadata("kty", "kty", "_kty", str, "", PredefinedSerializer()),
@@ -3393,5 +3715,5 @@ JWK._fields = [
   FieldMetadata("kid", "kid", "_kid", str, "", PredefinedSerializer()),
   FieldMetadata("n", "n", "_n", str, "", PredefinedSerializer()),
   FieldMetadata("e", "e", "_e", str, "", PredefinedSerializer()),
-  ]
+]
 

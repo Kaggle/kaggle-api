@@ -1,6 +1,6 @@
 from kagglesdk.common.types.http_redirect import HttpRedirect
 from kagglesdk.kaggle_http_client import KaggleHttpClient
-from kagglesdk.models.types.model_api_service import ApiCreateModelInstanceRequest, ApiCreateModelInstanceVersionRequest, ApiCreateModelRequest, ApiCreateModelResponse, ApiDeleteModelInstanceRequest, ApiDeleteModelInstanceVersionRequest, ApiDeleteModelRequest, ApiDeleteModelResponse, ApiDownloadModelInstanceVersionRequest, ApiGetModelInstanceRequest, ApiGetModelRequest, ApiListModelInstanceVersionFilesRequest, ApiListModelInstanceVersionFilesResponse, ApiListModelsRequest, ApiListModelsResponse, ApiModel, ApiModelInstance, ApiUpdateModelInstanceRequest, ApiUpdateModelRequest, ApiUpdateModelResponse, ApiUploadModelFileRequest, ApiUploadModelFileResponse, CreateModelSigningTokenRequest, CreateModelSigningTokenResponse, KeysRequest, KeysResponse, WellKnowEndpointRequest, WellKnowEndpointResponse
+from kagglesdk.models.types.model_api_service import ApiCreateModelInstanceRequest, ApiCreateModelInstanceVersionRequest, ApiCreateModelRequest, ApiCreateModelResponse, ApiDeleteModelInstanceRequest, ApiDeleteModelInstanceVersionRequest, ApiDeleteModelRequest, ApiDeleteModelResponse, ApiDownloadModelInstanceVersionRequest, ApiGetModelInstanceRequest, ApiGetModelRequest, ApiListModelGatingUserConsentsRequest, ApiListModelGatingUserConsentsResponse, ApiListModelInstanceVersionFilesRequest, ApiListModelInstanceVersionFilesResponse, ApiListModelsRequest, ApiListModelsResponse, ApiModel, ApiModelInstance, ApiReviewGatingUserConsentRequest, ApiUpdateModelInstanceRequest, ApiUpdateModelRequest, ApiUpdateModelResponse, ApiUploadModelFileRequest, ApiUploadModelFileResponse, CreateModelSigningTokenRequest, CreateModelSigningTokenResponse, KeysRequest, KeysResponse, WellKnowEndpointRequest, WellKnowEndpointResponse
 
 class ModelApiClient(object):
 
@@ -223,3 +223,33 @@ class ModelApiClient(object):
       request = KeysRequest()
 
     return self._client.call("models.ModelApiService", "Keys", request, KeysResponse)
+
+  def list_model_gating_user_consents(self, request: ApiListModelGatingUserConsentsRequest = None) -> ApiListModelGatingUserConsentsResponse:
+    r"""
+    Model gating
+    List the user consents for a gated model, under the model's current active
+    agreement.
+
+    Args:
+      request (ApiListModelGatingUserConsentsRequest):
+        The request object; initialized to empty instance if not specified.
+    """
+
+    if request is None:
+      request = ApiListModelGatingUserConsentsRequest()
+
+    return self._client.call("models.ModelApiService", "ApiListModelGatingUserConsents", request, ApiListModelGatingUserConsentsResponse)
+
+  def review_gating_user_consent(self, request: ApiReviewGatingUserConsentRequest = None):
+    r"""
+    Review the user consents for an agreement.
+
+    Args:
+      request (ApiReviewGatingUserConsentRequest):
+        The request object; initialized to empty instance if not specified.
+    """
+
+    if request is None:
+      request = ApiReviewGatingUserConsentRequest()
+
+    self._client.call("models.ModelApiService", "ApiReviewGatingUserConsent", request, None)

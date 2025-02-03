@@ -122,7 +122,7 @@ class KaggleHttpClient(object):
       self._session.headers.update({
         'Accept': 'application/json',
         'Content-Type': 'text/plain',
-      })
+        })
     elif method == 'POST':
       data = request.to_field_map(request, ignore_defaults=True)
       if isinstance(data, dict):
@@ -176,7 +176,7 @@ class KaggleHttpClient(object):
     self._print('---------------------Request----------------------')
     self._print(
       f'{request.method} {request.url}\n{_headers_to_str(request.headers)}\n\n{request.body}'
-    )
+      )
     self._print('--------------------------------------------------')
 
   def _print_response(self, response, body=True):
@@ -208,14 +208,14 @@ class KaggleHttpClient(object):
     self._session.headers.update({
       'User-Agent': 'kaggle-api/v1.7.0',  # Was: V2
       'Content-Type': 'application/x-www-form-urlencoded',  # Was: /json
-    })
+      })
 
     iap_token = self._get_iap_token_if_required()
     if iap_token is not None:
       self._session.headers.update({
         # https://cloud.google.com/iap/docs/authentication-howto#authenticating_from_proxy-authorization_header
         'Proxy-Authorization': f'Bearer {iap_token}',
-      })
+        })
 
     self._try_fill_auth()
     # self._fill_xsrf_token(iap_token)  # TODO Make this align with original handler.

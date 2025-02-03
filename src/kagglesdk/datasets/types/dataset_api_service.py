@@ -166,7 +166,6 @@ class ApiCreateDatasetRequest(KaggleObject):
       raise TypeError('category_ids must contain only items of type str')
     self._category_ids = category_ids
 
-
   def endpoint(self):
     path = '/api/v1/datasets/create/new'
     return path.format_map(self.to_field_map(self))
@@ -179,6 +178,7 @@ class ApiCreateDatasetRequest(KaggleObject):
   @staticmethod
   def body_fields():
     return '*'
+
 
 class ApiCreateDatasetResponse(KaggleObject):
   r"""
@@ -265,6 +265,10 @@ class ApiCreateDatasetResponse(KaggleObject):
       raise TypeError('invalid_tags must contain only items of type str')
     self._invalid_tags = invalid_tags
 
+  @property
+  def invalidTags(self):
+    return self.invalid_tags
+
 
 class ApiCreateDatasetVersionByIdRequest(KaggleObject):
   r"""
@@ -304,7 +308,6 @@ class ApiCreateDatasetVersionByIdRequest(KaggleObject):
       raise TypeError('body must be of type ApiCreateDatasetVersionRequestBody')
     self._body = body
 
-
   def endpoint(self):
     path = '/api/v1/datasets/create/version/{id}'
     return path.format_map(self.to_field_map(self))
@@ -317,6 +320,7 @@ class ApiCreateDatasetVersionByIdRequest(KaggleObject):
   @staticmethod
   def body_fields():
     return 'body'
+
 
 class ApiCreateDatasetVersionRequest(KaggleObject):
   r"""
@@ -371,7 +375,6 @@ class ApiCreateDatasetVersionRequest(KaggleObject):
       raise TypeError('body must be of type ApiCreateDatasetVersionRequestBody')
     self._body = body
 
-
   def endpoint(self):
     path = '/api/v1/datasets/create/version/{owner_slug}/{dataset_slug}'
     return path.format_map(self.to_field_map(self))
@@ -384,6 +387,7 @@ class ApiCreateDatasetVersionRequest(KaggleObject):
   @staticmethod
   def body_fields():
     return 'body'
+
 
 class ApiCreateDatasetVersionRequestBody(KaggleObject):
   r"""
@@ -1232,7 +1236,6 @@ class ApiDeleteDatasetRequest(KaggleObject):
       raise TypeError('dataset_slug must be of type str')
     self._dataset_slug = dataset_slug
 
-
   def endpoint(self):
     path = '/api/v1/dataset/{owner_slug}/{dataset_slug}/delete'
     return path.format_map(self.to_field_map(self))
@@ -1241,6 +1244,7 @@ class ApiDeleteDatasetRequest(KaggleObject):
   @staticmethod
   def method():
     return 'POST'
+
 
 class ApiDeleteDatasetResponse(KaggleObject):
   r"""
@@ -1334,7 +1338,6 @@ class ApiDownloadDatasetRawRequest(KaggleObject):
       raise TypeError('dataset_version_number must be of type int')
     self._dataset_version_number = dataset_version_number
 
-
   def endpoint(self):
     path = '/api/v1/datasets/download-raw/{owner_slug}/{dataset_slug}/{file_name}'
     return path.format_map(self.to_field_map(self))
@@ -1342,6 +1345,7 @@ class ApiDownloadDatasetRawRequest(KaggleObject):
   @staticmethod
   def endpoint_path():
     return '/api/v1/datasets/download-raw/{owner_slug}/{dataset_slug}/{file_name}'
+
 
 class ApiDownloadDatasetRequest(KaggleObject):
   r"""
@@ -1426,7 +1430,6 @@ class ApiDownloadDatasetRequest(KaggleObject):
       raise TypeError('raw must be of type bool')
     self._raw = raw
 
-
   def endpoint(self):
     if self.file_name:
       path = '/api/v1/datasets/download/{owner_slug}/{dataset_slug}/{file_name}'
@@ -1437,6 +1440,7 @@ class ApiDownloadDatasetRequest(KaggleObject):
   @staticmethod
   def endpoint_path():
     return '/api/v1/datasets/download/{owner_slug}/{dataset_slug}'
+
 
 class ApiGetDatasetMetadataRequest(KaggleObject):
   r"""
@@ -1476,7 +1480,6 @@ class ApiGetDatasetMetadataRequest(KaggleObject):
       raise TypeError('dataset_slug must be of type str')
     self._dataset_slug = dataset_slug
 
-
   def endpoint(self):
     path = '/api/v1/datasets/metadata/{owner_slug}/{dataset_slug}'
     return path.format_map(self.to_field_map(self))
@@ -1484,6 +1487,7 @@ class ApiGetDatasetMetadataRequest(KaggleObject):
   @staticmethod
   def endpoint_path():
     return '/api/v1/datasets/metadata/{owner_slug}/{dataset_slug}'
+
 
 class ApiGetDatasetMetadataResponse(KaggleObject):
   r"""
@@ -1529,6 +1533,10 @@ class ApiGetDatasetMetadataResponse(KaggleObject):
       raise TypeError('error_message must be of type str')
     self._error_message = error_message
 
+  @property
+  def errorMessage(self):
+    return self.error_message
+
 
 class ApiGetDatasetRequest(KaggleObject):
   r"""
@@ -1568,7 +1576,6 @@ class ApiGetDatasetRequest(KaggleObject):
       raise TypeError('dataset_slug must be of type str')
     self._dataset_slug = dataset_slug
 
-
   def endpoint(self):
     path = '/api/v1/datasets/view/{owner_slug}/{dataset_slug}'
     return path.format_map(self.to_field_map(self))
@@ -1576,6 +1583,7 @@ class ApiGetDatasetRequest(KaggleObject):
   @staticmethod
   def endpoint_path():
     return '/api/v1/datasets/view/{owner_slug}/{dataset_slug}'
+
 
 class ApiGetDatasetStatusRequest(KaggleObject):
   r"""
@@ -1615,7 +1623,6 @@ class ApiGetDatasetStatusRequest(KaggleObject):
       raise TypeError('dataset_slug must be of type str')
     self._dataset_slug = dataset_slug
 
-
   def endpoint(self):
     path = '/api/v1/datasets/status/{owner_slug}/{dataset_slug}'
     return path.format_map(self.to_field_map(self))
@@ -1623,6 +1630,7 @@ class ApiGetDatasetStatusRequest(KaggleObject):
   @staticmethod
   def endpoint_path():
     return '/api/v1/datasets/status/{owner_slug}/{dataset_slug}'
+
 
 class ApiGetDatasetStatusResponse(KaggleObject):
   r"""
@@ -1647,10 +1655,10 @@ class ApiGetDatasetStatusResponse(KaggleObject):
       raise TypeError('status must be of type DatabundleVersionStatus')
     self._status = status
 
-
   @classmethod
   def prepare_from(cls, http_response):
     return cls.from_dict({'status': json.loads(http_response.text)})
+
 
 class ApiListDatasetFilesRequest(KaggleObject):
   r"""
@@ -1735,7 +1743,6 @@ class ApiListDatasetFilesRequest(KaggleObject):
       raise TypeError('page_size must be of type int')
     self._page_size = page_size
 
-
   def endpoint(self):
     path = '/api/v1/datasets/list/{owner_slug}/{dataset_slug}'
     return path.format_map(self.to_field_map(self))
@@ -1743,6 +1750,7 @@ class ApiListDatasetFilesRequest(KaggleObject):
   @staticmethod
   def endpoint_path():
     return '/api/v1/datasets/list/{owner_slug}/{dataset_slug}'
+
 
 class ApiListDatasetFilesResponse(KaggleObject):
   r"""
@@ -1798,6 +1806,18 @@ class ApiListDatasetFilesResponse(KaggleObject):
     if not isinstance(next_page_token, str):
       raise TypeError('next_page_token must be of type str')
     self._next_page_token = next_page_token
+
+  @property
+  def files(self):
+    return self.dataset_files
+
+  @property
+  def errorMessage(self):
+    return self.error_message
+
+  @property
+  def nextPageToken(self):
+    return self.next_page_token
 
 
 class ApiListDatasetsRequest(KaggleObject):
@@ -2018,10 +2038,10 @@ class ApiListDatasetsRequest(KaggleObject):
       raise TypeError('page_size must be of type int')
     self._page_size = page_size
 
-
   def endpoint(self):
     path = '/api/v1/datasets/list'
     return path.format_map(self.to_field_map(self))
+
 
 class ApiListDatasetsResponse(KaggleObject):
   r"""
@@ -2048,10 +2068,10 @@ class ApiListDatasetsResponse(KaggleObject):
       raise TypeError('datasets must contain only items of type ApiDataset')
     self._datasets = datasets
 
-
   @classmethod
   def prepare_from(cls, http_response):
     return cls.from_dict({'datasets': json.loads(http_response.text)})
+
 
 class ApiUpdateDatasetMetadataRequest(KaggleObject):
   r"""
@@ -2106,7 +2126,6 @@ class ApiUpdateDatasetMetadataRequest(KaggleObject):
       raise TypeError('settings must be of type DatasetSettings')
     self._settings = settings
 
-
   def endpoint(self):
     path = '/api/v1/datasets/metadata/{owner_slug}/{dataset_slug}'
     return path.format_map(self.to_field_map(self))
@@ -2119,6 +2138,7 @@ class ApiUpdateDatasetMetadataRequest(KaggleObject):
   @staticmethod
   def body_fields():
     return 'settings'
+
 
 class ApiUpdateDatasetMetadataResponse(KaggleObject):
   r"""
@@ -2201,7 +2221,6 @@ class ApiUploadDatasetFileRequest(KaggleObject):
       raise TypeError('last_modified_epoch_seconds must be of type int')
     self._last_modified_epoch_seconds = last_modified_epoch_seconds
 
-
   def endpoint(self):
     path = '/api/v1/datasets/upload/file/{content_length}/{last_modified_epoch_seconds}'
     return path.format_map(self.to_field_map(self))
@@ -2210,6 +2229,7 @@ class ApiUploadDatasetFileRequest(KaggleObject):
   @staticmethod
   def method():
     return 'POST'
+
 
 class ApiUploadDatasetFileResponse(KaggleObject):
   r"""
@@ -2252,6 +2272,10 @@ class ApiUploadDatasetFileResponse(KaggleObject):
     if not isinstance(create_url, str):
       raise TypeError('create_url must be of type str')
     self._create_url = create_url
+
+  @property
+  def createUrl(self):
+    return self.create_url
 
 
 class ApiCategory(KaggleObject):

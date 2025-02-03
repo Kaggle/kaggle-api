@@ -42,7 +42,6 @@ class CreateInboxFileRequest(KaggleObject):
       raise TypeError('blob_file_token must be of type str')
     self._blob_file_token = blob_file_token
 
-
   def endpoint(self):
     path = '/api/v1/inbox/files/create'
     return path.format_map(self.to_field_map(self))
@@ -55,6 +54,7 @@ class CreateInboxFileRequest(KaggleObject):
   @staticmethod
   def body_fields():
     return '*'
+
 
 class CreateInboxFileResponse(KaggleObject):
   r"""

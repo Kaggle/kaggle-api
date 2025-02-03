@@ -1,6 +1,5 @@
-from datetime import datetime
 from kagglesdk.kaggle_object import *
-from kagglesdk.models.types.model_enums import GatingAgreementRequestsExpiryStatus, GatingAgreementRequestsReviewStatus, ModelFramework, ModelVersionLinkType
+from kagglesdk.models.types.model_enums import ModelFramework, ModelVersionLinkType
 from kagglesdk.users.types.users_enums import UserAchievementTier
 from typing import Optional
 
@@ -86,165 +85,6 @@ class BaseModelInstanceInformation(KaggleObject):
     if not isinstance(framework, ModelFramework):
       raise TypeError('framework must be of type ModelFramework')
     self._framework = framework
-
-
-class GatingUserConsent(KaggleObject):
-  r"""
-  Attributes:
-    id (int)
-    agreement_id (int)
-    user_id (int)
-    request_data (str)
-    request_time (datetime)
-    review_time (datetime)
-    review_status (GatingAgreementRequestsReviewStatus)
-    expiry_status (GatingAgreementRequestsExpiryStatus)
-    expiry_time (datetime)
-    publisher_notes (str)
-  """
-
-  def __init__(self):
-    self._id = 0
-    self._agreement_id = 0
-    self._user_id = 0
-    self._request_data = None
-    self._request_time = None
-    self._review_time = None
-    self._review_status = GatingAgreementRequestsReviewStatus.GATING_AGREEMENT_REQUESTS_REVIEW_STATUS_UNSPECIFIED
-    self._expiry_status = GatingAgreementRequestsExpiryStatus.GATING_AGREEMENT_REQUESTS_EXPIRY_STATUS_UNSPECIFIED
-    self._expiry_time = None
-    self._publisher_notes = None
-    self._freeze()
-
-  @property
-  def id(self) -> int:
-    return self._id
-
-  @id.setter
-  def id(self, id: int):
-    if id is None:
-      del self.id
-      return
-    if not isinstance(id, int):
-      raise TypeError('id must be of type int')
-    self._id = id
-
-  @property
-  def agreement_id(self) -> int:
-    return self._agreement_id
-
-  @agreement_id.setter
-  def agreement_id(self, agreement_id: int):
-    if agreement_id is None:
-      del self.agreement_id
-      return
-    if not isinstance(agreement_id, int):
-      raise TypeError('agreement_id must be of type int')
-    self._agreement_id = agreement_id
-
-  @property
-  def user_id(self) -> int:
-    return self._user_id
-
-  @user_id.setter
-  def user_id(self, user_id: int):
-    if user_id is None:
-      del self.user_id
-      return
-    if not isinstance(user_id, int):
-      raise TypeError('user_id must be of type int')
-    self._user_id = user_id
-
-  @property
-  def request_data(self) -> str:
-    return self._request_data or ""
-
-  @request_data.setter
-  def request_data(self, request_data: str):
-    if request_data is None:
-      del self.request_data
-      return
-    if not isinstance(request_data, str):
-      raise TypeError('request_data must be of type str')
-    self._request_data = request_data
-
-  @property
-  def request_time(self) -> datetime:
-    return self._request_time
-
-  @request_time.setter
-  def request_time(self, request_time: datetime):
-    if request_time is None:
-      del self.request_time
-      return
-    if not isinstance(request_time, datetime):
-      raise TypeError('request_time must be of type datetime')
-    self._request_time = request_time
-
-  @property
-  def review_time(self) -> datetime:
-    return self._review_time or None
-
-  @review_time.setter
-  def review_time(self, review_time: datetime):
-    if review_time is None:
-      del self.review_time
-      return
-    if not isinstance(review_time, datetime):
-      raise TypeError('review_time must be of type datetime')
-    self._review_time = review_time
-
-  @property
-  def review_status(self) -> 'GatingAgreementRequestsReviewStatus':
-    return self._review_status
-
-  @review_status.setter
-  def review_status(self, review_status: 'GatingAgreementRequestsReviewStatus'):
-    if review_status is None:
-      del self.review_status
-      return
-    if not isinstance(review_status, GatingAgreementRequestsReviewStatus):
-      raise TypeError('review_status must be of type GatingAgreementRequestsReviewStatus')
-    self._review_status = review_status
-
-  @property
-  def expiry_status(self) -> 'GatingAgreementRequestsExpiryStatus':
-    return self._expiry_status
-
-  @expiry_status.setter
-  def expiry_status(self, expiry_status: 'GatingAgreementRequestsExpiryStatus'):
-    if expiry_status is None:
-      del self.expiry_status
-      return
-    if not isinstance(expiry_status, GatingAgreementRequestsExpiryStatus):
-      raise TypeError('expiry_status must be of type GatingAgreementRequestsExpiryStatus')
-    self._expiry_status = expiry_status
-
-  @property
-  def expiry_time(self) -> datetime:
-    return self._expiry_time or None
-
-  @expiry_time.setter
-  def expiry_time(self, expiry_time: datetime):
-    if expiry_time is None:
-      del self.expiry_time
-      return
-    if not isinstance(expiry_time, datetime):
-      raise TypeError('expiry_time must be of type datetime')
-    self._expiry_time = expiry_time
-
-  @property
-  def publisher_notes(self) -> str:
-    return self._publisher_notes or ""
-
-  @publisher_notes.setter
-  def publisher_notes(self, publisher_notes: str):
-    if publisher_notes is None:
-      del self.publisher_notes
-      return
-    if not isinstance(publisher_notes, str):
-      raise TypeError('publisher_notes must be of type str')
-    self._publisher_notes = publisher_notes
 
 
 class ModelLink(KaggleObject):
@@ -411,19 +251,6 @@ BaseModelInstanceInformation._fields = [
   FieldMetadata("modelSlug", "model_slug", "_model_slug", str, "", PredefinedSerializer()),
   FieldMetadata("instanceSlug", "instance_slug", "_instance_slug", str, "", PredefinedSerializer()),
   FieldMetadata("framework", "framework", "_framework", ModelFramework, ModelFramework.MODEL_FRAMEWORK_UNSPECIFIED, EnumSerializer()),
-]
-
-GatingUserConsent._fields = [
-  FieldMetadata("id", "id", "_id", int, 0, PredefinedSerializer()),
-  FieldMetadata("agreementId", "agreement_id", "_agreement_id", int, 0, PredefinedSerializer()),
-  FieldMetadata("userId", "user_id", "_user_id", int, 0, PredefinedSerializer()),
-  FieldMetadata("requestData", "request_data", "_request_data", str, None, PredefinedSerializer(), optional=True),
-  FieldMetadata("requestTime", "request_time", "_request_time", datetime, None, DateTimeSerializer()),
-  FieldMetadata("reviewTime", "review_time", "_review_time", datetime, None, DateTimeSerializer(), optional=True),
-  FieldMetadata("reviewStatus", "review_status", "_review_status", GatingAgreementRequestsReviewStatus, GatingAgreementRequestsReviewStatus.GATING_AGREEMENT_REQUESTS_REVIEW_STATUS_UNSPECIFIED, EnumSerializer()),
-  FieldMetadata("expiryStatus", "expiry_status", "_expiry_status", GatingAgreementRequestsExpiryStatus, GatingAgreementRequestsExpiryStatus.GATING_AGREEMENT_REQUESTS_EXPIRY_STATUS_UNSPECIFIED, EnumSerializer()),
-  FieldMetadata("expiryTime", "expiry_time", "_expiry_time", datetime, None, DateTimeSerializer(), optional=True),
-  FieldMetadata("publisherNotes", "publisher_notes", "_publisher_notes", str, None, PredefinedSerializer(), optional=True),
 ]
 
 ModelLink._fields = [

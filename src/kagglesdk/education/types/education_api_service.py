@@ -167,7 +167,6 @@ class ApiTrackExerciseInteractionRequest(KaggleObject):
       raise TypeError('value_towards_completion must be of type float')
     self._value_towards_completion = value_towards_completion
 
-
   def endpoint(self):
     path = '/api/v1/learn/track'
     return path.format_map(self.to_field_map(self))
@@ -180,6 +179,7 @@ class ApiTrackExerciseInteractionRequest(KaggleObject):
   @staticmethod
   def body_fields():
     return '*'
+
 
 class ApiTrackExerciseInteractionResponse(KaggleObject):
   r"""
@@ -222,6 +222,10 @@ class ApiTrackExerciseInteractionResponse(KaggleObject):
     if not isinstance(show_login_prompt, bool):
       raise TypeError('show_login_prompt must be of type bool')
     self._show_login_prompt = show_login_prompt
+
+  @property
+  def showLoginPrompt(self):
+    return self.show_login_prompt
 
 
 ApiTrackExerciseInteractionRequest._fields = [

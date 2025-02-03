@@ -171,7 +171,7 @@ function run {
   reset
 
   copy-src
-  run-autogen
+#  run-autogen
   install-package
   run-tests
 

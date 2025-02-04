@@ -6,7 +6,7 @@ from setuptools import setup, find_packages
 # pyproject.toml instead of maintaining both flows.
 setup(
     name='kaggle',
-    version='1.7.0b',
+    version='1.7.0-b',
     description='Kaggle API',
     long_description=(
         'Official API for https://www.kaggle.com, accessible using a command line '

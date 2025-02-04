@@ -862,8 +862,6 @@ class KaggleApi:
         return None
       else:
         raise e
-    print_attributes(submit_result)
-    print_attributes(submit_result.message)
     return submit_result.message
 
   def competition_submissions(self,

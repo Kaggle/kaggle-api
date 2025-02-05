@@ -6,7 +6,7 @@ from setuptools import setup, find_packages
 # that causes it to require this file.
 setup(
     name='kaggle',
-    version='1.7.1-b',
+    version='1.7.1b0',
     description='Kaggle API',
     long_description=(
         'Official API for https://www.kaggle.com, accessible using a command line '

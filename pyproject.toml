@@ -1,5 +1,8 @@
 [build-system]
-requires = ["hatchling"]
+requires = [
+    "hatchling",
+    "hatch-semver",
+]
 build-backend = "hatchling.build"
 
 [project]
@@ -46,6 +49,8 @@ Issues = "https://github.com/Kaggle/kaggle-api/issues"
 
 [tool.hatch.version]
 path = "src/__init__.py"
+validate-bump = false
+scheme = "semver"
 
 [tool.hatch.envs.default]
 dependencies = [

@@ -1,6 +1,6 @@
 Changelog
 ====
-### 1.7.0-b
+### 1.7.1-b
 
 * Remove Swagger. No user-visible changes to the command-line tool. However, projects that
 use `kaggle/api/kaggle_api.py` may be affected. That file is deprecated and will be removed.

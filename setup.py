@@ -2,11 +2,11 @@
 from setuptools import setup, find_packages
 
 # Note: pyproject.toml seems to be chosen by pip install over setup.py, so this
-# file is likely not being used anymore. We should verify and merge this into
-# pyproject.toml instead of maintaining both flows.
+# file is likely not being used anymore. There's a problem with cloudbuild.yaml
+# that causes it to require this file.
 setup(
     name='kaggle',
-    version='1.7',
+    version='1.7.0-b',
     description='Kaggle API',
     long_description=(
         'Official API for https://www.kaggle.com, accessible using a command line '

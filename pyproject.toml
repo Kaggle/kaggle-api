@@ -37,7 +37,8 @@ dependencies = [
     "tqdm",
     "urllib3>=1.15.1",
     "webencodings",
-    "protobuf"
+    "protobuf",
+    "hatchling"
 ]
 
 [project.scripts]

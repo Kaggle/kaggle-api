@@ -13,7 +13,7 @@ description = "Access Kaggle resources anywhere"
 authors = [
     { name = "Kaggle", email = "support@kaggle.com" },
 ]
-license = { file = "LICENSE" }
+license = { file = "LICENSE.txt" }
 readme = "README.md"
 classifiers = [
     "Programming Language :: Python :: 3",

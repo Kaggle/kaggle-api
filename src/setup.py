@@ -6,7 +6,7 @@ from setuptools import setup, find_packages
 # that causes it to require this file.
 setup(
     name='kaggle',
-    version='1.7.1b0',
+    version='1.7.3b0',
     description='Kaggle API',
     long_description=(
         'Official API for https://www.kaggle.com, accessible using a command line '
@@ -24,7 +24,8 @@ setup(
     entry_points={'console_scripts': ['kaggle = kaggle.cli:main']},
     install_requires=[
         'six >= 1.10', 'certifi >= 2023.7.22', 'python-dateutil', 'requests',
-        'tqdm', 'python-slugify', 'urllib3', 'bleach', 'protobuf'
+        'tqdm', 'python-slugify', 'urllib3', 'bleach', 'protobuf',
+        'hatchling >= 1.27.0'
     ],
     packages=find_packages(
         where='src',

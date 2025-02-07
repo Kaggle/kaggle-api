@@ -4636,6 +4636,9 @@ class FileList(object):
   def __repr__(self):
     return ''
 
+# This defines print_attributes(), which is very handy for inspecting
+# objects returned by the Kaggle API.
+
 from pprint import pprint
 from inspect import getmembers
 from types import FunctionType

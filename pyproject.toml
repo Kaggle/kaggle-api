@@ -48,6 +48,7 @@ Issues = "https://github.com/Kaggle/kaggle-api/issues"
 
 [tool.hatch.version]
 path = "src/__init__.py"
+# TODO: Remove validate-bump = false for next stable release
 validate-bump = false
 
 [tool.hatch.envs.default]

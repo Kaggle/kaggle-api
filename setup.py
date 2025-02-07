@@ -2,8 +2,10 @@
 from setuptools import setup, find_packages
 
 # Note: pyproject.toml seems to be chosen by pip install over setup.py, so this
-# file is likely not being used anymore. There's a problem with cloudbuild.yaml
-# that causes it to require this file.
+# file should not be used anymore. However, cloudbuild.yaml still uses setup.py
+# to drive the build that is published to pypi.org. That needs to be changed
+# before this file can be removed. And, due to that, pyproject.toml needs to be
+# deleted before a release can be made.
 setup(
     name='kaggle',
     version='1.7.3b0',

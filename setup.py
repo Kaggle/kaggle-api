@@ -6,6 +6,7 @@ from setuptools import setup, find_packages
 # to drive the build that is published to pypi.org. That needs to be changed
 # before this file can be removed. And, due to that, pyproject.toml needs to be
 # deleted before a release can be made.
+# https://packaging.python.org/en/latest/guides/modernize-setup-py-project/
 setup(
     name='kaggle',
     version='1.7.3b0',

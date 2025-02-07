@@ -1,5 +1,7 @@
 [build-system]
-requires = ["hatchling"]
+requires = [
+    "hatchling",
+]
 build-backend = "hatchling.build"
 
 [project]
@@ -11,7 +13,7 @@ description = "Access Kaggle resources anywhere"
 authors = [
     { name = "Kaggle", email = "support@kaggle.com" },
 ]
-license = { file = "LICENSE" }
+license = { file = "LICENSE.txt" }
 readme = "README.md"
 classifiers = [
     "Programming Language :: Python :: 3",
@@ -46,6 +48,8 @@ Issues = "https://github.com/Kaggle/kaggle-api/issues"
 
 [tool.hatch.version]
 path = "src/__init__.py"
+# TODO: Remove validate-bump = false for next stable release
+validate-bump = false
 
 [tool.hatch.envs.default]
 dependencies = [

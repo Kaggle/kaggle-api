@@ -348,7 +348,9 @@ class TestKaggleApi(unittest.TestCase):
   def test_competition_b_submit(self):
     try:
       self.skip_submissions = False
-      api.competition_submit(up_file, description, competition)
+      result = api.competition_submit_cli(up_file, description, competition)
+      if not result or not result.startswith('Successfully submitted'):
+        self.fail(f'competition_submit failed: {result}')
     except HTTPError:
       # Handle submission limit reached gracefully (potentially skip the test)
       print('Competition submission limit reached for the day')

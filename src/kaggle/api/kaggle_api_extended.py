@@ -251,7 +251,7 @@ class ResumableFileUpload(object):
 
 
 class KaggleApi:
-  __version__ = '1.7'
+  __version__ = '1.7.3b0'
 
   CONFIG_NAME_PROXY = 'proxy'
   CONFIG_NAME_COMPETITION = 'competition'
@@ -862,7 +862,7 @@ class KaggleApi:
         return None
       else:
         raise e
-    return submit_result
+    return submit_result.message
 
   def competition_submissions(self,
                               competition,
@@ -4635,3 +4635,21 @@ class FileList(object):
 
   def __repr__(self):
     return ''
+
+# This defines print_attributes(), which is very handy for inspecting
+# objects returned by the Kaggle API.
+
+from pprint import pprint
+from inspect import getmembers
+from types import FunctionType
+
+def attributes(obj):
+  disallowed_names = {
+    name for name, value in getmembers(type(obj))
+    if isinstance(value, FunctionType)}
+  return {
+    name: getattr(obj, name) for name in dir(obj)
+    if name[0] != '_' and name not in disallowed_names and hasattr(obj, name)}
+
+def print_attributes(obj):
+  pprint(attributes(obj))

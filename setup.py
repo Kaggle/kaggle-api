@@ -2,11 +2,13 @@
 from setuptools import setup, find_packages
 
 # Note: pyproject.toml seems to be chosen by pip install over setup.py, so this
-# file is likely not being used anymore. We should verify and merge this into
-# pyproject.toml instead of maintaining both flows.
+# file should not be used anymore. However, cloudbuild.yaml still uses setup.py
+# to drive the build that is published to pypi.org. That needs to be changed
+# before this file can be removed. And, due to that, pyproject.toml needs to be
+# deleted before a release can be made.
 setup(
     name='kaggle',
-    version='1.7',
+    version='1.7.3b0',
     description='Kaggle API',
     long_description=(
         'Official API for https://www.kaggle.com, accessible using a command line '
@@ -24,7 +26,8 @@ setup(
     entry_points={'console_scripts': ['kaggle = kaggle.cli:main']},
     install_requires=[
         'six >= 1.10', 'certifi >= 2023.7.22', 'python-dateutil', 'requests',
-        'tqdm', 'python-slugify', 'urllib3', 'bleach', 'protobuf'
+        'tqdm', 'python-slugify', 'urllib3', 'bleach', 'protobuf',
+        'hatchling >= 1.27.0'
     ],
     packages=find_packages(
         where='src',

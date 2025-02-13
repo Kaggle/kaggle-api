@@ -1216,6 +1216,9 @@ class ApiSaveKernelRequest(KaggleObject):
       `{username}/{model-slug}/{framework}/{variation-slug}`
       Or versioned:
       `{username}/{model-slug}/{framework}/{variation-slug}/{version-number}`
+    max_session_execution_time (int)
+      If specified, terminate the kernel session after this many seconds of
+      runtime.
   """
 
   def __init__(self):
@@ -1235,6 +1238,7 @@ class ApiSaveKernelRequest(KaggleObject):
     self._enable_internet = None
     self._docker_image_pinning_type = None
     self._model_data_sources = []
+    self._max_session_execution_time = None
     self._freeze()
 
   @property
@@ -1495,6 +1499,23 @@ class ApiSaveKernelRequest(KaggleObject):
     if not all([isinstance(t, str) for t in model_data_sources]):
       raise TypeError('model_data_sources must contain only items of type str')
     self._model_data_sources = model_data_sources
+
+  @property
+  def max_session_execution_time(self) -> int:
+    r"""
+    If specified, terminate the kernel session after this many seconds of
+    runtime.
+    """
+    return self._max_session_execution_time or 0
+
+  @max_session_execution_time.setter
+  def max_session_execution_time(self, max_session_execution_time: int):
+    if max_session_execution_time is None:
+      del self.max_session_execution_time
+      return
+    if not isinstance(max_session_execution_time, int):
+      raise TypeError('max_session_execution_time must be of type int')
+    self._max_session_execution_time = max_session_execution_time
 
   def endpoint(self):
     path = '/api/v1/kernels/push'
@@ -1902,6 +1923,7 @@ ApiSaveKernelRequest._fields = [
   FieldMetadata("enableInternet", "enable_internet", "_enable_internet", bool, None, PredefinedSerializer(), optional=True),
   FieldMetadata("dockerImagePinningType", "docker_image_pinning_type", "_docker_image_pinning_type", str, None, PredefinedSerializer(), optional=True),
   FieldMetadata("modelDataSources", "model_data_sources", "_model_data_sources", str, [], ListSerializer(PredefinedSerializer())),
+  FieldMetadata("maxSessionExecutionTime", "max_session_execution_time", "_max_session_execution_time", int, None, PredefinedSerializer(), optional=True),
 ]
 
 ApiSaveKernelResponse._fields = [

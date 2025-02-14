@@ -1216,9 +1216,9 @@ class ApiSaveKernelRequest(KaggleObject):
       `{username}/{model-slug}/{framework}/{variation-slug}`
       Or versioned:
       `{username}/{model-slug}/{framework}/{variation-slug}/{version-number}`
-    max_session_execution_time (int)
+    session_timeout_seconds (int)
       If specified, terminate the kernel session after this many seconds of
-      runtime.
+      runtime, which must be lower than the global maximum.
   """
 
   def __init__(self):
@@ -1238,7 +1238,7 @@ class ApiSaveKernelRequest(KaggleObject):
     self._enable_internet = None
     self._docker_image_pinning_type = None
     self._model_data_sources = []
-    self._max_session_execution_time = None
+    self._session_timeout_seconds = None
     self._freeze()
 
   @property
@@ -1501,21 +1501,21 @@ class ApiSaveKernelRequest(KaggleObject):
     self._model_data_sources = model_data_sources
 
   @property
-  def max_session_execution_time(self) -> int:
+  def session_timeout_seconds(self) -> int:
     r"""
     If specified, terminate the kernel session after this many seconds of
-    runtime.
+    runtime, which must be lower than the global maximum.
     """
-    return self._max_session_execution_time or 0
+    return self._session_timeout_seconds or 0
 
-  @max_session_execution_time.setter
-  def max_session_execution_time(self, max_session_execution_time: int):
-    if max_session_execution_time is None:
-      del self.max_session_execution_time
+  @session_timeout_seconds.setter
+  def session_timeout_seconds(self, session_timeout_seconds: int):
+    if session_timeout_seconds is None:
+      del self.session_timeout_seconds
       return
-    if not isinstance(max_session_execution_time, int):
-      raise TypeError('max_session_execution_time must be of type int')
-    self._max_session_execution_time = max_session_execution_time
+    if not isinstance(session_timeout_seconds, int):
+      raise TypeError('session_timeout_seconds must be of type int')
+    self._session_timeout_seconds = session_timeout_seconds
 
   def endpoint(self):
     path = '/api/v1/kernels/push'
@@ -1923,7 +1923,7 @@ ApiSaveKernelRequest._fields = [
   FieldMetadata("enableInternet", "enable_internet", "_enable_internet", bool, None, PredefinedSerializer(), optional=True),
   FieldMetadata("dockerImagePinningType", "docker_image_pinning_type", "_docker_image_pinning_type", str, None, PredefinedSerializer(), optional=True),
   FieldMetadata("modelDataSources", "model_data_sources", "_model_data_sources", str, [], ListSerializer(PredefinedSerializer())),
-  FieldMetadata("maxSessionExecutionTime", "max_session_execution_time", "_max_session_execution_time", int, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("sessionTimeoutSeconds", "session_timeout_seconds", "_session_timeout_seconds", int, None, PredefinedSerializer(), optional=True),
 ]
 
 ApiSaveKernelResponse._fields = [

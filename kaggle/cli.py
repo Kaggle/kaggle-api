@@ -747,6 +747,10 @@ def parse_kernels(subparsers):
       dest='folder',
       required=False,
       help=Help.param_kernel_upfile)
+  parser_kernels_push_optional.add_argument(
+      '-t',
+      '--timeout',
+      dest='timeout')
   parser_kernels_push._action_groups.append(parser_kernels_push_optional)
   parser_kernels_push.set_defaults(func=api.kernels_push_cli)
 

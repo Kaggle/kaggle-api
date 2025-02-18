@@ -1216,6 +1216,9 @@ class ApiSaveKernelRequest(KaggleObject):
       `{username}/{model-slug}/{framework}/{variation-slug}`
       Or versioned:
       `{username}/{model-slug}/{framework}/{variation-slug}/{version-number}`
+    session_timeout_seconds (int)
+      If specified, terminate the kernel session after this many seconds of
+      runtime, which must be lower than the global maximum.
   """
 
   def __init__(self):
@@ -1235,6 +1238,7 @@ class ApiSaveKernelRequest(KaggleObject):
     self._enable_internet = None
     self._docker_image_pinning_type = None
     self._model_data_sources = []
+    self._session_timeout_seconds = None
     self._freeze()
 
   @property
@@ -1495,6 +1499,23 @@ class ApiSaveKernelRequest(KaggleObject):
     if not all([isinstance(t, str) for t in model_data_sources]):
       raise TypeError('model_data_sources must contain only items of type str')
     self._model_data_sources = model_data_sources
+
+  @property
+  def session_timeout_seconds(self) -> int:
+    r"""
+    If specified, terminate the kernel session after this many seconds of
+    runtime, which must be lower than the global maximum.
+    """
+    return self._session_timeout_seconds or 0
+
+  @session_timeout_seconds.setter
+  def session_timeout_seconds(self, session_timeout_seconds: int):
+    if session_timeout_seconds is None:
+      del self.session_timeout_seconds
+      return
+    if not isinstance(session_timeout_seconds, int):
+      raise TypeError('session_timeout_seconds must be of type int')
+    self._session_timeout_seconds = session_timeout_seconds
 
   def endpoint(self):
     path = '/api/v1/kernels/push'
@@ -1902,6 +1923,7 @@ ApiSaveKernelRequest._fields = [
   FieldMetadata("enableInternet", "enable_internet", "_enable_internet", bool, None, PredefinedSerializer(), optional=True),
   FieldMetadata("dockerImagePinningType", "docker_image_pinning_type", "_docker_image_pinning_type", str, None, PredefinedSerializer(), optional=True),
   FieldMetadata("modelDataSources", "model_data_sources", "_model_data_sources", str, [], ListSerializer(PredefinedSerializer())),
+  FieldMetadata("sessionTimeoutSeconds", "session_timeout_seconds", "_session_timeout_seconds", int, None, PredefinedSerializer(), optional=True),
 ]
 
 ApiSaveKernelResponse._fields = [

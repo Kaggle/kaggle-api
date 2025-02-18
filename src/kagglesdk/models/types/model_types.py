@@ -141,6 +141,7 @@ class Owner(KaggleObject):
     profile_url (str)
     slug (str)
     user_tier (UserAchievementTier)
+    allow_model_gating (bool)
   """
 
   def __init__(self):
@@ -151,6 +152,7 @@ class Owner(KaggleObject):
     self._profile_url = None
     self._slug = ""
     self._user_tier = UserAchievementTier.NOVICE
+    self._allow_model_gating = None
     self._freeze()
 
   @property
@@ -244,6 +246,19 @@ class Owner(KaggleObject):
       raise TypeError('user_tier must be of type UserAchievementTier')
     self._user_tier = user_tier
 
+  @property
+  def allow_model_gating(self) -> bool:
+    return self._allow_model_gating or False
+
+  @allow_model_gating.setter
+  def allow_model_gating(self, allow_model_gating: bool):
+    if allow_model_gating is None:
+      del self.allow_model_gating
+      return
+    if not isinstance(allow_model_gating, bool):
+      raise TypeError('allow_model_gating must be of type bool')
+    self._allow_model_gating = allow_model_gating
+
 
 BaseModelInstanceInformation._fields = [
   FieldMetadata("id", "id", "_id", int, 0, PredefinedSerializer()),
@@ -266,5 +281,6 @@ Owner._fields = [
   FieldMetadata("profileUrl", "profile_url", "_profile_url", str, None, PredefinedSerializer(), optional=True),
   FieldMetadata("slug", "slug", "_slug", str, "", PredefinedSerializer()),
   FieldMetadata("userTier", "user_tier", "_user_tier", UserAchievementTier, UserAchievementTier.NOVICE, EnumSerializer()),
+  FieldMetadata("allowModelGating", "allow_model_gating", "_allow_model_gating", bool, None, PredefinedSerializer(), optional=True),
 ]
 

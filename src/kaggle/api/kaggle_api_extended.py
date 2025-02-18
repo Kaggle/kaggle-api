@@ -2369,7 +2369,7 @@ class KaggleApi:
     meta_file = self.kernels_initialize(folder)
     print('Kernel metadata template written to: ' + meta_file)
 
-  def kernels_push(self, folder):
+  def kernels_push(self, folder, timeout):
     """ Read the metadata file and kernel files from a notebook, validate
             both, and use the Kernel API to push to Kaggle if all is valid.
             Parameters
@@ -2487,16 +2487,18 @@ class KaggleApi:
       request.model_data_sources = model_sources
       request.category_ids = self.get_or_default(meta_data, 'keywords', [])
       request.docker_image_pinning_type = docker_pinning_type
+      if timeout:
+        request.session_timeout_seconds = int(timeout)
       return kaggle.kernels.kernels_api_client.save_kernel(request)
 
-  def kernels_push_cli(self, folder):
+  def kernels_push_cli(self, folder, timeout):
     """ Client wrapper for kernels_push.
         Parameters
             ==========
             folder: the path of the folder
         """
     folder = folder or os.getcwd()
-    result = self.kernels_push(folder)
+    result = self.kernels_push(folder, timeout)
 
     if result is None:
       print('Kernel push error: see previous output')

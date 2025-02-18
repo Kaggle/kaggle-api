@@ -9,7 +9,7 @@ from setuptools import setup, find_packages
 # https://packaging.python.org/en/latest/guides/modernize-setup-py-project/
 setup(
     name='kaggle',
-    version='1.7.3b0',
+    version='1.7.3b1',
     description='Kaggle API',
     long_description=(
         'Official API for https://www.kaggle.com, accessible using a command line '

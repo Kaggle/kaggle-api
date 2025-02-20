@@ -2369,7 +2369,7 @@ class KaggleApi:
     meta_file = self.kernels_initialize(folder)
     print('Kernel metadata template written to: ' + meta_file)
 
-  def kernels_push(self, folder, timeout):
+  def kernels_push(self, folder, timeout=None):
     """ Read the metadata file and kernel files from a notebook, validate
             both, and use the Kernel API to push to Kaggle if all is valid.
             Parameters
@@ -2465,7 +2465,7 @@ class KaggleApi:
           # but the server expects just one
           if 'source' in cell and isinstance(cell['source'], list):
             cell['source'] = ''.join(cell['source'])
-      script_body = json.dumps(json_body).replace("'", "\\'")
+      script_body = json.dumps(json_body)
 
     with self.build_kaggle_client() as kaggle:
       request = ApiSaveKernelRequest()

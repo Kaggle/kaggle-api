@@ -1,5 +1,9 @@
 Changelog
 ====
+### 1.7.3b1
+
+* Fix escaped-quote issue in HTTP requests.
+
 ### 1.7.3b0
 
 * Remove Swagger. No user-visible changes to the command-line tool. However, projects that

@@ -1,1 +1,2 @@
-twine==4.0.2
+twine==6.0.1
+pkginfo==1.12.0

@@ -4,6 +4,108 @@ from kagglesdk.competitions.types.submission_status import SubmissionStatus
 from kagglesdk.kaggle_object import *
 from typing import Optional, List
 
+class ApiCreateNotebookSubmissionRequest(KaggleObject):
+  r"""
+  Attributes:
+    competition_name (str)
+    notebook_slug (str)
+    notebook_version (int)
+    submission_description (str)
+  """
+
+  def __init__(self):
+    self._competition_name = ""
+    self._notebook_slug = ""
+    self._notebook_version = None
+    self._submission_description = None
+    self._freeze()
+
+  @property
+  def competition_name(self) -> str:
+    return self._competition_name
+
+  @competition_name.setter
+  def competition_name(self, competition_name: str):
+    if competition_name is None:
+      del self.competition_name
+      return
+    if not isinstance(competition_name, str):
+      raise TypeError('competition_name must be of type str')
+    self._competition_name = competition_name
+
+  @property
+  def notebook_slug(self) -> str:
+    return self._notebook_slug
+
+  @notebook_slug.setter
+  def notebook_slug(self, notebook_slug: str):
+    if notebook_slug is None:
+      del self.notebook_slug
+      return
+    if not isinstance(notebook_slug, str):
+      raise TypeError('notebook_slug must be of type str')
+    self._notebook_slug = notebook_slug
+
+  @property
+  def notebook_version(self) -> int:
+    return self._notebook_version or 0
+
+  @notebook_version.setter
+  def notebook_version(self, notebook_version: int):
+    if notebook_version is None:
+      del self.notebook_version
+      return
+    if not isinstance(notebook_version, int):
+      raise TypeError('notebook_version must be of type int')
+    self._notebook_version = notebook_version
+
+  @property
+  def submission_description(self) -> str:
+    return self._submission_description or ""
+
+  @submission_description.setter
+  def submission_description(self, submission_description: str):
+    if submission_description is None:
+      del self.submission_description
+      return
+    if not isinstance(submission_description, str):
+      raise TypeError('submission_description must be of type str')
+    self._submission_description = submission_description
+
+  def endpoint(self):
+    path = '/api/v1/competitions/submissions/submit-notebook/{competition_name}'
+    return path.format_map(self.to_field_map(self))
+
+
+  @staticmethod
+  def method():
+    return 'POST'
+
+
+class ApiCreateNotebookSubmissionResponse(KaggleObject):
+  r"""
+  Attributes:
+    ref (int)
+  """
+
+  def __init__(self):
+    self._ref = 0
+    self._freeze()
+
+  @property
+  def ref(self) -> int:
+    return self._ref
+
+  @ref.setter
+  def ref(self, ref: int):
+    if ref is None:
+      del self.ref
+      return
+    if not isinstance(ref, int):
+      raise TypeError('ref must be of type int')
+    self._ref = ref
+
+
 class ApiCreateSubmissionRequest(KaggleObject):
   r"""
   Attributes:
@@ -1718,6 +1820,17 @@ class ApiCategory(KaggleObject):
       raise TypeError('total_count must be of type int')
     self._total_count = total_count
 
+
+ApiCreateNotebookSubmissionRequest._fields = [
+  FieldMetadata("competitionName", "competition_name", "_competition_name", str, "", PredefinedSerializer()),
+  FieldMetadata("notebookSlug", "notebook_slug", "_notebook_slug", str, "", PredefinedSerializer()),
+  FieldMetadata("notebookVersion", "notebook_version", "_notebook_version", int, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("submissionDescription", "submission_description", "_submission_description", str, None, PredefinedSerializer(), optional=True),
+]
+
+ApiCreateNotebookSubmissionResponse._fields = [
+  FieldMetadata("ref", "ref", "_ref", int, 0, PredefinedSerializer()),
+]
 
 ApiCreateSubmissionRequest._fields = [
   FieldMetadata("competitionName", "competition_name", "_competition_name", str, "", PredefinedSerializer()),

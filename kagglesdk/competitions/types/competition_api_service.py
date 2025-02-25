@@ -9,7 +9,7 @@ class ApiCreateNotebookSubmissionRequest(KaggleObject):
   Attributes:
     competition_name (str)
     notebook_slug (str)
-    notebook_version (int)
+    notebook_version (str)
     submission_description (str)
   """
 
@@ -47,16 +47,16 @@ class ApiCreateNotebookSubmissionRequest(KaggleObject):
     self._notebook_slug = notebook_slug
 
   @property
-  def notebook_version(self) -> int:
-    return self._notebook_version or 0
+  def notebook_version(self) -> str:
+    return self._notebook_version or ""
 
   @notebook_version.setter
-  def notebook_version(self, notebook_version: int):
+  def notebook_version(self, notebook_version: str):
     if notebook_version is None:
       del self.notebook_version
       return
-    if not isinstance(notebook_version, int):
-      raise TypeError('notebook_version must be of type int')
+    if not isinstance(notebook_version, str):
+      raise TypeError('notebook_version must be of type str')
     self._notebook_version = notebook_version
 
   @property
@@ -1824,7 +1824,7 @@ class ApiCategory(KaggleObject):
 ApiCreateNotebookSubmissionRequest._fields = [
   FieldMetadata("competitionName", "competition_name", "_competition_name", str, "", PredefinedSerializer()),
   FieldMetadata("notebookSlug", "notebook_slug", "_notebook_slug", str, "", PredefinedSerializer()),
-  FieldMetadata("notebookVersion", "notebook_version", "_notebook_version", int, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("notebookVersion", "notebook_version", "_notebook_version", str, None, PredefinedSerializer(), optional=True),
   FieldMetadata("submissionDescription", "submission_description", "_submission_description", str, None, PredefinedSerializer(), optional=True),
 ]
 

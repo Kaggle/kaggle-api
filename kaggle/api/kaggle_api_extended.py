@@ -62,7 +62,8 @@ from kagglesdk.datasets.types.dataset_types import DatasetSettings, \
   SettingsLicense, DatasetCollaborator
 from kagglesdk.kernels.types.kernels_api_service import ApiListKernelsRequest, \
   ApiListKernelFilesRequest, ApiSaveKernelRequest, ApiGetKernelRequest, \
-  ApiListKernelSessionOutputRequest, ApiGetKernelSessionStatusRequest
+  ApiListKernelSessionOutputRequest, ApiGetKernelSessionStatusRequest, \
+  ApiSaveKernelResponse
 from kagglesdk.kernels.types.kernels_enums import KernelsListSortType, \
   KernelsListViewType
 from kagglesdk.models.types.model_api_service import ApiListModelsRequest, \
@@ -291,7 +292,7 @@ class KaggleApi:
 
   args = {}  # DEBUG Add --local to use localhost
   if os.environ.get('KAGGLE_API_ENVIRONMENT') == 'LOCALHOST':
-    args = {'--local'}
+    args = {'--verbose','--local'}
 
   # Kernels valid types
   valid_push_kernel_types = ['script', 'notebook']
@@ -793,14 +794,15 @@ class KaggleApi:
     else:
       print('No competitions found')
 
-  def competition_submit_code(self, message, competition, kernel_slug=None, kernel_version=None, quiet=False):
+  def competition_submit_code(self, file_name, message, competition, kernel_slug=None, kernel_version=None, quiet=False):
     """ Submit a competition.
 
             Parameters
             ==========
+            file_name: the name of  the output file created by the kernel
             message: the submission description
             competition: the competition name; if not given use the 'competition' config value
-            Kernel_slug: the <owner>/<notebook> of the notebook to use for a code competition
+            kernel_slug: the <owner>/<notebook> of the notebook to use for a code competition
             kernel_version: the full version name ('Version 1')
             quiet: suppress verbose output (default is False)
         """
@@ -816,6 +818,7 @@ class KaggleApi:
         raise ValueError('Kernel version must be specified')
       with self.build_kaggle_client() as kaggle:
         submit_request = ApiCreateCodeSubmissionRequest()
+        submit_request.file_name = file_name
         submit_request.competition_name = competition
         submit_request.kernel_slug = kernel_slug
         submit_request.kernel_version = kernel_version
@@ -887,20 +890,16 @@ class KaggleApi:
             quiet: suppress verbose output (default is False)
             competition_opt: an alternative competition option provided by cli
         """
+    if kernel and not version or version and not kernel:
+      raise ValueError('Code competition submissions require both the output file name and the version label')
     competition = competition or competition_opt
-    if not file_name and not kernel:
-      print('Either file_name or kernel is required.')
-      return None
-    if file_name and kernel:
-      print('Only one of file_name or kernel can be specified.')
-      return None
     try:
-      if file_name:
-        submit_result = self.competition_submit(file_name, message, competition,
-                                                quiet)
-      else:
-        submit_result = self.competition_submit_code(message, competition,
+      if kernel:
+        submit_result = self.competition_submit_code(file_name, message, competition,
                                                      kernel, version, quiet)
+      else:
+        submit_result = self.competition_submit(file_name, message, competition,
+                                              quiet)
     except RequestException as e:
       if e.response and e.response.status_code == 404:
         print('Could not find competition - please verify that you '
@@ -2416,7 +2415,7 @@ class KaggleApi:
     meta_file = self.kernels_initialize(folder)
     print('Kernel metadata template written to: ' + meta_file)
 
-  def kernels_push(self, folder, timeout=None):
+  def kernels_push(self, folder, timeout=None) -> ApiSaveKernelResponse:
     """ Read the metadata file and kernel files from a notebook, validate
             both, and use the Kernel API to push to Kaggle if all is valid.
             Parameters

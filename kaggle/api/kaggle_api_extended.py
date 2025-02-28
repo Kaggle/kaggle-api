@@ -803,7 +803,7 @@ class KaggleApi:
             message: the submission description
             competition: the competition name; if not given use the 'competition' config value
             kernel_slug: the <owner>/<notebook> of the notebook to use for a code competition
-            kernel_version: the full version name ('Version 1')
+            kernel_version: the version number, returned by 'kaggle kernels push ...'
             quiet: suppress verbose output (default is False)
         """
     if competition is None:
@@ -816,12 +816,14 @@ class KaggleApi:
     else:
       if kernel_version is None:
         raise ValueError('Kernel version must be specified')
+      else:
+        version = int(kernel_version)
       with self.build_kaggle_client() as kaggle:
         submit_request = ApiCreateCodeSubmissionRequest()
         submit_request.file_name = file_name
         submit_request.competition_name = competition
         submit_request.kernel_slug = kernel_slug
-        submit_request.kernel_version = kernel_version
+        submit_request.kernel_version = version
         submit_request.submission_description = message
         submit_response = kaggle.competitions.competition_api_client.create_code_submission(
             submit_request)

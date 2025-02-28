@@ -4,19 +4,21 @@ from kagglesdk.competitions.types.submission_status import SubmissionStatus
 from kagglesdk.kaggle_object import *
 from typing import Optional, List
 
-class ApiCreateNotebookSubmissionRequest(KaggleObject):
+class ApiCreateCodeSubmissionRequest(KaggleObject):
   r"""
   Attributes:
     competition_name (str)
-    notebook_slug (str)
-    notebook_version (str)
+    kernel_slug (str)
+    kernel_version (int)
+    file_name (str)
     submission_description (str)
   """
 
   def __init__(self):
     self._competition_name = ""
-    self._notebook_slug = ""
-    self._notebook_version = None
+    self._kernel_slug = ""
+    self._kernel_version = 0
+    self._file_name = ""
     self._submission_description = None
     self._freeze()
 
@@ -34,30 +36,43 @@ class ApiCreateNotebookSubmissionRequest(KaggleObject):
     self._competition_name = competition_name
 
   @property
-  def notebook_slug(self) -> str:
-    return self._notebook_slug
+  def kernel_slug(self) -> str:
+    return self._kernel_slug
 
-  @notebook_slug.setter
-  def notebook_slug(self, notebook_slug: str):
-    if notebook_slug is None:
-      del self.notebook_slug
+  @kernel_slug.setter
+  def kernel_slug(self, kernel_slug: str):
+    if kernel_slug is None:
+      del self.kernel_slug
       return
-    if not isinstance(notebook_slug, str):
-      raise TypeError('notebook_slug must be of type str')
-    self._notebook_slug = notebook_slug
+    if not isinstance(kernel_slug, str):
+      raise TypeError('kernel_slug must be of type str')
+    self._kernel_slug = kernel_slug
 
   @property
-  def notebook_version(self) -> str:
-    return self._notebook_version or ""
+  def kernel_version(self) -> int:
+    return self._kernel_version
 
-  @notebook_version.setter
-  def notebook_version(self, notebook_version: str):
-    if notebook_version is None:
-      del self.notebook_version
+  @kernel_version.setter
+  def kernel_version(self, kernel_version: int):
+    if kernel_version is None:
+      del self.kernel_version
       return
-    if not isinstance(notebook_version, str):
-      raise TypeError('notebook_version must be of type str')
-    self._notebook_version = notebook_version
+    if not isinstance(kernel_version, int):
+      raise TypeError('kernel_version must be of type int')
+    self._kernel_version = kernel_version
+
+  @property
+  def file_name(self) -> str:
+    return self._file_name
+
+  @file_name.setter
+  def file_name(self, file_name: str):
+    if file_name is None:
+      del self.file_name
+      return
+    if not isinstance(file_name, str):
+      raise TypeError('file_name must be of type str')
+    self._file_name = file_name
 
   @property
   def submission_description(self) -> str:
@@ -80,30 +95,6 @@ class ApiCreateNotebookSubmissionRequest(KaggleObject):
   @staticmethod
   def method():
     return 'POST'
-
-
-class ApiCreateNotebookSubmissionResponse(KaggleObject):
-  r"""
-  Attributes:
-    ref (int)
-  """
-
-  def __init__(self):
-    self._ref = 0
-    self._freeze()
-
-  @property
-  def ref(self) -> int:
-    return self._ref
-
-  @ref.setter
-  def ref(self, ref: int):
-    if ref is None:
-      del self.ref
-      return
-    if not isinstance(ref, int):
-      raise TypeError('ref must be of type int')
-    self._ref = ref
 
 
 class ApiCreateSubmissionRequest(KaggleObject):
@@ -1821,15 +1812,12 @@ class ApiCategory(KaggleObject):
     self._total_count = total_count
 
 
-ApiCreateNotebookSubmissionRequest._fields = [
+ApiCreateCodeSubmissionRequest._fields = [
   FieldMetadata("competitionName", "competition_name", "_competition_name", str, "", PredefinedSerializer()),
-  FieldMetadata("notebookSlug", "notebook_slug", "_notebook_slug", str, "", PredefinedSerializer()),
-  FieldMetadata("notebookVersion", "notebook_version", "_notebook_version", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("kernelSlug", "kernel_slug", "_kernel_slug", str, "", PredefinedSerializer()),
+  FieldMetadata("kernelVersion", "kernel_version", "_kernel_version", int, 0, PredefinedSerializer()),
+  FieldMetadata("fileName", "file_name", "_file_name", str, "", PredefinedSerializer()),
   FieldMetadata("submissionDescription", "submission_description", "_submission_description", str, None, PredefinedSerializer(), optional=True),
-]
-
-ApiCreateNotebookSubmissionResponse._fields = [
-  FieldMetadata("ref", "ref", "_ref", int, 0, PredefinedSerializer()),
 ]
 
 ApiCreateSubmissionRequest._fields = [

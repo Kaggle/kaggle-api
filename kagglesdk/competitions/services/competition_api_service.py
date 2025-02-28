@@ -1,6 +1,6 @@
 from kagglesdk.common.types.file_download import FileDownload
 from kagglesdk.common.types.http_redirect import HttpRedirect
-from kagglesdk.competitions.types.competition_api_service import ApiCreateNotebookSubmissionRequest, ApiCreateNotebookSubmissionResponse, ApiCreateSubmissionRequest, ApiCreateSubmissionResponse, ApiDownloadDataFileRequest, ApiDownloadDataFilesRequest, ApiDownloadLeaderboardRequest, ApiGetLeaderboardRequest, ApiGetLeaderboardResponse, ApiGetSubmissionRequest, ApiListCompetitionsRequest, ApiListCompetitionsResponse, ApiListDataFilesRequest, ApiListDataFilesResponse, ApiListSubmissionsRequest, ApiListSubmissionsResponse, ApiStartSubmissionUploadRequest, ApiStartSubmissionUploadResponse, ApiSubmission
+from kagglesdk.competitions.types.competition_api_service import ApiCreateCodeSubmissionRequest, ApiCreateSubmissionRequest, ApiCreateSubmissionResponse, ApiDownloadDataFileRequest, ApiDownloadDataFilesRequest, ApiDownloadLeaderboardRequest, ApiGetLeaderboardRequest, ApiGetLeaderboardResponse, ApiGetSubmissionRequest, ApiListCompetitionsRequest, ApiListCompetitionsResponse, ApiListDataFilesRequest, ApiListDataFilesResponse, ApiListSubmissionsRequest, ApiListSubmissionsResponse, ApiStartSubmissionUploadRequest, ApiStartSubmissionUploadResponse, ApiSubmission
 from kagglesdk.kaggle_http_client import KaggleHttpClient
 
 class CompetitionApiClient(object):
@@ -80,17 +80,17 @@ class CompetitionApiClient(object):
 
     return self._client.call("competitions.CompetitionApiService", "ApiCreateSubmission", request, ApiCreateSubmissionResponse)
 
-  def create_notebook_submission(self, request: ApiCreateNotebookSubmissionRequest = None) -> ApiCreateNotebookSubmissionResponse:
+  def create_code_submission(self, request: ApiCreateCodeSubmissionRequest = None) -> ApiCreateSubmissionResponse:
     r"""
     Args:
-      request (ApiCreateNotebookSubmissionRequest):
+      request (ApiCreateCodeSubmissionRequest):
         The request object; initialized to empty instance if not specified.
     """
 
     if request is None:
-      request = ApiCreateNotebookSubmissionRequest()
+      request = ApiCreateCodeSubmissionRequest()
 
-    return self._client.call("competitions.CompetitionApiService", "ApiCreateNotebookSubmission", request, ApiCreateNotebookSubmissionResponse)
+    return self._client.call("competitions.CompetitionApiService", "ApiCreateCodeSubmission", request, ApiCreateSubmissionResponse)
 
   def get_submission(self, request: ApiGetSubmissionRequest = None) -> ApiSubmission:
     r"""

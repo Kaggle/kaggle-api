@@ -34,7 +34,8 @@ import requests
 import urllib3.exceptions as urllib3_exceptions
 from requests import RequestException
 
-from kaggle.models.kaggle_models_extended import ResumableUploadResult, File
+from kaggle.models.kaggle_models_extended import ResumableUploadResult, File, \
+  Kernel
 
 from requests.adapters import HTTPAdapter
 from slugify import slugify
@@ -792,6 +793,37 @@ class KaggleApi:
     else:
       print('No competitions found')
 
+  def competition_submit_code(self, message, competition, kernel_slug=None, kernel_version=None, quiet=False):
+    """ Submit a competition.
+
+            Parameters
+            ==========
+            message: the submission description
+            competition: the competition name; if not given use the 'competition' config value
+            Kernel_slug: the <owner>/<notebook> of the notebook to use for a code competition
+            kernel_version: the full version name ('Version 1')
+            quiet: suppress verbose output (default is False)
+        """
+    if competition is None:
+      competition = self.get_config_value(self.CONFIG_NAME_COMPETITION)
+      if competition is not None and not quiet:
+        print('Using competition: ' + competition)
+
+    if competition is None:
+      raise ValueError('No competition specified')
+    else:
+      if kernel_version is None:
+        raise ValueError('Kernel version must be specified')
+      with self.build_kaggle_client() as kaggle:
+        submit_request = ApiCreateCodeSubmissionRequest()
+        submit_request.competition_name = competition
+        submit_request.kernel_slug = kernel_slug
+        submit_request.kernel_version = kernel_version
+        submit_request.submission_description = message
+        submit_response = kaggle.competitions.competition_api_client.create_code_submission(
+            submit_request)
+        return submit_response
+
   def competition_submit(self, file_name, message, competition, quiet=False):
     """ Submit a competition.
 
@@ -834,9 +866,11 @@ class KaggleApi:
         return submit_response
 
   def competition_submit_cli(self,
-                             file_name,
                              message,
                              competition,
+                             file_name=None,
+                             kernel=None,
+                             version=None,
                              competition_opt=None,
                              quiet=False):
     """ Submit a competition using the client. Arguments are same as for
@@ -844,16 +878,29 @@ class KaggleApi:
             
             Parameters
             ==========
-            file_name: the competition metadata file
             message: the submission description
             competition: the competition name; if not given use the 'competition' config value
+            file_name: the competition metadata file
+            kernel: the name of the kernel to submit to a code competition
+            version: the version of the kernel to submit to a code competition, e.g. 'Version 1'
+            competition_opt: an alternative competition option provided by cli
             quiet: suppress verbose output (default is False)
             competition_opt: an alternative competition option provided by cli
         """
     competition = competition or competition_opt
+    if not file_name and not kernel:
+      print('Either file_name or kernel is required.')
+      return None
+    if file_name and kernel:
+      print('Only one of file_name or kernel can be specified.')
+      return None
     try:
-      submit_result = self.competition_submit(file_name, message, competition,
-                                              quiet)
+      if file_name:
+        submit_result = self.competition_submit(file_name, message, competition,
+                                                quiet)
+      else:
+        submit_result = self.competition_submit_code(message, competition,
+                                                     kernel, version, quiet)
     except RequestException as e:
       if e.response and e.response.status_code == 404:
         print('Could not find competition - please verify that you '

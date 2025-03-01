@@ -1169,7 +1169,6 @@ class ApiListModelGatingUserConsentsRequest(KaggleObject):
     model_slug (str)
     review_status (GatingAgreementRequestsReviewStatus)
       filters: a null value means the filter is off.
-    expiry_status (GatingAgreementRequestsExpiryStatus)
     is_user_request_data_expired (bool)
     page_size (int)
       paging
@@ -1180,7 +1179,6 @@ class ApiListModelGatingUserConsentsRequest(KaggleObject):
     self._owner_slug = ""
     self._model_slug = ""
     self._review_status = None
-    self._expiry_status = None
     self._is_user_request_data_expired = None
     self._page_size = None
     self._page_token = None
@@ -1225,19 +1223,6 @@ class ApiListModelGatingUserConsentsRequest(KaggleObject):
     if not isinstance(review_status, GatingAgreementRequestsReviewStatus):
       raise TypeError('review_status must be of type GatingAgreementRequestsReviewStatus')
     self._review_status = review_status
-
-  @property
-  def expiry_status(self) -> 'GatingAgreementRequestsExpiryStatus':
-    return self._expiry_status or GatingAgreementRequestsExpiryStatus.GATING_AGREEMENT_REQUESTS_EXPIRY_STATUS_UNSPECIFIED
-
-  @expiry_status.setter
-  def expiry_status(self, expiry_status: 'GatingAgreementRequestsExpiryStatus'):
-    if expiry_status is None:
-      del self.expiry_status
-      return
-    if not isinstance(expiry_status, GatingAgreementRequestsExpiryStatus):
-      raise TypeError('expiry_status must be of type GatingAgreementRequestsExpiryStatus')
-    self._expiry_status = expiry_status
 
   @property
   def is_user_request_data_expired(self) -> bool:
@@ -3531,7 +3516,6 @@ ApiListModelGatingUserConsentsRequest._fields = [
   FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "", PredefinedSerializer()),
   FieldMetadata("modelSlug", "model_slug", "_model_slug", str, "", PredefinedSerializer()),
   FieldMetadata("reviewStatus", "review_status", "_review_status", GatingAgreementRequestsReviewStatus, None, EnumSerializer(), optional=True),
-  FieldMetadata("expiryStatus", "expiry_status", "_expiry_status", GatingAgreementRequestsExpiryStatus, None, EnumSerializer(), optional=True),
   FieldMetadata("isUserRequestDataExpired", "is_user_request_data_expired", "_is_user_request_data_expired", bool, None, PredefinedSerializer(), optional=True),
   FieldMetadata("pageSize", "page_size", "_page_size", int, None, PredefinedSerializer(), optional=True),
   FieldMetadata("pageToken", "page_token", "_page_token", str, None, PredefinedSerializer(), optional=True),

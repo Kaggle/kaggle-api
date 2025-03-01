@@ -816,14 +816,12 @@ class KaggleApi:
     else:
       if kernel_version is None:
         raise ValueError('Kernel version must be specified')
-      else:
-        version = int(kernel_version)
       with self.build_kaggle_client() as kaggle:
         submit_request = ApiCreateCodeSubmissionRequest()
         submit_request.file_name = file_name
         submit_request.competition_name = competition
         submit_request.kernel_slug = kernel_slug
-        submit_request.kernel_version = version
+        submit_request.kernel_version = kernel_version
         submit_request.submission_description = message
         submit_response = kaggle.competitions.competition_api_client.create_code_submission(
             submit_request)
@@ -871,9 +869,9 @@ class KaggleApi:
         return submit_response
 
   def competition_submit_cli(self,
+                             file_name,
                              message,
                              competition,
-                             file_name=None,
                              kernel=None,
                              version=None,
                              competition_opt=None,
@@ -883,12 +881,11 @@ class KaggleApi:
             
             Parameters
             ==========
+            file_name: the competition metadata file
             message: the submission description
             competition: the competition name; if not given use the 'competition' config value
-            file_name: the competition metadata file
             kernel: the name of the kernel to submit to a code competition
             version: the version of the kernel to submit to a code competition, e.g. 'Version 1'
-            competition_opt: an alternative competition option provided by cli
             quiet: suppress verbose output (default is False)
             competition_opt: an alternative competition option provided by cli
         """

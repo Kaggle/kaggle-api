@@ -9,7 +9,7 @@ class ApiCreateCodeSubmissionRequest(KaggleObject):
   Attributes:
     competition_name (str)
     kernel_slug (str)
-    kernel_version (int)
+    kernel_version (str)
     file_name (str)
     submission_description (str)
   """
@@ -17,7 +17,7 @@ class ApiCreateCodeSubmissionRequest(KaggleObject):
   def __init__(self):
     self._competition_name = ""
     self._kernel_slug = ""
-    self._kernel_version = 0
+    self._kernel_version = ""
     self._file_name = ""
     self._submission_description = None
     self._freeze()
@@ -49,16 +49,16 @@ class ApiCreateCodeSubmissionRequest(KaggleObject):
     self._kernel_slug = kernel_slug
 
   @property
-  def kernel_version(self) -> int:
+  def kernel_version(self) -> str:
     return self._kernel_version
 
   @kernel_version.setter
-  def kernel_version(self, kernel_version: int):
+  def kernel_version(self, kernel_version: str):
     if kernel_version is None:
       del self.kernel_version
       return
-    if not isinstance(kernel_version, int):
-      raise TypeError('kernel_version must be of type int')
+    if not isinstance(kernel_version, str):
+      raise TypeError('kernel_version must be of type str')
     self._kernel_version = kernel_version
 
   @property
@@ -1815,7 +1815,7 @@ class ApiCategory(KaggleObject):
 ApiCreateCodeSubmissionRequest._fields = [
   FieldMetadata("competitionName", "competition_name", "_competition_name", str, "", PredefinedSerializer()),
   FieldMetadata("kernelSlug", "kernel_slug", "_kernel_slug", str, "", PredefinedSerializer()),
-  FieldMetadata("kernelVersion", "kernel_version", "_kernel_version", int, 0, PredefinedSerializer()),
+  FieldMetadata("kernelVersion", "kernel_version", "_kernel_version", str, "", PredefinedSerializer()),
   FieldMetadata("fileName", "file_name", "_file_name", str, "", PredefinedSerializer()),
   FieldMetadata("submissionDescription", "submission_description", "_submission_description", str, None, PredefinedSerializer(), optional=True),
 ]

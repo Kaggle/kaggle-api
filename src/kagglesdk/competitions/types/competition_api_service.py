@@ -4,6 +4,99 @@ from kagglesdk.competitions.types.submission_status import SubmissionStatus
 from kagglesdk.kaggle_object import *
 from typing import Optional, List
 
+class ApiCreateCodeSubmissionRequest(KaggleObject):
+  r"""
+  Attributes:
+    competition_name (str)
+    kernel_slug (str)
+    kernel_version (str)
+    file_name (str)
+    submission_description (str)
+  """
+
+  def __init__(self):
+    self._competition_name = ""
+    self._kernel_slug = ""
+    self._kernel_version = ""
+    self._file_name = ""
+    self._submission_description = None
+    self._freeze()
+
+  @property
+  def competition_name(self) -> str:
+    return self._competition_name
+
+  @competition_name.setter
+  def competition_name(self, competition_name: str):
+    if competition_name is None:
+      del self.competition_name
+      return
+    if not isinstance(competition_name, str):
+      raise TypeError('competition_name must be of type str')
+    self._competition_name = competition_name
+
+  @property
+  def kernel_slug(self) -> str:
+    return self._kernel_slug
+
+  @kernel_slug.setter
+  def kernel_slug(self, kernel_slug: str):
+    if kernel_slug is None:
+      del self.kernel_slug
+      return
+    if not isinstance(kernel_slug, str):
+      raise TypeError('kernel_slug must be of type str')
+    self._kernel_slug = kernel_slug
+
+  @property
+  def kernel_version(self) -> str:
+    return self._kernel_version
+
+  @kernel_version.setter
+  def kernel_version(self, kernel_version: str):
+    if kernel_version is None:
+      del self.kernel_version
+      return
+    if not isinstance(kernel_version, str):
+      raise TypeError('kernel_version must be of type str')
+    self._kernel_version = kernel_version
+
+  @property
+  def file_name(self) -> str:
+    return self._file_name
+
+  @file_name.setter
+  def file_name(self, file_name: str):
+    if file_name is None:
+      del self.file_name
+      return
+    if not isinstance(file_name, str):
+      raise TypeError('file_name must be of type str')
+    self._file_name = file_name
+
+  @property
+  def submission_description(self) -> str:
+    return self._submission_description or ""
+
+  @submission_description.setter
+  def submission_description(self, submission_description: str):
+    if submission_description is None:
+      del self.submission_description
+      return
+    if not isinstance(submission_description, str):
+      raise TypeError('submission_description must be of type str')
+    self._submission_description = submission_description
+
+  def endpoint(self):
+    path = '/api/v1/competitions/submissions/submit-notebook/{competition_name}'
+    return path.format_map(self.to_field_map(self))
+
+
+  @staticmethod
+  def method():
+    return 'POST'
+
+
 class ApiCreateSubmissionRequest(KaggleObject):
   r"""
   Attributes:
@@ -1718,6 +1811,14 @@ class ApiCategory(KaggleObject):
       raise TypeError('total_count must be of type int')
     self._total_count = total_count
 
+
+ApiCreateCodeSubmissionRequest._fields = [
+  FieldMetadata("competitionName", "competition_name", "_competition_name", str, "", PredefinedSerializer()),
+  FieldMetadata("kernelSlug", "kernel_slug", "_kernel_slug", str, "", PredefinedSerializer()),
+  FieldMetadata("kernelVersion", "kernel_version", "_kernel_version", str, "", PredefinedSerializer()),
+  FieldMetadata("fileName", "file_name", "_file_name", str, "", PredefinedSerializer()),
+  FieldMetadata("submissionDescription", "submission_description", "_submission_description", str, None, PredefinedSerializer(), optional=True),
+]
 
 ApiCreateSubmissionRequest._fields = [
   FieldMetadata("competitionName", "competition_name", "_competition_name", str, "", PredefinedSerializer()),

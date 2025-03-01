@@ -18,7 +18,7 @@ from typing import Type
 # currently usable by the CLI.
 
 # TODO: Extend kapigen to add a boolean to these requests indicating that they use forms.
-REQUESTS_REQUIRING_FORMS = ['ApiUploadDatasetFileRequest', 'ApiCreateSubmissionRequest', 'ApiStartSubmissionUploadRequest', 'ApiUploadModelFileRequest']
+REQUESTS_REQUIRING_FORMS = ['ApiUploadDatasetFileRequest', 'ApiCreateSubmissionRequest', 'ApiCreateCodeSubmissionRequest', 'ApiStartSubmissionUploadRequest', 'ApiUploadModelFileRequest']
 
 def _headers_to_str(headers):
   return '\n'.join(f'{k}: {v}' for k, v in headers.items())

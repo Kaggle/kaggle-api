@@ -34,7 +34,8 @@ import requests
 import urllib3.exceptions as urllib3_exceptions
 from requests import RequestException
 
-from kaggle.models.kaggle_models_extended import ResumableUploadResult, File
+from kaggle.models.kaggle_models_extended import ResumableUploadResult, File, \
+  Kernel
 
 from requests.adapters import HTTPAdapter
 from slugify import slugify
@@ -61,7 +62,8 @@ from kagglesdk.datasets.types.dataset_types import DatasetSettings, \
   SettingsLicense, DatasetCollaborator
 from kagglesdk.kernels.types.kernels_api_service import ApiListKernelsRequest, \
   ApiListKernelFilesRequest, ApiSaveKernelRequest, ApiGetKernelRequest, \
-  ApiListKernelSessionOutputRequest, ApiGetKernelSessionStatusRequest
+  ApiListKernelSessionOutputRequest, ApiGetKernelSessionStatusRequest, \
+  ApiSaveKernelResponse
 from kagglesdk.kernels.types.kernels_enums import KernelsListSortType, \
   KernelsListViewType
 from kagglesdk.models.types.model_api_service import ApiListModelsRequest, \
@@ -290,7 +292,7 @@ class KaggleApi:
 
   args = {}  # DEBUG Add --local to use localhost
   if os.environ.get('KAGGLE_API_ENVIRONMENT') == 'LOCALHOST':
-    args = {'--local'}
+    args = {'--verbose','--local'}
 
   # Kernels valid types
   valid_push_kernel_types = ['script', 'notebook']
@@ -792,6 +794,39 @@ class KaggleApi:
     else:
       print('No competitions found')
 
+  def competition_submit_code(self, file_name, message, competition, kernel_slug=None, kernel_version=None, quiet=False):
+    """ Submit a competition.
+
+            Parameters
+            ==========
+            file_name: the name of  the output file created by the kernel
+            message: the submission description
+            competition: the competition name; if not given use the 'competition' config value
+            kernel_slug: the <owner>/<notebook> of the notebook to use for a code competition
+            kernel_version: the version number, returned by 'kaggle kernels push ...'
+            quiet: suppress verbose output (default is False)
+        """
+    if competition is None:
+      competition = self.get_config_value(self.CONFIG_NAME_COMPETITION)
+      if competition is not None and not quiet:
+        print('Using competition: ' + competition)
+
+    if competition is None:
+      raise ValueError('No competition specified')
+    else:
+      if kernel_version is None:
+        raise ValueError('Kernel version must be specified')
+      with self.build_kaggle_client() as kaggle:
+        submit_request = ApiCreateCodeSubmissionRequest()
+        submit_request.file_name = file_name
+        submit_request.competition_name = competition
+        submit_request.kernel_slug = kernel_slug
+        submit_request.kernel_version = kernel_version
+        submit_request.submission_description = message
+        submit_response = kaggle.competitions.competition_api_client.create_code_submission(
+            submit_request)
+        return submit_response
+
   def competition_submit(self, file_name, message, competition, quiet=False):
     """ Submit a competition.
 
@@ -837,6 +872,8 @@ class KaggleApi:
                              file_name,
                              message,
                              competition,
+                             kernel=None,
+                             version=None,
                              competition_opt=None,
                              quiet=False):
     """ Submit a competition using the client. Arguments are same as for
@@ -847,12 +884,20 @@ class KaggleApi:
             file_name: the competition metadata file
             message: the submission description
             competition: the competition name; if not given use the 'competition' config value
+            kernel: the name of the kernel to submit to a code competition
+            version: the version of the kernel to submit to a code competition, e.g. '1'
             quiet: suppress verbose output (default is False)
             competition_opt: an alternative competition option provided by cli
         """
+    if kernel and not version or version and not kernel:
+      raise ValueError('Code competition submissions require both the output file name and the version label')
     competition = competition or competition_opt
     try:
-      submit_result = self.competition_submit(file_name, message, competition,
+      if kernel:
+        submit_result = self.competition_submit_code(file_name, message, competition,
+                                                     kernel, version, quiet)
+      else:
+        submit_result = self.competition_submit(file_name, message, competition,
                                               quiet)
     except RequestException as e:
       if e.response and e.response.status_code == 404:
@@ -2369,7 +2414,7 @@ class KaggleApi:
     meta_file = self.kernels_initialize(folder)
     print('Kernel metadata template written to: ' + meta_file)
 
-  def kernels_push(self, folder, timeout=None):
+  def kernels_push(self, folder, timeout=None) -> ApiSaveKernelResponse:
     """ Read the metadata file and kernel files from a notebook, validate
             both, and use the Kernel API to push to Kaggle if all is valid.
             Parameters

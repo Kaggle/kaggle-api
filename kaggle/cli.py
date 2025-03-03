@@ -245,13 +245,17 @@ def parse_competitions(subparsers):
       required=False,
       help=argparse.SUPPRESS)
   parser_competitions_submit_required.add_argument(
-      '-f', '--file', dest='file_name', required=True, help=Help.param_upfile)
+      '-f', '--file', dest='file_name', help=Help.param_upfile)
+  parser_competitions_submit_optional.add_argument(
+      '-k', '--kernel', dest='kernel', help=Help.param_code_kernel)
   parser_competitions_submit_required.add_argument(
       '-m',
       '--message',
       dest='message',
       required=True,
       help=Help.param_competition_message)
+  parser_competitions_submit_optional.add_argument(
+      '-v', '--version', dest='version', help=Help.param_code_version)
   parser_competitions_submit_optional.add_argument(
       '-q', '--quiet', dest='quiet', action='store_true', help=Help.param_quiet)
   parser_competitions_submit._action_groups.append(
@@ -1420,7 +1424,9 @@ class Help(object):
   param_delete_old_version = 'Delete old versions of this dataset'
   param_force = ('Skip check whether local version of file is up to date, force'
                  ' file download')
-  param_upfile = 'File for upload (full path)'
+  param_upfile = 'File for upload (full path), or the name of the output file produced by a kernel (for code competitions)'
+  param_code_kernel = 'Name of kernel (notebook) to submit to a code competition'
+  param_code_version = 'Version of kernel to submit to a code competition, e.g. "Version 1"'
   param_csv = 'Print results in CSV format (if not set print in table format)'
   param_page = 'Page number for results paging. Page size is 20 by default'
   # NOTE: Default and max page size are set by the mid-tier code.

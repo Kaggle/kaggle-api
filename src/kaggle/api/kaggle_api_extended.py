@@ -885,7 +885,7 @@ class KaggleApi:
             message: the submission description
             competition: the competition name; if not given use the 'competition' config value
             kernel: the name of the kernel to submit to a code competition
-            version: the version of the kernel to submit to a code competition, e.g. 'Version 1'
+            version: the version of the kernel to submit to a code competition, e.g. '1'
             quiet: suppress verbose output (default is False)
             competition_opt: an alternative competition option provided by cli
         """

@@ -1,6 +1,6 @@
 from kagglesdk.common.types.file_download import FileDownload
 from kagglesdk.common.types.http_redirect import HttpRedirect
-from kagglesdk.competitions.types.competition_api_service import ApiCreateCodeSubmissionRequest, ApiCreateSubmissionRequest, ApiCreateSubmissionResponse, ApiDownloadDataFileRequest, ApiDownloadDataFilesRequest, ApiDownloadLeaderboardRequest, ApiGetLeaderboardRequest, ApiGetLeaderboardResponse, ApiGetSubmissionRequest, ApiListCompetitionsRequest, ApiListCompetitionsResponse, ApiListDataFilesRequest, ApiListDataFilesResponse, ApiListSubmissionsRequest, ApiListSubmissionsResponse, ApiStartSubmissionUploadRequest, ApiStartSubmissionUploadResponse, ApiSubmission
+from kagglesdk.competitions.types.competition_api_service import ApiCreateCodeSubmissionRequest, ApiCreateCodeSubmissionResponse, ApiCreateSubmissionRequest, ApiCreateSubmissionResponse, ApiDownloadDataFileRequest, ApiDownloadDataFilesRequest, ApiDownloadLeaderboardRequest, ApiGetLeaderboardRequest, ApiGetLeaderboardResponse, ApiGetSubmissionRequest, ApiListCompetitionsRequest, ApiListCompetitionsResponse, ApiListDataFilesRequest, ApiListDataFilesResponse, ApiListSubmissionsRequest, ApiListSubmissionsResponse, ApiStartSubmissionUploadRequest, ApiStartSubmissionUploadResponse, ApiSubmission
 from kagglesdk.kaggle_http_client import KaggleHttpClient
 
 class CompetitionApiClient(object):
@@ -80,7 +80,7 @@ class CompetitionApiClient(object):
 
     return self._client.call("competitions.CompetitionApiService", "ApiCreateSubmission", request, ApiCreateSubmissionResponse)
 
-  def create_code_submission(self, request: ApiCreateCodeSubmissionRequest = None) -> ApiCreateSubmissionResponse:
+  def create_code_submission(self, request: ApiCreateCodeSubmissionRequest = None) -> ApiCreateCodeSubmissionResponse:
     r"""
     Args:
       request (ApiCreateCodeSubmissionRequest):
@@ -90,7 +90,7 @@ class CompetitionApiClient(object):
     if request is None:
       request = ApiCreateCodeSubmissionRequest()
 
-    return self._client.call("competitions.CompetitionApiService", "ApiCreateCodeSubmission", request, ApiCreateSubmissionResponse)
+    return self._client.call("competitions.CompetitionApiService", "ApiCreateCodeSubmission", request, ApiCreateCodeSubmissionResponse)
 
   def get_submission(self, request: ApiGetSubmissionRequest = None) -> ApiSubmission:
     r"""

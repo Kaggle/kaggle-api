@@ -1,5 +1,10 @@
 Changelog
 ====
+### 1.7.3b2
+
+* Added the ability to submit to a code competition. Some required arguments have been made optional.
+* Added a `--timeout` option to `kaggle kernels push` to limit the run-time to the specified number of seconds.
+
 ### 1.7.3b1
 
 * Fix escaped-quote issue in HTTP requests.

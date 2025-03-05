@@ -234,8 +234,6 @@ def parse_competitions(subparsers):
       help=Help.command_competitions_submit)
   parser_competitions_submit_optional = parser_competitions_submit._action_groups.pop(
   )
-  parser_competitions_submit_required = parser_competitions_submit.add_argument_group(
-      'required arguments')
   parser_competitions_submit_optional.add_argument(
       'competition', nargs='?', default=None, help=Help.param_competition)
   parser_competitions_submit_optional.add_argument(
@@ -244,11 +242,11 @@ def parse_competitions(subparsers):
       dest='competition_opt',
       required=False,
       help=argparse.SUPPRESS)
-  parser_competitions_submit_required.add_argument(
+  parser_competitions_submit_optional.add_argument(
       '-f', '--file', dest='file_name', help=Help.param_upfile)
   parser_competitions_submit_optional.add_argument(
       '-k', '--kernel', dest='kernel', help=Help.param_code_kernel)
-  parser_competitions_submit_required.add_argument(
+  parser_competitions_submit_optional.add_argument(
       '-m',
       '--message',
       dest='message',

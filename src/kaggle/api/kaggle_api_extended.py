@@ -794,7 +794,7 @@ class KaggleApi:
     else:
       print('No competitions found')
 
-  def competition_submit_code(self, file_name, message, competition, kernel_slug=None, kernel_version=None, quiet=False):
+  def competition_submit_code(self, file_name, message, competition, kernel=None, kernel_version=None, quiet=False):
     """ Submit to a code competition.
 
             Parameters
@@ -802,7 +802,7 @@ class KaggleApi:
             file_name: the name of  the output file created by the kernel (not used for packages)
             message: the submission description
             competition: the competition name; if not given use the 'competition' config value
-            kernel_slug: the <owner>/<notebook> of the notebook to use for a code competition
+            kernel: the <owner>/<notebook> of the notebook to use for a code competition
             kernel_version: the version number, returned by 'kaggle kernels push ...'
             quiet: suppress verbose output (default is False)
         """
@@ -813,11 +813,11 @@ class KaggleApi:
     if competition is None:
       raise ValueError('No competition specified')
 
-    if kernel_slug is None:
+    if kernel is None:
       raise ValueError('No kernel specified')
     else:
       with self.build_kaggle_client() as kaggle:
-        items = kernel_slug.split('/')
+        items = kernel.split('/')
         if len(items) != 2:
           raise ValueError('The kernel must be specified as <owner>/<notebook>')
         submit_request = ApiCreateCodeSubmissionRequest()

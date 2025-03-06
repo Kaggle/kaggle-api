@@ -1,8 +1,11 @@
 #!/bin/bash
 
 # Verify all options are plumbed through to the MT.
-# TODO Replace "stevemessick" with "$USER" so others can run this script.
+# Set envar KAGGLE_DEVELOPER to the Kaggle user name (probably already done).
+
 # Use the web site to delete the dataset named "TestHere" before running.
+# Still need to adjust for assumptions about existing artifacts, like
+# the notebook "exercise-as-with"
 
 echo "kaggle competitions files"
 kaggle competitions files titanic --page-size=3 --page-token=abcd -v -q
@@ -23,17 +26,17 @@ rm -r titanic.zip tost sample_submission.csv
 
 echo "kaggle kernels list"
 kaggle k list -m -s Exercise --page-size 5 -p 2 -v  --sort-by dateRun
-kaggle k list --parent stevemessick/exercise-lists
+kaggle k list --parent $KAGGLE_DEVELOPER/exercise-lists
 kaggle k list --competition house-prices-advanced-regression-techniques --page-size 5
 kaggle k list --dataset dansbecker/home-data-for-ml-course --page-size 5
-kaggle k list --user stevemessick --language python --kernel-type notebook --output-type data
+kaggle k list --user $KAGGLE_DEVELOPER --language python --kernel-type notebook --output-type data
 echo "kaggle kernels files"
 kaggle kernels files kerneler/sqlite-global-default -v --page-size=1
 echo "kaggle kernels init"
 kaggle k init -p tests/kernel
 echo "kaggle kernels pull"
-kaggle k pull -p tests/kernel stevemessick/exercise-as-with -m
-kaggle k pull --wp stevemessick/exercise-as-with
+kaggle k pull -p tests/kernel $KAGGLE_DEVELOPER/exercise-as-with -m
+kaggle k pull --wp $KAGGLE_DEVELOPER/exercise-as-with
 echo "kaggle kernels push"
 kaggle kernels push -p tests/kernel
 rm -f tests/kernel/exercise-as-with.ipynb tests/kernel/kernel-metadata.json exercise-as-with.ipynb
@@ -70,22 +73,22 @@ echo "kaggle models init"
 mkdir tmp
 kaggle m init -p tmp
 echo "kaggle models list"
-kaggle m list --owner stevemessick --sort-by createTime -v
+kaggle m list --owner $KAGGLE_DEVELOPER --sort-by createTime -v
 kaggle m list -s gemini --page-size 5
 echo "kaggle models create"
-sed -i s/INSERT_OWNER_SLUG_HERE/stevemessick/ tmp/model-metadata.json
+sed -i s/INSERT_OWNER_SLUG_HERE/$KAGGLE_DEVELOPER/ tmp/model-metadata.json
 sed -i s/INSERT_TITLE_HERE/ModelTitle/ tmp/model-metadata.json
 sed -i s/INSERT_SLUG_HERE/test-model/ tmp/model-metadata.json
 kaggle m create -p tmp
 echo "kaggle models update"
 kaggle m update -p tmp
 echo "kaggle models get"
-kaggle m get -p tmp stevemessick/testing
+kaggle m get -p tmp $KAGGLE_DEVELOPER/test-model
 
 echo "kaggle models instances init"
 kaggle m instances init -p tmp
 echo "kaggle models instances create"
-sed -i s/INSERT_OWNER_SLUG_HERE/stevemessick/ tmp/model-instance-metadata.json
+sed -i s/INSERT_OWNER_SLUG_HERE/$KAGGLE_DEVELOPER/ tmp/model-instance-metadata.json
 sed -i s/INSERT_EXISTING_MODEL_SLUG_HERE/test-model/ tmp/model-instance-metadata.json
 sed -i s/INSERT_INSTANCE_SLUG_HERE/main/ tmp/model-instance-metadata.json
 sed -i s/INSERT_FRAMEWORK_HERE/jax/ tmp/model-instance-metadata.json
@@ -94,22 +97,22 @@ kaggle models instances create -p tmp -q -r skip
 echo "kaggle models instances update"
 kaggle models instances update -p tmp
 echo "kaggle models instances get"
-kaggle models instances get stevemessick/test-model/jax/main -p tmp
+kaggle models instances get $KAGGLE_DEVELOPER/test-model/jax/main -p tmp
 echo "kaggle models instances files"
-kaggle models instances files stevemessick/test-model/jax/main -v --page-size 5
+kaggle models instances files $KAGGLE_DEVELOPER/test-model/jax/main -v --page-size 5
 
 echo "kaggle models instances versions files"
 kaggle models instances versions files google/gemma/pytorch/7b/2 -v --page-size=3 --page-token=abcd
 echo "kaggle models instances versions create"
-kaggle models instances versions create -p tmp -q -r skip -n VersionNotes stevemessick/test-model/jax/main
+kaggle models instances versions create -p tmp -q -r skip -n VersionNotes $KAGGLE_DEVELOPER/test-model/jax/main
 echo "kaggle models instances versions download"
-kaggle models instances versions download -p tmp -q -f --untar stevemessick/test-model/jax/main/1
+kaggle models instances versions download -p tmp -q -f --untar $KAGGLE_DEVELOPER/test-model/jax/main/1
 
 rm -rf tmp
 
 echo "kaggle models instances versions delete"
-kaggle m instances versions delete stevemessick/test-model/jax/main/1 -y
+kaggle m instances versions delete $KAGGLE_DEVELOPER/test-model/jax/main/1 -y
 echo "kaggle models instances delete"
-kaggle m instances delete stevemessick/test-model/jax/main -y
+kaggle m instances delete $KAGGLE_DEVELOPER/test-model/jax/main -y
 echo "kaggle models delete"
-kaggle m delete stevemessick/test-model -y
+kaggle m delete $KAGGLE_DEVELOPER/test-model -y

@@ -702,7 +702,16 @@ class KaggleApi:
       return enum_class[item]
     except KeyError:
       prefix = self.camel_to_snake(enum_class.__name__).upper()
-      return enum_class[f'{prefix}_{self.camel_to_snake(item_name).upper()}']
+      full_name = f'{prefix}_{self.camel_to_snake(item_name).upper()}'
+      try:
+        return enum_class[full_name]
+      except KeyError:
+        # Handle PY_TORCH vs PYTORCH, etc.
+        full_name = full_name.replace('_', '')
+        for item in enum_class.keys:
+          if item.replace('_', '') == full_name:
+            return enum_class[item]
+          raise
 
   def short_enum_name(self, value):
     full_name = str(value)

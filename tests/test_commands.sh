@@ -62,7 +62,7 @@ echo "kaggle datasets download"
 kaggle d download goefft/public-datasets-with-file-types-and-columns -p tmp --unzip -o -q
 kaggle d download goefft/public-datasets-with-file-types-and-columns -f dataset_results.csv -w -q -o
 echo "kaggle datasets version"
-kaggle d version -m VersionNotesGoHere -p tests/dataset -q -t -r skip -d #
+kaggle d version -m VersionNotesGoHere -p tests/dataset -q -t -r skip -d
 echo "kaggle datasets metadata"
 kaggle datasets metadata goefft/public-datasets-with-file-types-and-columns -p tests/dataset
 echo "kaggle datasets status"

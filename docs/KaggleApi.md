@@ -317,27 +317,24 @@ List competitions
 ### Example
 ```python
 from __future__ import print_function
-import time
-import kaggle
-from kaggle.rest import ApiException
 from pprint import pprint
+from kaggle.api import KaggleApi
 
-# Configure HTTP basic authorization: basicAuth
-configuration = kaggle.Configuration()
-configuration.username = 'YOUR_USERNAME'
-configuration.password = 'YOUR_PASSWORD'
+# Create an instance of the Kaggle API class
+api = KaggleApi()
 
-# create an instance of the API class
-api_instance = kaggle.KaggleApi(kaggle.ApiClient(configuration))
+# Authenticate using the Kaggle API credentials (requires kaggle.json in the correct location)
+api.authenticate() 
+
 group = 'general' # str | Filter competitions by a particular group (optional) (default to general)
-category = 'all' # str | Filter competitions by a particular category (optional) (default to all)
+category = 'gettingStarted' # str | Filter competitions by a particular category (optional) (default to all)
 sort_by = 'latestDeadline' # str | Sort the results (optional) (default to latestDeadline)
 page = 1 # int | Page number (optional) (default to 1)
 search = '' # str | Search terms (optional) (default to )
 
 try:
     # List competitions
-    api_response = api_instance.competitions_list(group=group, category=category, sort_by=sort_by, page=page, search=search)
+    api_response = api.competitions_list(group=group, category=category, sort_by=sort_by, page=page, search=search)
     pprint(api_response)
 except ApiException as e:
     print("Exception when calling KaggleApi->competitions_list: %s\n" % e)

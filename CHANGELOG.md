@@ -1,5 +1,16 @@
 Changelog
 ====
+### 1.7.3
+
+There was an error in versioning. We went from 1.6.17 to 1.7.3.
+
+* Added the ability to submit to a code competition. Some required arguments have been made optional.
+* Added a `--timeout` option to `kaggle kernels push` to limit the run-time to the specified number of seconds.
+* Removed Swagger. Projects that use `kaggle/api/kaggle_api.py` may be affected. That file is deprecated and will be
+  removed. Most of its functions still work, but those that involve uploading files no longer work.
+  The command-line tool uses a higher-level abstraction for uploading, and client code needs
+  to be converted to use that.
+
 ### 1.7.3b2
 
 * Added the ability to submit to a code competition. Some required arguments have been made optional.

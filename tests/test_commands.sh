@@ -82,6 +82,7 @@ sed -i s/INSERT_SLUG_HERE/test-model/ tmp/model-metadata.json
 kaggle m create -p tmp
 echo "kaggle models update"
 kaggle m update -p tmp
+sleep 10
 echo "kaggle models get"
 kaggle m get -p tmp $KAGGLE_DEVELOPER/test-model
 
@@ -94,8 +95,10 @@ sed -i s/INSERT_INSTANCE_SLUG_HERE/main/ tmp/model-instance-metadata.json
 sed -i s/INSERT_FRAMEWORK_HERE/jax/ tmp/model-instance-metadata.json
 echo "a,b,c,d" > tmp/data.csv
 kaggle models instances create -p tmp -q -r skip
+sleep 10
 echo "kaggle models instances update"
 kaggle models instances update -p tmp
+sleep 10
 echo "kaggle models instances get"
 kaggle models instances get $KAGGLE_DEVELOPER/test-model/jax/main -p tmp
 echo "kaggle models instances files"

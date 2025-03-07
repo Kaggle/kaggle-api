@@ -319,6 +319,7 @@ List competitions
 from __future__ import print_function
 from pprint import pprint
 from kaggle.api import KaggleApi
+from kaggle.rest import ApiException
 
 # Create an instance of the Kaggle API class
 api = KaggleApi()

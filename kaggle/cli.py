@@ -136,6 +136,7 @@ def parse_competitions(subparsers):
       '--page',
       dest='page',
       default=1,
+      type=int,
       required=False,
       help=Help.param_page)
   parser_competitions_list_optional.add_argument(
@@ -183,6 +184,7 @@ def parse_competitions(subparsers):
       dest='page_size',
       required=False,
       default=20,
+      type=int,
       help=Help.param_page_size)
   parser_competitions_files._action_groups.append(
       parser_competitions_files_optional)
@@ -360,7 +362,7 @@ def parse_datasets(subparsers):
       required=False,
       help=Help.param_dataset_sort_by)
   parser_datasets_list.add_argument(
-      '--size', dest='size', required=False, help=Help.param_dataset_size)
+      '--size', dest='size', type=int, required=False, help=Help.param_dataset_size)
   parser_datasets_list.add_argument(
       '--file-type',
       dest='file_type',
@@ -384,6 +386,7 @@ def parse_datasets(subparsers):
       '--page',
       dest='page',
       default=1,
+      type=int,
       required=False,
       help=Help.param_page)
   parser_datasets_list.add_argument(
@@ -396,11 +399,13 @@ def parse_datasets(subparsers):
       '--max-size',
       dest='max_size',
       required=False,
+      type=int,
       help=Help.param_dataset_maxsize)
   parser_datasets_list.add_argument(
       '--min-size',
       dest='min_size',
       required=False,
+      type=int,
       help=Help.param_dataset_minsize)
   parser_datasets_list._action_groups.append(parser_datasets_list_optional)
   parser_datasets_list.set_defaults(func=api.dataset_list_cli)
@@ -435,6 +440,7 @@ def parse_datasets(subparsers):
       dest='page_size',
       required=False,
       default=20,
+      type=int,
       help=Help.param_page_size)
   parser_datasets_files._action_groups.append(parser_datasets_files_optional)
   parser_datasets_files.set_defaults(func=api.dataset_list_files_cli)
@@ -647,9 +653,9 @@ def parse_kernels(subparsers):
   parser_kernels_list_optional.add_argument(
       '-m', '--mine', dest='mine', action='store_true', help=Help.param_mine)
   parser_kernels_list_optional.add_argument(
-      '-p', '--page', dest='page', default=1, help=Help.param_page)
+      '-p', '--page', dest='page', default=1, type=int, help=Help.param_page)
   parser_kernels_list_optional.add_argument(
-      '--page-size', dest='page_size', default=20, help=Help.param_page_size)
+      '--page-size', dest='page_size', default=20, type=int, help=Help.param_page_size)
   parser_kernels_list_optional.add_argument(
       '-s', '--search', dest='search', help=Help.param_search)
   parser_kernels_list_optional.add_argument(
@@ -718,7 +724,7 @@ def parse_kernels(subparsers):
   parser_kernels_files_optional.add_argument(
       '--page-token', dest='page_token', help=Help.param_page_token)
   parser_kernels_files_optional.add_argument(
-      '--page-size', dest='page_size', default=20, help=Help.param_page_size)
+      '--page-size', dest='page_size', default=20, type=int, help=Help.param_page_size)
   parser_kernels_files._action_groups.append(parser_kernels_files_optional)
   parser_kernels_files.set_defaults(func=api.kernels_list_files_cli)
 
@@ -752,6 +758,7 @@ def parse_kernels(subparsers):
   parser_kernels_push_optional.add_argument(
       '-t',
       '--timeout',
+      type=int,
       dest='timeout')
   parser_kernels_push._action_groups.append(parser_kernels_push_optional)
   parser_kernels_push.set_defaults(func=api.kernels_push_cli)
@@ -891,7 +898,7 @@ def parse_models(subparsers):
   parser_models_list.add_argument(
       '--owner', dest='owner', required=False, help=Help.param_model_owner)
   parser_models_list.add_argument(
-      '--page-size', dest='page_size', default=20, help=Help.param_page_size)
+      '--page-size', dest='page_size', default=20, type=int, help=Help.param_page_size)
   parser_models_list.add_argument(
       '--page-token',
       dest='page_token',
@@ -1058,7 +1065,7 @@ def parse_model_instances(subparsers):
       action='store_true',
       help=Help.param_csv)
   parser_model_instances_files_optional.add_argument(
-      '--page-size', dest='page_size', default=20, help=Help.param_page_size)
+      '--page-size', dest='page_size', default=20, type=int, help=Help.param_page_size)
   parser_model_instances_files_optional.add_argument(
       '--page-token',
       dest='page_token',
@@ -1186,7 +1193,7 @@ def parse_model_instance_versions(subparsers):
       action='store_true',
       help=Help.param_csv)
   parser_model_instance_versions_files_optional.add_argument(
-      '--page-size', dest='page_size', default=20, help=Help.param_page_size)
+      '--page-size', dest='page_size', default=20, type=int, help=Help.param_page_size)
   parser_model_instance_versions_files_optional.add_argument(
       '--page-token',
       dest='page_token',

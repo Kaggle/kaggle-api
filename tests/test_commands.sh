@@ -7,6 +7,8 @@
 # Still need to adjust for assumptions about existing artifacts, like
 # the notebook "exercise-as-with"
 
+kaggle --version
+
 echo "kaggle competitions files"
 kaggle competitions files titanic --page-size=3 --page-token=abcd -v -q
 echo "kaggle competitions list"

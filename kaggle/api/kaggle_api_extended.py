@@ -708,7 +708,7 @@ class KaggleApi:
       except KeyError:
         # Handle PY_TORCH vs PYTORCH, etc.
         full_name = full_name.replace('_', '')
-        for item in enum_class.keys:
+        for item in vars(enum_class):
           if item.replace('_', '') == full_name:
             return enum_class[item]
           raise
@@ -1728,8 +1728,14 @@ class KaggleApi:
     dataset = dataset or dataset_opt
 
     owner_slug, dataset_slug, _ = self.split_dataset_string(dataset)
-    metadata = self.process_response(
-        self.metadata_get_with_http_info(owner_slug, dataset_slug))
+    request = ApiGetDatasetMetadataRequest()
+    request.owner_slug = owner_slug
+    request.dataset_slug = dataset_slug
+    with self.build_kaggle_client() as kaggle:
+      response = kaggle.datasets.dataset_api_client.get_dataset_metadata(request)
+      if response.error_message:
+        raise Exception(response.error_message)
+      metadata = response.info
 
     if 'info' in metadata and 'licenses' in metadata['info']:
       # license_objs format is like: [{ 'name': 'CC0-1.0' }]
@@ -2892,7 +2898,7 @@ class KaggleApi:
       data['slug'] = model_ref_split[1]
       data['title'] = model.title
       data['subtitle'] = model.subtitle
-      data['isPrivate'] = model.isPrivate  # TODO Test to ensure True default
+      data['isPrivate'] = model.is_private  # TODO Test to ensure True default
       data['description'] = model.description
       data['publishTime'] = model.publishTime
 
@@ -3073,7 +3079,7 @@ class KaggleApi:
     folder = folder or os.getcwd()
     result = self.model_create_new(folder)
 
-    if result.hasId:
+    if result.id:
       print('Your model was created. Id={}. Url={}'.format(
           result.id, result.url))
     else:
@@ -3197,7 +3203,7 @@ class KaggleApi:
     folder = folder or os.getcwd()
     result = self.model_update(folder)
 
-    if result.hasId:
+    if result.id:
       print('Your model was updated. Id={}. Url={}'.format(
           result.id, result.url))
     else:
@@ -3420,7 +3426,7 @@ class KaggleApi:
     folder = folder or os.getcwd()
     result = self.model_instance_create(folder, quiet, dir_mode)
 
-    if result.hasId:
+    if result.id:
       print('Your model instance was created. Id={}. Url={}'.format(
           result.id, result.url))
     else:

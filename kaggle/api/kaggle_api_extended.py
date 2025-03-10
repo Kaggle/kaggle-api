@@ -4709,7 +4709,6 @@ class FileList(object):
       inst.files = [File(f) for f in files]
     else:
       inst.files = []
-        
     token = response['next_page_token']
     if token:
       inst.nextPageToken = token

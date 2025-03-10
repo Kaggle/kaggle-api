@@ -253,7 +253,7 @@ class ResumableFileUpload(object):
 
 
 class KaggleApi:
-  __version__ = '1.7.4b1'
+  __version__ = '1.7.4b4'
 
   CONFIG_NAME_PROXY = 'proxy'
   CONFIG_NAME_COMPETITION = 'competition'
@@ -703,15 +703,15 @@ class KaggleApi:
     except KeyError:
       prefix = self.camel_to_snake(enum_class.__name__).upper()
       full_name = f'{prefix}_{self.camel_to_snake(item_name).upper()}'
-      try:
-        return enum_class[full_name]
-      except KeyError:
-        # Handle PY_TORCH vs PYTORCH, etc.
-        full_name = full_name.replace('_', '')
-        for item in vars(enum_class):
-          if item.replace('_', '') == full_name:
-            return enum_class[item]
-          raise
+    try:
+      return enum_class[full_name]
+    except KeyError:
+      # Handle PY_TORCH vs PYTORCH, etc.
+      full_name = full_name.replace('_', '')
+      for item in vars(enum_class):
+        if item.replace('_', '') == full_name:
+          return enum_class[item]
+        raise
 
   def short_enum_name(self, value):
     full_name = str(value)
@@ -2366,10 +2366,6 @@ class KaggleApi:
       print('No files found')
       return
 
-    if result.error_message:
-      print(result.error_message)
-      return
-
     next_page_token = result.nextPageToken
     if next_page_token:
       print('Next Page Token = {}'.format(next_page_token))
@@ -2900,7 +2896,7 @@ class KaggleApi:
       data['subtitle'] = model.subtitle
       data['isPrivate'] = model.is_private  # TODO Test to ensure True default
       data['description'] = model.description
-      data['publishTime'] = model.publishTime
+      data['publishTime'] = model.publish_time
 
       with open(meta_file, 'w') as f:
         json.dump(data, f, indent=2)
@@ -3511,6 +3507,7 @@ class KaggleApi:
         next_page_token = response.next_page_token
         if next_page_token:
           print('Next Page Token = {}'.format(next_page_token))
+        response.size = response.total_bytes
         return response
       else:
         print('No files found')

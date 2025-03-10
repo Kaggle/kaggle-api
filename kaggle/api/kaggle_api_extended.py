@@ -711,7 +711,7 @@ class KaggleApi:
       for item in vars(enum_class):
         if item.replace('_', '') == full_name:
           return enum_class[item]
-        raise
+      raise
 
   def short_enum_name(self, value):
     full_name = str(value)

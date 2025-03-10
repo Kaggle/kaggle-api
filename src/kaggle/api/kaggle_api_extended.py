@@ -3507,7 +3507,7 @@ class KaggleApi:
         next_page_token = response.next_page_token
         if next_page_token:
           print('Next Page Token = {}'.format(next_page_token))
-        return FileList(vars(response))
+        return FileList.from_response(response)
       else:
         print('No files found')
         return FileList({})
@@ -4700,6 +4700,21 @@ class FileList(object):
     else:
       self.nextPageToken = ""
 
+  @staticmethod
+  def from_response(response):
+    inst = FileList({})
+    inst.error_message = ''
+    files = response.files
+    if files:
+      inst.files = [File(f) for f in files]
+    else:
+      inst.files = []
+        
+    token = response['next_page_token']
+    if token:
+      inst.nextPageToken = token
+    else:
+      inst.nextPageToken = ""
   def __repr__(self):
     return ''
 

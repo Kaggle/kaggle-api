@@ -4702,7 +4702,7 @@ class FileList(object):
 
   @staticmethod
   def from_response(response):
-    inst = FileList({})
+    inst = FileList({'files': [], 'nextPageToken': ''})
     inst.error_message = ''
     files = response.files
     if files:

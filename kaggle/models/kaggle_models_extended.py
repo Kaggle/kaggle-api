@@ -120,7 +120,10 @@ class File(object):
     except AttributeError:
       self.name = init_dict.name
       self.creation_date = init_dict.creation_date
-      self.size = File.get_size(init_dict.total_bytes)
+      try:
+        self.size = File.get_size(init_dict.total_bytes)
+      except Exception:
+        self.size = File.get_size(init_dict.size)
 
   def __repr__(self):
     return self.name

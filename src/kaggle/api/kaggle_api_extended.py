@@ -253,7 +253,7 @@ class ResumableFileUpload(object):
 
 
 class KaggleApi:
-  __version__ = '1.7.4b4'
+  __version__ = '1.7.4'
 
   CONFIG_NAME_PROXY = 'proxy'
   CONFIG_NAME_COMPETITION = 'competition'
@@ -3510,7 +3510,7 @@ class KaggleApi:
         return FileList.from_response(response)
       else:
         print('No files found')
-        return FileList({})
+        return FileList({'files': [], 'nextPageToken': ''})
 
   def model_instance_files_cli(self,
                                model_instance,

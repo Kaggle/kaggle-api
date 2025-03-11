@@ -122,7 +122,7 @@ class File(object):
       self.creation_date = init_dict.creation_date
       try:
         self.size = File.get_size(init_dict.total_bytes)
-      except Exception:
+      except Exception: # AttributeError would be preferred but doesn't work.
         self.size = File.get_size(init_dict.size)
 
   def __repr__(self):

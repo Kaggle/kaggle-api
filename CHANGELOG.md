@@ -1,5 +1,14 @@
 Changelog
 ====
+
+### 1.7.4
+
+Version 1.7.3 was never released. There were errors in versioning on
+test.pypi.org. For consistency, we decided to jump several version numbers.
+This is the first release since 1.6.17.
+
+The actual changes are described in 1.7.3.
+
 ### 1.7.3
 
 There was an error in versioning. We went from 1.6.17 to 1.7.3.

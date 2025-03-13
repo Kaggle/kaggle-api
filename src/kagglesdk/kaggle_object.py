@@ -275,7 +275,10 @@ class KaggleObject(object):
     return KaggleObject.to_json(self, ignore_defaults=False)
 
   def __contains__(self, field_name):
-    field = self._get_field(field_name)
+    try:
+      field = self._get_field(field_name)
+    except ValueError:
+      return False
     value = getattr(self, field.private_field_name)
     if field.optional:
       return value is not None

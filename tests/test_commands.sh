@@ -61,6 +61,7 @@ sed -i s/INSERT_TITLE_HERE/TitleHere/ tests/dataset/dataset-metadata.json
 sed -i s/INSERT_SLUG_HERE/$SLUG/ tests/dataset/dataset-metadata.json
 kaggle d create -p tests/dataset --public -q -t -r skip
 echo "kaggle datasets download"
+kaggle datasets download -d willianoliveiragibin/pixar-films # this one breaks in some environments
 kaggle d download goefft/public-datasets-with-file-types-and-columns -p tmp --unzip -o -q
 kaggle d download goefft/public-datasets-with-file-types-and-columns -f dataset_results.csv -w -q -o
 echo "kaggle datasets version"

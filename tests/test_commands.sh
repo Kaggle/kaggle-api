@@ -23,8 +23,8 @@ echo "kaggle competitions submissions"
 kaggle c submissions house-prices-advanced-regression-techniques -v -q
 echo "kaggle competitions leaderboard"
 kaggle c leaderboard titanic -v -q -d -p leaders
-kaggle c leaderboard titanic -s
-rm -r titanic.zip tost sample_submission.csv
+kaggle c leaderboard titanic -s > leaderboard.txt
+rm -r titanic.zip tost sample_submission.csv leaders leaderboard.txt
 
 echo "kaggle kernels list"
 kaggle k list -m -s Exercise --page-size 5 -p 2 -v  --sort-by dateRun
@@ -61,7 +61,7 @@ sed -i s/INSERT_TITLE_HERE/TitleHere/ tests/dataset/dataset-metadata.json
 sed -i s/INSERT_SLUG_HERE/$SLUG/ tests/dataset/dataset-metadata.json
 kaggle d create -p tests/dataset --public -q -t -r skip
 echo "kaggle datasets download"
-kaggle datasets download -d willianoliveiragibin/pixar-films # this one breaks in some environments
+kaggle datasets download -d willianoliveiragibin/pixar-films
 kaggle d download goefft/public-datasets-with-file-types-and-columns -p tmp --unzip -o -q
 kaggle d download goefft/public-datasets-with-file-types-and-columns -f dataset_results.csv -w -q -o
 echo "kaggle datasets version"
@@ -70,7 +70,7 @@ echo "kaggle datasets metadata"
 kaggle datasets metadata goefft/public-datasets-with-file-types-and-columns -p tests/dataset
 echo "kaggle datasets status"
 kaggle d status goefft/public-datasets-with-file-types-and-columns
-rm -rf tmp tests/dataset/dataset-metadata.json dataset_results.csv.zip
+rm -rf tmp tests/dataset/dataset-metadata.json dataset_results.csv.zip dataset_results.csv pixar-films.zip
 
 echo "kaggle models init"
 mkdir tmp

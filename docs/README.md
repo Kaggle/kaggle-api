@@ -508,6 +508,8 @@ usage: kaggle kernels push [-h] -p FOLDER
 
 optional arguments:
   -h, --help            show this help message and exit
+  -t N, --timeout N     Limit the run time of a kernel to the given number  of seconds.
+                        The global maximum time will not be exceeded.
   -p FOLDER, --path FOLDER
                         Folder for upload, containing data files and a special kernel-metadata.json file (https://github.com/Kaggle/kaggle-api/wiki/Kernel-Metadata). Defaults to current working directory
 ```

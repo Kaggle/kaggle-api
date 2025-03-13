@@ -1,6 +1,11 @@
 Changelog
 ====
 
+### 1.7.4.1
+
+* Fix a dataset download problem. Datasets that had a license were failing to download.
+* Update the documentation to include code competition submit.
+
 ### 1.7.4
 
 Version 1.7.3 was never released. There were errors in versioning on

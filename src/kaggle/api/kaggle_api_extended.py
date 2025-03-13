@@ -1737,13 +1737,13 @@ class KaggleApi:
         raise Exception(response.error_message)
       metadata = response.info
 
-    if 'info' in metadata and 'licenses' in metadata['info']:
+    if metadata and metadata.licenses:
       # license_objs format is like: [{ 'name': 'CC0-1.0' }]
-      license_objs = metadata['info']['licenses']
+      license_objs = metadata.licenses
       licenses = [
-          license_obj['name']
+          license_obj.name
           for license_obj in license_objs
-          if 'name' in license_obj
+          if license_obj.name
       ]
     else:
       licenses = [
@@ -2440,6 +2440,7 @@ class KaggleApi:
             Parameters
             ==========
             folder: the path of the folder
+            timeout: maximum run time iin seconds
         """
     if not os.path.isdir(folder):
       raise ValueError('Invalid folder: ' + folder)
@@ -2561,6 +2562,7 @@ class KaggleApi:
         Parameters
             ==========
             folder: the path of the folder
+            timeout: maximum run time in seconds
         """
     folder = folder or os.getcwd()
     result = self.kernels_push(folder, timeout)

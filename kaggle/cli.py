@@ -759,7 +759,8 @@ def parse_kernels(subparsers):
       '-t',
       '--timeout',
       type=int,
-      dest='timeout')
+      dest='timeout',
+      help=Help.param_kernel_timeout)
   parser_kernels_push._action_groups.append(parser_kernels_push_optional)
   parser_kernels_push.set_defaults(func=api.kernels_push_cli)
 
@@ -1526,6 +1527,9 @@ class Help(object):
   param_kernel_competition = 'Find kernels for a given competition slug'
   param_kernel_dataset = ('Find kernels for a given dataset slug. Format is '
                           '{username/dataset-slug}')
+  param_kernel_timeout = ('Limit the run time of a kernel to the given number '
+                          'of seconds. The global maximum time will not be '
+                          'exceeded.')
   param_kernel_user = 'Find kernels created by a given username'
   # TODO(b/129357583): Pull these from the same spot as the api impl
   param_kernel_language = (

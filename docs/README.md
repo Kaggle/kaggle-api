@@ -159,25 +159,30 @@ Note: you will need to accept competition rules at `https://www.kaggle.com/c/<co
 ##### Submit to a competition
 
 ```
-usage: kaggle competitions submit [-h] -f FILE_NAME -m MESSAGE [-q]
-                                  [competition]
+usage: kaggle competitions submit [-h] [-f FILE_NAME] [-k KERNEL] -m MESSAGE [-v VERSION] [-q] [competition]
 
-required arguments:
-  -f FILE_NAME, --file FILE_NAME
-                        File for upload (full path)
-  -m MESSAGE, --message MESSAGE
-                        Message describing this submission
-
-optional arguments:
+options:
   -h, --help            show this help message and exit
   competition           Competition URL suffix (use "kaggle competitions list" to show options)
                         If empty, the default competition will be used (use "kaggle config set competition")"
+  -f FILE_NAME, --file FILE_NAME
+                        File for upload (full path), or the name of the output file produced by a kernel (for code competitions)
+  -k KERNEL, --kernel KERNEL
+                        Name of kernel (notebook) to submit to a code competition
+  -m MESSAGE, --message MESSAGE
+                        Message describing this submission
+  -v VERSION, --version VERSION
+                        Version of kernel to submit to a code competition, e.g. "Version 1"
   -q, --quiet           Suppress printing information about the upload/download progress
 ```
 
 Example: 
 
-`kaggle competitions submit favorita-grocery-sales-forecasting -f sample_submission_favorita.csv.7z -m "My submission message"`
+`kaggle competitions submit favorita-grocery-sales-forecasting \
+    -f sample_submission_favorita.csv.7z -m "My submission message"`
+
+`kaggle competitions submit llms-you-cant-please-them-all \
+    -k username/llms-can-t-please-all-submission -v 9 -f submission.csv -m "My submission message"'`
 
 Note: you will need to accept competition rules at `https://www.kaggle.com/c/<competition-name>/rules`.
 

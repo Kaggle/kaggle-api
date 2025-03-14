@@ -1,6 +1,10 @@
 Changelog
 ====
 
+### 1.7.4.2
+
+* Fix a problem in downloading kernel output files.
+
 ### 1.7.4.1
 
 * Fix a dataset download problem. Datasets that had a license were failing to download.

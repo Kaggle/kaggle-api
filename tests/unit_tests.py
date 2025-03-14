@@ -284,10 +284,8 @@ class TestKaggleApi(unittest.TestCase):
 
   def test_kernels_f_output(self):
     fs = []
-    if self.kernel_slug == '':
-      self.test_kernels_c_push()
     try:
-      fs, token = api.kernels_output(self.kernel_slug, 'kernel/tmp')
+      fs, token = api.kernels_output('kerneler/sqlite-global-default', 'kernel/tmp')
       self.assertIsInstance(fs, list)
       if token:
         print(token)

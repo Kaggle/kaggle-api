@@ -36,7 +36,7 @@ echo "kaggle kernels files"
 kaggle kernels files kerneler/sqlite-global-default -v --page-size=1
 echo "kaggle kernels init"
 kaggle k init -p tests/kernel
-echo "kaggle kernels output"
+echo "kaggle kernels pull"
 kaggle k pull -p tests/kernel $KAGGLE_DEVELOPER/exercise-as-with -m
 kaggle k pull --wp $KAGGLE_DEVELOPER/exercise-as-with
 echo "kaggle kernels push"
@@ -44,7 +44,7 @@ kaggle kernels push -p tests/kernel
 rm -f tests/kernel/exercise-as-with.ipynb tests/kernel/kernel-metadata.json exercise-as-with.ipynb
 echo "kaggle kernels status"
 kaggle k status kerneler/sqlite-global-default
-echo "kaggle kernels pull"
+echo "kaggle kernels output"
 kaggle k output kerneler/sqlite-global-default -f
 
 echo "kaggle datasets list"

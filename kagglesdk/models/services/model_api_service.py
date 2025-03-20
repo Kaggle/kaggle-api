@@ -1,6 +1,6 @@
 from kagglesdk.common.types.http_redirect import HttpRedirect
 from kagglesdk.kaggle_http_client import KaggleHttpClient
-from kagglesdk.models.types.model_api_service import ApiCreateModelInstanceRequest, ApiCreateModelInstanceVersionRequest, ApiCreateModelRequest, ApiCreateModelResponse, ApiDeleteModelInstanceRequest, ApiDeleteModelInstanceVersionRequest, ApiDeleteModelRequest, ApiDeleteModelResponse, ApiDownloadModelInstanceVersionRequest, ApiGetModelInstanceRequest, ApiGetModelRequest, ApiListModelGatingUserConsentsRequest, ApiListModelGatingUserConsentsResponse, ApiListModelInstanceVersionFilesRequest, ApiListModelInstanceVersionFilesResponse, ApiListModelsRequest, ApiListModelsResponse, ApiModel, ApiModelInstance, ApiReviewGatingUserConsentRequest, ApiUpdateModelInstanceRequest, ApiUpdateModelRequest, ApiUpdateModelResponse, ApiUploadModelFileRequest, ApiUploadModelFileResponse, CreateModelSigningTokenRequest, CreateModelSigningTokenResponse, KeysRequest, KeysResponse, WellKnowEndpointRequest, WellKnowEndpointResponse
+from kagglesdk.models.types.model_api_service import ApiCreateModelInstanceRequest, ApiCreateModelInstanceVersionRequest, ApiCreateModelRequest, ApiCreateModelResponse, ApiDeleteModelInstanceRequest, ApiDeleteModelInstanceVersionRequest, ApiDeleteModelRequest, ApiDeleteModelResponse, ApiDownloadModelInstanceVersionRequest, ApiGetModelInstanceRequest, ApiGetModelRequest, ApiListModelGatingUserConsentsRequest, ApiListModelGatingUserConsentsResponse, ApiListModelInstanceVersionFilesRequest, ApiListModelInstanceVersionFilesResponse, ApiListModelsRequest, ApiListModelsResponse, ApiModel, ApiModelInstance, ApiReviewModelGatingUserConsentRequest, ApiUpdateModelInstanceRequest, ApiUpdateModelRequest, ApiUpdateModelResponse, ApiUploadModelFileRequest, ApiUploadModelFileResponse, CreateModelSigningTokenRequest, CreateModelSigningTokenResponse, KeysRequest, KeysResponse, WellKnowEndpointRequest, WellKnowEndpointResponse
 
 class ModelApiClient(object):
 
@@ -240,16 +240,17 @@ class ModelApiClient(object):
 
     return self._client.call("models.ModelApiService", "ApiListModelGatingUserConsents", request, ApiListModelGatingUserConsentsResponse)
 
-  def review_gating_user_consent(self, request: ApiReviewGatingUserConsentRequest = None):
+  def review_model_gating_user_consent(self, request: ApiReviewModelGatingUserConsentRequest = None):
     r"""
-    Review the user consents for an agreement.
+    Review the user consents for a gated model, under the model's current
+    active agreement.
 
     Args:
-      request (ApiReviewGatingUserConsentRequest):
+      request (ApiReviewModelGatingUserConsentRequest):
         The request object; initialized to empty instance if not specified.
     """
 
     if request is None:
-      request = ApiReviewGatingUserConsentRequest()
+      request = ApiReviewModelGatingUserConsentRequest()
 
-    self._client.call("models.ModelApiService", "ApiReviewGatingUserConsent", request, None)
+    self._client.call("models.ModelApiService", "ApiReviewModelGatingUserConsent", request, None)

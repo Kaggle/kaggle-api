@@ -2226,34 +2226,49 @@ class ApiModelInstance(KaggleObject):
     self._total_uncompressed_bytes = total_uncompressed_bytes
 
 
-class ApiReviewGatingUserConsentRequest(KaggleObject):
+class ApiReviewModelGatingUserConsentRequest(KaggleObject):
   r"""
   Attributes:
-    agreement_id (int)
+    owner_slug (str)
+    model_slug (str)
     user_name (str)
     review_status (GatingAgreementRequestsReviewStatus)
     publisher_notes (str)
   """
 
   def __init__(self):
-    self._agreement_id = 0
+    self._owner_slug = ""
+    self._model_slug = ""
     self._user_name = ""
     self._review_status = GatingAgreementRequestsReviewStatus.GATING_AGREEMENT_REQUESTS_REVIEW_STATUS_UNSPECIFIED
     self._publisher_notes = None
     self._freeze()
 
   @property
-  def agreement_id(self) -> int:
-    return self._agreement_id
+  def owner_slug(self) -> str:
+    return self._owner_slug
 
-  @agreement_id.setter
-  def agreement_id(self, agreement_id: int):
-    if agreement_id is None:
-      del self.agreement_id
+  @owner_slug.setter
+  def owner_slug(self, owner_slug: str):
+    if owner_slug is None:
+      del self.owner_slug
       return
-    if not isinstance(agreement_id, int):
-      raise TypeError('agreement_id must be of type int')
-    self._agreement_id = agreement_id
+    if not isinstance(owner_slug, str):
+      raise TypeError('owner_slug must be of type str')
+    self._owner_slug = owner_slug
+
+  @property
+  def model_slug(self) -> str:
+    return self._model_slug
+
+  @model_slug.setter
+  def model_slug(self, model_slug: str):
+    if model_slug is None:
+      del self.model_slug
+      return
+    if not isinstance(model_slug, str):
+      raise TypeError('model_slug must be of type str')
+    self._model_slug = model_slug
 
   @property
   def user_name(self) -> str:
@@ -2295,7 +2310,7 @@ class ApiReviewGatingUserConsentRequest(KaggleObject):
     self._publisher_notes = publisher_notes
 
   def endpoint(self):
-    path = '/api/v1/gating/{agreement_id}/user-consent/review'
+    path = '/api/v1/models/{owner_slug}/{model_slug}/user-consents/review'
     return path.format_map(self.to_field_map(self))
 
 
@@ -3599,8 +3614,9 @@ ApiModelInstance._fields = [
   FieldMetadata("totalUncompressedBytes", "total_uncompressed_bytes", "_total_uncompressed_bytes", int, 0, PredefinedSerializer()),
 ]
 
-ApiReviewGatingUserConsentRequest._fields = [
-  FieldMetadata("agreementId", "agreement_id", "_agreement_id", int, 0, PredefinedSerializer()),
+ApiReviewModelGatingUserConsentRequest._fields = [
+  FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "", PredefinedSerializer()),
+  FieldMetadata("modelSlug", "model_slug", "_model_slug", str, "", PredefinedSerializer()),
   FieldMetadata("userName", "user_name", "_user_name", str, "", PredefinedSerializer()),
   FieldMetadata("reviewStatus", "review_status", "_review_status", GatingAgreementRequestsReviewStatus, GatingAgreementRequestsReviewStatus.GATING_AGREEMENT_REQUESTS_REVIEW_STATUS_UNSPECIFIED, EnumSerializer()),
   FieldMetadata("publisherNotes", "publisher_notes", "_publisher_notes", str, None, PredefinedSerializer(), optional=True),

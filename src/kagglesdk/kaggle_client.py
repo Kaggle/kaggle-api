@@ -6,6 +6,8 @@ from kagglesdk.models.services.model_service import ModelClient
 from kagglesdk.competitions.services.competition_api_service import CompetitionApiClient
 from kagglesdk.datasets.services.dataset_api_service import DatasetApiClient
 from kagglesdk.admin.services.inbox_file_service import InboxFileClient
+from kagglesdk.security.services.oauth_service import OAuthClient
+from kagglesdk.users.services.account_service import AccountClient
 from kagglesdk.kaggle_env import KaggleEnv
 from kagglesdk.kaggle_http_client import KaggleHttpClient
 
@@ -40,6 +42,14 @@ class KaggleClient(object):
     def __init__(self, http_client: KaggleHttpClient):
       self.inbox_file_client = InboxFileClient(http_client)
 
+  class Security(object):
+    def __init__(self, http_client: KaggleHttpClient):
+      self.oauth_client = OAuthClient(http_client)
+
+  class Users(object):
+    def __init__(self, http_client: KaggleHttpClient):
+      self.account_client = AccountClient(http_client)
+
   def __init__(self, env: KaggleEnv = None, verbose: bool = False, username: str = None, password: str = None):
     self._http_client = http_client = KaggleHttpClient(env, verbose, self._renew_iap_token, username=username, password=password)
     self.kernels = KaggleClient.Kernels(http_client)
@@ -49,6 +59,8 @@ class KaggleClient(object):
     self.competitions = KaggleClient.Competitions(http_client)
     self.datasets = KaggleClient.Datasets(http_client)
     self.admin = KaggleClient.Admin(http_client)
+    self.security = KaggleClient.Security(http_client)
+    self.users = KaggleClient.Users(http_client)
     self.username = username
     self.password = password
 

@@ -1219,6 +1219,10 @@ class ApiSaveKernelRequest(KaggleObject):
     session_timeout_seconds (int)
       If specified, terminate the kernel session after this many seconds of
       runtime, which must be lower than the global maximum.
+    priority (int)
+      Sets the execution priority of this kernel session request when queued,
+      lower is better (10 will get run before 100).
+      Only allowed or certain clients.
   """
 
   def __init__(self):
@@ -1239,6 +1243,7 @@ class ApiSaveKernelRequest(KaggleObject):
     self._docker_image_pinning_type = None
     self._model_data_sources = []
     self._session_timeout_seconds = None
+    self._priority = None
     self._freeze()
 
   @property
@@ -1516,6 +1521,24 @@ class ApiSaveKernelRequest(KaggleObject):
     if not isinstance(session_timeout_seconds, int):
       raise TypeError('session_timeout_seconds must be of type int')
     self._session_timeout_seconds = session_timeout_seconds
+
+  @property
+  def priority(self) -> int:
+    r"""
+    Sets the execution priority of this kernel session request when queued,
+    lower is better (10 will get run before 100).
+    Only allowed or certain clients.
+    """
+    return self._priority or 0
+
+  @priority.setter
+  def priority(self, priority: int):
+    if priority is None:
+      del self.priority
+      return
+    if not isinstance(priority, int):
+      raise TypeError('priority must be of type int')
+    self._priority = priority
 
   def endpoint(self):
     path = '/api/v1/kernels/push'
@@ -1924,6 +1947,7 @@ ApiSaveKernelRequest._fields = [
   FieldMetadata("dockerImagePinningType", "docker_image_pinning_type", "_docker_image_pinning_type", str, None, PredefinedSerializer(), optional=True),
   FieldMetadata("modelDataSources", "model_data_sources", "_model_data_sources", str, [], ListSerializer(PredefinedSerializer())),
   FieldMetadata("sessionTimeoutSeconds", "session_timeout_seconds", "_session_timeout_seconds", int, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("priority", "priority", "_priority", int, None, PredefinedSerializer(), optional=True),
 ]
 
 ApiSaveKernelResponse._fields = [

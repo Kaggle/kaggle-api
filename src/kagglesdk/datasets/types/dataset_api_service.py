@@ -1355,6 +1355,7 @@ class ApiDownloadDatasetRequest(KaggleObject):
     file_name (str)
     dataset_version_number (int)
     raw (bool)
+    hash_link (str)
   """
 
   def __init__(self):
@@ -1363,6 +1364,7 @@ class ApiDownloadDatasetRequest(KaggleObject):
     self._file_name = None
     self._dataset_version_number = None
     self._raw = False
+    self._hash_link = None
     self._freeze()
 
   @property
@@ -1429,6 +1431,19 @@ class ApiDownloadDatasetRequest(KaggleObject):
     if not isinstance(raw, bool):
       raise TypeError('raw must be of type bool')
     self._raw = raw
+
+  @property
+  def hash_link(self) -> str:
+    return self._hash_link or ""
+
+  @hash_link.setter
+  def hash_link(self, hash_link: str):
+    if hash_link is None:
+      del self.hash_link
+      return
+    if not isinstance(hash_link, str):
+      raise TypeError('hash_link must be of type str')
+    self._hash_link = hash_link
 
   def endpoint(self):
     if self.file_name:
@@ -2668,6 +2683,7 @@ ApiDownloadDatasetRequest._fields = [
   FieldMetadata("fileName", "file_name", "_file_name", str, None, PredefinedSerializer(), optional=True),
   FieldMetadata("datasetVersionNumber", "dataset_version_number", "_dataset_version_number", int, None, PredefinedSerializer(), optional=True),
   FieldMetadata("raw", "raw", "_raw", bool, False, PredefinedSerializer()),
+  FieldMetadata("hashLink", "hash_link", "_hash_link", str, None, PredefinedSerializer(), optional=True),
 ]
 
 ApiGetDatasetMetadataRequest._fields = [

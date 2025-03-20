@@ -45,7 +45,7 @@ rm -f tests/kernel/exercise-as-with.ipynb tests/kernel/kernel-metadata.json exer
 echo "kaggle kernels status"
 kaggle k status kerneler/sqlite-global-default
 echo "kaggle kernels output"
-kaggle k output kerneler/sqlite-global-default -f
+kaggle k output kerneler/sqlite-global-default -o
 
 echo "kaggle datasets list"
 kaggle d list --size 10

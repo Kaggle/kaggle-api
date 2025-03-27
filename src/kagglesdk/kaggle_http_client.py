@@ -18,7 +18,14 @@ from typing import Type
 # currently usable by the CLI.
 
 # TODO: Extend kapigen to add a boolean to these requests indicating that they use forms.
-REQUESTS_REQUIRING_FORMS = ['ApiUploadDatasetFileRequest', 'ApiCreateSubmissionRequest', 'ApiCreateCodeSubmissionRequest', 'ApiStartSubmissionUploadRequest', 'ApiUploadModelFileRequest']
+REQUESTS_REQUIRING_FORMS = [
+    'ApiUploadDatasetFileRequest',
+    'ApiCreateSubmissionRequest',
+    'ApiCreateCodeSubmissionRequest',
+    'ApiStartSubmissionUploadRequest',
+    'ApiUploadModelFileRequest',
+]
+
 
 def _headers_to_str(headers):
   return '\n'.join(f'{k}: {v}' for k, v in headers.items())
@@ -44,7 +51,9 @@ def _get_apikey_creds():
 
 def clean_data(data):
   if isinstance(data, dict):
-    return {to_lower_camel_case(k): clean_data(v) for k, v in data.items() if v is not None}
+    return {
+        to_lower_camel_case(k): clean_data(v) for k, v in data.items() if v is not None
+    }
   if isinstance(data, list):
     return [clean_data(v) for v in data if v is not None]
   if data is True:
@@ -52,6 +61,7 @@ def clean_data(data):
   if data is False:
     return 'false'
   return data
+
 
 def find_words(source, left='{', right='}'):
   words = []
@@ -64,8 +74,10 @@ def find_words(source, left='{', right='}'):
 
   return words
 
+
 def to_camel_case(snake_str):
-  return "".join(x.capitalize() for x in snake_str.lower().split("_"))
+  return ''.join(x.capitalize() for x in snake_str.lower().split('_'))
+
 
 def to_lower_camel_case(snake_str):
   # https://stackoverflow.com/questions/19053707/converting-snake-case-to-lower-camel-case-lowercamelcase
@@ -74,18 +86,21 @@ def to_lower_camel_case(snake_str):
   camel_string = to_camel_case(snake_str)
   return snake_str[0].lower() + camel_string[1:]
 
+
 class KaggleHttpClient(object):
   _xsrf_cookie_name = 'XSRF-TOKEN'
-  _csrf_cookie_name = "CSRF-TOKEN"
+  _csrf_cookie_name = 'CSRF-TOKEN'
   _xsrf_cookies = (_xsrf_cookie_name, _csrf_cookie_name)
   _xsrf_header_name = 'X-XSRF-TOKEN'
 
-  def __init__(self,
-               env: KaggleEnv = None,
-               verbose: bool = False,
-               renew_iap_token=None,
-               username=None,
-               password=None):
+  def __init__(
+      self,
+      env: KaggleEnv = None,
+      verbose: bool = False,
+      renew_iap_token=None,
+      username=None,
+      password=None,
+  ):
     self._env = env or get_env()
     self._signed_in = None
     self._endpoint = get_endpoint(self._env)
@@ -94,8 +109,13 @@ class KaggleHttpClient(object):
     self._username = username
     self._password = password
 
-  def call(self, service_name: str, request_name: str, request: KaggleObject,
-           response_type: Type[KaggleObject]):
+  def call(
+      self,
+      service_name: str,
+      request_name: str,
+      request: KaggleObject,
+      response_type: Type[KaggleObject],
+  ):
     self._init_session()
     http_request = self._prepare_request(service_name, request_name, request)
 
@@ -104,11 +124,12 @@ class KaggleHttpClient(object):
     response = self._prepare_response(response_type, http_response)
     return response
 
-  def _prepare_request(self, service_name: str, request_name: str,
-                       request: KaggleObject):
+  def _prepare_request(
+      self, service_name: str, request_name: str, request: KaggleObject
+  ):
     request_url = self._get_request_url(request)
     method = request.method()
-    data= ''
+    data = ''
     if method == 'GET':
       data = request.__class__.to_dict(request, ignore_defaults=False)
       if request.endpoint_path():
@@ -119,10 +140,12 @@ class KaggleHttpClient(object):
       if data:
         request_url = f'{request_url}?{urllib.parse.urlencode(clean_data(data))}'
       data = ''
-      self._session.headers.update({
-        'Accept': 'application/json',
-        'Content-Type': 'text/plain',
-        })
+      self._session.headers.update(
+          {
+              'Accept': 'application/json',
+              'Content-Type': 'text/plain',
+          }
+      )
     elif method == 'POST':
       data = request.to_field_map(request, ignore_defaults=True)
       if isinstance(data, dict):
@@ -136,17 +159,20 @@ class KaggleHttpClient(object):
         else:
           content_type = 'application/json'
           data = json.dumps(data)
-        self._session.headers.update({
-          'Accept': 'application/json',
-          'Content-Type': content_type,
-          })
+        self._session.headers.update(
+            {
+                'Accept': 'application/json',
+                'Content-Type': content_type,
+            }
+        )
     http_request = requests.Request(
-      method=method,
-      url=request_url,
-      data=data,
-      headers=self._session.headers,
-      # cookies=self._get_xsrf_cookies(),
-      auth=self._session.auth)
+        method=method,
+        url=request_url,
+        data=data,
+        headers=self._session.headers,
+        # cookies=self._get_xsrf_cookies(),
+        auth=self._session.auth,
+    )
     prepared_request = http_request.prepare()
     self._print_request(prepared_request)
     return prepared_request
@@ -164,8 +190,7 @@ class KaggleHttpClient(object):
     if 'application/json' in http_response.headers['Content-Type']:
       resp = http_response.json()
       if 'code' in resp and resp['code'] >= 400:
-        raise requests.exceptions.HTTPError(
-          resp['message'], response=http_response)
+        raise requests.exceptions.HTTPError(resp['message'], response=http_response)
     if response_type is None:  # Method doesn't have a return type
       return None
     return response_type.prepare_from(http_response)
@@ -175,8 +200,8 @@ class KaggleHttpClient(object):
       return
     self._print('---------------------Request----------------------')
     self._print(
-      f'{request.method} {request.url}\n{_headers_to_str(request.headers)}\n\n{request.body}'
-      )
+        f'{request.method} {request.url}\n{_headers_to_str(request.headers)}\n\n{request.body}'
+    )
     self._print('--------------------------------------------------')
 
   def _print_response(self, response, body=True):
@@ -205,17 +230,21 @@ class KaggleHttpClient(object):
       return self._session
 
     self._session = requests.Session()
-    self._session.headers.update({
-      'User-Agent': 'kaggle-api/v1.7.0',  # Was: V2
-      'Content-Type': 'application/x-www-form-urlencoded',  # Was: /json
-      })
+    self._session.headers.update(
+        {
+            'User-Agent': 'kaggle-api/v1.7.0',  # Was: V2
+            'Content-Type': 'application/x-www-form-urlencoded',  # Was: /json
+        }
+    )
 
     iap_token = self._get_iap_token_if_required()
     if iap_token is not None:
-      self._session.headers.update({
-        # https://cloud.google.com/iap/docs/authentication-howto#authenticating_from_proxy-authorization_header
-        'Proxy-Authorization': f'Bearer {iap_token}',
-        })
+      self._session.headers.update(
+          {
+              # https://cloud.google.com/iap/docs/authentication-howto#authenticating_from_proxy-authorization_header
+              'Proxy-Authorization': f'Bearer {iap_token}',
+          }
+      )
 
     self._try_fill_auth()
     # self._fill_xsrf_token(iap_token)  # TODO Make this align with original handler.
@@ -230,10 +259,11 @@ class KaggleHttpClient(object):
 
   def _fill_xsrf_token(self, iap_token):
     initial_get_request = requests.Request(
-      method='GET',
-      url=self._endpoint,
-      headers=self._session.headers,
-      auth=self._session.auth)
+        method='GET',
+        url=self._endpoint,
+        headers=self._session.headers,
+        auth=self._session.auth,
+    )
     prepared_request = initial_get_request.prepare()
     self._print_request(prepared_request)
 
@@ -244,10 +274,13 @@ class KaggleHttpClient(object):
       raise requests.exceptions.HTTPError('IAP token invalid or expired')
     http_response.raise_for_status()
 
-    self._session.headers.update({
-      KaggleHttpClient._xsrf_header_name:
-        self._session.cookies[KaggleHttpClient._xsrf_cookie_name],
-      })
+    self._session.headers.update(
+        {
+            KaggleHttpClient._xsrf_header_name: self._session.cookies[
+                KaggleHttpClient._xsrf_cookie_name
+            ],
+        }
+    )
 
   class BearerAuth(requests.auth.AuthBase):
 
@@ -255,7 +288,7 @@ class KaggleHttpClient(object):
       self.token = token
 
     def __call__(self, r):
-      r.headers["Authorization"] = f"Bearer {self.token}"
+      r.headers['Authorization'] = f'Bearer {self.token}'
       return r
 
   def _try_fill_auth(self):
@@ -286,11 +319,11 @@ class KaggleHttpClient(object):
   def make_form(fields):
     body = BytesIO()
     boundary = binascii.hexlify(os.urandom(16)).decode()
-    writer = codecs.lookup("utf-8")[3]
+    writer = codecs.lookup('utf-8')[3]
 
     for field in fields.items():
       field = RequestField.from_tuples(*field)
-      body.write(f"--{boundary}\r\n".encode("latin-1"))
+      body.write(f'--{boundary}\r\n'.encode('latin-1'))
 
       writer(body).write(field.render_headers())
       data = field.data
@@ -303,11 +336,11 @@ class KaggleHttpClient(object):
       else:
         body.write(data)
 
-      body.write(b"\r\n")
+      body.write(b'\r\n')
 
-    body.write(f"--{boundary}--\r\n".encode("latin-1"))
+    body.write(f'--{boundary}--\r\n'.encode('latin-1'))
 
-    content_type = f"multipart/form-data; boundary={boundary}"
+    content_type = f'multipart/form-data; boundary={boundary}'
 
     return body.getvalue(), content_type
 

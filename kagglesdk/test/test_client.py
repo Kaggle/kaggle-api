@@ -10,10 +10,10 @@ import unittest
 class TestClient(unittest.TestCase):
 
   def setUp(self):
-    print("setup             class:%s" % self)
+    print('setup             class:%s' % self)
 
   def tearDown(self):
-    print("teardown          class:TestStuff")
+    print('teardown          class:TestStuff')
 
   # Environment
 
@@ -30,10 +30,8 @@ class TestClient(unittest.TestCase):
 
   def test_kaggle_client(self):
     client = KaggleClient(
-        env=KaggleEnv.PROD,
-        verbose=False,
-        username='dinosaur',
-        password='xxxxxxxxxxxx')
+        env=KaggleEnv.PROD, verbose=False, username='dinosaur', password='xxxxxxxxxxxx'
+    )
 
     self.assertEqual(client.username, 'dinosaur')
     self.assertEqual(client.password, 'xxxxxxxxxxxx')

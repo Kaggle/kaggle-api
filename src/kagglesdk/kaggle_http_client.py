@@ -119,7 +119,9 @@ class KaggleHttpClient(object):
     self._init_session()
     http_request = self._prepare_request(service_name, request_name, request)
 
-    http_response = self._session.send(http_request)
+    # Merge environment settings into session
+    settings = self._session.merge_environment_settings(http_request.url, {}, None, None, None)
+    http_response = self._session.send(http_request, **settings)
 
     response = self._prepare_response(response_type, http_response)
     return response

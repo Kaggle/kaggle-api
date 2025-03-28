@@ -5,31 +5,36 @@ from google.protobuf.field_mask_pb2 import FieldMask
 
 
 class ObjectSerializer(object):
+
   def __init__(self, to_dict_value, from_dict_value):
     self.to_dict_value = to_dict_value
     self.from_dict_value = from_dict_value
 
 
 class PredefinedSerializer(ObjectSerializer):
+
   def __init__(self):
     """Predefined objects such as int, float etc are serialized/deserialized directly."""
     ObjectSerializer.__init__(self, lambda cls, v, _: v, lambda cls, v: v)
 
 
 # Adapted from https://stackoverflow.com/questions/1175208/elegant-python-function-to-convert-camelcase-to-snake-case
-_pascal_to_upper_snake_case_regex = re.compile('((?<=[a-z0-9])[A-Z]|(?!^)[A-Z](?=[a-z]))')
+_pascal_to_upper_snake_case_regex = re.compile(
+    '((?<=[a-z0-9])[A-Z]|(?!^)[A-Z](?=[a-z]))'
+)
 
 
 def _pascal_case_to_upper_snake_case(string):
   return _pascal_to_upper_snake_case_regex.sub(r'_\1', string).upper()
 
 
-def _convert (camel_input):
+def _convert(camel_input):
   words = re.findall(r'[A-Z]?[a-z]+|[A-Z]{2,}(?=[A-Z][a-z]|\d|\W|$)|\d+', camel_input)
   return '_'.join(map(str.lower, words))
 
 
 class EnumSerializer(ObjectSerializer):
+
   def __init__(self):
     """
     Enum objects are serialized using their ".name" field and deserialized by indexing the string in the Enum type.
@@ -40,21 +45,23 @@ class EnumSerializer(ObjectSerializer):
     foo.name # => returns "TEST"
     Foo["TEST"] # => returns Foo.TEST enum value.
     """
-    ObjectSerializer.__init__(self,
-                              lambda cls, v, _: EnumSerializer._to_str(cls, v),
-                              lambda cls, v: EnumSerializer._from_str(cls, v))
+    ObjectSerializer.__init__(
+        self,
+        lambda cls, v, _: EnumSerializer._to_str(cls, v),
+        lambda cls, v: EnumSerializer._from_str(cls, v),
+    )
 
   @staticmethod
   def _to_str(cls, v):
     # "v" corresponds to an enum instance: Example foo or Foo.Test above.
     # "cls" corresponds to the enum type Foo above.
-    #enum_prefix = f'{_pascal_case_to_upper_snake_case(cls.__name__)}_'
-    #if v.name.startswith(enum_prefix):
+    # enum_prefix = f'{_pascal_case_to_upper_snake_case(cls.__name__)}_'
+    # if v.name.startswith(enum_prefix):
     #  return v.name
-    #return f'{enum_prefix}{v.name}'
+    # return f'{enum_prefix}{v.name}'
     enum_prefix = f'{_pascal_case_to_upper_snake_case(cls.__name__)}_'
     if v.name.find(enum_prefix) == 0:
-      return v.name[len(enum_prefix):].lower()
+      return v.name[len(enum_prefix) :].lower()
     return v.name
 
   @staticmethod
@@ -64,13 +71,13 @@ class EnumSerializer(ObjectSerializer):
     # enum_items = {item.name: item for item in cls}
     # if v in enum_items:
     #   return enum_items[v]
-    # 
+    #
     # # Try with enum prefix. Example: EnvironmentType.JSON -> "ENVIRONMENT_TYPE_JSON"
     # enum_prefix = _pascal_case_to_upper_snake_case(cls.__name__)
     # if v.startswith(enum_prefix):
     #   ix_start = len(enum_prefix) + 1
     #   return enum_items[v[ix_start:]]
-    # 
+    #
     # return enum_items[f'{enum_prefix}_{v}']
     try:
       return cls[v]
@@ -89,33 +96,49 @@ class EnumSerializer(ObjectSerializer):
 
 
 class ListSerializer(ObjectSerializer):
+
   def __init__(self, item_serializer: ObjectSerializer):
     """
     Lists are serialized based on the type they contain. Since objects are generated from proto files, a list always
     contains objects of the same type, which is serialized/deserialized using "item_serializer".
     """
-    ObjectSerializer.__init__(self,
-                              lambda cls, l, ignore_defaults: [item_serializer.to_dict_value(cls, v, ignore_defaults) for v in l],
-                              lambda cls, l: [item_serializer.from_dict_value(cls, v) for v in l])
+    ObjectSerializer.__init__(
+        self,
+        lambda cls, l, ignore_defaults: [
+            item_serializer.to_dict_value(cls, v, ignore_defaults) for v in l
+        ],
+        lambda cls, l: [item_serializer.from_dict_value(cls, v) for v in l],
+    )
 
 
 class MapSerializer(ObjectSerializer):
+
   def __init__(self, item_serializer: ObjectSerializer):
     """
     Maps are serialized based on type of their values. Since maps keys are always predefined types, we don't need a
     serializer for them.
     """
-    ObjectSerializer.__init__(self,
-                              lambda cls, d, ignore_defaults: {k: item_serializer.to_dict_value(cls, v, ignore_defaults) for k, v in d.items()},
-                              lambda cls, d: {k: item_serializer.from_dict_value(cls, v) for k, v in d.items()})
+    ObjectSerializer.__init__(
+        self,
+        lambda cls, d, ignore_defaults: {
+            k: item_serializer.to_dict_value(cls, v, ignore_defaults)
+            for k, v in d.items()
+        },
+        lambda cls, d: {
+            k: item_serializer.from_dict_value(cls, v) for k, v in d.items()
+        },
+    )
 
 
 class DateTimeSerializer(ObjectSerializer):
+
   def __init__(self):
     """Date times are serialized/deserialized as a string in iso format"""
-    ObjectSerializer.__init__(self,
-                              lambda cls, dt, _: DateTimeSerializer._to_str(dt),
-                              lambda _, v: DateTimeSerializer._from_str(v))
+    ObjectSerializer.__init__(
+        self,
+        lambda cls, dt, _: DateTimeSerializer._to_str(dt),
+        lambda _, v: DateTimeSerializer._from_str(v),
+    )
 
   @staticmethod
   def _to_str(dt):
@@ -132,15 +155,18 @@ class DateTimeSerializer(ObjectSerializer):
     try:
       return datetime.fromisoformat(f'{dt}.{millis}')
     except ValueError:
-      return datetime.fromisoformat(dt) # Python 3.9, 3.10
+      return datetime.fromisoformat(dt)  # Python 3.9, 3.10
 
 
 class TimeDeltaSerializer(ObjectSerializer):
+
   def __init__(self):
     """Time deltas are serialized/deserialized as a string in "mm:ss" format"""
-    ObjectSerializer.__init__(self,
-                              lambda cls, t, _: TimeDeltaSerializer._to_dict_value(t),
-                              lambda cls, v: TimeDeltaSerializer._from_dict_value(v))
+    ObjectSerializer.__init__(
+        self,
+        lambda cls, t, _: TimeDeltaSerializer._to_dict_value(t),
+        lambda cls, v: TimeDeltaSerializer._from_dict_value(v),
+    )
 
   @staticmethod
   def _to_dict_value(delta):
@@ -156,11 +182,14 @@ class TimeDeltaSerializer(ObjectSerializer):
 
 
 class FieldMaskSerializer(ObjectSerializer):
+
   def __init__(self):
     """Field masks are serialized/deserialized as a string that contains a list of paths with a comma delimiter"""
-    ObjectSerializer.__init__(self,
-                              lambda cls, m, _: m.ToJsonString(),
-                              lambda cls, v: FieldMaskSerializer._from_joined_paths(v))
+    ObjectSerializer.__init__(
+        self,
+        lambda cls, m, _: m.ToJsonString(),
+        lambda cls, v: FieldMaskSerializer._from_joined_paths(v),
+    )
 
   @staticmethod
   def _from_joined_paths(joined_paths):
@@ -170,24 +199,37 @@ class FieldMaskSerializer(ObjectSerializer):
 
 
 class KaggleObjectSerializer(ObjectSerializer):
+
   def __init__(self):
     """
     Kaggle objects (i.e., proto-generated types that inherit from KaggleObject) have custom "to_dict" and "from_dict"
     methods that serialize/deserialize them to/from dictionaries.
     """
-    ObjectSerializer.__init__(self,
-                              # "v" is an instance of a KaggleObject. For example: "req = ListCompetitionsRequest()".
-                              # So "req.to_dict()" returns a dictionary with keys as json field names. Example:
-                              # '{"pageSize": 10, "page": 2}'
-                              lambda cls, v, ignore_defaults: cls.to_dict(v, ignore_defaults),
-                              # "cls" is the type of a KaggleObject. For example: ListCompetitionsRequest. All
-                              # generated Kaggle objects have "from_dict" class method that takes a dict to create a
-                              # new instance of the object. See "KaggleObject" class definition below.
-                              lambda cls, v: cls.from_dict(v))
+    ObjectSerializer.__init__(
+        self,
+        # "v" is an instance of a KaggleObject. For example: "req = ListCompetitionsRequest()".
+        # So "req.to_dict()" returns a dictionary with keys as json field names. Example:
+        # '{"pageSize": 10, "page": 2}'
+        lambda cls, v, ignore_defaults: cls.to_dict(v, ignore_defaults),
+        # "cls" is the type of a KaggleObject. For example: ListCompetitionsRequest. All
+        # generated Kaggle objects have "from_dict" class method that takes a dict to create a
+        # new instance of the object. See "KaggleObject" class definition below.
+        lambda cls, v: cls.from_dict(v),
+    )
 
 
 class FieldMetadata(object):
-  def __init__(self, json_name, field_name, private_field_name, field_type, default_value, serializer, optional=False):
+
+  def __init__(
+      self,
+      json_name,
+      field_name,
+      private_field_name,
+      field_type,
+      default_value,
+      serializer,
+      optional=False,
+  ):
     self.json_name = json_name
     self.field_name = field_name
     self.private_field_name = private_field_name
@@ -211,12 +253,17 @@ class FieldMetadata(object):
     if value == self.default_value:
       return  # Ignore default values
     try:
-      setattr(instance, self.private_field_name, self.serializer.from_dict_value(self.field_type, value))
+      setattr(
+          instance,
+          self.private_field_name,
+          self.serializer.from_dict_value(self.field_type, value),
+      )
     except Exception as e:
       raise
 
 
 class KaggleObject(object):
+
   def endpoint(self):
     raise 'Error: endpoint must be defined by the request object'
 
@@ -234,7 +281,7 @@ class KaggleObject(object):
 
   @staticmethod
   def method():
-    return "GET"
+    return 'GET'
 
   def _freeze(self):
     self._is_frozen = True
@@ -245,12 +292,18 @@ class KaggleObject(object):
     object.__setattr__(self, key, value)
 
   def to_dict(self, ignore_defaults=True):
-    kv_pairs = [(field.json_name, field.get_as_dict_item(self, ignore_defaults)) for field in self._fields]
+    kv_pairs = [
+        (field.json_name, field.get_as_dict_item(self, ignore_defaults))
+        for field in self._fields
+    ]
     return {k: v for (k, v) in kv_pairs if not ignore_defaults or v is not None}
 
   @staticmethod
   def to_field_map(self, ignore_defaults=True):
-    kv_pairs = [(field.field_name, field.get_as_dict_item(self, ignore_defaults)) for field in self._fields]
+    kv_pairs = [
+        (field.field_name, field.get_as_dict_item(self, ignore_defaults))
+        for field in self._fields
+    ]
     return {k: v for (k, v) in kv_pairs if not ignore_defaults or v is not None}
 
   @classmethod
@@ -292,5 +345,7 @@ class KaggleObject(object):
   def _get_field(self, field_name):
     field = next((f for f in self._fields if f.field_name == field_name), None)
     if field is None:
-      raise ValueError(f'Protocol message {self.__class__.__name__} has no "{field_name}" field.')
+      raise ValueError(
+          f'Protocol message {self.__class__.__name__} has no "{field_name}" field.'
+      )
     return field

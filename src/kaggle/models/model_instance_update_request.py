@@ -87,11 +87,12 @@ class ModelInstanceUpdateRequest(object):
 
     @property
     def overview(self):
-        """Gets the overview of this ModelInstanceUpdateRequest.  # noqa: E501
+        """Gets the overview of this ModelInstanceUpdateRequest.  # noqa: E501.
 
         The overview of the model instance (markdown)  # noqa: E501
 
-        :return: The overview of this ModelInstanceUpdateRequest.  # noqa: E501
+        :return: The overview of this ModelInstanceUpdateRequest. #
+            noqa: E501
         :rtype: str
         """
         return self._overview
@@ -102,7 +103,8 @@ class ModelInstanceUpdateRequest(object):
 
         The overview of the model instance (markdown)  # noqa: E501
 
-        :param overview: The overview of this ModelInstanceUpdateRequest.  # noqa: E501
+        :param overview: The overview of this
+            ModelInstanceUpdateRequest. # noqa: E501
         :type: str
         """
 
@@ -110,11 +112,13 @@ class ModelInstanceUpdateRequest(object):
 
     @property
     def usage(self):
-        """Gets the usage of this ModelInstanceUpdateRequest.  # noqa: E501
+        """Gets the usage of this ModelInstanceUpdateRequest.  # noqa: E501.
 
-        The description of how to use the model instance (markdown)  # noqa: E501
+        The description of how to use the model instance (markdown)  #
+        noqa: E501
 
-        :return: The usage of this ModelInstanceUpdateRequest.  # noqa: E501
+        :return: The usage of this ModelInstanceUpdateRequest. # noqa:
+            E501
         :rtype: str
         """
         return self._usage
@@ -123,9 +127,11 @@ class ModelInstanceUpdateRequest(object):
     def usage(self, usage):
         """Sets the usage of this ModelInstanceUpdateRequest.
 
-        The description of how to use the model instance (markdown)  # noqa: E501
+        The description of how to use the model instance (markdown)  #
+        noqa: E501
 
-        :param usage: The usage of this ModelInstanceUpdateRequest.  # noqa: E501
+        :param usage: The usage of this ModelInstanceUpdateRequest. #
+            noqa: E501
         :type: str
         """
 
@@ -133,11 +139,14 @@ class ModelInstanceUpdateRequest(object):
 
     @property
     def license_name(self):
-        """Gets the license_name of this ModelInstanceUpdateRequest.  # noqa: E501
+        """Gets the license_name of this ModelInstanceUpdateRequest.  # noqa:
+        E501.
 
-        The license that should be associated with the model instance  # noqa: E501
+        The license that should be associated with the model instance  #
+        noqa: E501
 
-        :return: The license_name of this ModelInstanceUpdateRequest.  # noqa: E501
+        :return: The license_name of this ModelInstanceUpdateRequest. #
+            noqa: E501
         :rtype: str
         """
         return self._license_name
@@ -146,9 +155,11 @@ class ModelInstanceUpdateRequest(object):
     def license_name(self, license_name):
         """Sets the license_name of this ModelInstanceUpdateRequest.
 
-        The license that should be associated with the model instance  # noqa: E501
+        The license that should be associated with the model instance  #
+        noqa: E501
 
-        :param license_name: The license_name of this ModelInstanceUpdateRequest.  # noqa: E501
+        :param license_name: The license_name of this
+            ModelInstanceUpdateRequest. # noqa: E501
         :type: str
         """
         allowed_values = ["CC0 1.0", "CC BY-NC-SA 4.0", "Unknown", "CC BY-SA 4.0", "GPL 2", "CC BY-SA 3.0", "Other", "Other (specified in description)", "CC BY 4.0", "Attribution 4.0 International (CC BY 4.0)", "CC BY-NC 4.0", "Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)", "PDDL", "ODC Public Domain Dedication and Licence (PDDL)", "CC BY 3.0", "Attribution 3.0 Unported (CC BY 3.0)", "CC BY 3.0 IGO", "Attribution 3.0 IGO (CC BY 3.0 IGO)", "CC BY-NC-SA 3.0 IGO", "Attribution-NonCommercial-ShareAlike 3.0 IGO (CC BY-NC-SA 3.0 IGO)", "CDLA Permissive 1.0", "Community Data License Agreement - Permissive - Version 1.0", "CDLA Sharing 1.0", "Community Data License Agreement - Sharing - Version 1.0", "CC BY-ND 4.0", "Attribution-NoDerivatives 4.0 International (CC BY-ND 4.0)", "CC BY-NC-ND 4.0", "Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)", "ODC-BY 1.0", "ODC Attribution License (ODC-By)", "LGPL 3.0", "GNU Lesser General Public License 3.0", "AGPL 3.0", "GNU Affero General Public License 3.0", "FDL 1.3", "GNU Free Documentation License 1.3", "apache-2.0", "Apache 2.0", "mit", "MIT", "bsd-3-clause", "BSD-3-Clause", "Llama 2", "Llama 2 Community License", "Gemma", "gpl-3", "GPL 3", "RAIL-M", "AI Pubs Open RAIL-M License", "AIPubs Research-Use RAIL-M", "AI Pubs Research-Use RAIL-M License", "BigScience OpenRAIL-M", "BigScience Open RAIL-M License", "RAIL", "RAIL (specified in description)", "Llama 3", "Llama 3 Community License"]  # noqa: E501
@@ -162,11 +173,13 @@ class ModelInstanceUpdateRequest(object):
 
     @property
     def fine_tunable(self):
-        """Gets the fine_tunable of this ModelInstanceUpdateRequest.  # noqa: E501
+        """Gets the fine_tunable of this ModelInstanceUpdateRequest.  # noqa:
+        E501.
 
         Whether the model instance is fine tunable  # noqa: E501
 
-        :return: The fine_tunable of this ModelInstanceUpdateRequest.  # noqa: E501
+        :return: The fine_tunable of this ModelInstanceUpdateRequest. #
+            noqa: E501
         :rtype: bool
         """
         return self._fine_tunable
@@ -177,7 +190,8 @@ class ModelInstanceUpdateRequest(object):
 
         Whether the model instance is fine tunable  # noqa: E501
 
-        :param fine_tunable: The fine_tunable of this ModelInstanceUpdateRequest.  # noqa: E501
+        :param fine_tunable: The fine_tunable of this
+            ModelInstanceUpdateRequest. # noqa: E501
         :type: bool
         """
 
@@ -185,11 +199,13 @@ class ModelInstanceUpdateRequest(object):
 
     @property
     def training_data(self):
-        """Gets the training_data of this ModelInstanceUpdateRequest.  # noqa: E501
+        """Gets the training_data of this ModelInstanceUpdateRequest.  # noqa:
+        E501.
 
         A list of training data (urls or names)  # noqa: E501
 
-        :return: The training_data of this ModelInstanceUpdateRequest.  # noqa: E501
+        :return: The training_data of this ModelInstanceUpdateRequest. #
+            noqa: E501
         :rtype: list[str]
         """
         return self._training_data
@@ -200,7 +216,8 @@ class ModelInstanceUpdateRequest(object):
 
         A list of training data (urls or names)  # noqa: E501
 
-        :param training_data: The training_data of this ModelInstanceUpdateRequest.  # noqa: E501
+        :param training_data: The training_data of this
+            ModelInstanceUpdateRequest. # noqa: E501
         :type: list[str]
         """
 
@@ -208,11 +225,14 @@ class ModelInstanceUpdateRequest(object):
 
     @property
     def model_instance_type(self):
-        """Gets the model_instance_type of this ModelInstanceUpdateRequest.  # noqa: E501
+        """Gets the model_instance_type of this ModelInstanceUpdateRequest.  #
+        noqa: E501.
 
-        Whether the model instance is a base model, external variant, internal variant, or unspecified  # noqa: E501
+        Whether the model instance is a base model, external variant,
+        internal variant, or unspecified  # noqa: E501
 
-        :return: The model_instance_type of this ModelInstanceUpdateRequest.  # noqa: E501
+        :return: The model_instance_type of this
+            ModelInstanceUpdateRequest. # noqa: E501
         :rtype: str
         """
         return self._model_instance_type
@@ -221,9 +241,11 @@ class ModelInstanceUpdateRequest(object):
     def model_instance_type(self, model_instance_type):
         """Sets the model_instance_type of this ModelInstanceUpdateRequest.
 
-        Whether the model instance is a base model, external variant, internal variant, or unspecified  # noqa: E501
+        Whether the model instance is a base model, external variant,
+        internal variant, or unspecified  # noqa: E501
 
-        :param model_instance_type: The model_instance_type of this ModelInstanceUpdateRequest.  # noqa: E501
+        :param model_instance_type: The model_instance_type of this
+            ModelInstanceUpdateRequest. # noqa: E501
         :type: str
         """
         allowed_values = ["Unspecified", "BaseModel", "KaggleVariant", "ExternalVariant"]  # noqa: E501
@@ -237,7 +259,8 @@ class ModelInstanceUpdateRequest(object):
 
     @property
     def base_model_instance(self):
-        """Gets the base_model_instance of this ModelInstanceUpdateRequest.  # noqa: E501
+        """Gets the base_model_instance of this ModelInstanceUpdateRequest.  #
+        noqa: E501.
 
         If this is an internal variant, the `{owner-slug}/{model-slug}/{framework}/{instance-slug}` of the base model instance  # noqa: E501
 
@@ -260,11 +283,14 @@ class ModelInstanceUpdateRequest(object):
 
     @property
     def external_base_model_url(self):
-        """Gets the external_base_model_url of this ModelInstanceUpdateRequest.  # noqa: E501
+        """Gets the external_base_model_url of this ModelInstanceUpdateRequest.
+        # noqa: E501.
 
-        If this is an external variant, a URL to the base model  # noqa: E501
+        If this is an external variant, a URL to the base model  # noqa:
+        E501
 
-        :return: The external_base_model_url of this ModelInstanceUpdateRequest.  # noqa: E501
+        :return: The external_base_model_url of this
+            ModelInstanceUpdateRequest. # noqa: E501
         :rtype: int
         """
         return self._external_base_model_url
@@ -273,9 +299,11 @@ class ModelInstanceUpdateRequest(object):
     def external_base_model_url(self, external_base_model_url):
         """Sets the external_base_model_url of this ModelInstanceUpdateRequest.
 
-        If this is an external variant, a URL to the base model  # noqa: E501
+        If this is an external variant, a URL to the base model  # noqa:
+        E501
 
-        :param external_base_model_url: The external_base_model_url of this ModelInstanceUpdateRequest.  # noqa: E501
+        :param external_base_model_url: The external_base_model_url of
+            this ModelInstanceUpdateRequest. # noqa: E501
         :type: int
         """
 
@@ -283,11 +311,13 @@ class ModelInstanceUpdateRequest(object):
 
     @property
     def update_mask(self):
-        """Gets the update_mask of this ModelInstanceUpdateRequest.  # noqa: E501
+        """Gets the update_mask of this ModelInstanceUpdateRequest.  # noqa:
+        E501.
 
         Describes which fields to update  # noqa: E501
 
-        :return: The update_mask of this ModelInstanceUpdateRequest.  # noqa: E501
+        :return: The update_mask of this ModelInstanceUpdateRequest. #
+            noqa: E501
         :rtype: str
         """
         return self._update_mask
@@ -298,7 +328,8 @@ class ModelInstanceUpdateRequest(object):
 
         Describes which fields to update  # noqa: E501
 
-        :param update_mask: The update_mask of this ModelInstanceUpdateRequest.  # noqa: E501
+        :param update_mask: The update_mask of this
+            ModelInstanceUpdateRequest. # noqa: E501
         :type: str
         """
         if update_mask is None:
@@ -307,7 +338,7 @@ class ModelInstanceUpdateRequest(object):
         self._update_mask = update_mask
 
     def to_dict(self):
-        """Returns the model properties as a dict"""
+        """Returns the model properties as a dict."""
         result = {}
 
         for attr, _ in six.iteritems(self.project_types):
@@ -331,7 +362,7 @@ class ModelInstanceUpdateRequest(object):
         return result
 
     def to_str(self):
-        """Returns the string representation of the model"""
+        """Returns the string representation of the model."""
         return pprint.pformat(self.to_dict())
 
     def __repr__(self):
@@ -339,13 +370,13 @@ class ModelInstanceUpdateRequest(object):
         return self.to_str()
 
     def __eq__(self, other):
-        """Returns true if both objects are equal"""
+        """Returns true if both objects are equal."""
         if not isinstance(other, ModelInstanceUpdateRequest):
             return False
 
         return self.__dict__ == other.__dict__
 
     def __ne__(self, other):
-        """Returns true if both objects are not equal"""
+        """Returns true if both objects are not equal."""
         return not self == other
 

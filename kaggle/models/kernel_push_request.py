@@ -121,7 +121,7 @@ class KernelPushRequest(object):
 
     @property
     def id(self):
-        """Gets the id of this KernelPushRequest.  # noqa: E501
+        """Gets the id of this KernelPushRequest.  # noqa: E501.
 
         The kernel's ID number. One of `id` and `slug` are required. If both are specified, `id` will be preferred  # noqa: E501
 
@@ -144,7 +144,7 @@ class KernelPushRequest(object):
 
     @property
     def slug(self):
-        """Gets the slug of this KernelPushRequest.  # noqa: E501
+        """Gets the slug of this KernelPushRequest.  # noqa: E501.
 
         The full slug of the kernel to push to, in the format `USERNAME/KERNEL-SLUG`. The kernel slug must be the title lowercased with dashes (`-`) replacing spaces. One of `id` and `slug` are required. If both are specified, `id` will be preferred  # noqa: E501
 
@@ -167,7 +167,7 @@ class KernelPushRequest(object):
 
     @property
     def new_title(self):
-        """Gets the new_title of this KernelPushRequest.  # noqa: E501
+        """Gets the new_title of this KernelPushRequest.  # noqa: E501.
 
         The title to be set on the kernel  # noqa: E501
 
@@ -182,7 +182,8 @@ class KernelPushRequest(object):
 
         The title to be set on the kernel  # noqa: E501
 
-        :param new_title: The new_title of this KernelPushRequest.  # noqa: E501
+        :param new_title: The new_title of this KernelPushRequest. #
+            noqa: E501
         :type: str
         """
 
@@ -190,7 +191,7 @@ class KernelPushRequest(object):
 
     @property
     def text(self):
-        """Gets the text of this KernelPushRequest.  # noqa: E501
+        """Gets the text of this KernelPushRequest.  # noqa: E501.
 
         The kernel's source code  # noqa: E501
 
@@ -215,7 +216,7 @@ class KernelPushRequest(object):
 
     @property
     def language(self):
-        """Gets the language of this KernelPushRequest.  # noqa: E501
+        """Gets the language of this KernelPushRequest.  # noqa: E501.
 
         The language that the kernel is written in  # noqa: E501
 
@@ -230,7 +231,8 @@ class KernelPushRequest(object):
 
         The language that the kernel is written in  # noqa: E501
 
-        :param language: The language of this KernelPushRequest.  # noqa: E501
+        :param language: The language of this KernelPushRequest. #
+            noqa: E501
         :type: str
         """
         if language is None:
@@ -246,11 +248,12 @@ class KernelPushRequest(object):
 
     @property
     def kernel_type(self):
-        """Gets the kernel_type of this KernelPushRequest.  # noqa: E501
+        """Gets the kernel_type of this KernelPushRequest.  # noqa: E501.
 
-        The type of kernel. Cannot be changed once the kernel has been created  # noqa: E501
+        The type of kernel. Cannot be changed once the kernel has been
+        created  # noqa: E501
 
-        :return: The kernel_type of this KernelPushRequest.  # noqa: E501
+        :return: The kernel_type of this KernelPushRequest. # noqa: E501
         :rtype: str
         """
         return self._kernel_type
@@ -259,9 +262,11 @@ class KernelPushRequest(object):
     def kernel_type(self, kernel_type):
         """Sets the kernel_type of this KernelPushRequest.
 
-        The type of kernel. Cannot be changed once the kernel has been created  # noqa: E501
+        The type of kernel. Cannot be changed once the kernel has been
+        created  # noqa: E501
 
-        :param kernel_type: The kernel_type of this KernelPushRequest.  # noqa: E501
+        :param kernel_type: The kernel_type of this KernelPushRequest. #
+            noqa: E501
         :type: str
         """
         if kernel_type is None:
@@ -277,7 +282,7 @@ class KernelPushRequest(object):
 
     @property
     def is_private(self):
-        """Gets the is_private of this KernelPushRequest.  # noqa: E501
+        """Gets the is_private of this KernelPushRequest.  # noqa: E501.
 
         Whether or not the kernel should be private  # noqa: E501
 
@@ -292,7 +297,8 @@ class KernelPushRequest(object):
 
         Whether or not the kernel should be private  # noqa: E501
 
-        :param is_private: The is_private of this KernelPushRequest.  # noqa: E501
+        :param is_private: The is_private of this KernelPushRequest. #
+            noqa: E501
         :type: bool
         """
 
@@ -300,7 +306,7 @@ class KernelPushRequest(object):
 
     @property
     def enable_gpu(self):
-        """Gets the enable_gpu of this KernelPushRequest.  # noqa: E501
+        """Gets the enable_gpu of this KernelPushRequest.  # noqa: E501.
 
         Whether or not the kernel should run on a GPU  # noqa: E501
 
@@ -315,7 +321,8 @@ class KernelPushRequest(object):
 
         Whether or not the kernel should run on a GPU  # noqa: E501
 
-        :param enable_gpu: The enable_gpu of this KernelPushRequest.  # noqa: E501
+        :param enable_gpu: The enable_gpu of this KernelPushRequest. #
+            noqa: E501
         :type: bool
         """
 
@@ -323,7 +330,7 @@ class KernelPushRequest(object):
 
     @property
     def enable_tpu(self):
-        """Gets the enable_tpu of this KernelPushRequest.  # noqa: E501
+        """Gets the enable_tpu of this KernelPushRequest.  # noqa: E501.
 
         Whether or not the kernel should run on a TPU  # noqa: E501
 
@@ -338,7 +345,8 @@ class KernelPushRequest(object):
 
         Whether or not the kernel should run on a TPU  # noqa: E501
 
-        :param enable_tpu: The enable_tpu of this KernelPushRequest.  # noqa: E501
+        :param enable_tpu: The enable_tpu of this KernelPushRequest. #
+            noqa: E501
         :type: bool
         """
 
@@ -346,11 +354,13 @@ class KernelPushRequest(object):
 
     @property
     def enable_internet(self):
-        """Gets the enable_internet of this KernelPushRequest.  # noqa: E501
+        """Gets the enable_internet of this KernelPushRequest.  # noqa: E501.
 
-        Whether or not the kernel should be able to access the internet  # noqa: E501
+        Whether or not the kernel should be able to access the internet
+        # noqa: E501
 
-        :return: The enable_internet of this KernelPushRequest.  # noqa: E501
+        :return: The enable_internet of this KernelPushRequest. # noqa:
+            E501
         :rtype: bool
         """
         return self._enable_internet
@@ -359,9 +369,11 @@ class KernelPushRequest(object):
     def enable_internet(self, enable_internet):
         """Sets the enable_internet of this KernelPushRequest.
 
-        Whether or not the kernel should be able to access the internet  # noqa: E501
+        Whether or not the kernel should be able to access the internet
+        # noqa: E501
 
-        :param enable_internet: The enable_internet of this KernelPushRequest.  # noqa: E501
+        :param enable_internet: The enable_internet of this
+            KernelPushRequest. # noqa: E501
         :type: bool
         """
 
@@ -369,11 +381,14 @@ class KernelPushRequest(object):
 
     @property
     def dataset_data_sources(self):
-        """Gets the dataset_data_sources of this KernelPushRequest.  # noqa: E501
+        """Gets the dataset_data_sources of this KernelPushRequest.  # noqa:
+        E501.
 
-        A list of dataset data sources that the kernel should use. Each dataset is specified as `USERNAME/DATASET-SLUG`  # noqa: E501
+        A list of dataset data sources that the kernel should use. Each
+        dataset is specified as `USERNAME/DATASET-SLUG`  # noqa: E501
 
-        :return: The dataset_data_sources of this KernelPushRequest.  # noqa: E501
+        :return: The dataset_data_sources of this KernelPushRequest. #
+            noqa: E501
         :rtype: list[str]
         """
         return self._dataset_data_sources
@@ -382,9 +397,11 @@ class KernelPushRequest(object):
     def dataset_data_sources(self, dataset_data_sources):
         """Sets the dataset_data_sources of this KernelPushRequest.
 
-        A list of dataset data sources that the kernel should use. Each dataset is specified as `USERNAME/DATASET-SLUG`  # noqa: E501
+        A list of dataset data sources that the kernel should use. Each
+        dataset is specified as `USERNAME/DATASET-SLUG`  # noqa: E501
 
-        :param dataset_data_sources: The dataset_data_sources of this KernelPushRequest.  # noqa: E501
+        :param dataset_data_sources: The dataset_data_sources of this
+            KernelPushRequest. # noqa: E501
         :type: list[str]
         """
 
@@ -392,11 +409,14 @@ class KernelPushRequest(object):
 
     @property
     def competition_data_sources(self):
-        """Gets the competition_data_sources of this KernelPushRequest.  # noqa: E501
+        """Gets the competition_data_sources of this KernelPushRequest.  #
+        noqa: E501.
 
-        A list of competition data sources that the kernel should use  # noqa: E501
+        A list of competition data sources that the kernel should use  #
+        noqa: E501
 
-        :return: The competition_data_sources of this KernelPushRequest.  # noqa: E501
+        :return: The competition_data_sources of this KernelPushRequest.
+            # noqa: E501
         :rtype: list[str]
         """
         return self._competition_data_sources
@@ -405,9 +425,11 @@ class KernelPushRequest(object):
     def competition_data_sources(self, competition_data_sources):
         """Sets the competition_data_sources of this KernelPushRequest.
 
-        A list of competition data sources that the kernel should use  # noqa: E501
+        A list of competition data sources that the kernel should use  #
+        noqa: E501
 
-        :param competition_data_sources: The competition_data_sources of this KernelPushRequest.  # noqa: E501
+        :param competition_data_sources: The competition_data_sources of
+            this KernelPushRequest. # noqa: E501
         :type: list[str]
         """
 
@@ -415,11 +437,14 @@ class KernelPushRequest(object):
 
     @property
     def kernel_data_sources(self):
-        """Gets the kernel_data_sources of this KernelPushRequest.  # noqa: E501
+        """Gets the kernel_data_sources of this KernelPushRequest.  # noqa:
+        E501.
 
-        A list of kernel data sources that the kernel should use. Each dataset is specified as `USERNAME/KERNEL-SLUG`  # noqa: E501
+        A list of kernel data sources that the kernel should use. Each
+        dataset is specified as `USERNAME/KERNEL-SLUG`  # noqa: E501
 
-        :return: The kernel_data_sources of this KernelPushRequest.  # noqa: E501
+        :return: The kernel_data_sources of this KernelPushRequest. #
+            noqa: E501
         :rtype: list[str]
         """
         return self._kernel_data_sources
@@ -428,9 +453,11 @@ class KernelPushRequest(object):
     def kernel_data_sources(self, kernel_data_sources):
         """Sets the kernel_data_sources of this KernelPushRequest.
 
-        A list of kernel data sources that the kernel should use. Each dataset is specified as `USERNAME/KERNEL-SLUG`  # noqa: E501
+        A list of kernel data sources that the kernel should use. Each
+        dataset is specified as `USERNAME/KERNEL-SLUG`  # noqa: E501
 
-        :param kernel_data_sources: The kernel_data_sources of this KernelPushRequest.  # noqa: E501
+        :param kernel_data_sources: The kernel_data_sources of this
+            KernelPushRequest. # noqa: E501
         :type: list[str]
         """
 
@@ -438,7 +465,8 @@ class KernelPushRequest(object):
 
     @property
     def model_data_sources(self):
-        """Gets the model_data_sources of this KernelPushRequest.  # noqa: E501
+        """Gets the model_data_sources of this KernelPushRequest.  # noqa:
+        E501.
 
         A list of model data sources that the kernel should use. Each model is specified as `USERNAME/MODEL-SLUG/FRAMEWORK/VARIATION-SLUG/VERSION-NUMBER`  # noqa: E501
 
@@ -461,11 +489,12 @@ class KernelPushRequest(object):
 
     @property
     def category_ids(self):
-        """Gets the category_ids of this KernelPushRequest.  # noqa: E501
+        """Gets the category_ids of this KernelPushRequest.  # noqa: E501.
 
         A list of tag IDs to associated with the kernel  # noqa: E501
 
-        :return: The category_ids of this KernelPushRequest.  # noqa: E501
+        :return: The category_ids of this KernelPushRequest. # noqa:
+            E501
         :rtype: list[str]
         """
         return self._category_ids
@@ -476,7 +505,8 @@ class KernelPushRequest(object):
 
         A list of tag IDs to associated with the kernel  # noqa: E501
 
-        :param category_ids: The category_ids of this KernelPushRequest.  # noqa: E501
+        :param category_ids: The category_ids of this KernelPushRequest.
+            # noqa: E501
         :type: list[str]
         """
 
@@ -484,11 +514,14 @@ class KernelPushRequest(object):
 
     @property
     def docker_image_pinning_type(self):
-        """Gets the docker_image_pinning_type of this KernelPushRequest.  # noqa: E501
+        """Gets the docker_image_pinning_type of this KernelPushRequest.  #
+        noqa: E501.
 
-        Which docker image to use for executing new versions going forward.  # noqa: E501
+        Which docker image to use for executing new versions going
+        forward.  # noqa: E501
 
-        :return: The docker_image_pinning_type of this KernelPushRequest.  # noqa: E501
+        :return: The docker_image_pinning_type of this
+            KernelPushRequest. # noqa: E501
         :rtype: str
         """
         return self._docker_image_pinning_type
@@ -497,9 +530,11 @@ class KernelPushRequest(object):
     def docker_image_pinning_type(self, docker_image_pinning_type):
         """Sets the docker_image_pinning_type of this KernelPushRequest.
 
-        Which docker image to use for executing new versions going forward.  # noqa: E501
+        Which docker image to use for executing new versions going
+        forward.  # noqa: E501
 
-        :param docker_image_pinning_type: The docker_image_pinning_type of this KernelPushRequest.  # noqa: E501
+        :param docker_image_pinning_type: The docker_image_pinning_type
+            of this KernelPushRequest. # noqa: E501
         :type: str
         """
         allowed_values = ["original", "latest"]  # noqa: E501
@@ -512,7 +547,7 @@ class KernelPushRequest(object):
         self._docker_image_pinning_type = docker_image_pinning_type
 
     def to_dict(self):
-        """Returns the model properties as a dict"""
+        """Returns the model properties as a dict."""
         result = {}
 
         for attr, _ in six.iteritems(self.project_types):
@@ -536,7 +571,7 @@ class KernelPushRequest(object):
         return result
 
     def to_str(self):
-        """Returns the string representation of the model"""
+        """Returns the string representation of the model."""
         return pprint.pformat(self.to_dict())
 
     def __repr__(self):
@@ -544,13 +579,13 @@ class KernelPushRequest(object):
         return self.to_str()
 
     def __eq__(self, other):
-        """Returns true if both objects are equal"""
+        """Returns true if both objects are equal."""
         if not isinstance(other, KernelPushRequest):
             return False
 
         return self.__dict__ == other.__dict__
 
     def __ne__(self, other):
-        """Returns true if both objects are not equal"""
+        """Returns true if both objects are not equal."""
         return not self == other
 

@@ -76,3 +76,6 @@ compile = "./tools/GeneratePythonLibrary.sh"
 install = "./tools/GeneratePythonLibrary.sh --install"
 watch = "./tools/GeneratePythonLibrary.sh --watch"
 test = "./tools/GeneratePythonLibrary.sh --test local"
+
+[tool.docformatter]
+recursive = true

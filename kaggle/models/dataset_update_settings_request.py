@@ -83,11 +83,12 @@ class DatasetUpdateSettingsRequest(object):
 
     @property
     def title(self):
-        """Gets the title of this DatasetUpdateSettingsRequest.  # noqa: E501
+        """Gets the title of this DatasetUpdateSettingsRequest.  # noqa: E501.
 
         Title of the dataset  # noqa: E501
 
-        :return: The title of this DatasetUpdateSettingsRequest.  # noqa: E501
+        :return: The title of this DatasetUpdateSettingsRequest. #
+            noqa: E501
         :rtype: str
         """
         return self._title
@@ -98,7 +99,8 @@ class DatasetUpdateSettingsRequest(object):
 
         Title of the dataset  # noqa: E501
 
-        :param title: The title of this DatasetUpdateSettingsRequest.  # noqa: E501
+        :param title: The title of this DatasetUpdateSettingsRequest. #
+            noqa: E501
         :type: str
         """
 
@@ -106,11 +108,13 @@ class DatasetUpdateSettingsRequest(object):
 
     @property
     def subtitle(self):
-        """Gets the subtitle of this DatasetUpdateSettingsRequest.  # noqa: E501
+        """Gets the subtitle of this DatasetUpdateSettingsRequest.  # noqa:
+        E501.
 
         Subtitle of the dataset  # noqa: E501
 
-        :return: The subtitle of this DatasetUpdateSettingsRequest.  # noqa: E501
+        :return: The subtitle of this DatasetUpdateSettingsRequest. #
+            noqa: E501
         :rtype: str
         """
         return self._subtitle
@@ -121,7 +125,8 @@ class DatasetUpdateSettingsRequest(object):
 
         Subtitle of the dataset  # noqa: E501
 
-        :param subtitle: The subtitle of this DatasetUpdateSettingsRequest.  # noqa: E501
+        :param subtitle: The subtitle of this
+            DatasetUpdateSettingsRequest. # noqa: E501
         :type: str
         """
 
@@ -129,11 +134,13 @@ class DatasetUpdateSettingsRequest(object):
 
     @property
     def description(self):
-        """Gets the description of this DatasetUpdateSettingsRequest.  # noqa: E501
+        """Gets the description of this DatasetUpdateSettingsRequest.  # noqa:
+        E501.
 
         Decription of the dataset  # noqa: E501
 
-        :return: The description of this DatasetUpdateSettingsRequest.  # noqa: E501
+        :return: The description of this DatasetUpdateSettingsRequest. #
+            noqa: E501
         :rtype: str
         """
         return self._description
@@ -144,7 +151,8 @@ class DatasetUpdateSettingsRequest(object):
 
         Decription of the dataset  # noqa: E501
 
-        :param description: The description of this DatasetUpdateSettingsRequest.  # noqa: E501
+        :param description: The description of this
+            DatasetUpdateSettingsRequest. # noqa: E501
         :type: str
         """
 
@@ -152,11 +160,13 @@ class DatasetUpdateSettingsRequest(object):
 
     @property
     def is_private(self):
-        """Gets the is_private of this DatasetUpdateSettingsRequest.  # noqa: E501
+        """Gets the is_private of this DatasetUpdateSettingsRequest.  # noqa:
+        E501.
 
         Whether or not the dataset should be private  # noqa: E501
 
-        :return: The is_private of this DatasetUpdateSettingsRequest.  # noqa: E501
+        :return: The is_private of this DatasetUpdateSettingsRequest. #
+            noqa: E501
         :rtype: bool
         """
         return self._is_private
@@ -167,7 +177,8 @@ class DatasetUpdateSettingsRequest(object):
 
         Whether or not the dataset should be private  # noqa: E501
 
-        :param is_private: The is_private of this DatasetUpdateSettingsRequest.  # noqa: E501
+        :param is_private: The is_private of this
+            DatasetUpdateSettingsRequest. # noqa: E501
         :type: bool
         """
 
@@ -175,11 +186,13 @@ class DatasetUpdateSettingsRequest(object):
 
     @property
     def licenses(self):
-        """Gets the licenses of this DatasetUpdateSettingsRequest.  # noqa: E501
+        """Gets the licenses of this DatasetUpdateSettingsRequest.  # noqa:
+        E501.
 
         A list of licenses that apply to this dataset  # noqa: E501
 
-        :return: The licenses of this DatasetUpdateSettingsRequest.  # noqa: E501
+        :return: The licenses of this DatasetUpdateSettingsRequest. #
+            noqa: E501
         :rtype: list[object]
         """
         return self._licenses
@@ -190,7 +203,8 @@ class DatasetUpdateSettingsRequest(object):
 
         A list of licenses that apply to this dataset  # noqa: E501
 
-        :param licenses: The licenses of this DatasetUpdateSettingsRequest.  # noqa: E501
+        :param licenses: The licenses of this
+            DatasetUpdateSettingsRequest. # noqa: E501
         :type: list[object]
         """
 
@@ -198,11 +212,13 @@ class DatasetUpdateSettingsRequest(object):
 
     @property
     def keywords(self):
-        """Gets the keywords of this DatasetUpdateSettingsRequest.  # noqa: E501
+        """Gets the keywords of this DatasetUpdateSettingsRequest.  # noqa:
+        E501.
 
         A list of keywords that apply to this dataset  # noqa: E501
 
-        :return: The keywords of this DatasetUpdateSettingsRequest.  # noqa: E501
+        :return: The keywords of this DatasetUpdateSettingsRequest. #
+            noqa: E501
         :rtype: list[str]
         """
         return self._keywords
@@ -213,7 +229,8 @@ class DatasetUpdateSettingsRequest(object):
 
         A list of keywords that apply to this dataset  # noqa: E501
 
-        :param keywords: The keywords of this DatasetUpdateSettingsRequest.  # noqa: E501
+        :param keywords: The keywords of this
+            DatasetUpdateSettingsRequest. # noqa: E501
         :type: list[str]
         """
 
@@ -221,11 +238,14 @@ class DatasetUpdateSettingsRequest(object):
 
     @property
     def collaborators(self):
-        """Gets the collaborators of this DatasetUpdateSettingsRequest.  # noqa: E501
+        """Gets the collaborators of this DatasetUpdateSettingsRequest.  #
+        noqa: E501.
 
-        A list of collaborators that may read or edit this dataset  # noqa: E501
+        A list of collaborators that may read or edit this dataset  #
+        noqa: E501
 
-        :return: The collaborators of this DatasetUpdateSettingsRequest.  # noqa: E501
+        :return: The collaborators of this DatasetUpdateSettingsRequest.
+            # noqa: E501
         :rtype: list[object]
         """
         return self._collaborators
@@ -234,9 +254,11 @@ class DatasetUpdateSettingsRequest(object):
     def collaborators(self, collaborators):
         """Sets the collaborators of this DatasetUpdateSettingsRequest.
 
-        A list of collaborators that may read or edit this dataset  # noqa: E501
+        A list of collaborators that may read or edit this dataset  #
+        noqa: E501
 
-        :param collaborators: The collaborators of this DatasetUpdateSettingsRequest.  # noqa: E501
+        :param collaborators: The collaborators of this
+            DatasetUpdateSettingsRequest. # noqa: E501
         :type: list[object]
         """
 
@@ -244,11 +266,13 @@ class DatasetUpdateSettingsRequest(object):
 
     @property
     def data(self):
-        """Gets the data of this DatasetUpdateSettingsRequest.  # noqa: E501
+        """Gets the data of this DatasetUpdateSettingsRequest.  # noqa: E501.
 
-        A list containing metadata for each file in the dataset  # noqa: E501
+        A list containing metadata for each file in the dataset  # noqa:
+        E501
 
-        :return: The data of this DatasetUpdateSettingsRequest.  # noqa: E501
+        :return: The data of this DatasetUpdateSettingsRequest. # noqa:
+            E501
         :rtype: list[object]
         """
         return self._data
@@ -257,16 +281,18 @@ class DatasetUpdateSettingsRequest(object):
     def data(self, data):
         """Sets the data of this DatasetUpdateSettingsRequest.
 
-        A list containing metadata for each file in the dataset  # noqa: E501
+        A list containing metadata for each file in the dataset  # noqa:
+        E501
 
-        :param data: The data of this DatasetUpdateSettingsRequest.  # noqa: E501
+        :param data: The data of this DatasetUpdateSettingsRequest. #
+            noqa: E501
         :type: list[object]
         """
 
         self._data = data
 
     def to_dict(self):
-        """Returns the model properties as a dict"""
+        """Returns the model properties as a dict."""
         result = {}
 
         for attr, _ in six.iteritems(self.project_types):
@@ -290,7 +316,7 @@ class DatasetUpdateSettingsRequest(object):
         return result
 
     def to_str(self):
-        """Returns the string representation of the model"""
+        """Returns the string representation of the model."""
         return pprint.pformat(self.to_dict())
 
     def __repr__(self):
@@ -298,13 +324,13 @@ class DatasetUpdateSettingsRequest(object):
         return self.to_str()
 
     def __eq__(self, other):
-        """Returns true if both objects are equal"""
+        """Returns true if both objects are equal."""
         if not isinstance(other, DatasetUpdateSettingsRequest):
             return False
 
         return self.__dict__ == other.__dict__
 
     def __ne__(self, other):
-        """Returns true if both objects are not equal"""
+        """Returns true if both objects are not equal."""
         return not self == other
 

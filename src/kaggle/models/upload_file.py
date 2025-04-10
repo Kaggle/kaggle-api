@@ -61,75 +61,77 @@ class UploadFile(object):
 
   @property
   def token(self):
-    """Gets the token of this UploadFile.  # noqa: E501
+    """Gets the token of this UploadFile.  # noqa: E501.
 
-        A token referencing a specific file upload that can be used across requests  # noqa: E501
+    A token referencing a specific file upload that can be used across
+    requests  # noqa: E501
 
-        :return: The token of this UploadFile.  # noqa: E501
-        :rtype: str
-        """
+    :return: The token of this UploadFile.  # noqa: E501
+    :rtype: str
+    """
     return self._token
 
   @token.setter
   def token(self, token):
     """Sets the token of this UploadFile.
 
-        A token referencing a specific file upload that can be used across requests  # noqa: E501
+    A token referencing a specific file upload that can be used across
+    requests  # noqa: E501
 
-        :param token: The token of this UploadFile.  # noqa: E501
-        :type: str
-        """
+    :param token: The token of this UploadFile.  # noqa: E501
+    :type: str
+    """
 
     self._token = token
 
   @property
   def description(self):
-    """Gets the description of this UploadFile.  # noqa: E501
+    """Gets the description of this UploadFile.  # noqa: E501.
 
-        The file description  # noqa: E501
+    The file description  # noqa: E501
 
-        :return: The description of this UploadFile.  # noqa: E501
-        :rtype: str
-        """
+    :return: The description of this UploadFile.  # noqa: E501
+    :rtype: str
+    """
     return self._description
 
   @description.setter
   def description(self, description):
     """Sets the description of this UploadFile.
 
-        The file description  # noqa: E501
+    The file description  # noqa: E501
 
-        :param description: The description of this UploadFile.  # noqa: E501
-        :type: str
-        """
+    :param description: The description of this UploadFile. # noqa: E501
+    :type: str
+    """
 
     self._description = description
 
   @property
   def columns(self):
-    """Gets the columns of this UploadFile.  # noqa: E501
+    """Gets the columns of this UploadFile.  # noqa: E501.
 
-        A list of dataset column metadata  # noqa: E501
+    A list of dataset column metadata  # noqa: E501
 
-        :return: The columns of this UploadFile.  # noqa: E501
-        :rtype: list[DatasetColumn]
-        """
+    :return: The columns of this UploadFile.  # noqa: E501
+    :rtype: list[DatasetColumn]
+    """
     return self._columns
 
   @columns.setter
   def columns(self, columns):
     """Sets the columns of this UploadFile.
 
-        A list of dataset column metadata  # noqa: E501
+    A list of dataset column metadata  # noqa: E501
 
-        :param columns: The columns of this UploadFile.  # noqa: E501
-        :type: list[DatasetColumn]
-        """
+    :param columns: The columns of this UploadFile.  # noqa: E501
+    :type: list[DatasetColumn]
+    """
 
     self._columns = columns
 
   def to_dict(self):
-    """Returns the model properties as a dict"""
+    """Returns the model properties as a dict."""
     result = {}
 
     for attr, _ in six.iteritems(self.column_types):
@@ -150,7 +152,7 @@ class UploadFile(object):
     return result
 
   def to_str(self):
-    """Returns the string representation of the model"""
+    """Returns the string representation of the model."""
     return pprint.pformat(self.to_dict())
 
   def __repr__(self):
@@ -158,12 +160,12 @@ class UploadFile(object):
     return self.to_str()
 
   def __eq__(self, other):
-    """Returns true if both objects are equal"""
+    """Returns true if both objects are equal."""
     if not isinstance(other, UploadFile):
       return False
 
     return self.__dict__ == other.__dict__
 
   def __ne__(self, other):
-    """Returns true if both objects are not equal"""
+    """Returns true if both objects are not equal."""
     return not self == other

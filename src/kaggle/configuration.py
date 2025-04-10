@@ -26,7 +26,7 @@ import urllib3
 class Configuration:
 
   def __init__(self):
-    """Constructor"""
+    """Constructor."""
     # Default Base url
     self.host = _get_endpoint_from_env() or "https://www.kaggle.com/api/v1"
 
@@ -100,7 +100,7 @@ class Configuration:
 
   @property
   def debug(self):
-    """Debug status
+    """Debug status.
 
     :param value: The debug status, True or False.
     :type: bool
@@ -109,7 +109,7 @@ class Configuration:
 
   @debug.setter
   def debug(self, value):
-    """Debug status
+    """Debug status.
 
     :param value: The debug status, True or False.
     :type: bool

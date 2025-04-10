@@ -41,7 +41,7 @@ class KaggleApi(object):
     return self.api_client.competition_leaderboard_download(id, None)
 
   def competition_view_leaderboard(self, id):  # noqa: E501
-    """VIew competition leaderboard  # noqa: E501.
+    """View competition leaderboard  # noqa: E501.
 
     :param str id: Competition name (required)
     :return: Result
@@ -86,8 +86,7 @@ class KaggleApi(object):
     :param str sort_by: Sort the results
     :param int page: Page number
     :param str search: Search terms
-    :return: Result If the method is called asynchronously, returns the
-        request thread.
+    :return: ApiListCompetitionsResponse
     """
     return self.api_client.competitions_list(group, category, sort_by, page,
                                              search)
@@ -181,8 +180,7 @@ class KaggleApi(object):
     :param int id: Dataset ID (required)
     :param DatasetNewVersionRequest dataset_new_version_request:
         Information for creating a new dataset version (required)
-    :return: Result If the method is called asynchronously, returns the
-        request thread.
+    :return: throws NotImplementedError
     """
     print("datasets_create_version_by_id() not implemented")
     print("use kaggle_api_extended.KaggleApi.dataset_create_version() instead")
@@ -215,8 +213,7 @@ class KaggleApi(object):
     :param str dataset_slug: Dataset name (required)
     :param str file_name: File name (required)
     :param str dataset_version_number: Dataset version number
-    :return: Result If the method is called asynchronously, returns the
-        request thread.
+    :return: True if the file was downloaded successfully, False otherwise
     """
     dataset = f'{owner_slug}/{dataset_slug}'
     if dataset_version_number is not None:
@@ -249,8 +246,7 @@ class KaggleApi(object):
     :param int page: Page number
     :param int max_size: Max Dataset Size (bytes)
     :param int min_size: Max Dataset Size (bytes)
-    :return: Result If the method is called asynchronously, returns the
-        request thread.
+    :return: List of ApiDatasetFile.
     """
     return self.api_client.dataset_list(
         sort_by=sort_by,
@@ -279,8 +275,7 @@ class KaggleApi(object):
 
     :param str owner_slug: Model owner (required)
     :param str model_slug: Model name (required)
-    :return: Result If the method is called asynchronously, returns the
-        request thread.
+    :return: ApiDeleteModelResponse
     """
     return self.api_client.model_delete(f'{owner_slug}/{model_slug})')
 
@@ -544,11 +539,16 @@ class KaggleApi(object):
                   search=None,
                   owner=None,
                   page_size=20,
-                  page_token=None):  # noqa: E501
-    """Lists models  # noqa: E501 :param str search: Search terms :param str
-    sort_by: Sort the results :param str owner: Display models by a specific
-    user or organization :param int page_size: Page size :param str page_token:
-    Page token for pagination :return: Result."""
+                  page_token=None):
+    """List models
+    
+    :param str search: Search terms
+    :param str sort_by: Sort the results
+    :param str owner: Display models by a specific user or organization
+    :param int page_size: Page size
+    :param str page_token: Page token for pagination
+    :return: list of models
+    """
     return self.api_client.model_list(
         sort_by=sort_by,
         search=search,

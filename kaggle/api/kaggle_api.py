@@ -33,7 +33,7 @@ class KaggleApi(object):
     self.api_client = api_client
 
   def competition_download_leaderboard(self, id):  # noqa: E501
-    """Download competition leaderboard  # noqa: E501
+    """Download competition leaderboard  # noqa: E501.
 
     :param str id: Competition name (required)
     :return: Result
@@ -41,7 +41,7 @@ class KaggleApi(object):
     return self.api_client.competition_leaderboard_download(id, None)
 
   def competition_view_leaderboard(self, id):  # noqa: E501
-    """VIew competition leaderboard  # noqa: E501
+    """View competition leaderboard  # noqa: E501.
 
     :param str id: Competition name (required)
     :return: Result
@@ -49,7 +49,7 @@ class KaggleApi(object):
     return self.api_client.competition_leaderboard_view(id)
 
   def competitions_data_download_file(self, id, file_name):  # noqa: E501
-    """Download competition data file  # noqa: E501
+    """Download competition data file  # noqa: E501.
 
     :param str id: Competition name (required)
     :param str file_name: Competition name (required)
@@ -58,7 +58,7 @@ class KaggleApi(object):
     return self.api_client.competition_download_file(id, file_name)
 
   def competitions_data_download_files(self, id):  # noqa: E501
-    """Download all competition data files  # noqa: E501
+    """Download all competition data files  # noqa: E501.
 
     :param str id: Competition name (required)
     :return: Result
@@ -66,7 +66,7 @@ class KaggleApi(object):
     return self.api_client.competition_download_files(id)
 
   def competitions_data_list_files(self, id):  # noqa: E501
-    """List competition data files  # noqa: E501
+    """List competition data files  # noqa: E501.
 
     :param str id: Competition name (required)
     :return: Result
@@ -79,22 +79,20 @@ class KaggleApi(object):
                         sort_by=None,
                         page=1,
                         search=None):  # noqa: E501
-    """List competitions  # noqa: E501
+    """List competitions  # noqa: E501.
 
     :param str group: Filter competitions by a particular group
     :param str category: Filter competitions by a particular category
     :param str sort_by: Sort the results
     :param int page: Page number
     :param str search: Search terms
-    :return: Result
-             If the method is called asynchronously,
-             returns the request thread.
+    :return: ApiListCompetitionsResponse
     """
     return self.api_client.competitions_list(group, category, sort_by, page,
                                              search)
 
   def competitions_submissions_list(self, id, page=0):  # noqa: E501
-    """List competition submissions  # noqa: E501
+    """List competition submissions  # noqa: E501.
 
     :param str id: Competition name (required)
     :param int page: Page number
@@ -104,10 +102,12 @@ class KaggleApi(object):
 
   def competitions_submissions_submit(self, blob_file_tokens,
                                       submission_description, id):  # noqa: E501
-    """Submit to competition  # noqa: E501
+    """Submit to competition  # noqa: E501.
 
-    :param str blob_file_tokens: Token identifying location of uploaded submission file (required)
-    :param str submission_description: Description of competition submission (required)
+    :param str blob_file_tokens: Token identifying location of uploaded
+        submission file (required)
+    :param str submission_description: Description of competition
+        submission (required)
     :param str id: Competition name (required)
     :return: Result
     """
@@ -117,12 +117,15 @@ class KaggleApi(object):
 
   def competitions_submissions_upload(self, file, guid, content_length,
                                       last_modified_date_utc):  # noqa: E501
-    """Upload competition submission file  # noqa: E501
+    """Upload competition submission file  # noqa: E501.
 
     :param file file: Competition submission file (required)
-    :param str guid: Location where submission should be uploaded (required)
-    :param int content_length: Content length of file in bytes (required)
-    :param int last_modified_date_utc: Last modified date of file in seconds since epoch in UTC (required)
+    :param str guid: Location where submission should be uploaded
+        (required)
+    :param int content_length: Content length of file in bytes
+        (required)
+    :param int last_modified_date_utc: Last modified date of file in
+        seconds since epoch in UTC (required)
     :return: Result
     """
     print("competitions_submissions_upload() not implemented")
@@ -133,11 +136,14 @@ class KaggleApi(object):
 
   def competitions_submissions_url(self, id, content_length,
                                    last_modified_date_utc):  # noqa: E501
-    """Generate competition submission URL  # noqa: E501
+    """Generate competition submission URL  # noqa: E501.
 
-    :param str id: Competition name, as it appears in the competition's URL (required)
-    :param int content_length: Content length of file in bytes (required)
-    :param int last_modified_date_utc: Last modified date of file in seconds since epoch in UTC (required)
+    :param str id: Competition name, as it appears in the competition's
+        URL (required)
+    :param int content_length: Content length of file in bytes
+        (required)
+    :param int last_modified_date_utc: Last modified date of file in
+        seconds since epoch in UTC (required)
     :param str file_name: Competition submission file name
     :return: Result
     """
@@ -146,7 +152,8 @@ class KaggleApi(object):
     raise NotImplementedError()
 
   def create_inbox_file(self, create_inbox_file_request):  # noqa: E501
-    """Creates (aka \&quot;drops\&quot;) a new file into the inbox.  # noqa: E501
+    """Creates (aka \&quot;drops\&quot;) a new file into the inbox.  # noqa:
+    E501.
 
     :param CreateInboxFileRequest create_inbox_file_request: (required)
     :return: Result
@@ -156,9 +163,10 @@ class KaggleApi(object):
     raise NotImplementedError()
 
   def datasets_create_new(self, request):  # noqa: E501
-    """Create a new dataset  # noqa: E501
+    """Create a new dataset  # noqa: E501.
 
-    :param DatasetNewRequest request: Information for creating a new dataset (required)
+    :param DatasetNewRequest request: Information for creating a new
+        dataset (required)
     :return: Result
     """
     print("datasets_create_new() not implemented")
@@ -167,13 +175,12 @@ class KaggleApi(object):
 
   def datasets_create_version_by_id(self, id, dataset_new_version_request,
                                     **kwargs):  # noqa: E501
-    """Create a new dataset version by id  # noqa: E501
+    """Create a new dataset version by id  # noqa: E501.
 
     :param int id: Dataset ID (required)
-    :param DatasetNewVersionRequest dataset_new_version_request: Information for creating a new dataset version (required)
-    :return: Result
-             If the method is called asynchronously,
-             returns the request thread.
+    :param DatasetNewVersionRequest dataset_new_version_request:
+        Information for creating a new dataset version (required)
+    :return: throws NotImplementedError
     """
     print("datasets_create_version_by_id() not implemented")
     print("use kaggle_api_extended.KaggleApi.dataset_create_version() instead")
@@ -183,7 +190,7 @@ class KaggleApi(object):
                         owner_slug,
                         dataset_slug,
                         dataset_version_number=None):  # noqa: E501
-    """Download dataset file  # noqa: E501
+    """Download dataset file  # noqa: E501.
 
     :param str owner_slug: Dataset owner (required)
     :param str dataset_slug: Dataset name (required)
@@ -200,15 +207,13 @@ class KaggleApi(object):
                              dataset_slug,
                              file_name,
                              dataset_version_number=None):  # noqa: E501
-    """Download dataset file  # noqa: E501
+    """Download dataset file  # noqa: E501.
 
     :param str owner_slug: Dataset owner (required)
     :param str dataset_slug: Dataset name (required)
     :param str file_name: File name (required)
     :param str dataset_version_number: Dataset version number
-    :return: Result
-             If the method is called asynchronously,
-             returns the request thread.
+    :return: True if the file was downloaded successfully, False otherwise
     """
     dataset = f'{owner_slug}/{dataset_slug}'
     if dataset_version_number is not None:
@@ -227,11 +232,12 @@ class KaggleApi(object):
                     page=1,
                     max_size=None,
                     min_size=None):  # noqa: E501
-    """List datasets  # noqa: E501
+    """List datasets  # noqa: E501.
 
     :param str group: Display datasets by a particular group
     :param str sort_by: Sort the results
-    :param str size: (DEPRECATED). Please use --max-size and --min-size to filter dataset sizes.
+    :param str size: (DEPRECATED). Please use --max-size and --min-size
+        to filter dataset sizes.
     :param str filetype: Display datasets of a specific file type
     :param str license: Display datasets with a specific license
     :param str tagids: A comma separated list of tags to filter by
@@ -240,9 +246,7 @@ class KaggleApi(object):
     :param int page: Page number
     :param int max_size: Max Dataset Size (bytes)
     :param int min_size: Max Dataset Size (bytes)
-    :return: Result
-             If the method is called asynchronously,
-             returns the request thread.
+    :return: List of ApiDatasetFile.
     """
     return self.api_client.dataset_list(
         sort_by=sort_by,
@@ -258,7 +262,7 @@ class KaggleApi(object):
         min_size=min_size)
 
   def datasets_status(self, owner_slug, dataset_slug, **kwargs):  # noqa: E501
-    """Get dataset creation status  # noqa: E501
+    """Get dataset creation status  # noqa: E501.
 
     :param str owner_slug: Dataset owner (required)
     :param str dataset_slug: Dataset name (required)
@@ -267,19 +271,17 @@ class KaggleApi(object):
     return self.api_client.dataset_status(f'{owner_slug}/{dataset_slug})')
 
   def delete_model(self, owner_slug, model_slug):  # noqa: E501
-    """Delete a model  # noqa: E501
+    """Delete a model  # noqa: E501.
 
     :param str owner_slug: Model owner (required)
     :param str model_slug: Model name (required)
-    :return: Result
-             If the method is called asynchronously,
-             returns the request thread.
+    :return: ApiDeleteModelResponse
     """
     return self.api_client.model_delete(f'{owner_slug}/{model_slug})')
 
   def delete_model_instance(self, owner_slug, model_slug, framework,
                             instance_slug):  # noqa: E501
-    """Delete a model instance  # noqa: E501
+    """Delete a model instance  # noqa: E501.
 
     :param str owner_slug: Model owner (required)
     :param str model_slug: Model name (required)
@@ -293,7 +295,7 @@ class KaggleApi(object):
   def delete_model_instance_version(self, owner_slug, model_slug, framework,
                                     instance_slug,
                                     version_number):  # noqa: E501
-    """Delete a model instance version  # noqa: E501
+    """Delete a model instance version  # noqa: E501.
 
     :param str owner_slug: Model owner (required)
     :param str model_slug: Model name (required)
@@ -307,7 +309,7 @@ class KaggleApi(object):
         yes=True)
 
   def get_model(self, owner_slug, model_slug):  # noqa: E501
-    """Get a model  # noqa: E501
+    """Get a model  # noqa: E501.
 
     :param str owner_slug: Model owner (required)
     :param str model_slug: Model name (required)
@@ -317,7 +319,7 @@ class KaggleApi(object):
 
   def get_model_instance(self, owner_slug, model_slug, framework,
                          instance_slug):  # noqa: E501
-    """Get a model instance  # noqa: E501
+    """Get a model instance  # noqa: E501.
 
     :param str owner_slug: Model owner (required)
     :param str model_slug: Model name (required)
@@ -329,7 +331,7 @@ class KaggleApi(object):
         f'{owner_slug}/{model_slug}/{framework}/{instance_slug}')
 
   def kernel_output(self, user_name, kernel_slug):  # noqa: E501
-    """Download the latest output from a kernel  # noqa: E501
+    """Download the latest output from a kernel  # noqa: E501.
 
     :param str user_name: Kernel owner (required)
     :param str kernel_slug: Kernel name (required)
@@ -339,7 +341,7 @@ class KaggleApi(object):
         f'{user_name}/{kernel_slug}', path=None, force=True)
 
   def kernel_pull(self, user_name, kernel_slug):  # noqa: E501
-    """Pull the latest code from a kernel  # noqa: E501
+    """Pull the latest code from a kernel  # noqa: E501.
 
     :param str user_name: Kernel owner (required)
     :param str kernel_slug: Kernel name (required)
@@ -348,9 +350,11 @@ class KaggleApi(object):
     return self.api_client.kernels_pull(f'{user_name}/{kernel_slug}', path=None)
 
   def kernel_push(self, kernel_push_request):  # noqa: E501
-    """Push a new kernel version.  Can be used to create a new kernel and update an existing one.  # noqa: E501
+    """Push a new kernel version.  Can be used to create a new kernel and
+    update an existing one.  # noqa: E501.
 
-    :param KernelPushRequest kernel_push_request: Information for pushing a new kernel version (required)
+    :param KernelPushRequest kernel_push_request: Information for
+        pushing a new kernel version (required)
     :return: Result
     """
     with tempfile.TemporaryDirectory() as tmpdir:
@@ -375,7 +379,7 @@ class KaggleApi(object):
       return self.api_client.kernels_push(tmpdir)
 
   def kernel_status(self, user_name, kernel_slug):  # noqa: E501
-    """Get the status of the latest kernel version  # noqa: E501
+    """Get the status of the latest kernel version  # noqa: E501.
 
     :param str user_name: Kernel owner (required)
     :param str kernel_slug: Kernel name (required)
@@ -396,7 +400,7 @@ class KaggleApi(object):
                    kernel_type=None,
                    output_type=None,
                    sort_by=None):  # noqa: E501
-    """List kernels  # noqa: E501
+    """List kernels  # noqa: E501.
 
     :param int page: Page number
     :param int page_size: Page size
@@ -406,10 +410,13 @@ class KaggleApi(object):
     :param str language: Display kernels in a specific language
     :param str kernel_type: Display kernels of a specific type
     :param str output_type: Display kernels with a specific output type
-    :param str sort_by: Sort the results. 'relevance' only works if there is a search query
+    :param str sort_by: Sort the results. 'relevance' only works if
+        there is a search query
     :param str dataset: Display kernels using the specified dataset
-    :param str competition: Display kernels using the specified competition
-    :param str parent_kernel: Display kernels that have forked the specified kernel
+    :param str competition: Display kernels using the specified
+        competition
+    :param str parent_kernel: Display kernels that have forked the
+        specified kernel
     :return: Result
     """
     return self.api_client.kernels_list(
@@ -427,7 +434,7 @@ class KaggleApi(object):
         sort_by=sort_by)
 
   def metadata_get(self, owner_slug, dataset_slug):  # noqa: E501
-    """Get the metadata for a dataset  # noqa: E501
+    """Get the metadata for a dataset  # noqa: E501.
 
     :param str owner_slug: Dataset owner (required)
     :param str dataset_slug: Dataset name (required)
@@ -438,11 +445,12 @@ class KaggleApi(object):
 
   def metadata_post(self, owner_slug, dataset_slug, settings,
                     request):  # noqa: E501
-    """Update the metadata for a dataset  # noqa: E501
+    """Update the metadata for a dataset  # noqa: E501.
 
     :param str owner_slug: Dataset owner (required)
     :param str dataset_slug: Dataset name (required)
-    :param DatasetUpdateSettingsRequest settings: Dataset metadata to update (required)
+    :param DatasetUpdateSettingsRequest settings: Dataset metadata to
+        update (required)
     :return: Result
     """
     with tempfile.TemporaryDirectory() as tmpdir:
@@ -458,7 +466,7 @@ class KaggleApi(object):
   def model_instance_versions_download(self, owner_slug, model_slug, framework,
                                        instance_slug,
                                        version_number):  # noqa: E501
-    """Download model instance version files  # noqa: E501
+    """Download model instance version files  # noqa: E501.
 
     :param str owner_slug: Model owner (required)
     :param str model_slug: Model name (required)
@@ -472,11 +480,12 @@ class KaggleApi(object):
 
   def models_create_instance(self, owner_slug, model_slug,
                              model_new_instance_request):  # noqa: E501
-    """Create a new model instance  # noqa: E501
+    """Create a new model instance  # noqa: E501.
 
     :param str owner_slug: Model owner (required)
     :param str model_slug: Model slug (required)
-    :param ModelNewInstanceRequest model_new_instance_request: Information for creating a new model instance (required)
+    :param ModelNewInstanceRequest model_new_instance_request:
+        Information for creating a new model instance (required)
     :return: Result
     """
     print("models_create_instance() not implemented")
@@ -486,13 +495,15 @@ class KaggleApi(object):
   def models_create_instance_version(
       self, owner_slug, model_slug, framework, instance_slug,
       model_instance_new_version_request):  # noqa: E501
-    """Create a new model instance version  # noqa: E501
+    """Create a new model instance version  # noqa: E501.
 
     :param str owner_slug: Model owner (required)
     :param str model_slug: Model slug (required)
     :param str framework: Model instance framework (required)
     :param str instance_slug: Model instance slug (required)
-    :param ModelInstanceNewVersionRequest model_instance_new_version_request: Information for creating a new model instance version (required)
+    :param ModelInstanceNewVersionRequest
+        model_instance_new_version_request: Information for creating a
+        new model instance version (required)
     :return: Result
     """
     print("models_create_instance_version() not implemented")
@@ -502,9 +513,10 @@ class KaggleApi(object):
     raise NotImplementedError()
 
   def models_create_new(self, model_new_request):  # noqa: E501
-    """Create a new model  # noqa: E501
+    """Create a new model  # noqa: E501.
 
-    :param ModelNewRequest model_new_request: Information for creating a new model (required)
+    :param ModelNewRequest model_new_request: Information for creating a
+        new model (required)
     :return: Result
     """
     with tempfile.TemporaryDirectory() as tmpdir:
@@ -527,14 +539,15 @@ class KaggleApi(object):
                   search=None,
                   owner=None,
                   page_size=20,
-                  page_token=None):  # noqa: E501
-    """Lists models  # noqa: E501
+                  page_token=None):
+    """List models
+    
     :param str search: Search terms
     :param str sort_by: Sort the results
     :param str owner: Display models by a specific user or organization
     :param int page_size: Page size
     :param str page_token: Page token for pagination
-    :return: Result
+    :return: list of models
     """
     return self.api_client.model_list(
         sort_by=sort_by,
@@ -549,11 +562,12 @@ class KaggleApi(object):
       model_slug,
       model_update_request,
   ):  # noqa: E501
-    """Update a model  # noqa: E501
+    """Update a model  # noqa: E501.
 
     :param str owner_slug: Model owner (required)
     :param str model_slug: Model name (required)
-    :param ModelUpdateRequest model_update_request: Information for updating a model (required)
+    :param ModelUpdateRequest model_update_request: Information for
+        updating a model (required)
     :return: Result
     """
     with tempfile.TemporaryDirectory() as tmpdir:
@@ -575,13 +589,14 @@ class KaggleApi(object):
   def update_model_instance(self, owner_slug, model_slug, framework,
                             instance_slug,
                             model_instance_update_request):  # noqa: E501
-    """Update a model  # noqa: E501
+    """Update a model  # noqa: E501.
 
     :param str owner_slug: Model owner (required)
     :param str model_slug: Model name (required)
     :param str framework: Model instance framework (required)
     :param str instance_slug: Model instance slug (required)
-    :param ModelInstanceUpdateRequest model_instance_update_request: Information for updating a model instance (required)
+    :param ModelInstanceUpdateRequest model_instance_update_request:
+        Information for updating a model instance (required)
     :return: Result
     """
     with tempfile.TemporaryDirectory() as tmpdir:
@@ -604,10 +619,8 @@ class KaggleApi(object):
       return self.api_client.model_instance_update(tmpdir)
 
   def upload_file(self, start_blob_upload_request):  # noqa: E501
-    """Start uploading a file  # noqa: E501
-    :param StartBlobUploadRequest start_blob_upload_request: (required)
-    :return: StartBlobUploadResponse
-    """
+    """Start uploading a file  # noqa: E501 :param StartBlobUploadRequest
+    start_blob_upload_request: (required) :return: StartBlobUploadResponse."""
     print("upload_file() not implemented")
     print("it should not be needed after converting your code")
     print("to use kaggle_api_extended.KaggleApi.<high-level-fn>() instead")

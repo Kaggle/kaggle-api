@@ -46,24 +46,27 @@ class StartBlobUploadResponse(object):
 
   @property
   def token(self):
-    """Gets the token of this StartBlobUploadResponse.  # noqa: E501
+    """Gets the token of this StartBlobUploadResponse.  # noqa: E501.
 
-        Opaque string token used to reference the new blob/file.  # noqa: E501
+    Opaque string token used to reference the new blob/file.  # noqa:
+    E501
 
-        :return: The token of this StartBlobUploadResponse.  # noqa: E501
-        :rtype: str
-        """
+    :return: The token of this StartBlobUploadResponse.  # noqa: E501
+    :rtype: str
+    """
     return self._token
 
   @token.setter
   def token(self, token):
     """Sets the token of this StartBlobUploadResponse.
 
-        Opaque string token used to reference the new blob/file.  # noqa: E501
+    Opaque string token used to reference the new blob/file.  # noqa:
+    E501
 
-        :param token: The token of this StartBlobUploadResponse.  # noqa: E501
-        :type: str
-        """
+    :param token: The token of this StartBlobUploadResponse. # noqa:
+        E501
+    :type: str
+    """
     if token is None:
       raise ValueError(
           "Invalid value for `token`, must not be `None`")  # noqa: E501
@@ -72,24 +75,26 @@ class StartBlobUploadResponse(object):
 
   @property
   def create_url(self):
-    """Gets the create_url of this StartBlobUploadResponse.  # noqa: E501
+    """Gets the create_url of this StartBlobUploadResponse.  # noqa: E501.
 
-        URL to use to start the upload.  # noqa: E501
+    URL to use to start the upload.  # noqa: E501
 
-        :return: The create_url of this StartBlobUploadResponse.  # noqa: E501
-        :rtype: str
-        """
+    :return: The create_url of this StartBlobUploadResponse. # noqa:
+        E501
+    :rtype: str
+    """
     return self._create_url
 
   @create_url.setter
   def create_url(self, create_url):
     """Sets the create_url of this StartBlobUploadResponse.
 
-        URL to use to start the upload.  # noqa: E501
+    URL to use to start the upload.  # noqa: E501
 
-        :param create_url: The create_url of this StartBlobUploadResponse.  # noqa: E501
-        :type: str
-        """
+    :param create_url: The create_url of this StartBlobUploadResponse. #
+        noqa: E501
+    :type: str
+    """
     if create_url is None:
       raise ValueError(
           "Invalid value for `create_url`, must not be `None`")  # noqa: E501
@@ -97,7 +102,7 @@ class StartBlobUploadResponse(object):
     self._create_url = create_url
 
   def to_dict(self):
-    """Returns the model properties as a dict"""
+    """Returns the model properties as a dict."""
     result = {}
 
     for attr, _ in six.iteritems(self.project_types):
@@ -118,7 +123,7 @@ class StartBlobUploadResponse(object):
     return result
 
   def to_str(self):
-    """Returns the string representation of the model"""
+    """Returns the string representation of the model."""
     return pprint.pformat(self.to_dict())
 
   def __repr__(self):
@@ -126,12 +131,12 @@ class StartBlobUploadResponse(object):
     return self.to_str()
 
   def __eq__(self, other):
-    """Returns true if both objects are equal"""
+    """Returns true if both objects are equal."""
     if not isinstance(other, StartBlobUploadResponse):
       return False
 
     return self.__dict__ == other.__dict__
 
   def __ne__(self, other):
-    """Returns true if both objects are not equal"""
+    """Returns true if both objects are not equal."""
     return not self == other

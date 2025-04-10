@@ -78,7 +78,7 @@ class ModelUpdateRequest(object):
 
     @property
     def title(self):
-        """Gets the title of this ModelUpdateRequest.  # noqa: E501
+        """Gets the title of this ModelUpdateRequest.  # noqa: E501.
 
         The title of the new model  # noqa: E501
 
@@ -93,7 +93,7 @@ class ModelUpdateRequest(object):
 
         The title of the new model  # noqa: E501
 
-        :param title: The title of this ModelUpdateRequest.  # noqa: E501
+        :param title: The title of this ModelUpdateRequest. # noqa: E501
         :type: str
         """
 
@@ -101,7 +101,7 @@ class ModelUpdateRequest(object):
 
     @property
     def subtitle(self):
-        """Gets the subtitle of this ModelUpdateRequest.  # noqa: E501
+        """Gets the subtitle of this ModelUpdateRequest.  # noqa: E501.
 
         The subtitle of the new model  # noqa: E501
 
@@ -116,7 +116,8 @@ class ModelUpdateRequest(object):
 
         The subtitle of the new model  # noqa: E501
 
-        :param subtitle: The subtitle of this ModelUpdateRequest.  # noqa: E501
+        :param subtitle: The subtitle of this ModelUpdateRequest. #
+            noqa: E501
         :type: str
         """
 
@@ -124,11 +125,11 @@ class ModelUpdateRequest(object):
 
     @property
     def is_private(self):
-        """Gets the is_private of this ModelUpdateRequest.  # noqa: E501
+        """Gets the is_private of this ModelUpdateRequest.  # noqa: E501.
 
         Whether or not the model should be private  # noqa: E501
 
-        :return: The is_private of this ModelUpdateRequest.  # noqa: E501
+        :return: The is_private of this ModelUpdateRequest. # noqa: E501
         :rtype: bool
         """
         return self._is_private
@@ -139,7 +140,8 @@ class ModelUpdateRequest(object):
 
         Whether or not the model should be private  # noqa: E501
 
-        :param is_private: The is_private of this ModelUpdateRequest.  # noqa: E501
+        :param is_private: The is_private of this ModelUpdateRequest. #
+            noqa: E501
         :type: bool
         """
 
@@ -147,11 +149,12 @@ class ModelUpdateRequest(object):
 
     @property
     def description(self):
-        """Gets the description of this ModelUpdateRequest.  # noqa: E501
+        """Gets the description of this ModelUpdateRequest.  # noqa: E501.
 
         The description to be set on the model  # noqa: E501
 
-        :return: The description of this ModelUpdateRequest.  # noqa: E501
+        :return: The description of this ModelUpdateRequest. # noqa:
+            E501
         :rtype: str
         """
         return self._description
@@ -162,7 +165,8 @@ class ModelUpdateRequest(object):
 
         The description to be set on the model  # noqa: E501
 
-        :param description: The description of this ModelUpdateRequest.  # noqa: E501
+        :param description: The description of this ModelUpdateRequest.
+            # noqa: E501
         :type: str
         """
 
@@ -170,11 +174,12 @@ class ModelUpdateRequest(object):
 
     @property
     def publish_time(self):
-        """Gets the publish_time of this ModelUpdateRequest.  # noqa: E501
+        """Gets the publish_time of this ModelUpdateRequest.  # noqa: E501.
 
         When the model was initially published  # noqa: E501
 
-        :return: The publish_time of this ModelUpdateRequest.  # noqa: E501
+        :return: The publish_time of this ModelUpdateRequest. # noqa:
+            E501
         :rtype: date
         """
         return self._publish_time
@@ -185,7 +190,8 @@ class ModelUpdateRequest(object):
 
         When the model was initially published  # noqa: E501
 
-        :param publish_time: The publish_time of this ModelUpdateRequest.  # noqa: E501
+        :param publish_time: The publish_time of this
+            ModelUpdateRequest. # noqa: E501
         :type: date
         """
 
@@ -193,11 +199,13 @@ class ModelUpdateRequest(object):
 
     @property
     def provenance_sources(self):
-        """Gets the provenance_sources of this ModelUpdateRequest.  # noqa: E501
+        """Gets the provenance_sources of this ModelUpdateRequest.  # noqa:
+        E501.
 
         The provenance sources to be set on the model  # noqa: E501
 
-        :return: The provenance_sources of this ModelUpdateRequest.  # noqa: E501
+        :return: The provenance_sources of this ModelUpdateRequest. #
+            noqa: E501
         :rtype: str
         """
         return self._provenance_sources
@@ -208,7 +216,8 @@ class ModelUpdateRequest(object):
 
         The provenance sources to be set on the model  # noqa: E501
 
-        :param provenance_sources: The provenance_sources of this ModelUpdateRequest.  # noqa: E501
+        :param provenance_sources: The provenance_sources of this
+            ModelUpdateRequest. # noqa: E501
         :type: str
         """
 
@@ -216,11 +225,12 @@ class ModelUpdateRequest(object):
 
     @property
     def update_mask(self):
-        """Gets the update_mask of this ModelUpdateRequest.  # noqa: E501
+        """Gets the update_mask of this ModelUpdateRequest.  # noqa: E501.
 
         Describes which fields to update  # noqa: E501
 
-        :return: The update_mask of this ModelUpdateRequest.  # noqa: E501
+        :return: The update_mask of this ModelUpdateRequest. # noqa:
+            E501
         :rtype: str
         """
         return self._update_mask
@@ -231,14 +241,15 @@ class ModelUpdateRequest(object):
 
         Describes which fields to update  # noqa: E501
 
-        :param update_mask: The update_mask of this ModelUpdateRequest.  # noqa: E501
+        :param update_mask: The update_mask of this ModelUpdateRequest.
+            # noqa: E501
         :type: str
         """
 
         self._update_mask = update_mask
 
     def to_dict(self):
-        """Returns the model properties as a dict"""
+        """Returns the model properties as a dict."""
         result = {}
 
         for attr, _ in six.iteritems(self.project_types):
@@ -262,7 +273,7 @@ class ModelUpdateRequest(object):
         return result
 
     def to_str(self):
-        """Returns the string representation of the model"""
+        """Returns the string representation of the model."""
         return pprint.pformat(self.to_dict())
 
     def __repr__(self):
@@ -270,13 +281,13 @@ class ModelUpdateRequest(object):
         return self.to_str()
 
     def __eq__(self, other):
-        """Returns true if both objects are equal"""
+        """Returns true if both objects are equal."""
         if not isinstance(other, ModelUpdateRequest):
             return False
 
         return self.__dict__ == other.__dict__
 
     def __ne__(self, other):
-        """Returns true if both objects are not equal"""
+        """Returns true if both objects are not equal."""
         return not self == other
 

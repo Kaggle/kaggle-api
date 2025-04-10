@@ -93,7 +93,7 @@ class DatasetNewRequest(object):
 
     @property
     def title(self):
-        """Gets the title of this DatasetNewRequest.  # noqa: E501
+        """Gets the title of this DatasetNewRequest.  # noqa: E501.
 
         The title of the new dataset  # noqa: E501
 
@@ -118,7 +118,7 @@ class DatasetNewRequest(object):
 
     @property
     def slug(self):
-        """Gets the slug of this DatasetNewRequest.  # noqa: E501
+        """Gets the slug of this DatasetNewRequest.  # noqa: E501.
 
         The slug that the dataset should be created with  # noqa: E501
 
@@ -141,7 +141,7 @@ class DatasetNewRequest(object):
 
     @property
     def owner_slug(self):
-        """Gets the owner_slug of this DatasetNewRequest.  # noqa: E501
+        """Gets the owner_slug of this DatasetNewRequest.  # noqa: E501.
 
         The owner's username  # noqa: E501
 
@@ -156,7 +156,8 @@ class DatasetNewRequest(object):
 
         The owner's username  # noqa: E501
 
-        :param owner_slug: The owner_slug of this DatasetNewRequest.  # noqa: E501
+        :param owner_slug: The owner_slug of this DatasetNewRequest. #
+            noqa: E501
         :type: str
         """
 
@@ -164,11 +165,13 @@ class DatasetNewRequest(object):
 
     @property
     def license_name(self):
-        """Gets the license_name of this DatasetNewRequest.  # noqa: E501
+        """Gets the license_name of this DatasetNewRequest.  # noqa: E501.
 
-        The license that should be associated with the dataset  # noqa: E501
+        The license that should be associated with the dataset  # noqa:
+        E501
 
-        :return: The license_name of this DatasetNewRequest.  # noqa: E501
+        :return: The license_name of this DatasetNewRequest. # noqa:
+            E501
         :rtype: str
         """
         return self._license_name
@@ -177,9 +180,11 @@ class DatasetNewRequest(object):
     def license_name(self, license_name):
         """Sets the license_name of this DatasetNewRequest.
 
-        The license that should be associated with the dataset  # noqa: E501
+        The license that should be associated with the dataset  # noqa:
+        E501
 
-        :param license_name: The license_name of this DatasetNewRequest.  # noqa: E501
+        :param license_name: The license_name of this DatasetNewRequest.
+            # noqa: E501
         :type: str
         """
         allowed_values = ["CC0-1.0", "CC-BY-SA-4.0", "GPL-2.0", "ODbL-1.0", "CC-BY-NC-SA-4.0", "unknown", "DbCL-1.0", "CC-BY-SA-3.0", "copyright-authors", "other", "reddit-api", "world-bank", "CC-BY-4.0", "CC-BY-NC-4.0", "PDDL", "CC-BY-3.0", "CC-BY-3.0-IGO", "US-Government-Works", "CC-BY-NC-SA-3.0-IGO", "CDLA-Permissive-1.0", "CDLA-Sharing-1.0", "CC-BY-ND-4.0", "CC-BY-NC-ND-4.0", "ODC-BY-1.0", "LGPL-3.0", "AGPL-3.0", "FDL-1.3", "EU-ODP-Legal-Notice", "apache-2.0", "GPL-3.0"]  # noqa: E501
@@ -202,7 +207,7 @@ class DatasetNewRequest(object):
 
     @property
     def subtitle(self):
-        """Gets the subtitle of this DatasetNewRequest.  # noqa: E501
+        """Gets the subtitle of this DatasetNewRequest.  # noqa: E501.
 
         The subtitle to be set on the dataset  # noqa: E501
 
@@ -217,7 +222,8 @@ class DatasetNewRequest(object):
 
         The subtitle to be set on the dataset  # noqa: E501
 
-        :param subtitle: The subtitle of this DatasetNewRequest.  # noqa: E501
+        :param subtitle: The subtitle of this DatasetNewRequest. #
+            noqa: E501
         :type: str
         """
 
@@ -225,11 +231,11 @@ class DatasetNewRequest(object):
 
     @property
     def description(self):
-        """Gets the description of this DatasetNewRequest.  # noqa: E501
+        """Gets the description of this DatasetNewRequest.  # noqa: E501.
 
         The description to be set on the dataset  # noqa: E501
 
-        :return: The description of this DatasetNewRequest.  # noqa: E501
+        :return: The description of this DatasetNewRequest. # noqa: E501
         :rtype: str
         """
         return self._description
@@ -240,7 +246,8 @@ class DatasetNewRequest(object):
 
         The description to be set on the dataset  # noqa: E501
 
-        :param description: The description of this DatasetNewRequest.  # noqa: E501
+        :param description: The description of this DatasetNewRequest. #
+            noqa: E501
         :type: str
         """
 
@@ -248,9 +255,10 @@ class DatasetNewRequest(object):
 
     @property
     def files(self):
-        """Gets the files of this DatasetNewRequest.  # noqa: E501
+        """Gets the files of this DatasetNewRequest.  # noqa: E501.
 
-        A list of files that should be associated with the dataset  # noqa: E501
+        A list of files that should be associated with the dataset  #
+        noqa: E501
 
         :return: The files of this DatasetNewRequest.  # noqa: E501
         :rtype: list[UploadFile]
@@ -261,7 +269,8 @@ class DatasetNewRequest(object):
     def files(self, files):
         """Sets the files of this DatasetNewRequest.
 
-        A list of files that should be associated with the dataset  # noqa: E501
+        A list of files that should be associated with the dataset  #
+        noqa: E501
 
         :param files: The files of this DatasetNewRequest.  # noqa: E501
         :type: list[UploadFile]
@@ -273,7 +282,7 @@ class DatasetNewRequest(object):
 
     @property
     def is_private(self):
-        """Gets the is_private of this DatasetNewRequest.  # noqa: E501
+        """Gets the is_private of this DatasetNewRequest.  # noqa: E501.
 
         Whether or not the dataset should be private  # noqa: E501
 
@@ -288,7 +297,8 @@ class DatasetNewRequest(object):
 
         Whether or not the dataset should be private  # noqa: E501
 
-        :param is_private: The is_private of this DatasetNewRequest.  # noqa: E501
+        :param is_private: The is_private of this DatasetNewRequest. #
+            noqa: E501
         :type: bool
         """
 
@@ -296,11 +306,13 @@ class DatasetNewRequest(object):
 
     @property
     def convert_to_csv(self):
-        """Gets the convert_to_csv of this DatasetNewRequest.  # noqa: E501
+        """Gets the convert_to_csv of this DatasetNewRequest.  # noqa: E501.
 
-        Whether or not a tabular dataset should be converted to csv  # noqa: E501
+        Whether or not a tabular dataset should be converted to csv  #
+        noqa: E501
 
-        :return: The convert_to_csv of this DatasetNewRequest.  # noqa: E501
+        :return: The convert_to_csv of this DatasetNewRequest. # noqa:
+            E501
         :rtype: bool
         """
         return self._convert_to_csv
@@ -309,9 +321,11 @@ class DatasetNewRequest(object):
     def convert_to_csv(self, convert_to_csv):
         """Sets the convert_to_csv of this DatasetNewRequest.
 
-        Whether or not a tabular dataset should be converted to csv  # noqa: E501
+        Whether or not a tabular dataset should be converted to csv  #
+        noqa: E501
 
-        :param convert_to_csv: The convert_to_csv of this DatasetNewRequest.  # noqa: E501
+        :param convert_to_csv: The convert_to_csv of this
+            DatasetNewRequest. # noqa: E501
         :type: bool
         """
 
@@ -319,11 +333,12 @@ class DatasetNewRequest(object):
 
     @property
     def category_ids(self):
-        """Gets the category_ids of this DatasetNewRequest.  # noqa: E501
+        """Gets the category_ids of this DatasetNewRequest.  # noqa: E501.
 
         A list of tag IDs to associated with the dataset  # noqa: E501
 
-        :return: The category_ids of this DatasetNewRequest.  # noqa: E501
+        :return: The category_ids of this DatasetNewRequest. # noqa:
+            E501
         :rtype: list[str]
         """
         return self._category_ids
@@ -334,14 +349,15 @@ class DatasetNewRequest(object):
 
         A list of tag IDs to associated with the dataset  # noqa: E501
 
-        :param category_ids: The category_ids of this DatasetNewRequest.  # noqa: E501
+        :param category_ids: The category_ids of this DatasetNewRequest.
+            # noqa: E501
         :type: list[str]
         """
 
         self._category_ids = category_ids
 
     def to_dict(self):
-        """Returns the model properties as a dict"""
+        """Returns the model properties as a dict."""
         result = {}
 
         for attr, _ in six.iteritems(self.project_types):
@@ -365,7 +381,7 @@ class DatasetNewRequest(object):
         return result
 
     def to_str(self):
-        """Returns the string representation of the model"""
+        """Returns the string representation of the model."""
         return pprint.pformat(self.to_dict())
 
     def __repr__(self):
@@ -373,13 +389,13 @@ class DatasetNewRequest(object):
         return self.to_str()
 
     def __eq__(self, other):
-        """Returns true if both objects are equal"""
+        """Returns true if both objects are equal."""
         if not isinstance(other, DatasetNewRequest):
             return False
 
         return self.__dict__ == other.__dict__
 
     def __ne__(self, other):
-        """Returns true if both objects are not equal"""
+        """Returns true if both objects are not equal."""
         return not self == other
 

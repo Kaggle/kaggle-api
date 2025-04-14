@@ -25,7 +25,7 @@ import urllib3
 
 class Configuration:
 
-  def __init__(self):
+  def __init__(self) -> None:
     """Constructor."""
     # Default Base url
     self.host = _get_endpoint_from_env() or "https://www.kaggle.com/api/v1"
@@ -42,9 +42,9 @@ class Configuration:
 
     # Logging Settings
     self.logger = {
-        "package_logger": logging.getLogger("kaggle"),
-        "urllib3_logger": logging.getLogger("urllib3")
-    }
+      "package_logger": logging.getLogger("kaggle"),
+      "urllib3_logger": logging.getLogger("urllib3")
+      }
     # Log format
     self.logger_format = '%(asctime)s %(levelname)s %(message)s'
     # Log stream handler
@@ -69,7 +69,7 @@ class Configuration:
     return self.__logger_file
 
   @logger_file.setter
-  def logger_file(self, value):
+  def logger_file(self, value) -> None:
     """The logger file.
 
     If the logger_file is None, then add stream handler and remove file
@@ -108,7 +108,7 @@ class Configuration:
     return self.__debug
 
   @debug.setter
-  def debug(self, value):
+  def debug(self, value) -> None:
     """Debug status.
 
     :param value: The debug status, True or False.
@@ -137,7 +137,7 @@ class Configuration:
     return self.__logger_format
 
   @logger_format.setter
-  def logger_format(self, value):
+  def logger_format(self, value) -> None:
     """The logger format.
 
     The logger_formatter will be updated when sets logger_format.
@@ -156,7 +156,7 @@ class Configuration:
     """
     if (self.api_key.get(identifier) and self.api_key_prefix.get(identifier)):
       return self.api_key_prefix[identifier] + ' ' + self.api_key[
-          identifier]  # noqa: E501
+        identifier]  # noqa: E501
     elif self.api_key.get(identifier):
       return self.api_key[identifier]
 
@@ -166,23 +166,23 @@ class Configuration:
     :return: The token for basic HTTP authentication.
     """
     return urllib3.util.make_headers(basic_auth=self.username + ':' +
-                                     self.password).get('authorization')
+                                                self.password).get('authorization')
 
-  def auth_settings(self):
+  def auth_settings(self) -> dict[str, dict[str, str]]:
     """Gets Auth Settings dict for api client.
 
     :return: The Auth Settings information dict.
     """
     return {
-        'basicAuth': {
-            'type': 'basic',
-            'in': 'header',
-            'key': 'Authorization',
-            'value': self.get_basic_auth_token()
+      'basicAuth': {
+        'type': 'basic',
+        'in': 'header',
+        'key': 'Authorization',
+        'value': self.get_basic_auth_token()
         },
-    }
+      }
 
-  def to_debug_report(self):
+  def to_debug_report(self) -> str:
     """Gets the essential information for debugging.
 
     :return: The report for debugging.
@@ -195,7 +195,7 @@ class Configuration:
       format(env=sys.platform, pyversion=sys.version)
 
 
-def _get_endpoint_from_env():
+def _get_endpoint_from_env() -> None:
   import os
   endpoint = os.environ.get("KAGGLE_API_ENDPOINT")
   if endpoint is None:

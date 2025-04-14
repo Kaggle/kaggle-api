@@ -79,3 +79,8 @@ test = "./tools/GeneratePythonLibrary.sh --test local"
 
 [tool.docformatter]
 recursive = true
+
+[tool.black]
+target-version = ["py39"]
+line-length = 120
+skip-string-normalization = true

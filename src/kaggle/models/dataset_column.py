@@ -23,215 +23,206 @@ import six
 
 
 class DatasetColumn(object):
-  """
+    """
     Attributes:
       column_types (dict): The key is attribute name
                             and the value is attribute type.
       attribute_map (dict): The key is attribute name
                             and the value is json key in definition.
     """
-  column_types = {
-      'order': 'float',
-      'name': 'str',
-      'type': 'str',
-      'original_type': 'str',
-      'description': 'str'
-  }
 
-  attribute_map = {
-      'order': 'order',
-      'name': 'name',
-      'type': 'type',
-      'original_type': 'originalType',
-      'description': 'description'
-  }
+    column_types = {'order': 'float', 'name': 'str', 'type': 'str', 'original_type': 'str', 'description': 'str'}
 
-  def __init__(self,
-               order=None,
-               name=None,
-               type=None,
-               original_type=None,
-               description=None):  # noqa: E501
-    """DatasetColumn - a model defined in Swagger"""  # noqa: E501
+    attribute_map = {
+        'order': 'order',
+        'name': 'name',
+        'type': 'type',
+        'original_type': 'originalType',
+        'description': 'description',
+    }
 
-    self._order = None
-    self._name = None
-    self._type = None
-    self._original_type = None
-    self._description = None
-    self.discriminator = None
+    def __init__(self, order=None, name=None, type=None, original_type=None, description=None):  # noqa: E501
+        """DatasetColumn - a model defined in Swagger"""  # noqa: E501
 
-    if order is not None:
-      self.order = order
-    if name is not None:
-      self.name = name
-    if type is not None:
-      self.type = type
-    if original_type is not None:
-      self.original_type = original_type
-    if description is not None:
-      self.description = description
+        self._order = None
+        self._name = None
+        self._type = None
+        self._original_type = None
+        self._description = None
+        self.discriminator = None
 
-  @property
-  def order(self):
-    """Gets the order of this DatasetColumn.  # noqa: E501.
+        if order is not None:
+            self.order = order
+        if name is not None:
+            self.name = name
+        if type is not None:
+            self.type = type
+        if original_type is not None:
+            self.original_type = original_type
+        if description is not None:
+            self.description = description
 
-    The order that the column comes in, 0-based. (The first column is 0,
-    second is 1, etc.)  # noqa: E501
+    @property
+    def order(self):
+        """Gets the order of this DatasetColumn.  # noqa: E501.
 
-    :return: The order of this DatasetColumn.  # noqa: E501
-    :rtype: float
-    """
-    return self._order
+        The order that the column comes in, 0-based. (The first column is 0,
+        second is 1, etc.)  # noqa: E501
 
-  @order.setter
-  def order(self, order):
-    """Sets the order of this DatasetColumn.
+        :return: The order of this DatasetColumn.  # noqa: E501
+        :rtype: float
+        """
+        return self._order
 
-    The order that the column comes in, 0-based. (The first column is 0,
-    second is 1, etc.)  # noqa: E501
+    @order.setter
+    def order(self, order):
+        """Sets the order of this DatasetColumn.
 
-    :param order: The order of this DatasetColumn.  # noqa: E501
-    :type: float
-    """
+        The order that the column comes in, 0-based. (The first column is 0,
+        second is 1, etc.)  # noqa: E501
 
-    self._order = order
+        :param order: The order of this DatasetColumn.  # noqa: E501
+        :type: float
+        """
 
-  @property
-  def name(self):
-    """Gets the name of this DatasetColumn.  # noqa: E501.
+        self._order = order
 
-    The column name  # noqa: E501
+    @property
+    def name(self):
+        """Gets the name of this DatasetColumn.  # noqa: E501.
 
-    :return: The name of this DatasetColumn.  # noqa: E501
-    :rtype: str
-    """
-    return self._name
+        The column name  # noqa: E501
 
-  @name.setter
-  def name(self, name):
-    """Sets the name of this DatasetColumn.
+        :return: The name of this DatasetColumn.  # noqa: E501
+        :rtype: str
+        """
+        return self._name
 
-    The column name  # noqa: E501
+    @name.setter
+    def name(self, name):
+        """Sets the name of this DatasetColumn.
 
-    :param name: The name of this DatasetColumn.  # noqa: E501
-    :type: str
-    """
+        The column name  # noqa: E501
 
-    self._name = name
+        :param name: The name of this DatasetColumn.  # noqa: E501
+        :type: str
+        """
 
-  @property
-  def type(self):
-    """Gets the type of this DatasetColumn.  # noqa: E501.
+        self._name = name
 
-    The type of all of the fields in the column. Please see the data
-    types on
-    https://github.com/Kaggle/kaggle-api/wiki/Dataset-Metadata
-     # noqa: E501
+    @property
+    def type(self):
+        """Gets the type of this DatasetColumn.  # noqa: E501.
 
-    :return: The type of this DatasetColumn.  # noqa: E501
-    :rtype: str
-    """
-    return self._type
+        The type of all of the fields in the column. Please see the data
+        types on
+        https://github.com/Kaggle/kaggle-api/wiki/Dataset-Metadata
+         # noqa: E501
 
-  @type.setter
-  def type(self, type):
-    """Sets the type of this DatasetColumn.
+        :return: The type of this DatasetColumn.  # noqa: E501
+        :rtype: str
+        """
+        return self._type
 
-    The type of all of the fields in the column. Please see the data
-    types on
-    https://github.com/Kaggle/kaggle-api/wiki/Dataset-Metadata
-     # noqa: E501
+    @type.setter
+    def type(self, type):
+        """Sets the type of this DatasetColumn.
 
-    :param type: The type of this DatasetColumn.  # noqa: E501
-    :type: str
-    """
+        The type of all of the fields in the column. Please see the data
+        types on
+        https://github.com/Kaggle/kaggle-api/wiki/Dataset-Metadata
+         # noqa: E501
 
-    self._type = type
+        :param type: The type of this DatasetColumn.  # noqa: E501
+        :type: str
+        """
 
-  @property
-  def original_type(self):
-    """Gets the original_type of this DatasetColumn.  # noqa: E501.
+        self._type = type
 
-    Used to store the original type of the column, which will be converted to Kaggle's types. For example, an `originalType` of `\"integer\"` would convert to a `type` of `\"numeric\"`  # noqa: E501
+    @property
+    def original_type(self):
+        """Gets the original_type of this DatasetColumn.  # noqa: E501.
 
-    :return: The original_type of this DatasetColumn.  # noqa: E501
-    :rtype: str
-    """
-    return self._original_type
+        Used to store the original type of the column, which will be converted to Kaggle's types. For example, an `originalType` of `\"integer\"` would convert to a `type` of `\"numeric\"`  # noqa: E501
 
-  @original_type.setter
-  def original_type(self, original_type):
-    """Sets the original_type of this DatasetColumn.
+        :return: The original_type of this DatasetColumn.  # noqa: E501
+        :rtype: str
+        """
+        return self._original_type
 
-    Used to store the original type of the column, which will be converted to Kaggle's types. For example, an `originalType` of `\"integer\"` would convert to a `type` of `\"numeric\"`  # noqa: E501
+    @original_type.setter
+    def original_type(self, original_type):
+        """Sets the original_type of this DatasetColumn.
 
-    :param original_type: The original_type of this DatasetColumn.  # noqa: E501
-    :type: str
-    """
+        Used to store the original type of the column, which will be converted to Kaggle's types. For example, an `originalType` of `\"integer\"` would convert to a `type` of `\"numeric\"`  # noqa: E501
 
-    self._original_type = original_type
+        :param original_type: The original_type of this DatasetColumn.  # noqa: E501
+        :type: str
+        """
 
-  @property
-  def description(self):
-    """Gets the description of this DatasetColumn.  # noqa: E501.
+        self._original_type = original_type
 
-    The description of the column  # noqa: E501
+    @property
+    def description(self):
+        """Gets the description of this DatasetColumn.  # noqa: E501.
 
-    :return: The description of this DatasetColumn.  # noqa: E501
-    :rtype: str
-    """
-    return self._description
+        The description of the column  # noqa: E501
 
-  @description.setter
-  def description(self, description):
-    """Sets the description of this DatasetColumn.
+        :return: The description of this DatasetColumn.  # noqa: E501
+        :rtype: str
+        """
+        return self._description
 
-    The description of the column  # noqa: E501
+    @description.setter
+    def description(self, description):
+        """Sets the description of this DatasetColumn.
 
-    :param description: The description of this DatasetColumn. # noqa:
-        E501
-    :type: str
-    """
+        The description of the column  # noqa: E501
 
-    self._description = description
+        :param description: The description of this DatasetColumn. # noqa:
+            E501
+        :type: str
+        """
 
-  def to_dict(self):
-    """Returns the model properties as a dict."""
-    result = {}
+        self._description = description
 
-    for attr, _ in six.iteritems(self.column_types):
-      value = getattr(self, attr)
-      if isinstance(value, list):
-        result[attr] = list(
-            map(lambda x: x.to_dict() if hasattr(x, "to_dict") else x, value))
-      elif hasattr(value, "to_dict"):
-        result[attr] = value.to_dict()
-      elif isinstance(value, dict):
-        result[attr] = dict(
-            map(
-                lambda item: (item[0], item[1].to_dict())
-                if hasattr(item[1], "to_dict") else item, value.items()))
-      else:
-        result[attr] = value
+    def to_dict(self):
+        """Returns the model properties as a dict."""
+        result = {}
 
-    return result
+        for attr, _ in six.iteritems(self.column_types):
+            value = getattr(self, attr)
+            if isinstance(value, list):
+                result[attr] = list(map(lambda x: x.to_dict() if hasattr(x, "to_dict") else x, value))
+            elif hasattr(value, "to_dict"):
+                result[attr] = value.to_dict()
+            elif isinstance(value, dict):
+                result[attr] = dict(
+                    map(
+                        lambda item: (item[0], item[1].to_dict()) if hasattr(item[1], "to_dict") else item,
+                        value.items(),
+                    )
+                )
+            else:
+                result[attr] = value
 
-  def to_str(self):
-    """Returns the string representation of the model."""
-    return pprint.pformat(self.to_dict())
+        return result
 
-  def __repr__(self):
-    """For `print` and `pprint`"""
-    return self.to_str()
+    def to_str(self):
+        """Returns the string representation of the model."""
+        return pprint.pformat(self.to_dict())
 
-  def __eq__(self, other):
-    """Returns true if both objects are equal."""
-    if not isinstance(other, DatasetColumn):
-      return False
+    def __repr__(self):
+        """For `print` and `pprint`"""
+        return self.to_str()
 
-    return self.__dict__ == other.__dict__
+    def __eq__(self, other):
+        """Returns true if both objects are equal."""
+        if not isinstance(other, DatasetColumn):
+            return False
 
-  def __ne__(self, other):
-    """Returns true if both objects are not equal."""
-    return not self == other
+        return self.__dict__ == other.__dict__
+
+    def __ne__(self, other):
+        """Returns true if both objects are not equal."""
+        return not self == other

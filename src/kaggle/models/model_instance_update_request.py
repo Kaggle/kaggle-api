@@ -30,6 +30,7 @@ class ModelInstanceUpdateRequest(object):
       attribute_map (dict): The key is attribute name
                             and the value is json key in definition.
     """
+
     project_types = {
         'overview': 'str',
         'usage': 'str',
@@ -39,7 +40,7 @@ class ModelInstanceUpdateRequest(object):
         'model_instance_type': 'str',
         'base_model_instance': 'str',
         'external_base_model_url': 'int',
-        'update_mask': 'str'
+        'update_mask': 'str',
     }
 
     attribute_map = {
@@ -51,10 +52,21 @@ class ModelInstanceUpdateRequest(object):
         'model_instance_type': 'modelInstanceType',
         'base_model_instance': 'baseModelInstance',
         'external_base_model_url': 'externalBaseModelUrl',
-        'update_mask': 'updateMask'
+        'update_mask': 'updateMask',
     }
 
-    def __init__(self, overview=None, usage=None, license_name='Apache 2.0', fine_tunable=True, training_data=None, model_instance_type=None, base_model_instance=None, external_base_model_url=None, update_mask=None):  # noqa: E501
+    def __init__(
+        self,
+        overview=None,
+        usage=None,
+        license_name='Apache 2.0',
+        fine_tunable=True,
+        training_data=None,
+        model_instance_type=None,
+        base_model_instance=None,
+        external_base_model_url=None,
+        update_mask=None,
+    ):  # noqa: E501
 
         self._overview = None
         self._usage = None
@@ -162,11 +174,70 @@ class ModelInstanceUpdateRequest(object):
             ModelInstanceUpdateRequest. # noqa: E501
         :type: str
         """
-        allowed_values = ["CC0 1.0", "CC BY-NC-SA 4.0", "Unknown", "CC BY-SA 4.0", "GPL 2", "CC BY-SA 3.0", "Other", "Other (specified in description)", "CC BY 4.0", "Attribution 4.0 International (CC BY 4.0)", "CC BY-NC 4.0", "Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)", "PDDL", "ODC Public Domain Dedication and Licence (PDDL)", "CC BY 3.0", "Attribution 3.0 Unported (CC BY 3.0)", "CC BY 3.0 IGO", "Attribution 3.0 IGO (CC BY 3.0 IGO)", "CC BY-NC-SA 3.0 IGO", "Attribution-NonCommercial-ShareAlike 3.0 IGO (CC BY-NC-SA 3.0 IGO)", "CDLA Permissive 1.0", "Community Data License Agreement - Permissive - Version 1.0", "CDLA Sharing 1.0", "Community Data License Agreement - Sharing - Version 1.0", "CC BY-ND 4.0", "Attribution-NoDerivatives 4.0 International (CC BY-ND 4.0)", "CC BY-NC-ND 4.0", "Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)", "ODC-BY 1.0", "ODC Attribution License (ODC-By)", "LGPL 3.0", "GNU Lesser General Public License 3.0", "AGPL 3.0", "GNU Affero General Public License 3.0", "FDL 1.3", "GNU Free Documentation License 1.3", "apache-2.0", "Apache 2.0", "mit", "MIT", "bsd-3-clause", "BSD-3-Clause", "Llama 2", "Llama 2 Community License", "Gemma", "gpl-3", "GPL 3", "RAIL-M", "AI Pubs Open RAIL-M License", "AIPubs Research-Use RAIL-M", "AI Pubs Research-Use RAIL-M License", "BigScience OpenRAIL-M", "BigScience Open RAIL-M License", "RAIL", "RAIL (specified in description)", "Llama 3", "Llama 3 Community License"]  # noqa: E501
+        allowed_values = [
+            "CC0 1.0",
+            "CC BY-NC-SA 4.0",
+            "Unknown",
+            "CC BY-SA 4.0",
+            "GPL 2",
+            "CC BY-SA 3.0",
+            "Other",
+            "Other (specified in description)",
+            "CC BY 4.0",
+            "Attribution 4.0 International (CC BY 4.0)",
+            "CC BY-NC 4.0",
+            "Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)",
+            "PDDL",
+            "ODC Public Domain Dedication and Licence (PDDL)",
+            "CC BY 3.0",
+            "Attribution 3.0 Unported (CC BY 3.0)",
+            "CC BY 3.0 IGO",
+            "Attribution 3.0 IGO (CC BY 3.0 IGO)",
+            "CC BY-NC-SA 3.0 IGO",
+            "Attribution-NonCommercial-ShareAlike 3.0 IGO (CC BY-NC-SA 3.0 IGO)",
+            "CDLA Permissive 1.0",
+            "Community Data License Agreement - Permissive - Version 1.0",
+            "CDLA Sharing 1.0",
+            "Community Data License Agreement - Sharing - Version 1.0",
+            "CC BY-ND 4.0",
+            "Attribution-NoDerivatives 4.0 International (CC BY-ND 4.0)",
+            "CC BY-NC-ND 4.0",
+            "Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)",
+            "ODC-BY 1.0",
+            "ODC Attribution License (ODC-By)",
+            "LGPL 3.0",
+            "GNU Lesser General Public License 3.0",
+            "AGPL 3.0",
+            "GNU Affero General Public License 3.0",
+            "FDL 1.3",
+            "GNU Free Documentation License 1.3",
+            "apache-2.0",
+            "Apache 2.0",
+            "mit",
+            "MIT",
+            "bsd-3-clause",
+            "BSD-3-Clause",
+            "Llama 2",
+            "Llama 2 Community License",
+            "Gemma",
+            "gpl-3",
+            "GPL 3",
+            "RAIL-M",
+            "AI Pubs Open RAIL-M License",
+            "AIPubs Research-Use RAIL-M",
+            "AI Pubs Research-Use RAIL-M License",
+            "BigScience OpenRAIL-M",
+            "BigScience Open RAIL-M License",
+            "RAIL",
+            "RAIL (specified in description)",
+            "Llama 3",
+            "Llama 3 Community License",
+        ]  # noqa: E501
         if license_name not in allowed_values:
             raise ValueError(
-                "Invalid value for `license_name` ({0}), must be one of {1}"  # noqa: E501
-                .format(license_name, allowed_values)
+                "Invalid value for `license_name` ({0}), must be one of {1}".format(  # noqa: E501
+                    license_name, allowed_values
+                )
             )
 
         self._license_name = license_name
@@ -251,8 +322,9 @@ class ModelInstanceUpdateRequest(object):
         allowed_values = ["Unspecified", "BaseModel", "KaggleVariant", "ExternalVariant"]  # noqa: E501
         if model_instance_type not in allowed_values:
             raise ValueError(
-                "Invalid value for `model_instance_type` ({0}), must be one of {1}"  # noqa: E501
-                .format(model_instance_type, allowed_values)
+                "Invalid value for `model_instance_type` ({0}), must be one of {1}".format(  # noqa: E501
+                    model_instance_type, allowed_values
+                )
             )
 
         self._model_instance_type = model_instance_type
@@ -344,18 +416,16 @@ class ModelInstanceUpdateRequest(object):
         for attr, _ in six.iteritems(self.project_types):
             value = getattr(self, attr)
             if isinstance(value, list):
-                result[attr] = list(map(
-                    lambda x: x.to_dict() if hasattr(x, "to_dict") else x,
-                    value
-                ))
+                result[attr] = list(map(lambda x: x.to_dict() if hasattr(x, "to_dict") else x, value))
             elif hasattr(value, "to_dict"):
                 result[attr] = value.to_dict()
             elif isinstance(value, dict):
-                result[attr] = dict(map(
-                    lambda item: (item[0], item[1].to_dict())
-                    if hasattr(item[1], "to_dict") else item,
-                    value.items()
-                ))
+                result[attr] = dict(
+                    map(
+                        lambda item: (item[0], item[1].to_dict()) if hasattr(item[1], "to_dict") else item,
+                        value.items(),
+                    )
+                )
             else:
                 result[attr] = value
 
@@ -379,4 +449,3 @@ class ModelInstanceUpdateRequest(object):
     def __ne__(self, other):
         """Returns true if both objects are not equal."""
         return not self == other
-

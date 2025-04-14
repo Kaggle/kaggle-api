@@ -23,120 +23,120 @@ import six
 
 
 class StartBlobUploadResponse(object):
-  """
+    """
     Attributes:
       project_types (dict): The key is attribute name
                             and the value is attribute type.
       attribute_map (dict): The key is attribute name
                             and the value is json key in definition.
     """
-  project_types = {'token': 'str', 'create_url': 'str'}
 
-  attribute_map = {'token': 'token', 'create_url': 'createUrl'}
+    project_types = {'token': 'str', 'create_url': 'str'}
 
-  def __init__(self, token=None, create_url=None):  # noqa: E501
-    """StartBlobUploadResponse - a model defined in Swagger"""  # noqa: E501
+    attribute_map = {'token': 'token', 'create_url': 'createUrl'}
 
-    self._token = None
-    self._create_url = None
-    self.discriminator = None
+    def __init__(self, token=None, create_url=None):  # noqa: E501
+        """StartBlobUploadResponse - a model defined in Swagger"""  # noqa: E501
 
-    self.token = token
-    self.create_url = create_url
+        self._token = None
+        self._create_url = None
+        self.discriminator = None
 
-  @property
-  def token(self):
-    """Gets the token of this StartBlobUploadResponse.  # noqa: E501.
+        self.token = token
+        self.create_url = create_url
 
-    Opaque string token used to reference the new blob/file.  # noqa:
-    E501
+    @property
+    def token(self):
+        """Gets the token of this StartBlobUploadResponse.  # noqa: E501.
 
-    :return: The token of this StartBlobUploadResponse.  # noqa: E501
-    :rtype: str
-    """
-    return self._token
-
-  @token.setter
-  def token(self, token):
-    """Sets the token of this StartBlobUploadResponse.
-
-    Opaque string token used to reference the new blob/file.  # noqa:
-    E501
-
-    :param token: The token of this StartBlobUploadResponse. # noqa:
+        Opaque string token used to reference the new blob/file.  # noqa:
         E501
-    :type: str
-    """
-    if token is None:
-      raise ValueError(
-          "Invalid value for `token`, must not be `None`")  # noqa: E501
 
-    self._token = token
+        :return: The token of this StartBlobUploadResponse.  # noqa: E501
+        :rtype: str
+        """
+        return self._token
 
-  @property
-  def create_url(self):
-    """Gets the create_url of this StartBlobUploadResponse.  # noqa: E501.
+    @token.setter
+    def token(self, token):
+        """Sets the token of this StartBlobUploadResponse.
 
-    URL to use to start the upload.  # noqa: E501
-
-    :return: The create_url of this StartBlobUploadResponse. # noqa:
+        Opaque string token used to reference the new blob/file.  # noqa:
         E501
-    :rtype: str
-    """
-    return self._create_url
 
-  @create_url.setter
-  def create_url(self, create_url):
-    """Sets the create_url of this StartBlobUploadResponse.
+        :param token: The token of this StartBlobUploadResponse. # noqa:
+            E501
+        :type: str
+        """
+        if token is None:
+            raise ValueError("Invalid value for `token`, must not be `None`")  # noqa: E501
 
-    URL to use to start the upload.  # noqa: E501
+        self._token = token
 
-    :param create_url: The create_url of this StartBlobUploadResponse. #
-        noqa: E501
-    :type: str
-    """
-    if create_url is None:
-      raise ValueError(
-          "Invalid value for `create_url`, must not be `None`")  # noqa: E501
+    @property
+    def create_url(self):
+        """Gets the create_url of this StartBlobUploadResponse.  # noqa: E501.
 
-    self._create_url = create_url
+        URL to use to start the upload.  # noqa: E501
 
-  def to_dict(self):
-    """Returns the model properties as a dict."""
-    result = {}
+        :return: The create_url of this StartBlobUploadResponse. # noqa:
+            E501
+        :rtype: str
+        """
+        return self._create_url
 
-    for attr, _ in six.iteritems(self.project_types):
-      value = getattr(self, attr)
-      if isinstance(value, list):
-        result[attr] = list(
-            map(lambda x: x.to_dict() if hasattr(x, "to_dict") else x, value))
-      elif hasattr(value, "to_dict"):
-        result[attr] = value.to_dict()
-      elif isinstance(value, dict):
-        result[attr] = dict(
-            map(
-                lambda item: (item[0], item[1].to_dict())
-                if hasattr(item[1], "to_dict") else item, value.items()))
-      else:
-        result[attr] = value
+    @create_url.setter
+    def create_url(self, create_url):
+        """Sets the create_url of this StartBlobUploadResponse.
 
-    return result
+        URL to use to start the upload.  # noqa: E501
 
-  def to_str(self):
-    """Returns the string representation of the model."""
-    return pprint.pformat(self.to_dict())
+        :param create_url: The create_url of this StartBlobUploadResponse. #
+            noqa: E501
+        :type: str
+        """
+        if create_url is None:
+            raise ValueError("Invalid value for `create_url`, must not be `None`")  # noqa: E501
 
-  def __repr__(self):
-    """For `print` and `pprint`"""
-    return self.to_str()
+        self._create_url = create_url
 
-  def __eq__(self, other):
-    """Returns true if both objects are equal."""
-    if not isinstance(other, StartBlobUploadResponse):
-      return False
+    def to_dict(self):
+        """Returns the model properties as a dict."""
+        result = {}
 
-    return self.__dict__ == other.__dict__
+        for attr, _ in six.iteritems(self.project_types):
+            value = getattr(self, attr)
+            if isinstance(value, list):
+                result[attr] = list(map(lambda x: x.to_dict() if hasattr(x, "to_dict") else x, value))
+            elif hasattr(value, "to_dict"):
+                result[attr] = value.to_dict()
+            elif isinstance(value, dict):
+                result[attr] = dict(
+                    map(
+                        lambda item: (item[0], item[1].to_dict()) if hasattr(item[1], "to_dict") else item,
+                        value.items(),
+                    )
+                )
+            else:
+                result[attr] = value
 
-  def __ne__(self, other):
-    """Returns true if both objects are not equal."""
-    return not self == other
+        return result
+
+    def to_str(self):
+        """Returns the string representation of the model."""
+        return pprint.pformat(self.to_dict())
+
+    def __repr__(self):
+        """For `print` and `pprint`"""
+        return self.to_str()
+
+    def __eq__(self, other):
+        """Returns true if both objects are equal."""
+        if not isinstance(other, StartBlobUploadResponse):
+            return False
+
+        return self.__dict__ == other.__dict__
+
+    def __ne__(self, other):
+        """Returns true if both objects are not equal."""
+        return not self == other

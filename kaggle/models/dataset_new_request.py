@@ -32,6 +32,7 @@ class DatasetNewRequest(object):
       attribute_map (dict): The key is attribute name
                             and the value is json key in definition.
     """
+
     project_types = {
         'title': 'str',
         'slug': 'str',
@@ -42,7 +43,7 @@ class DatasetNewRequest(object):
         'files': 'list[UploadFile]',
         'is_private': 'bool',
         'convert_to_csv': 'bool',
-        'category_ids': 'list[str]'
+        'category_ids': 'list[str]',
     }
 
     attribute_map = {
@@ -55,10 +56,22 @@ class DatasetNewRequest(object):
         'files': 'files',
         'is_private': 'isPrivate',
         'convert_to_csv': 'convertToCsv',
-        'category_ids': 'categoryIds'
+        'category_ids': 'categoryIds',
     }
 
-    def __init__(self, title=None, slug=None, owner_slug=None, license_name='unknown', subtitle=None, description='', files=None, is_private=True, convert_to_csv=True, category_ids=None):  # noqa: E501
+    def __init__(
+        self,
+        title=None,
+        slug=None,
+        owner_slug=None,
+        license_name='unknown',
+        subtitle=None,
+        description='',
+        files=None,
+        is_private=True,
+        convert_to_csv=True,
+        category_ids=None,
+    ):  # noqa: E501
 
         self._title = None
         self._slug = None
@@ -187,19 +200,51 @@ class DatasetNewRequest(object):
             # noqa: E501
         :type: str
         """
-        allowed_values = ["CC0-1.0", "CC-BY-SA-4.0", "GPL-2.0", "ODbL-1.0", "CC-BY-NC-SA-4.0", "unknown", "DbCL-1.0", "CC-BY-SA-3.0", "copyright-authors", "other", "reddit-api", "world-bank", "CC-BY-4.0", "CC-BY-NC-4.0", "PDDL", "CC-BY-3.0", "CC-BY-3.0-IGO", "US-Government-Works", "CC-BY-NC-SA-3.0-IGO", "CDLA-Permissive-1.0", "CDLA-Sharing-1.0", "CC-BY-ND-4.0", "CC-BY-NC-ND-4.0", "ODC-BY-1.0", "LGPL-3.0", "AGPL-3.0", "FDL-1.3", "EU-ODP-Legal-Notice", "apache-2.0", "GPL-3.0"]  # noqa: E501
+        allowed_values = [
+            "CC0-1.0",
+            "CC-BY-SA-4.0",
+            "GPL-2.0",
+            "ODbL-1.0",
+            "CC-BY-NC-SA-4.0",
+            "unknown",
+            "DbCL-1.0",
+            "CC-BY-SA-3.0",
+            "copyright-authors",
+            "other",
+            "reddit-api",
+            "world-bank",
+            "CC-BY-4.0",
+            "CC-BY-NC-4.0",
+            "PDDL",
+            "CC-BY-3.0",
+            "CC-BY-3.0-IGO",
+            "US-Government-Works",
+            "CC-BY-NC-SA-3.0-IGO",
+            "CDLA-Permissive-1.0",
+            "CDLA-Sharing-1.0",
+            "CC-BY-ND-4.0",
+            "CC-BY-NC-ND-4.0",
+            "ODC-BY-1.0",
+            "LGPL-3.0",
+            "AGPL-3.0",
+            "FDL-1.3",
+            "EU-ODP-Legal-Notice",
+            "apache-2.0",
+            "GPL-3.0",
+        ]  # noqa: E501
         if license_name not in allowed_values:
             raise ValueError(
-                "Invalid value for `license_name` ({0}), must be one of {1}"  # noqa: E501
-                .format(license_name, allowed_values)
+                "Invalid value for `license_name` ({0}), must be one of {1}".format(  # noqa: E501
+                    license_name, allowed_values
+                )
             )
         else:
             license_name = license_name.lower()
-            if license_name[0-1] == 'cc':
+            if license_name[0 - 1] == 'cc':
                 license_name = 'cc'
-            elif license_name[0-3] == 'gpl':
+            elif license_name[0 - 3] == 'gpl':
                 license_name = 'gpl'
-            elif license_name[0-3] == 'odb':
+            elif license_name[0 - 3] == 'odb':
                 license_name = 'odb'
             else:
                 license_name = 'other'
@@ -363,18 +408,16 @@ class DatasetNewRequest(object):
         for attr, _ in six.iteritems(self.project_types):
             value = getattr(self, attr)
             if isinstance(value, list):
-                result[attr] = list(map(
-                    lambda x: x.to_dict() if hasattr(x, "to_dict") else x,
-                    value
-                ))
+                result[attr] = list(map(lambda x: x.to_dict() if hasattr(x, "to_dict") else x, value))
             elif hasattr(value, "to_dict"):
                 result[attr] = value.to_dict()
             elif isinstance(value, dict):
-                result[attr] = dict(map(
-                    lambda item: (item[0], item[1].to_dict())
-                    if hasattr(item[1], "to_dict") else item,
-                    value.items()
-                ))
+                result[attr] = dict(
+                    map(
+                        lambda item: (item[0], item[1].to_dict()) if hasattr(item[1], "to_dict") else item,
+                        value.items(),
+                    )
+                )
             else:
                 result[attr] = value
 
@@ -398,4 +441,3 @@ class DatasetNewRequest(object):
     def __ne__(self, other):
         """Returns true if both objects are not equal."""
         return not self == other
-

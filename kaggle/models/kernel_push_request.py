@@ -31,6 +31,7 @@ class KernelPushRequest(object):
       attribute_map (dict): The key is attribute name
                             and the value is json key in definition.
     """
+
     project_types = {
         'id': 'int',
         'slug': 'str',
@@ -47,7 +48,7 @@ class KernelPushRequest(object):
         'kernel_data_sources': 'list[str]',
         'model_data_sources': 'list[str]',
         'category_ids': 'list[str]',
-        'docker_image_pinning_type': 'str'
+        'docker_image_pinning_type': 'str',
     }
 
     attribute_map = {
@@ -66,10 +67,28 @@ class KernelPushRequest(object):
         'kernel_data_sources': 'kernelDataSources',
         'model_data_sources': 'modelDataSources',
         'category_ids': 'categoryIds',
-        'docker_image_pinning_type': 'dockerImagePinningType'
+        'docker_image_pinning_type': 'dockerImagePinningType',
     }
 
-    def __init__(self, id=None, slug=None, new_title=None, text=None, language=None, kernel_type=None, is_private=None, enable_gpu=None, enable_tpu=None, enable_internet=None, dataset_data_sources=None, competition_data_sources=None, kernel_data_sources=None, model_data_sources=None, category_ids=None, docker_image_pinning_type=None):  # noqa: E501
+    def __init__(
+        self,
+        id=None,
+        slug=None,
+        new_title=None,
+        text=None,
+        language=None,
+        kernel_type=None,
+        is_private=None,
+        enable_gpu=None,
+        enable_tpu=None,
+        enable_internet=None,
+        dataset_data_sources=None,
+        competition_data_sources=None,
+        kernel_data_sources=None,
+        model_data_sources=None,
+        category_ids=None,
+        docker_image_pinning_type=None,
+    ):  # noqa: E501
 
         self._id = None
         self._slug = None
@@ -240,8 +259,7 @@ class KernelPushRequest(object):
         allowed_values = ["python", "r", "rmarkdown"]  # noqa: E501
         if language not in allowed_values:
             raise ValueError(
-                "Invalid value for `language` ({0}), must be one of {1}"  # noqa: E501
-                .format(language, allowed_values)
+                "Invalid value for `language` ({0}), must be one of {1}".format(language, allowed_values)  # noqa: E501
             )
 
         self._language = language
@@ -274,8 +292,9 @@ class KernelPushRequest(object):
         allowed_values = ["script", "notebook"]  # noqa: E501
         if kernel_type not in allowed_values:
             raise ValueError(
-                "Invalid value for `kernel_type` ({0}), must be one of {1}"  # noqa: E501
-                .format(kernel_type, allowed_values)
+                "Invalid value for `kernel_type` ({0}), must be one of {1}".format(  # noqa: E501
+                    kernel_type, allowed_values
+                )
             )
 
         self._kernel_type = kernel_type
@@ -540,8 +559,9 @@ class KernelPushRequest(object):
         allowed_values = ["original", "latest"]  # noqa: E501
         if docker_image_pinning_type not in allowed_values:
             raise ValueError(
-                "Invalid value for `docker_image_pinning_type` ({0}), must be one of {1}"  # noqa: E501
-                .format(docker_image_pinning_type, allowed_values)
+                "Invalid value for `docker_image_pinning_type` ({0}), must be one of {1}".format(  # noqa: E501
+                    docker_image_pinning_type, allowed_values
+                )
             )
 
         self._docker_image_pinning_type = docker_image_pinning_type
@@ -553,18 +573,16 @@ class KernelPushRequest(object):
         for attr, _ in six.iteritems(self.project_types):
             value = getattr(self, attr)
             if isinstance(value, list):
-                result[attr] = list(map(
-                    lambda x: x.to_dict() if hasattr(x, "to_dict") else x,
-                    value
-                ))
+                result[attr] = list(map(lambda x: x.to_dict() if hasattr(x, "to_dict") else x, value))
             elif hasattr(value, "to_dict"):
                 result[attr] = value.to_dict()
             elif isinstance(value, dict):
-                result[attr] = dict(map(
-                    lambda item: (item[0], item[1].to_dict())
-                    if hasattr(item[1], "to_dict") else item,
-                    value.items()
-                ))
+                result[attr] = dict(
+                    map(
+                        lambda item: (item[0], item[1].to_dict()) if hasattr(item[1], "to_dict") else item,
+                        value.items(),
+                    )
+                )
             else:
                 result[attr] = value
 
@@ -588,4 +606,3 @@ class KernelPushRequest(object):
     def __ne__(self, other):
         """Returns true if both objects are not equal."""
         return not self == other
-

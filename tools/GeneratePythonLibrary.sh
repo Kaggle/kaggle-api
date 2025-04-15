@@ -83,15 +83,11 @@ function init {
 function reset {
   cd $SELF_DIR
 
-  echo "rm -rf kaggle/* kagglesdk/*"
-  rm -rf kaggle/* kagglesdk/*
-
-  echo "yapf3 -ir src/"
-  if [ -x "$(command -v yapf3)" ]; then
-#    yapf3 -ir --style yapf src/
-    echo skipped
+  echo "run formatter"
+  if [ -x "$(command -v black)" ]; then
+    black .
   else
-    echo "yapf3 is not installed on your system"
+    echo "black is not installed on your system"
   fi
 }
 
@@ -113,10 +109,6 @@ function copy-src {
   cp ./src/setup.cfg .
   cp -r ./src/kaggle .
   cp -r ./src/kagglesdk .
-}
-
-function run-autogen {
-  find kaggle/ -type f -name \*.py -exec /tmp/autogen/autogen.sh --no-code --no-top-level-comment --in-place --copyright "Kaggle Inc" --license apache {} \;
 }
 
 function run-tests {
@@ -171,7 +163,6 @@ function run {
   reset
 
   copy-src
-  run-autogen
   install-package
   run-tests
 

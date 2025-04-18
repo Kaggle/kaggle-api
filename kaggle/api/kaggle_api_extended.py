@@ -34,7 +34,7 @@ import requests
 import urllib3.exceptions as urllib3_exceptions
 from requests import RequestException
 
-from kaggle.models.kaggle_models_extended import ResumableUploadResult, File, Kernel
+from kaggle.models.kaggle_models_extended import ResumableUploadResult, File
 
 from requests.adapters import HTTPAdapter
 from slugify import slugify
@@ -59,7 +59,6 @@ from kagglesdk.datasets.types.dataset_api_service import (
     ApiDatasetNewFile,
     ApiUpdateDatasetMetadataRequest,
     ApiGetDatasetMetadataRequest,
-    ApiListDatasetFilesResponse,
     ApiDatasetFile,
 )
 from kagglesdk.datasets.types.dataset_enums import (
@@ -108,9 +107,9 @@ from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 
 class DirectoryArchive(object):
 
-    def __init__(self, fullpath, format):
+    def __init__(self, fullpath, fmt):
         self._fullpath = fullpath
-        self._format = format
+        self._format = fmt
         self.name = None
         self.path = None
 
@@ -216,7 +215,7 @@ class ResumableFileUpload(object):
             and previous.timestamp > time.time() - ResumableFileUpload.RESUMABLE_UPLOAD_EXPIRY_SECONDS
         )
 
-    def upload_initiated(self, start_blob_upload_response):
+    def upload_initiated(self, start_blob_upload_response: ApiStartBlobUploadRequest):
         if self.context.no_resume:
             return
 
@@ -339,7 +338,7 @@ class KaggleApi:
     # Competitions valid types
     valid_competition_groups = ['general', 'entered', 'community', 'hosted', 'unlaunched', 'unlaunched_community']
     valid_competition_categories = [
-        'all',
+        'unspecified',
         'featured',
         'research',
         'recruitment',
@@ -460,7 +459,7 @@ class KaggleApi:
         # Step 3: load into configuration!
         self._load_config(config_data)
 
-    def _is_help_or_version_command(self, api_command):
+    def _is_help_or_version_command(self, api_command: str):
         """Determines if the string command passed in is for a help or version
         command.
 
@@ -471,9 +470,7 @@ class KaggleApi:
         """
         return api_command.endswith(('-h', '--help', '-v', '--version'))
 
-    def read_config_environment(
-        self, config_data: Optional[Dict[Any, Any]] = None, quiet: bool = False
-    ) -> Dict[str, str]:
+    def read_config_environment(self, config_data: Optional[Dict[str, str]] = None) -> Dict[str, str]:
         """read_config_environment is the second effort to get a username and key
         to authenticate to the Kaggle API. The environment keys are equivalent to
         the kaggle.json file, but with "KAGGLE_" prefix to define a unique
@@ -482,7 +479,6 @@ class KaggleApi:
         Parameters
         ==========
         config_data: a partially loaded configuration dictionary (optional)
-        quiet: suppress verbose print of output (default is False)
         """
 
         # Add all variables that start with KAGGLE_ to config data
@@ -722,7 +718,7 @@ class KaggleApi:
         name = re.sub('(.)([A-Z][a-z]+)', r'\1_\2', name)
         return re.sub('([a-z0-9])([A-Z])', r'\1_\2', name).lower()
 
-    def lookup_enum(self, enum_class: Any, item_name: str) -> Enum:
+    def lookup_enum(self, enum_class, item_name: str) -> Enum:
         item = self.camel_to_snake(item_name).upper()
         try:
             return enum_class[item]
@@ -739,7 +735,7 @@ class KaggleApi:
                     return enum_class[item]
             raise
 
-    def short_enum_name(self, value):
+    def short_enum_name(self, value: str):
         full_name = str(value)
         names = full_name.split('.')
         prefix_len = len(self.camel_to_snake(names[0])) + 1  # underscore
@@ -750,10 +746,10 @@ class KaggleApi:
     def competitions_list(
         self,
         group: Optional[str] = None,
-        category: None = None,
-        sort_by: None = None,
-        page: int = 1,
-        search: None = None,
+        category: Optional[str] = None,
+        sort_by: Optional[str] = None,
+        page: Optional[int] = 1,
+        search: Optional[str] = None,
     ):
         """Make a call to list competitions, format the response, and return a list
         of ApiCompetition instances.
@@ -777,9 +773,12 @@ class KaggleApi:
 
         if category:
             if category not in self.valid_competition_categories:
-                raise ValueError(
-                    'Invalid category specified. Valid options are ' + str(self.valid_competition_categories)
-                )
+                if category == 'all':
+                    category = 'unspecified'
+                else:
+                    raise ValueError(
+                        'Invalid category specified. Valid options are ' + str(self.valid_competition_categories)
+                    )
             category = self.lookup_enum(HostSegment, category)
 
         if sort_by:
@@ -797,7 +796,15 @@ class KaggleApi:
             response = kaggle.competitions.competition_api_client.list_competitions(request)
             return response.competitions
 
-    def competitions_list_cli(self, group=None, category=None, sort_by=None, page=1, search=None, csv_display=False):
+    def competitions_list_cli(
+        self,
+        group: Optional[str] = None,
+        category: Optional[str] = None,
+        sort_by: Optional[str] = None,
+        page: Optional[int] = 1,
+        search: Optional[str] = None,
+        csv_display: Optional[bool] = False,
+    ):
         """A wrapper for competitions_list for the client.
 
         Parameters

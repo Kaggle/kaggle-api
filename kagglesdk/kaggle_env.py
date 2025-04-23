@@ -3,12 +3,12 @@ from enum import Enum
 
 
 class KaggleEnv(Enum):
-    LOCAL = 0  # localhost
-    STAGING = 1  # staging.kaggle.com
-    ADMIN = 2  # admin.kaggle.com
-    QA = 3  # qa.kaggle.com
-    # Direct prod access is not allowed to have IAP protection during testing, but we support basic auth.
-    PROD = 4  # www.kaggle.com
+  LOCAL = 0  # localhost
+  STAGING = 1  # staging.kaggle.com
+  ADMIN = 2  # admin.kaggle.com
+  QA = 3  # qa.kaggle.com
+  # Direct prod access is not allowed to have IAP protection during testing, but we support basic auth.
+  PROD = 4  # www.kaggle.com
 
 
 _env_to_endpoint = {
@@ -22,19 +22,19 @@ _env_to_endpoint = {
 
 
 def get_endpoint(env: KaggleEnv):
-    return _env_to_endpoint[env]
+  return _env_to_endpoint[env]
 
 
 def get_env():
-    env = os.getenv('KAGGLE_API_ENVIRONMENT')
-    if env is None or env == 'PROD':
-        return KaggleEnv.PROD
-    if env == 'LOCALHOST':
-        return KaggleEnv.LOCAL
-    if env == 'ADMIN':
-        return KaggleEnv.ADMIN
-    if env == 'STAGING':
-        return KaggleEnv.STAGING
-    if env == 'QA':
-        return KaggleEnv.QA
-    raise Exception(f'Unrecognized value in KAGGLE_API_ENVIRONMENT: "{env}"')
+  env = os.getenv('KAGGLE_API_ENVIRONMENT')
+  if env is None or env == 'PROD':
+    return KaggleEnv.PROD
+  if env == 'LOCALHOST':
+    return KaggleEnv.LOCAL
+  if env == 'ADMIN':
+    return KaggleEnv.ADMIN
+  if env == 'STAGING':
+    return KaggleEnv.STAGING
+  if env == 'QA':
+    return KaggleEnv.QA
+  raise Exception(f'Unrecognized value in KAGGLE_API_ENVIRONMENT: "{env}"')

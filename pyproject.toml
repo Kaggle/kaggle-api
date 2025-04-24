@@ -24,19 +24,24 @@ keywords = ["Kaggle", "API"]
 requires-python = ">=3.7"
 dependencies = [
     "bleach",
-    "certifi>=14.05.14",
-    "charset-normalizer",
-    "idna",
-    "python-dateutil>=2.5.3",
-    "python-slugify",
+#    "certifi>=14.05.14",
+#    "charset-normalizer",
+#    "idna",
+#    "python-dateutil>=2.5.3",
+#    "python-slugify",
     "requests",
-    "setuptools>=21.0.0",
-    "six>=1.10",
-    "text-unidecode",
+    "setuptools>=21.0.0", # unused if setup.py is removed
+    "six>=1.10", # should be unused but is still imported
+#    "text-unidecode",
     "tqdm",
     "urllib3>=1.15.1",
-    "webencodings",
-    "protobuf"
+#    "webencodings",
+    "protobuf",
+    "black>=24.10.0",
+    "mypy>=1.15.0",
+    # Pre-install `types-*` packages to speed up lint:typing command.
+    "types-requests",
+    "types-tqdm",
 ]
 
 [project.scripts]
@@ -77,6 +82,44 @@ test = "./tools/GeneratePythonLibrary.sh --test local"
 recursive = true
 
 [tool.black]
-target-version = ["py39"]
+target-version = ["py311"]
 line-length = 120
 skip-string-normalization = true
+
+[tool.mypy]
+strict = false
+show_error_codes = true
+follow_imports = 'silent'
+exclude = '''(?x)(
+    /src/
+)'''
+python_version = 3.12
+
+# Start off with these
+warn_unused_configs = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+
+# Getting these passing should be easy
+#strict_equality = true
+#strict_concatenate = true
+
+# Strongly recommend enabling this one as soon as you can
+#check_untyped_defs = true
+
+# These shouldn't be too much additional work, but may be tricky to
+# get passing if you use a lot of untyped libraries
+#disallow_subclassing_any = true
+#disallow_untyped_decorators = true
+#disallow_any_generics = true
+
+# These next few are various gradations of forcing use of type annotations
+#disallow_untyped_calls = true
+#disallow_incomplete_defs = true
+#disallow_untyped_defs = true
+
+# This one isn't too hard to get passing, but return on investment is lower
+#no_implicit_reexport = true
+
+# This one can be tricky to get passing if you use a lot of untyped libraries
+#warn_return_any = true

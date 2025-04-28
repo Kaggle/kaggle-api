@@ -25,4 +25,4 @@ steps:
       path: /root
 
 substitutions:
-  _PYTHON_VERSION: '3.12'
+  _PYTHON_VERSION: '3.11'

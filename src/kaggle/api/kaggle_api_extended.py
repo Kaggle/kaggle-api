@@ -109,6 +109,9 @@ from requests.models import Response
 from typing import Any, Callable, cast, Dict, List, Mapping, Optional, Tuple, Union, TypeVar, Generic
 
 
+T = TypeVar('T')
+
+
 class DirectoryArchive(object):
 
     def __init__(self, fullpath, fmt):
@@ -725,7 +728,7 @@ class KaggleApi:
         name = re.sub('(.)([A-Z][a-z]+)', r'\1_\2', name)
         return re.sub('([a-z0-9])([A-Z])', r'\1_\2', name).lower()
 
-    def lookup_enum[T](self, enum_class: EnumMeta, sample: T, item_name: str) -> T:
+    def lookup_enum(self, enum_class: EnumMeta, sample: T, item_name: str) -> T:
         # sample is unused; it's purpose is to make mypy happy.
         item = self.camel_to_snake(item_name).upper()
         try:
@@ -3887,12 +3890,12 @@ class KaggleApi:
     def string(self, item):
         return item if isinstance(item, str) else str(item)
 
-    def get_or_fail[T](self, data: Mapping[str, T], key: str) -> T:
+    def get_or_fail(self, data: Mapping[str, T], key: str) -> T:
         if key in data:
             return data[key]
         raise ValueError('Key ' + key + ' not found in data')
 
-    def get_or_default[T](self, data: Dict[str, T], key: str, default: Optional[T]) -> Optional[T]:
+    def get_or_default(self, data: Dict[str, T], key: str, default: Optional[T]) -> Optional[T]:
         if key in data:
             return data[key]
         return default
@@ -4093,7 +4096,7 @@ class KaggleApi:
 
     def process_column(self, column):
         """Process a column, check for the type, and return the processed column.
-        
+
         Parameters
         ==========
         column: a list of values in a column to be processed
@@ -4128,7 +4131,7 @@ class KaggleApi:
 
     def upload_complete(self, path, url, quiet, resume=False):
         """Complete an upload to retrieve a path from a url.
-        
+
         Parameters
         ==========
         path: the path for the upload that is read in
@@ -4247,7 +4250,7 @@ class KaggleApi:
 
     def split_dataset_string(self, dataset):
         """Split a dataset string into owner_slug, dataset_slug, and optional version_number.
-        
+
         Parameters
         ==========
         dataset: the dataset name to split
@@ -4279,7 +4282,7 @@ class KaggleApi:
 
     def split_model_string(self, model: str) -> Tuple[Union[str, None], str]:
         """split a model string into owner_slug, model_slug.
-        
+
         Parameters
         ==========
         model: the model name to split
@@ -4312,7 +4315,7 @@ class KaggleApi:
 
     def split_model_instance_string(self, model_instance: str) -> Tuple[str, str, str, str]:
         """Split a model instance string into owner_slug, model_slug, framework, instance_slug.
-        
+
         Parameters
         ==========
         model_instance: the model instance name to validate
@@ -4456,7 +4459,7 @@ class TqdmBufferedReader(io.BufferedReader):
 
     def __init__(self, raw, progress_bar):
         """Helper class to implement an io.BufferedReader.
-        
+
         Parameters
         ==========
         raw: bytes data to pass to the buffered reader
@@ -4466,8 +4469,7 @@ class TqdmBufferedReader(io.BufferedReader):
         self.progress_bar = progress_bar
 
     def read(self, *args, **kwargs):
-        """Read the buffer, passing named and non named arguments to the io.BufferedReader function.
-        """
+        """Read the buffer, passing named and non named arguments to the io.BufferedReader function."""
         buf = io.BufferedReader.read(self, *args, **kwargs)
         self.increment(len(buf))
         return buf

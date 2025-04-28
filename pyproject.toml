@@ -28,7 +28,7 @@ dependencies = [
 #    "charset-normalizer",
 #    "idna",
 #    "python-dateutil>=2.5.3",
-#    "python-slugify",
+    "python-slugify",
     "requests",
     "setuptools>=21.0.0", # unused if setup.py is removed
     "six>=1.10", # should be unused but is still imported

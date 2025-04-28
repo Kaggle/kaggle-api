@@ -93,7 +93,7 @@ follow_imports = 'silent'
 exclude = '''(?x)(
     /src/
 )'''
-python_version = 3.12
+python_version = 3.11
 
 # Start off with these
 warn_unused_configs = true

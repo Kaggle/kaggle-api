@@ -109,6 +109,9 @@ from requests.models import Response
 from typing import Any, Callable, cast, Dict, List, Mapping, Optional, Tuple, Union, TypeVar, Generic
 
 
+T = TypeVar('T')
+
+
 class DirectoryArchive(object):
 
     def __init__(self, fullpath, fmt):
@@ -724,8 +727,8 @@ class KaggleApi:
         """
         name = re.sub('(.)([A-Z][a-z]+)', r'\1_\2', name)
         return re.sub('([a-z0-9])([A-Z])', r'\1_\2', name).lower()
- 
-    def lookup_enum[T](self, enum_class: EnumMeta, sample: T, item_name: str) -> T:
+
+    def lookup_enum(self, enum_class: EnumMeta, sample: T, item_name: str) -> T:
         # sample is unused; it's purpose is to make mypy happy.
         item = self.camel_to_snake(item_name).upper()
         try:
@@ -3887,12 +3890,12 @@ class KaggleApi:
     def string(self, item):
         return item if isinstance(item, str) else str(item)
 
-    def get_or_fail[T](self, data: Mapping[str, T], key: str) -> T:
+    def get_or_fail(self, data: Mapping[str, T], key: str) -> T:
         if key in data:
             return data[key]
         raise ValueError('Key ' + key + ' not found in data')
 
-    def get_or_default[T](self, data: Dict[str, T], key: str, default: Optional[T]) -> Optional[T]:
+    def get_or_default(self, data: Dict[str, T], key: str, default: Optional[T]) -> Optional[T]:
         if key in data:
             return data[key]
         return default

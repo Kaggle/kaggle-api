@@ -18,7 +18,7 @@
 from __future__ import print_function
 
 import csv
-import datetime
+from datetime import datetime
 import io
 
 import json  # Needed by mypy.
@@ -67,6 +67,7 @@ from kagglesdk.competitions.types.competition_api_service import (
     ApiDownloadLeaderboardRequest,
     ApiLeaderboardSubmission,
     ApiGetLeaderboardRequest,
+    ApiDataFile,
 )
 from kagglesdk.competitions.types.competition_enums import (
     CompetitionListTab,
@@ -141,8 +142,7 @@ import kagglesdk.kaggle_client
 from enum import EnumMeta
 from requests.exceptions import HTTPError
 from requests.models import Response
-from typing import Callable, cast, Dict, List, Mapping, Optional, Tuple, Union, TypeVar
-
+from typing import Callable, cast, Dict, List, Mapping, Optional, Tuple, Union, TypeVar, Iterable
 
 T = TypeVar('T')
 
@@ -1128,6 +1128,8 @@ class KaggleApi:
             request.page_token = cast(str, page_token)
             request.page_size = page_size
             response: ApiListDataFilesResponse = kaggle.competitions.competition_api_client.list_data_files(request)
+            for file in cast(Iterable[ApiDataFile], response.files):
+                file.ref = file.name
             return response
 
     def competition_list_files_cli(
@@ -2131,9 +2133,9 @@ class KaggleApi:
         open_mode = 'wb'
         last_modified = response.headers.get('Last-Modified')
         if last_modified is None:
-            remote_date = datetime.now()  # type: ignore[attr-defined]
+            remote_date = datetime.now()
         else:
-            remote_date = datetime.strptime(response.headers['Last-Modified'], '%a, %d %b %Y %H:%M:%S %Z')  # type: ignore[attr-defined]
+            remote_date = datetime.strptime(response.headers['Last-Modified'], '%a, %d %b %Y %H:%M:%S %Z')
         remote_date_timestamp = time.mktime(remote_date.timetuple())
 
         if not quiet:
@@ -3903,12 +3905,12 @@ class KaggleApi:
         try:
             last_modified = response.headers.get('Last-Modified')
             if last_modified is None:
-                remote_date = datetime.now()  # type: ignore[attr-defined]
+                remote_date = datetime.now()
             else:
-                remote_date = datetime.strptime(response.headers['Last-Modified'], '%a, %d %b %Y %H:%M:%S %Z')  # type: ignore[attr-defined]
+                remote_date = datetime.strptime(response.headers['Last-Modified'], '%a, %d %b %Y %H:%M:%S %Z')
             file_exists = os.path.isfile(outfile)
             if file_exists:
-                local_date = datetime.fromtimestamp(os.path.getmtime(outfile))  # type: ignore[attr-defined]
+                local_date = datetime.fromtimestamp(os.path.getmtime(outfile))
                 remote_size = int(response.headers['Content-Length'])
                 local_size = os.path.getsize(outfile)
                 if local_size < remote_size:
@@ -4528,7 +4530,7 @@ class KaggleApi:
         return as_metadata
 
     def validate_date(self, date):
-        datetime.strptime(date, "%Y-%m-%d")  # type: ignore[attr-defined]
+        datetime.strptime(date, "%Y-%m-%d")
 
     def sanitize_markdown(self, markdown: str) -> str:
         return bleach.clean(markdown)

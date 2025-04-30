@@ -21,10 +21,10 @@ import csv
 import datetime
 import io
 
-import json
+import json  # Needed by mypy.
 import os
 
-import re
+import re  # Needed by mypy.
 import shutil
 import sys
 import tarfile
@@ -48,10 +48,34 @@ from urllib3.util.retry import Retry
 from google.protobuf import field_mask_pb2
 
 from kaggle.configuration import Configuration
-from kagglesdk import KaggleClient, KaggleEnv
+from kagglesdk import KaggleClient, KaggleEnv  # type: ignore[attr-defined]
 from kagglesdk.admin.types.inbox_file_service import CreateInboxFileRequest
 from kagglesdk.blobs.types.blob_api_service import ApiStartBlobUploadRequest, ApiStartBlobUploadResponse, ApiBlobType
-from kagglesdk.competitions.types.competition_api_service import *
+from kagglesdk.competitions.types.competition_api_service import (
+    ApiListCompetitionsRequest,
+    ApiCompetition,
+    ApiCreateCodeSubmissionRequest,
+    ApiCreateSubmissionResponse,
+    ApiStartSubmissionUploadRequest,
+    ApiCreateSubmissionRequest,
+    ApiSubmission,
+    ApiListSubmissionsRequest,
+    ApiListDataFilesResponse,
+    ApiListDataFilesRequest,
+    ApiDownloadDataFileRequest,
+    ApiDownloadDataFilesRequest,
+    ApiDownloadLeaderboardRequest,
+    ApiLeaderboardSubmission,
+    ApiGetLeaderboardRequest,
+    )
+from kagglesdk.competitions.types.competition_enums import (
+    CompetitionListTab,
+    HostSegment,
+    CompetitionSortBy,
+    SubmissionGroup,
+    SubmissionSortBy,
+    )
+
 from kagglesdk.datasets.types.dataset_api_service import (
     ApiListDatasetsRequest,
     ApiListDatasetFilesRequest,
@@ -75,6 +99,7 @@ from kagglesdk.datasets.types.dataset_enums import (
     DatasetLicenseGroup,
     )
 from kagglesdk.datasets.types.dataset_types import DatasetSettings, SettingsLicense, DatasetCollaborator
+from kagglesdk.kaggle_object import KaggleObject
 from kagglesdk.kernels.types.kernels_api_service import (
     ApiListKernelsRequest,
     ApiListKernelFilesRequest,
@@ -113,10 +138,10 @@ from kagglesdk.models.types.model_types import Owner
 from ..models.dataset_column import DatasetColumn
 from ..models.upload_file import UploadFile
 import kagglesdk.kaggle_client
-from enum import Enum, EnumMeta
+from enum import EnumMeta
 from requests.exceptions import HTTPError
 from requests.models import Response
-from typing import Any, Callable, cast, Dict, List, Mapping, Optional, Tuple, Union, TypeVar, Generic
+from typing import Callable, cast, Dict, List, Mapping, Optional, Tuple, Union, TypeVar
 
 
 T = TypeVar('T')
@@ -277,13 +302,13 @@ class ResumableFileUpload(object):
     def from_dict(other, context):
         req = ApiStartBlobUploadRequest()
         req.from_dict(other['start_blob_upload_request'])
-        new = ResumableFileUpload(
-                other['path'], ApiStartBlobUploadRequest(**other['start_blob_upload_request']), context
-                )
+        new = ResumableFileUpload(other['path'], req, context)
         new.timestamp = other.get('timestamp')
         start_blob_upload_response = other.get('start_blob_upload_response')
         if start_blob_upload_response is not None:
-            new.start_blob_upload_response = ApiStartBlobUploadResponse(**start_blob_upload_response)
+            rsp = ApiStartBlobUploadResponse()
+            rsp.from_dict(**start_blob_upload_response)
+            new.start_blob_upload_response = rsp
             new.upload_complete = other.get('upload_complete') or False
         return new
 
@@ -833,9 +858,7 @@ class KaggleApi:
             if group == 'all':
                 group_val = CompetitionListTab.COMPETITION_LIST_TAB_EVERYTHING
             else:
-                group_val = self.lookup_enum(
-                        CompetitionListTab, CompetitionListTab.COMPETITION_LIST_TAB_EVERYTHING, group
-                        )
+                group_val = self.lookup_enum(CompetitionListTab, group_val, group)
 
         category_val = HostSegment.HOST_SEGMENT_UNSPECIFIED
         if category:
@@ -846,13 +869,13 @@ class KaggleApi:
                     raise ValueError(
                             'Invalid category specified. Valid options are ' + str(self.valid_competition_categories)
                             )
-            category_val = self.lookup_enum(HostSegment, HostSegment.HOST_SEGMENT_UNSPECIFIED, category)
+            category_val = self.lookup_enum(HostSegment, category_val, category)
 
         sort_by_val = CompetitionSortBy.COMPETITION_SORT_BY_BEST
         if sort_by:
             if sort_by not in self.valid_competition_sort_by:
                 raise ValueError('Invalid sort_by specified. Valid options are ' + str(self.valid_competition_sort_by))
-            sort_by_val = self.lookup_enum(CompetitionSortBy, CompetitionSortBy.COMPETITION_SORT_BY_BEST, sort_by)
+            sort_by_val = self.lookup_enum(CompetitionSortBy, sort_by_val, sort_by)
 
         with self.build_kaggle_client() as kaggle:
             request = ApiListCompetitionsRequest()
@@ -1339,7 +1362,7 @@ class KaggleApi:
             if sort_by not in self.valid_dataset_sort_bys:
                 raise ValueError('Invalid sort by specified. Valid options are ' + str(self.valid_dataset_sort_bys))
             else:
-                sort_by_val = self.lookup_enum(DatasetSortBy, DatasetSortBy.DATASET_SORT_BY_HOTTEST, sort_by)
+                sort_by_val = self.lookup_enum(DatasetSortBy, sort_by_val, sort_by)
 
         if size:
             raise ValueError(
@@ -1352,9 +1375,7 @@ class KaggleApi:
             if file_type not in self.valid_dataset_file_types:
                 raise ValueError('Invalid file type specified. Valid options are ' + str(self.valid_dataset_file_types))
             else:
-                file_type_val = self.lookup_enum(
-                        DatasetFileTypeGroup, DatasetFileTypeGroup.DATASET_FILE_TYPE_GROUP_ALL, file_type
-                        )
+                file_type_val = self.lookup_enum(DatasetFileTypeGroup, file_type_val, file_type)
 
         license_name_val = DatasetLicenseGroup.DATASET_LICENSE_GROUP_ALL
         if license_name:
@@ -1363,9 +1384,7 @@ class KaggleApi:
                         'Invalid license specified. Valid options are ' + str(self.valid_dataset_license_names)
                         )
             else:
-                license_name_val = self.lookup_enum(
-                        DatasetLicenseGroup, DatasetLicenseGroup.DATASET_LICENSE_GROUP_ALL, license_name
-                        )
+                license_name_val = self.lookup_enum(DatasetLicenseGroup, license_name_val, license_name)
 
         if page and int(page) <= 0:
             raise ValueError('Page number must be >= 1')
@@ -2112,9 +2131,9 @@ class KaggleApi:
         open_mode = 'wb'
         last_modified = response.headers.get('Last-Modified')
         if last_modified is None:
-            remote_date = datetime.now()
+            remote_date = datetime.now()  # type: ignore[attr-defined]
         else:
-            remote_date = datetime.strptime(response.headers['Last-Modified'], '%a, %d %b %Y %H:%M:%S %Z')
+            remote_date = datetime.strptime(response.headers['Last-Modified'], '%a, %d %b %Y %H:%M:%S %Z')  # type: ignore[attr-defined]
         remote_date_timestamp = time.mktime(remote_date.timetuple())
 
         if not quiet:
@@ -2895,17 +2914,18 @@ class KaggleApi:
         page_size: the page size to return (default is 20)
         page_token: the page token for pagination
         """
+        sort_by_val = ListModelsOrderBy.LIST_MODELS_ORDER_BY_HOTNESS
         if sort_by:
             if sort_by not in self.valid_model_sort_bys:
                 raise ValueError('Invalid sort by specified. Valid options are ' + str(self.valid_model_sort_bys))
-            sort_by = self.lookup_enum(ListModelsOrderBy, sort_by)
+            sort_by_val = self.lookup_enum(ListModelsOrderBy, sort_by_val, sort_by)
 
         if int(page_size) <= 0:
             raise ValueError('Page size must be >= 1')
 
         with self.build_kaggle_client() as kaggle:
             request = ApiListModelsRequest()
-            request.sort_by = sort_by or ListModelsOrderBy.LIST_MODELS_ORDER_BY_HOTNESS
+            request.sort_by = sort_by_val
             request.search = search or ''
             request.owner = owner or ''
             request.page_size = page_size
@@ -3883,12 +3903,12 @@ class KaggleApi:
         try:
             last_modified = response.headers.get('Last-Modified')
             if last_modified is None:
-                remote_date = datetime.now()
+                remote_date = datetime.now()  # type: ignore[attr-defined]
             else:
-                remote_date = datetime.strptime(response.headers['Last-Modified'], '%a, %d %b %Y %H:%M:%S %Z')
+                remote_date = datetime.strptime(response.headers['Last-Modified'], '%a, %d %b %Y %H:%M:%S %Z')  # type: ignore[attr-defined]
             file_exists = os.path.isfile(outfile)
             if file_exists:
-                local_date = datetime.fromtimestamp(os.path.getmtime(outfile))
+                local_date = datetime.fromtimestamp(os.path.getmtime(outfile))  # type: ignore[attr-defined]
                 remote_size = int(response.headers['Content-Length'])
                 local_size = os.path.getsize(outfile)
                 if local_size < remote_size:
@@ -4508,7 +4528,7 @@ class KaggleApi:
         return as_metadata
 
     def validate_date(self, date):
-        datetime.strptime(date, "%Y-%m-%d")
+        datetime.strptime(date, "%Y-%m-%d")  # type: ignore[attr-defined]
 
     def sanitize_markdown(self, markdown: str) -> str:
         return bleach.clean(markdown)

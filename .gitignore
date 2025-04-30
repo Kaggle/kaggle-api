@@ -65,5 +65,3 @@ target/
 
 # Rider/IntelliJ
 .idea/
-
-mypy

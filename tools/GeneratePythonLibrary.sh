@@ -128,7 +128,7 @@ function run-tests {
   cd tests
   ln -s ../kagglesdk .
   ln -s ../kaggle .
-  python3 unit_tests.py
+  /usr/local/bin/python3.12 unit_tests.py
   rm kaggle kagglesdk
   cd ..
 }

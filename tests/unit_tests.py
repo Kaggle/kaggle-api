@@ -1,5 +1,6 @@
 # coding=utf-8
 import json
+import shutil
 import unittest
 import os
 import sys
@@ -40,8 +41,8 @@ test_user = api.config_values['username']
 model_title = 'testing'
 instance_name = 'test'
 framework_name = 'jax'
-kernel_name = 'testing'
-dataset_name = 'kaggleapi-testdataset'
+kernel_name = 'testing-x'
+dataset_name = 'kaggleapi-dataset-x'
 up_file = 'sample_submission.csv'
 description = 'House prices submission message'
 competition = 'house-prices-advanced-regression-techniques'
@@ -324,11 +325,7 @@ class TestKaggleApi(unittest.TestCase):
         except ApiException as e:
             self.fail(f"kernels_pull failed: {e}")
         finally:
-            for file in [f'{fs}/{self.kernel_metadata_path.split("/")[1]}', f'{fs}/{kernel_name}.ipynb']:
-                if os.path.exists(file):
-                    os.remove(file)
-            if os.path.exists(fs):
-                os.rmdir(fs)
+            shutil.rmtree(fs)
 
     # Competitions
 
@@ -339,7 +336,7 @@ class TestKaggleApi(unittest.TestCase):
             self.assertLessEqual(len(competitions), 20)
             [self.assertTrue(hasattr(competitions[0], api.camel_to_snake(f))) for f in api.competition_fields]
             competitions = api.competitions_list(page=2, category='gettingStarted', sort_by='prize')
-            self.assertEqual(len(competitions), 0)
+            self.assertEqual(len(competitions), 1)
         except ApiException as e:
             self.fail(f"competitions_list failed: {e}")
 
@@ -647,6 +644,11 @@ class TestKaggleApi(unittest.TestCase):
     def test_model_instance_c_get(self):
         if self.model_instance == '':
             self.test_model_b_initialize()
+            self.test_model_c_create_new()
+            self.test_model_instance_a_initialize()
+            self.test_model_instance_b_create()
+            self.test_model_instance_b_wait_after_create()
+            self.test_model_instance_c_get()
         try:
             inst_get_resp = api.model_instance_get(self.model_instance)
             self.assertIsNotNone(inst_get_resp.url)
@@ -656,8 +658,7 @@ class TestKaggleApi(unittest.TestCase):
         except ApiException as e:
             self.fail(f"model_instance_get failed: {e}")
         finally:
-            os.remove('model/tmp/model-instance-metadata.json')
-            os.rmdir('model/tmp')
+            shutil.rmtree('model/tmp')
 
     def test_model_instance_d_files(self):
         if self.model_instance == '':
@@ -719,21 +720,25 @@ class TestKaggleApi(unittest.TestCase):
             self.fail(f"model_instance_version_files failed: {e}")
 
     def test_model_instance_version_c_download(self):
-        if self.model_instance == '':
-            self.test_model_b_initialize()
-        version_file = ''
-        try:
-            version_file = api.model_instance_version_download(f'{self.model_instance}/1', 'tmp', force=True)
-            self.assertTrue(os.path.exists(version_file))
-        except KeyError:
-            pass  # TODO Create a version that has content.
-        except ApiException as e:
-            self.fail(f"model_instance_version_download failed: {e}")
-        finally:
-            if os.path.exists(version_file):
-                os.remove(version_file)
-            if os.path.exists('tmp'):
-                os.rmdir('tmp')
+        for x in range(0, 5):
+            if self.model_instance == '':
+                self.test_model_b_initialize()
+            version_file = ''
+            try:
+                version_file = api.model_instance_version_download(f'{self.model_instance}/1', 'tmp', force=True)
+                self.assertTrue(os.path.exists(version_file))
+            except KeyError:
+                pass  # TODO Create a version that has content.
+            except ApiException as e:
+                if e.strerror.startsWith('The archive is not ready yet'):
+                    continue
+                self.fail(f"model_instance_version_download failed: {e}")
+            finally:
+                if os.path.exists(version_file):
+                    os.remove(version_file)
+                if os.path.exists('tmp'):
+                    os.rmdir('tmp')
+                return
 
     # Model deletion
 

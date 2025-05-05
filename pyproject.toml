@@ -77,6 +77,7 @@ recursive = true
 target-version = ["py311"]
 line-length = 120
 skip-string-normalization = true
+extend-exclude = 'kagglesdk'
 
 [tool.mypy]
 strict = false

@@ -1220,7 +1220,7 @@ class KaggleApi:
         outfile = os.path.join(effective_path, competition + '.' + url.split('.')[-1])
 
         if force or self.download_needed(response, outfile, quiet):
-            self.download_file(response, outfile, quiet, not force)
+            self.download_file(response, outfile, kaggle.http_client(), quiet, not force)
 
     def competition_download_cli(
         self, competition, competition_opt=None, file_name=None, path=None, force=False, quiet=False
@@ -1272,7 +1272,7 @@ class KaggleApi:
 
         file_name = competition + '.zip'
         outfile = os.path.join(effective_path, file_name)
-        self.download_file(response, outfile, quiet)
+        self.download_file(response, outfile, kaggle.http_client(), quiet)
 
     def competition_leaderboard_view(self, competition: str) -> list[ApiLeaderboardSubmission | None] | None:
         """View a leaderboard based on a competition name.
@@ -1692,7 +1692,7 @@ class KaggleApi:
         outfile = os.path.join(effective_path, url.split('?')[0].split('/')[-1])
 
         if force or self.download_needed(response, outfile, quiet):
-            self.download_file(response, outfile, quiet, not force)
+            self.download_file(response, outfile, kaggle.http_client(), quiet, not force)
             return True
         else:
             return False
@@ -1729,7 +1729,7 @@ class KaggleApi:
 
         outfile = os.path.join(effective_path, dataset_slug + '.zip')
         if force or self.download_needed(response, outfile, quiet):
-            self.download_file(response, outfile, quiet, not force)
+            self.download_file(response, outfile, kaggle.http_client(), quiet, not force)
             downloaded = True
         else:
             downloaded = False
@@ -3695,7 +3695,7 @@ class KaggleApi:
 
         outfile = os.path.join(effective_path, model_slug + '.tar.gz')
         if force or self.download_needed(response, outfile, quiet):
-            self.download_file(response, outfile, quiet, not force)
+            self.download_file(response, outfile, kaggle.http_client(), quiet, not force)
             downloaded = True
         else:
             downloaded = False

@@ -92,6 +92,8 @@ from kagglesdk.datasets.types.dataset_api_service import (
     ApiDatasetFile,
     ApiDataset,
     ApiCreateDatasetResponse,
+    ApiDatasetColumn,
+    ApiDeleteDatasetRequest,
 )
 from kagglesdk.datasets.types.dataset_enums import (
     DatasetSelectionGroup,
@@ -1975,6 +1977,45 @@ class KaggleApi:
         else:
             print('Dataset version creation error: ' + result.error)
 
+    def dataset_delete(self, owner_slug: str, dataset_slug: str) -> None:
+        """Delete a dataset.
+
+        Parameters
+        ==========
+        owner_slug: the owner of the dataset
+        dataset_slug: the slug of the dataset
+        """
+        if not owner_slug:
+            owner_slug = self.get_config_value(self.CONFIG_NAME_USER)
+
+        with self.build_kaggle_client() as kaggle:
+            request = ApiDeleteDatasetRequest()
+            request.owner_slug = owner_slug
+            request.dataset_slug = dataset_slug
+            kaggle.datasets.dataset_api_client.delete_dataset(request)
+
+    def dataset_delete_cli(self, dataset: str, yes: bool = False) -> None:
+        """Client wrapper for deleting a dataset.
+
+        Parameters
+        ==========
+        dataset: the string identifier of the dataset in the format [owner]/[dataset-name]
+        yes: automatically confirm the deletion (default is False)
+        """
+        if dataset is None:
+            raise ValueError('A dataset must be specified')
+        owner_slug, dataset_slug, _ = self.split_dataset_string(dataset)
+
+        if not yes:
+            print(f'Warning: This will permanently delete the dataset "{dataset}".')
+            confirm = input('Are you sure you want to delete this dataset? (yes/no): ')
+            if not confirm.lower().startswith('y'):
+                print('Deletion cancelled.')
+                return
+
+        self.dataset_delete(owner_slug, dataset_slug)
+        print(f'Dataset "{dataset}" deleted successfully.')
+
     def dataset_initialize(self, folder: str) -> str:
         """Initialize a folder with a dataset configuration (metadata) file.
 
@@ -2086,7 +2127,10 @@ class KaggleApi:
                 retry_request.is_private = not public
                 retry_request.category_ids = keywords
                 response = self.with_retry(kaggle.datasets.dataset_api_client.create_dataset)(retry_request)
-                return cast(ApiCreateDatasetResponse, response)
+                result = cast(ApiCreateDatasetResponse, response)
+                if result.error == '':
+                    result.error = None
+                return result
 
     def dataset_create_new_cli(self, folder=None, public=False, quiet=False, convert_to_csv=True, dir_mode='skip'):
         """client wrapper for creating a new dataset
@@ -3228,12 +3272,18 @@ class KaggleApi:
 
             owner_slug, model_slug, framework, instance_slug = self.split_model_instance_string(model_instance)
 
+            framework = mi.framework.name
+            if not framework.startswith('ModelFramework.'):
+                framework = 'ModelFramework.' + framework
+            inst_type = mi.model_instance_type.name
+            if not inst_type.startswith('ModelInstanceType'):
+                inst_type = 'ModelInstanceType.' + inst_type
             data = {
                 'id': mi.id,
                 'ownerSlug': owner_slug,
                 'modelSlug': model_slug,
                 'instanceSlug': mi.slug,
-                'framework': self.short_enum_name(mi.framework.name),
+                'framework': self.short_enum_name(framework),
                 'overview': mi.overview,
                 'usage': mi.usage,
                 'licenseName': mi.license_name,
@@ -3241,7 +3291,7 @@ class KaggleApi:
                 'trainingData': mi.training_data,
                 'versionId': mi.version_id,
                 'versionNumber': mi.version_number,
-                'modelInstanceType': self.short_enum_name(mi.model_instance_type.name),
+                'modelInstanceType': self.short_enum_name(inst_type),
             }
             if mi.base_model_instance_information is not None:
                 # TODO Test this.
@@ -4101,14 +4151,15 @@ class KaggleApi:
             )
             if upload_file is not None:
                 files = request.files
-                if files:
+                if files is not None:
                     files.append(self._new_file(upload_file))
 
     def _new_file(self, file: UploadFile) -> ApiDatasetNewFile:
         new_file = ApiDatasetNewFile()
         new_file.token = file.token
         new_file.description = file.description
-        new_file.columns = file.columns
+        if file.columns:
+            new_file.columns = [ApiDatasetColumn.from_dict(file.to_dict()) for file in file.columns]
         return new_file
 
     def _upload_file_or_folder(

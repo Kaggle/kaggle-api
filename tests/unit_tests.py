@@ -511,7 +511,7 @@ class TestKaggleApi(unittest.TestCase):
         except ApiException as e:
             self.fail(f"dataset_initialize failed: {e}")
 
-    def test_dataset_i_create_new(self):
+    def test_dataset_i_create_new(self, fail_if_exists=True):
         if not os.path.exists(os.path.join(dataset_directory, api.DATASET_METADATA_FILE)):
             self.test_dataset_h_initialize()
         try:
@@ -525,7 +525,8 @@ class TestKaggleApi(unittest.TestCase):
                 else:
                     self.fail(f"dataset_create_new failed: {new_dataset.error}")
         except ApiException as e:
-            self.fail(f"dataset_create_new failed: {e}")
+            if fail_if_exists:
+                self.fail(f"dataset_create_new failed: {e}")
 
     def test_dataset_j_create_version(self):
         if not os.path.exists(os.path.join(dataset_directory, api.DATASET_METADATA_FILE)):
@@ -537,6 +538,10 @@ class TestKaggleApi(unittest.TestCase):
             self.assertFalse(new_version.ref == '')
         except ApiException as e:
             self.fail(f"dataset_create_version failed: {e}")
+
+    def test_dataset_k_delete(self):
+        self.test_dataset_i_create_new(fail_if_exists=False)
+        api.dataset_delete(None, dataset_name)
 
     # Models
 

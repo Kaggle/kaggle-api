@@ -312,7 +312,7 @@ class KaggleApi:
       'unlaunched_community'
   ]
   valid_competition_categories = [
-      'all', 'featured', 'research', 'recruitment', 'gettingStarted', 'masters',
+      'all', 'unspecified', 'featured', 'research', 'recruitment', 'gettingStarted', 'masters',
       'playground'
   ]
   valid_competition_sort_by = [
@@ -750,7 +750,10 @@ class KaggleApi:
 
     if category:
       if category not in self.valid_competition_categories:
-        raise ValueError('Invalid category specified. Valid options are ' +
+        if category == 'all':
+          category = 'unspecified'
+        else:
+          raise ValueError('Invalid category specified. Valid options are ' +
                          str(self.valid_competition_categories))
       category = self.lookup_enum(HostSegment, category)
 

@@ -1080,10 +1080,10 @@ class KaggleApi:
     with self.build_kaggle_client() as kaggle:
       request = ApiDownloadDataFileRequest()
       request.competition_name = competition
-      request.file_name = file_name
+      request.file_name = file_name.replace('/', '%2F')
       response = kaggle.competitions.competition_api_client.download_data_file(
           request)
-      url = response.history[0].url
+      url = response.history[0].url.replace('%2F', '/')
       outfile = os.path.join(effective_path, url.split('?')[0].split('/')[-1])
   
       if force or self.download_needed(response, outfile, quiet):

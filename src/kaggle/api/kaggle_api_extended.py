@@ -312,7 +312,7 @@ class KaggleApi:
       'unlaunched_community'
   ]
   valid_competition_categories = [
-      'all', 'featured', 'research', 'recruitment', 'gettingStarted', 'masters',
+      'all', 'unspecified', 'featured', 'research', 'recruitment', 'gettingStarted', 'masters',
       'playground'
   ]
   valid_competition_sort_by = [
@@ -750,7 +750,10 @@ class KaggleApi:
 
     if category:
       if category not in self.valid_competition_categories:
-        raise ValueError('Invalid category specified. Valid options are ' +
+        if category == 'all':
+          category = 'unspecified'
+        else:
+          raise ValueError('Invalid category specified. Valid options are ' +
                          str(self.valid_competition_categories))
       category = self.lookup_enum(HostSegment, category)
 
@@ -1080,12 +1083,12 @@ class KaggleApi:
       request.file_name = file_name
       response = kaggle.competitions.competition_api_client.download_data_file(
           request)
-    url = response.history[0].url
-    outfile = os.path.join(effective_path, url.split('?')[0].split('/')[-1])
-
-    if force or self.download_needed(response, outfile, quiet):
-      self.download_file(response, outfile, kaggle.http_client(), quiet,
-                         not force)
+      url = response.history[0].url
+      outfile = os.path.join(effective_path, url.split('?')[0].split('/')[-1])
+  
+      if force or self.download_needed(response, outfile, quiet):
+        self.download_file(response, outfile, kaggle.http_client(), quiet,
+                           not force)
 
   def competition_download_files(self,
                                  competition,
@@ -1112,12 +1115,12 @@ class KaggleApi:
       request.competition_name = competition
       response = kaggle.competitions.competition_api_client.download_data_files(
           request)
-    url = response.url.split('?')[0]
-    outfile = os.path.join(effective_path,
-                           competition + '.' + url.split('.')[-1])
-
-    if force or self.download_needed(response, outfile, quiet):
-      self.download_file(response, outfile, kaggle.http_client(), quiet, not force)
+      url = response.url.split('?')[0]
+      outfile = os.path.join(effective_path,
+                             competition + '.' + url.split('.')[-1])
+  
+      if force or self.download_needed(response, outfile, quiet):
+        self.download_file(response, outfile, kaggle.http_client(), quiet, not force)
 
   def competition_download_cli(self,
                                competition,
@@ -1168,15 +1171,15 @@ class KaggleApi:
       request.competition_name = competition
       response = kaggle.competitions.competition_api_client.download_leaderboard(
           request)
-    if path is None:
-      effective_path = self.get_default_download_dir('competitions',
-                                                     competition)
-    else:
-      effective_path = path
-
-    file_name = competition + '.zip'
-    outfile = os.path.join(effective_path, file_name)
-    self.download_file(response, outfile, kaggle.http_client(), quiet)
+      if path is None:
+        effective_path = self.get_default_download_dir('competitions',
+                                                       competition)
+      else:
+        effective_path = path
+  
+      file_name = competition + '.zip'
+      outfile = os.path.join(effective_path, file_name)
+      self.download_file(response, outfile, kaggle.http_client(), quiet)
 
   def competition_leaderboard_view(self, competition):
     """View a leaderboard based on a competition name.
@@ -1612,14 +1615,14 @@ class KaggleApi:
       request.dataset_version_number = dataset_version_number
       request.file_name = file_name
       response = kaggle.datasets.dataset_api_client.download_dataset(request)
-    url = response.history[0].url
-    outfile = os.path.join(effective_path, url.split('?')[0].split('/')[-1])
-
-    if force or self.download_needed(response, outfile, quiet):
-      self.download_file(response, outfile, kaggle.http_client(), quiet, not force)
-      return True
-    else:
-      return False
+      url = response.history[0].url
+      outfile = os.path.join(effective_path, url.split('?')[0].split('/')[-1])
+  
+      if force or self.download_needed(response, outfile, quiet):
+        self.download_file(response, outfile, kaggle.http_client(), quiet, not force)
+        return True
+      else:
+        return False
 
   def dataset_download_files(self,
                              dataset,
@@ -1660,39 +1663,39 @@ class KaggleApi:
       request.dataset_version_number = dataset_version_number
       response = kaggle.datasets.dataset_api_client.download_dataset(request)
 
-    outfile = os.path.join(effective_path, dataset_slug + '.zip')
-    if force or self.download_needed(response, outfile, quiet):
-      self.download_file(response, outfile, kaggle.http_client(), quiet, not force)
-      downloaded = True
-    else:
-      downloaded = False
-
-    if downloaded:
       outfile = os.path.join(effective_path, dataset_slug + '.zip')
-      if unzip:
-        try:
-          with zipfile.ZipFile(outfile) as z:
-            z.extractall(effective_path)
-        except zipfile.BadZipFile as e:
-          raise ValueError(
-              f"The file {outfile} is corrupted or not a valid zip file. "
-              "Please report this issue at https://www.github.com/kaggle/kaggle-api"
-          )
-        except FileNotFoundError:
-          raise FileNotFoundError(
-              f"The file {outfile} was not found. "
-              "Please report this issue at https://www.github.com/kaggle/kaggle-api"
-          )
-        except Exception as e:
-          raise RuntimeError(
-              f"An unexpected error occurred: {e}. "
-              "Please report this issue at https://www.github.com/kaggle/kaggle-api"
-          )
+      if force or self.download_needed(response, outfile, quiet):
+        self.download_file(response, outfile, kaggle.http_client(), quiet, not force)
+        downloaded = True
+      else:
+        downloaded = False
 
-        try:
-          os.remove(outfile)
-        except OSError as e:
-          print('Could not delete zip file, got %s' % e)
+      if downloaded:
+        outfile = os.path.join(effective_path, dataset_slug + '.zip')
+        if unzip:
+          try:
+            with zipfile.ZipFile(outfile) as z:
+              z.extractall(effective_path)
+          except zipfile.BadZipFile as e:
+            raise ValueError(
+                f"The file {outfile} is corrupted or not a valid zip file. "
+                "Please report this issue at https://www.github.com/kaggle/kaggle-api"
+            )
+          except FileNotFoundError:
+            raise FileNotFoundError(
+                f"The file {outfile} was not found. "
+                "Please report this issue at https://www.github.com/kaggle/kaggle-api"
+            )
+          except Exception as e:
+            raise RuntimeError(
+                f"An unexpected error occurred: {e}. "
+                "Please report this issue at https://www.github.com/kaggle/kaggle-api"
+            )
+  
+          try:
+            os.remove(outfile)
+          except OSError as e:
+            print('Could not delete zip file, got %s' % e)
 
   def _print_dataset_url_and_license(self, owner_slug, dataset_slug,
                                      dataset_version_number, licenses):
@@ -3777,28 +3780,28 @@ class KaggleApi:
       response = kaggle.models.model_api_client.download_model_instance_version(
           request)
 
-    outfile = os.path.join(effective_path, model_slug + '.tar.gz')
-    if force or self.download_needed(response, outfile, quiet):
-      self.download_file(response, outfile, kaggle.http_client(), quiet, not force)
-      downloaded = True
-    else:
-      downloaded = False
+      outfile = os.path.join(effective_path, model_slug + '.tar.gz')
+      if force or self.download_needed(response, outfile, quiet):
+        self.download_file(response, outfile, kaggle.http_client(), quiet, not force)
+        downloaded = True
+      else:
+        downloaded = False
 
-    if downloaded:
-      if untar:
-        try:
-          with tarfile.open(outfile, mode='r:gz') as t:
-            t.extractall(effective_path)
-        except Exception as e:
-          raise ValueError(
-              'Error extracting the tar.gz file, please report on '
-              'www.github.com/kaggle/kaggle-api', e)
-
-        try:
-          os.remove(outfile)
-        except OSError as e:
-          print('Could not delete tar file, got %s' % e)
-    return outfile
+      if downloaded:
+        if untar:
+          try:
+            with tarfile.open(outfile, mode='r:gz') as t:
+              t.extractall(effective_path)
+          except Exception as e:
+            raise ValueError(
+                'Error extracting the tar.gz file, please report on '
+                'www.github.com/kaggle/kaggle-api', e)
+  
+          try:
+            os.remove(outfile)
+          except OSError as e:
+            print('Could not delete tar file, got %s' % e)
+      return outfile
 
   def model_instance_version_download_cli(self,
                                           model_instance_version,

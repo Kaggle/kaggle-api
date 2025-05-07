@@ -1,6 +1,13 @@
 Changelog
 ====
 
+### 1.7.4.3
+
+* Fix a problem downloading dataset files (#751)
+* Fix competitions category 'all' (#740)
+* Clean up indentation per #754
+* Fix a problem downloading competition files (#739)
+
 ### 1.7.4.2
 
 * Fix a problem in downloading kernel output files.

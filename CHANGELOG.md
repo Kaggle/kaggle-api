@@ -1,6 +1,11 @@
 Changelog
 ====
 
+### 1.7.4.4
+
+Version 1.7.4.3 was not release because pre-release testing discovered a bug.
+The changes in this release are the same as 1.7.4.3.
+
 ### 1.7.4.3
 
 * Fix a problem downloading dataset files (#751)

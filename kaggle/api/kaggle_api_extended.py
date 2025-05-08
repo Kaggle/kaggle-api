@@ -253,7 +253,7 @@ class ResumableFileUpload(object):
 
 
 class KaggleApi:
-  __version__ = '1.7.4.3'
+  __version__ = '1.7.4.4'
 
   CONFIG_NAME_PROXY = 'proxy'
   CONFIG_NAME_COMPETITION = 'competition'
@@ -312,7 +312,7 @@ class KaggleApi:
       'unlaunched_community'
   ]
   valid_competition_categories = [
-      'all', 'unspecified', 'featured', 'research', 'recruitment', 'gettingStarted', 'masters',
+      'unspecified', 'featured', 'research', 'recruitment', 'gettingStarted', 'masters',
       'playground'
   ]
   valid_competition_sort_by = [

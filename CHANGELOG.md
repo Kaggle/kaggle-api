@@ -1,6 +1,10 @@
 Changelog
 ====
 
+### 1.7.4.5
+
+A versioning error caused 1.7.4.4 to not be release.
+
 ### 1.7.4.4
 
 Version 1.7.4.3 was not release because pre-release testing discovered a bug.

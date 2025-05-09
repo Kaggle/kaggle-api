@@ -93,6 +93,7 @@ from kagglesdk.datasets.types.dataset_api_service import (
     ApiDataset,
     ApiCreateDatasetResponse,
     ApiDatasetColumn,
+    ApiDeleteDatasetRequest,
 )
 from kagglesdk.datasets.types.dataset_enums import (
     DatasetSelectionGroup,
@@ -1975,6 +1976,45 @@ class KaggleApi:
             print('Dataset version is being created. Please check progress at ' + result.url)
         else:
             print('Dataset version creation error: ' + result.error)
+
+    def dataset_delete(self, owner_slug: str, dataset_slug: str) -> None:
+        """Delete a dataset.
+
+        Parameters
+        ==========
+        owner_slug: the owner of the dataset
+        dataset_slug: the slug of the dataset
+        """
+        if not owner_slug:
+            owner_slug = self.get_config_value(self.CONFIG_NAME_USER)
+
+        with self.build_kaggle_client() as kaggle:
+            request = ApiDeleteDatasetRequest()
+            request.owner_slug = owner_slug
+            request.dataset_slug = dataset_slug
+            kaggle.datasets.dataset_api_client.delete_dataset(request)
+
+    def dataset_delete_cli(self, dataset: str, yes: bool = False) -> None:
+        """Client wrapper for deleting a dataset.
+
+        Parameters
+        ==========
+        dataset: the string identifier of the dataset in the format [owner]/[dataset-name]
+        yes: automatically confirm the deletion (default is False)
+        """
+        if dataset is None:
+            raise ValueError('A dataset must be specified')
+        owner_slug, dataset_slug, _ = self.split_dataset_string(dataset)
+
+        if not yes:
+            print(f'Warning: This will permanently delete the dataset "{dataset}".')
+            confirm = input('Are you sure you want to delete this dataset? (yes/no): ')
+            if not confirm.lower().startswith('y'):
+                print('Deletion cancelled.')
+                return
+
+        self.dataset_delete(owner_slug, dataset_slug)
+        print(f'Dataset "{dataset}" deleted successfully.')
 
     def dataset_initialize(self, folder: str) -> str:
         """Initialize a folder with a dataset configuration (metadata) file.

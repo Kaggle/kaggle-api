@@ -428,6 +428,22 @@ Example:
 
 `kaggle datasets status zillow/zecon`
 
+##### Delete a dataset
+
+```
+usage: kaggle datasets delete [-y] [-h] [dataset]
+
+required arguments:
+  dataset     Dataset URL suffix in format <owner>/<dataset-name> (use "kaggle datasets list" to show options)
+
+optional arguments:
+  -h, --help  show this help message and exit
+  -ym --yes   Sets any confirmation values to "yes" automatically. Users will not be asked to confirm.
+```
+
+Example:
+
+`kaggle datasets delete -y lastplacelarry/testdataset`
 
 ### Kernels
 

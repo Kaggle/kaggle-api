@@ -272,6 +272,16 @@ def parse_datasets(subparsers) -> None:
     subparsers_datasets.required = True
     subparsers_datasets.choices = Help.datasets_choices
 
+    # Datasets delete
+    parser_datasets_delete = subparsers_datasets.add_parser(
+        'delete', formatter_class=argparse.RawTextHelpFormatter, help=Help.command_datasets_delete
+    )
+    parser_datasets_delete_optional = parser_datasets_delete._action_groups.pop()
+    parser_datasets_delete_optional.add_argument('dataset', help=Help.param_dataset)
+    parser_datasets_delete_optional.add_argument('-y', '--yes', dest='yes', action='store_true', help=Help.param_yes)
+    parser_datasets_delete._action_groups.append(parser_datasets_delete_optional)
+    parser_datasets_delete.set_defaults(func=api.dataset_delete_cli)
+
     # Datasets list
     parser_datasets_list = subparsers_datasets.add_parser(
         'list', formatter_class=argparse.RawTextHelpFormatter, help=Help.command_datasets_list
@@ -930,7 +940,7 @@ def parse_config(subparsers) -> None:
 class Help(object):
     kaggle_choices = ['competitions', 'c', 'datasets', 'd', 'kernels', 'k', 'models', 'm', 'files', 'f', 'config']
     competitions_choices = ['list', 'files', 'download', 'submit', 'submissions', 'leaderboard']
-    datasets_choices = ['list', 'files', 'download', 'create', 'version', 'init', 'metadata', 'status']
+    datasets_choices = ['list', 'files', 'download', 'create', 'version', 'init', 'metadata', 'status', 'delete']
     kernels_choices = ['list', 'files', 'init', 'push', 'pull', 'output', 'status']
     models_choices = ['instances', 'get', 'list', 'init', 'create', 'delete', 'update']
     model_instances_choices = ['versions', 'get', 'files', 'init', 'create', 'delete', 'update']
@@ -982,6 +992,7 @@ class Help(object):
     command_datasets_init = 'Initialize metadata file for dataset creation'
     command_datasets_metadata = 'Download metadata about a dataset'
     command_datasets_status = 'Get the creation status for a dataset'
+    command_datasets_delete = 'Delete a dataset'
 
     # Kernels commands
     command_kernels_list = 'List available kernels. By default, shows 20 results sorted by ' 'hotness'

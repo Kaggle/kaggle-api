@@ -21,6 +21,7 @@ import logging
 import six
 import sys
 import urllib3
+from typing import Dict, Union
 
 
 class Configuration:
@@ -29,6 +30,8 @@ class Configuration:
         """Constructor."""
         # Default Base url
         self.host = _get_endpoint_from_env() or "https://www.kaggle.com/api/v1"
+        self.proxy: Union[str, None] = None
+        self.ssl_ca_cert: Union[str, None] = None
 
         # Authentication Settings
         # dict to store API key(s)
@@ -163,7 +166,7 @@ class Configuration:
         """
         return urllib3.util.make_headers(basic_auth=self.username + ':' + self.password).get('authorization')
 
-    def auth_settings(self) -> dict[str, dict[str, str]]:
+    def auth_settings(self) -> Dict[str, Dict[str, str]]:
         """Gets Auth Settings dict for api client.
 
         :return: The Auth Settings information dict.

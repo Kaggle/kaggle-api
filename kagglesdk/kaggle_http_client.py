@@ -1,4 +1,3 @@
-# fmt: off
 import binascii
 import codecs
 import json
@@ -189,11 +188,11 @@ class KaggleHttpClient(object):
 
   def _prepare_response(self, response_type, http_response):
     self._print_response(http_response)
+    http_response.raise_for_status()
     if 'application/json' in http_response.headers['Content-Type']:
       resp = http_response.json()
       if 'code' in resp and resp['code'] >= 400:
         raise requests.exceptions.HTTPError(resp['message'], response=http_response)
-    http_response.raise_for_status()
     if response_type is None:  # Method doesn't have a return type
       return None
     return response_type.prepare_from(http_response)

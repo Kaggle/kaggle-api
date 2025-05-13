@@ -141,6 +141,8 @@ class Owner(KaggleObject):
     profile_url (str)
     slug (str)
     user_tier (UserAchievementTier)
+    user_progression_opt_out (bool)
+      Whether or not the owner is progression opted-out (only for user owners).
     allow_model_gating (bool)
   """
 
@@ -152,6 +154,7 @@ class Owner(KaggleObject):
     self._profile_url = None
     self._slug = ""
     self._user_tier = UserAchievementTier.NOVICE
+    self._user_progression_opt_out = None
     self._allow_model_gating = None
     self._freeze()
 
@@ -247,6 +250,20 @@ class Owner(KaggleObject):
     self._user_tier = user_tier
 
   @property
+  def user_progression_opt_out(self) -> bool:
+    """Whether or not the owner is progression opted-out (only for user owners)."""
+    return self._user_progression_opt_out or False
+
+  @user_progression_opt_out.setter
+  def user_progression_opt_out(self, user_progression_opt_out: Optional[bool]):
+    if user_progression_opt_out is None:
+      del self.user_progression_opt_out
+      return
+    if not isinstance(user_progression_opt_out, bool):
+      raise TypeError('user_progression_opt_out must be of type bool')
+    self._user_progression_opt_out = user_progression_opt_out
+
+  @property
   def allow_model_gating(self) -> bool:
     return self._allow_model_gating or False
 
@@ -281,6 +298,7 @@ Owner._fields = [
   FieldMetadata("profileUrl", "profile_url", "_profile_url", str, None, PredefinedSerializer(), optional=True),
   FieldMetadata("slug", "slug", "_slug", str, "", PredefinedSerializer()),
   FieldMetadata("userTier", "user_tier", "_user_tier", UserAchievementTier, UserAchievementTier.NOVICE, EnumSerializer()),
+  FieldMetadata("userProgressionOptOut", "user_progression_opt_out", "_user_progression_opt_out", bool, None, PredefinedSerializer(), optional=True),
   FieldMetadata("allowModelGating", "allow_model_gating", "_allow_model_gating", bool, None, PredefinedSerializer(), optional=True),
 ]
 

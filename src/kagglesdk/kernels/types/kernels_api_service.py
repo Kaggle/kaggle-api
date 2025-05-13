@@ -3,6 +3,81 @@ from kagglesdk.kaggle_object import *
 from kagglesdk.kernels.types.kernels_enums import KernelsListSortType, KernelsListViewType, KernelWorkerStatus
 from typing import Optional, List
 
+class ApiDeleteKernelRequest(KaggleObject):
+  r"""
+  Attributes:
+    user_name (str)
+    kernel_slug (str)
+  """
+
+  def __init__(self):
+    self._user_name = ""
+    self._kernel_slug = ""
+    self._freeze()
+
+  @property
+  def user_name(self) -> str:
+    return self._user_name
+
+  @user_name.setter
+  def user_name(self, user_name: str):
+    if user_name is None:
+      del self.user_name
+      return
+    if not isinstance(user_name, str):
+      raise TypeError('user_name must be of type str')
+    self._user_name = user_name
+
+  @property
+  def kernel_slug(self) -> str:
+    return self._kernel_slug
+
+  @kernel_slug.setter
+  def kernel_slug(self, kernel_slug: str):
+    if kernel_slug is None:
+      del self.kernel_slug
+      return
+    if not isinstance(kernel_slug, str):
+      raise TypeError('kernel_slug must be of type str')
+    self._kernel_slug = kernel_slug
+
+  def endpoint(self):
+    path = '/api/v1/kernels/delete/{username}/{kernel_slug}'
+    return path.format_map(self.to_field_map(self))
+
+  @staticmethod
+  def endpoint_path():
+    return '/api/v1/kernels/delete/{username}/{kernel_slug}'
+
+
+class ApiDeleteKernelResponse(KaggleObject):
+  r"""
+  Attributes:
+    error_message (str)
+  """
+
+  def __init__(self):
+    self._error_message = None
+    self._freeze()
+
+  @property
+  def error_message(self) -> str:
+    return self._error_message or ""
+
+  @error_message.setter
+  def error_message(self, error_message: Optional[str]):
+    if error_message is None:
+      del self.error_message
+      return
+    if not isinstance(error_message, str):
+      raise TypeError('error_message must be of type str')
+    self._error_message = error_message
+
+  @property
+  def errorMessage(self):
+    return self.error_message
+
+
 class ApiDownloadKernelOutputRequest(KaggleObject):
   r"""
   Attributes:
@@ -1223,6 +1298,10 @@ class ApiSaveKernelRequest(KaggleObject):
       Sets the execution priority of this kernel session request when queued,
       lower is better (10 will get run before 100).
       Only allowed or certain clients.
+    docker_image (str)
+      Which docker image to run with. This must be one of the Kaggle-provided,
+      known images. It should look something like:
+      gcr.io/kaggle-images/python@sha256:f4b6dd72d4ac48c76fbb02bce0798b80b284102886ad37e6041e9ab721dc8873
   """
 
   def __init__(self):
@@ -1244,6 +1323,7 @@ class ApiSaveKernelRequest(KaggleObject):
     self._model_data_sources = []
     self._session_timeout_seconds = None
     self._priority = None
+    self._docker_image = None
     self._freeze()
 
   @property
@@ -1540,6 +1620,24 @@ class ApiSaveKernelRequest(KaggleObject):
       raise TypeError('priority must be of type int')
     self._priority = priority
 
+  @property
+  def docker_image(self) -> str:
+    r"""
+    Which docker image to run with. This must be one of the Kaggle-provided,
+    known images. It should look something like:
+    gcr.io/kaggle-images/python@sha256:f4b6dd72d4ac48c76fbb02bce0798b80b284102886ad37e6041e9ab721dc8873
+    """
+    return self._docker_image or ""
+
+  @docker_image.setter
+  def docker_image(self, docker_image: Optional[str]):
+    if docker_image is None:
+      del self.docker_image
+      return
+    if not isinstance(docker_image, str):
+      raise TypeError('docker_image must be of type str')
+    self._docker_image = docker_image
+
   def endpoint(self):
     path = '/api/v1/kernels/push'
     return path.format_map(self.to_field_map(self))
@@ -1825,6 +1923,15 @@ class ApiListKernelFilesItem(KaggleObject):
     self._creation_date = creation_date
 
 
+ApiDeleteKernelRequest._fields = [
+  FieldMetadata("userName", "user_name", "_user_name", str, "", PredefinedSerializer()),
+  FieldMetadata("kernelSlug", "kernel_slug", "_kernel_slug", str, "", PredefinedSerializer()),
+]
+
+ApiDeleteKernelResponse._fields = [
+  FieldMetadata("errorMessage", "error_message", "_error_message", str, None, PredefinedSerializer(), optional=True),
+]
+
 ApiDownloadKernelOutputRequest._fields = [
   FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "", PredefinedSerializer()),
   FieldMetadata("kernelSlug", "kernel_slug", "_kernel_slug", str, "", PredefinedSerializer()),
@@ -1948,6 +2055,7 @@ ApiSaveKernelRequest._fields = [
   FieldMetadata("modelDataSources", "model_data_sources", "_model_data_sources", str, [], ListSerializer(PredefinedSerializer())),
   FieldMetadata("sessionTimeoutSeconds", "session_timeout_seconds", "_session_timeout_seconds", int, None, PredefinedSerializer(), optional=True),
   FieldMetadata("priority", "priority", "_priority", int, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("dockerImage", "docker_image", "_docker_image", str, None, PredefinedSerializer(), optional=True),
 ]
 
 ApiSaveKernelResponse._fields = [

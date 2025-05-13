@@ -42,12 +42,12 @@ class ApiDeleteKernelRequest(KaggleObject):
     self._kernel_slug = kernel_slug
 
   def endpoint(self):
-    path = '/api/v1/kernels/delete/{username}/{kernel_slug}'
+    path = '/api/v1/kernels/delete/{user_name}/{kernel_slug}'
     return path.format_map(self.to_field_map(self))
 
   @staticmethod
   def endpoint_path():
-    return '/api/v1/kernels/delete/{username}/{kernel_slug}'
+    return '/api/v1/kernels/delete/{user_name}/{kernel_slug}'
 
 
 class ApiDeleteKernelResponse(KaggleObject):

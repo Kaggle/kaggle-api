@@ -746,6 +746,19 @@ class TestKaggleApi(unittest.TestCase):
                     os.rmdir('tmp')
                 return
 
+    # Kernel deletion
+
+    def test_kernels_h_delete(self):
+        print('Running test_kernels_h_delete')
+        if self.kernel_slug == '':
+            self.test_kernels_c_push()
+        try:
+            api.kernels_delete(self.kernel_slug, yes=True)
+            # The kernels_delete method prints success, no specific return to assert.
+            # If no exception is raised, we assume success.
+        except ApiException as e:
+            self.fail(f"kernels_delete failed: {e}")
+
     # Model deletion
 
     def test_model_instance_version_d_delete(self):

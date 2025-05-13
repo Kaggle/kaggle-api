@@ -397,9 +397,12 @@ class KaggleApi:
     config_values: Dict[str, str] = {}
     already_printed_version_warning = False
 
-    args: List[str] = []  # DEBUG Add --local to use localhost
+    args: List[str] = []
     if os.environ.get('KAGGLE_API_ENVIRONMENT') == 'LOCALHOST':
+        # Make it verbose when running in the debugger.
         args = ['--verbose', '--local']
+    elif os.environ.get('KAGGLE_API_ENDPOINT') == 'http://localhost':
+        args = ['--local']
 
     # Kernels valid types
     valid_push_kernel_types = ['script', 'notebook']
@@ -2110,7 +2113,6 @@ class KaggleApi:
             resp.status = 'error'
             resp.error = f'The requested title "{title}" is already in use by a dataset. Please choose another title.'
             return resp
-                
 
         request = ApiCreateDatasetRequest()
         request.title = title

@@ -126,9 +126,10 @@ function run-tests {
   fi
 
   cd tests
+  rm -f kaggle kagglesdk
   ln -s ../kagglesdk .
   ln -s ../kaggle .
-  /usr/local/bin/python3.12 unit_tests.py
+  python3 unit_tests.py --failfast
   rm kaggle kagglesdk
   cd ..
 }

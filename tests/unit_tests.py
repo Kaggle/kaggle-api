@@ -511,26 +511,27 @@ class TestKaggleApi(unittest.TestCase):
         except ApiException as e:
             self.fail(f"dataset_initialize failed: {e}")
 
-    def test_dataset_i_create_new(self, fail_if_exists=True):
+    def test_dataset_ia_create_new(self, fail_if_exists=True):
         if not os.path.exists(os.path.join(dataset_directory, api.DATASET_METADATA_FILE)):
             self.test_dataset_h_initialize()
         try:
             update_dataset_metadata_file(self.meta_file, dataset_name, self.version_number)
             new_dataset = api.dataset_create_new(dataset_directory)
             self.assertIsNotNone(new_dataset)
-            if new_dataset.error is not None:
-                if 'already in use' in new_dataset.error:
-                    print(new_dataset.error)  # This is likely to happen, and that's OK.
-                    self.skip_create_version = True
-                else:
+            if len(new_dataset.error) > 0:
+                if fail_if_exists:
                     self.fail(f"dataset_create_new failed: {new_dataset.error}")
         except ApiException as e:
             if fail_if_exists:
                 self.fail(f"dataset_create_new failed: {e}")
 
+    def test_dataset_ib_wait_after_create(self):
+        # When running all tests sequentially, give the new dataset some time to stabilize.
+        time.sleep(10)  # TODO: Use a status check.
+
     def test_dataset_j_create_version(self):
         if not os.path.exists(os.path.join(dataset_directory, api.DATASET_METADATA_FILE)):
-            self.test_dataset_i_create_new()
+            self.test_dataset_ia_create_new(fail_if_exists=False)
         try:
             new_version = api.dataset_create_version(dataset_directory, "Notes")
             self.assertIsNotNone(new_version)
@@ -540,7 +541,7 @@ class TestKaggleApi(unittest.TestCase):
             self.fail(f"dataset_create_version failed: {e}")
 
     def test_dataset_k_delete(self):
-        self.test_dataset_i_create_new(fail_if_exists=False)
+        self.test_dataset_ia_create_new(fail_if_exists=False)
         api.dataset_delete(None, dataset_name)
 
     # Models

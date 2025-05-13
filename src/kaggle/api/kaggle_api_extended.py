@@ -2100,6 +2100,18 @@ class KaggleApi:
         if subtitle and (len(subtitle) < 20 or len(subtitle) > 80):
             raise ValueError('Subtitle length must be between 20 and 80 characters')
 
+        found = True
+        try:
+            self.dataset_status(ref)
+        except HTTPError as e:
+            found = False
+        if found:
+            resp = ApiCreateDatasetResponse()
+            resp.status = 'error'
+            resp.error = f'The requested title "{title}" is already in use by a dataset. Please choose another title.'
+            return resp
+                
+
         request = ApiCreateDatasetRequest()
         request.title = title
         request.slug = dataset_slug

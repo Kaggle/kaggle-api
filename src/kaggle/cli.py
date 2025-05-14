@@ -278,7 +278,9 @@ def parse_datasets(subparsers) -> None:
     )
     parser_datasets_delete_optional = parser_datasets_delete._action_groups.pop()
     parser_datasets_delete_optional.add_argument('dataset', help=Help.param_dataset)
-    parser_datasets_delete_optional.add_argument('-y', '--yes', dest='yes', action='store_true', help=Help.param_yes)
+    parser_datasets_delete_optional.add_argument(
+        '-y', '--yes', dest='no_confirm', action='store_true', help=Help.param_yes
+    )
     parser_datasets_delete._action_groups.append(parser_datasets_delete_optional)
     parser_datasets_delete.set_defaults(func=api.dataset_delete_cli)
 
@@ -604,7 +606,9 @@ def parse_kernels(subparsers) -> None:
     )
     parser_kernels_delete_optional = parser_kernels_delete._action_groups.pop()
     parser_kernels_delete_optional.add_argument('kernel', help=Help.param_kernel)
-    parser_kernels_delete_optional.add_argument('-y', '--yes', dest='yes', action='store_true', help=Help.param_yes)
+    parser_kernels_delete_optional.add_argument(
+        '-y', '--yes', dest='no_confirm', action='store_true', help=Help.param_yes
+    )
     parser_kernels_delete._action_groups.append(parser_kernels_delete_optional)
     parser_kernels_delete.set_defaults(func=api.kernels_delete_cli)
 
@@ -675,7 +679,9 @@ def parse_models(subparsers) -> None:
     )
     parser_models_delete_optional = parser_models_delete._action_groups.pop()
     parser_models_delete_optional.add_argument('model', help=Help.param_model)
-    parser_models_delete_optional.add_argument('-y', '--yes', dest='yes', action='store_true', help=Help.param_yes)
+    parser_models_delete_optional.add_argument(
+        '-y', '--yes', dest='no_confirm', action='store_true', help=Help.param_yes
+    )
     parser_models_delete._action_groups.append(parser_models_delete_optional)
     parser_models_delete.set_defaults(func=api.model_delete_cli)
 

@@ -1981,16 +1981,23 @@ class KaggleApi:
         else:
             print('Dataset version creation error: ' + result.error)
 
-    def dataset_delete(self, owner_slug: str, dataset_slug: str) -> None:
+    def dataset_delete(self, owner_slug: str, dataset_slug: str, no_confirm: bool = False) -> None:
         """Delete a dataset.
 
         Parameters
         ==========
         owner_slug: the owner of the dataset
         dataset_slug: the slug of the dataset
+        no_confirm: if True, skip confirmation (default is False)
         """
+
         if not owner_slug:
             owner_slug = self.get_config_value(self.CONFIG_NAME_USER)
+
+        if not no_confirm:
+            if not self.confirmation(f'delete the dataset: {owner_slug}/{dataset_slug}'):
+                print('Deletion cancelled')
+                return
 
         with self.build_kaggle_client() as kaggle:
             request = ApiDeleteDatasetRequest()
@@ -1998,14 +2005,14 @@ class KaggleApi:
             request.dataset_slug = dataset_slug
             kaggle.datasets.dataset_api_client.delete_dataset(request)
 
-    def kernels_delete(self, kernel: str, yes: bool = False) -> None:
+    def kernels_delete(self, kernel: str, no_confirm: bool = False) -> None:
         """Delete a kernel.
 
         Parameters
         ==========
         kernel: the string identifier of the kernel
                  should be in format [owner]/[kernel-name]
-        yes: if True, skip confirmation (default is False)
+        no_confirm: if True, skip confirmation (default is False)
         """
         if kernel is None:
             raise ValueError('A kernel must be specified')
@@ -2014,12 +2021,9 @@ class KaggleApi:
 
         owner_slug, kernel_slug = kernel.split('/')
 
-        if not yes:
-            print(f'Warning: This will permanently delete the kernel: {kernel}')
-            print('Are you sure you want to continue? (yes/no)')
-            response = input()
-            if response.lower() != 'yes':
-                print('Deletion cancelled.')
+        if not no_confirm:
+            if not self.confirmation(f'delete the kernel: {kernel}'):
+                print('Deletion cancelled')
                 return
 
         with self.build_kaggle_client() as kaggle:
@@ -2029,37 +2033,30 @@ class KaggleApi:
             kaggle.kernels.kernels_api_client.delete_kernel(request)
             print(f'Kernel {kernel} deleted successfully')
 
-    def kernels_delete_cli(self, kernel: str, yes: bool = False) -> None:
+    def kernels_delete_cli(self, kernel: str, no_confirm: bool = False) -> None:
         """Client wrapper for deleting a kernel.
 
         Parameters
         ==========
         kernel: the string identifier of the kernel
                  should be in format [owner]/[kernel-name]
-        yes: if True, skip confirmation (default is False)
+        no_confirm: if True, skip confirmation (default is False)
         """
-        self.kernels_delete(kernel, yes)
+        self.kernels_delete(kernel, no_confirm)
 
-    def dataset_delete_cli(self, dataset: str, yes: bool = False) -> None:
+    def dataset_delete_cli(self, dataset: str, no_confirm: bool = False) -> None:
         """Client wrapper for deleting a dataset.
 
         Parameters
         ==========
         dataset: the string identifier of the dataset in the format [owner]/[dataset-name]
-        yes: automatically confirm the deletion (default is False)
+        no_confirm: automatically confirm the deletion (default is False)
         """
         if dataset is None:
             raise ValueError('A dataset must be specified')
         owner_slug, dataset_slug, _ = self.split_dataset_string(dataset)
 
-        if not yes:
-            print(f'Warning: This will permanently delete the dataset "{dataset}".')
-            confirm = input('Are you sure you want to delete this dataset? (yes/no): ')
-            if not confirm.lower().startswith('y'):
-                print('Deletion cancelled.')
-                return
-
-        self.dataset_delete(owner_slug, dataset_slug)
+        self.dataset_delete(owner_slug, dataset_slug, no_confirm)
         print(f'Dataset "{dataset}" deleted successfully.')
 
     def dataset_initialize(self, folder: str) -> str:
@@ -3166,21 +3163,21 @@ class KaggleApi:
         else:
             print('Model creation error: ' + result.error)
 
-    def model_delete(self, model: str, yes: bool) -> ApiDeleteModelResponse:
+    def model_delete(self, model: str, no_confirm: bool) -> ApiDeleteModelResponse:
         """Delete a modeL.
 
         Parameters
         ==========
         model: the string identifier of the model
                  should be in format [owner]/[model-name]
-        yes: automatic confirmation
+        no_confirm: if True, skip confirmation (default is False)
         """
         owner_slug, model_slug = self.split_model_string(model)
 
-        if not yes:
-            if not self.confirmation():
+        if not no_confirm:
+            if not self.confirmation(f'delete the model {model}'):
                 print('Deletion cancelled')
-                exit(0)
+                return ApiDeleteModelResponse()
 
         with self.build_kaggle_client() as kaggle:
             request = ApiDeleteModelRequest()
@@ -3499,23 +3496,23 @@ class KaggleApi:
         else:
             print('Model instance creation error: ' + result.error)
 
-    def model_instance_delete(self, model_instance: str, yes: bool) -> ApiDeleteModelResponse:
+    def model_instance_delete(self, model_instance: str, no_confirm: bool = False) -> ApiDeleteModelResponse:
         """Delete a model instance.
 
         Parameters
         ==========
         model_instance: the string identified of the model instance
                  should be in format [owner]/[model-name]/[framework]/[instance-slug]
-        yes: automatic confirmation
+        no_confirm: if True, skip confirmation (default is False)
         """
         if model_instance is None:
             raise ValueError('A model instance must be specified')
         owner_slug, model_slug, framework, instance_slug = self.split_model_instance_string(model_instance)
 
-        if not yes:
-            if not self.confirmation():
+        if not no_confirm:
+            if not self.confirmation(f'delete the variation {model_instance}'):
                 print('Deletion cancelled')
-                exit(0)
+                return ApiDeleteModelResponse()
 
         with self.build_kaggle_client() as kaggle:
             request = ApiDeleteModelInstanceRequest()
@@ -3909,7 +3906,9 @@ class KaggleApi:
             else:
                 self.print_table(result.files, fields, labels)
 
-    def model_instance_version_delete(self, model_instance_version: str, yes: bool) -> ApiDeleteModelResponse:
+    def model_instance_version_delete(
+        self, model_instance_version: str, no_confirm: bool = False
+    ) -> ApiDeleteModelResponse:
         """Delete a model instance version.
 
         Parameters
@@ -3917,6 +3916,7 @@ class KaggleApi:
         model_instance_version: the string identifier of the model instance version
             should be in format [owner]/[model-name]/[framework]/[instance-slug]/[version-number]
         yes: automatic confirmation
+        no_confirm: if True, skip confirmation (default is False)
         """
         if model_instance_version is None:
             raise ValueError('A model instance version must be specified')
@@ -3929,10 +3929,10 @@ class KaggleApi:
         instance_slug = urls[3]
         version_number = urls[4]
 
-        if not yes:
-            if not self.confirmation():
+        if not no_confirm:
+            if not self.confirmation(f'delete the version {model_instance_version}'):
                 print('Deletion cancelled')
-                exit(0)
+                return ApiDeleteModelResponse()
 
         request = ApiDeleteModelInstanceVersionRequest()
         request.owner_slug = owner_slug
@@ -4643,10 +4643,13 @@ class KaggleApi:
     def sanitize_markdown(self, markdown: str) -> str:
         return bleach.clean(markdown)
 
-    def confirmation(self):
-        question = "Are you sure?"
+    def confirmation(self, action: str = ''):
+        if len(action):
+            question = "Are you sure you want to {action}?"
+        else:
+            question = "Are you sure?"
         prompt = "[yes/no]"
-        options = {"yes": True, "no": False}
+        options = {"yes": True, "y": True, "no": False, "n": False}
         while True:
             sys.stdout.write('{} {} '.format(question, prompt))
             choice = input().lower()

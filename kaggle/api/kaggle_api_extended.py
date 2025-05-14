@@ -112,6 +112,7 @@ from kagglesdk.kernels.types.kernels_api_service import (
     ApiGetKernelSessionStatusRequest,
     ApiSaveKernelResponse,
     ApiKernelMetadata,
+    ApiDeleteKernelRequest,
 )
 from kagglesdk.kernels.types.kernels_enums import KernelsListSortType, KernelsListViewType
 from kagglesdk.models.types.model_api_service import (
@@ -1996,6 +1997,48 @@ class KaggleApi:
             request.owner_slug = owner_slug
             request.dataset_slug = dataset_slug
             kaggle.datasets.dataset_api_client.delete_dataset(request)
+
+    def kernels_delete(self, kernel: str, yes: bool = False) -> None:
+        """Delete a kernel.
+
+        Parameters
+        ==========
+        kernel: the string identifier of the kernel
+                 should be in format [owner]/[kernel-name]
+        yes: if True, skip confirmation (default is False)
+        """
+        if kernel is None:
+            raise ValueError('A kernel must be specified')
+        if '/' not in kernel:
+            raise ValueError('Kernel must be in format [owner]/[kernel-name]')
+
+        owner_slug, kernel_slug = kernel.split('/')
+
+        if not yes:
+            print(f'Warning: This will permanently delete the kernel: {kernel}')
+            print('Are you sure you want to continue? (yes/no)')
+            response = input()
+            if response.lower() != 'yes':
+                print('Deletion cancelled.')
+                return
+
+        with self.build_kaggle_client() as kaggle:
+            request = ApiDeleteKernelRequest()
+            request.user_name = owner_slug
+            request.kernel_slug = kernel_slug
+            kaggle.kernels.kernels_api_client.delete_kernel(request)
+            print(f'Kernel {kernel} deleted successfully')
+
+    def kernels_delete_cli(self, kernel: str, yes: bool = False) -> None:
+        """Client wrapper for deleting a kernel.
+
+        Parameters
+        ==========
+        kernel: the string identifier of the kernel
+                 should be in format [owner]/[kernel-name]
+        yes: if True, skip confirmation (default is False)
+        """
+        self.kernels_delete(kernel, yes)
 
     def dataset_delete_cli(self, dataset: str, yes: bool = False) -> None:
         """Client wrapper for deleting a dataset.

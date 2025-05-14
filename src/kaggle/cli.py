@@ -598,6 +598,16 @@ def parse_kernels(subparsers) -> None:
     parser_kernels_status._action_groups.append(parser_kernels_status_optional)
     parser_kernels_status.set_defaults(func=api.kernels_status_cli)
 
+    # Kernels delete
+    parser_kernels_delete = subparsers_kernels.add_parser(
+        'delete', formatter_class=argparse.RawTextHelpFormatter, help=Help.command_kernels_delete
+    )
+    parser_kernels_delete_optional = parser_kernels_delete._action_groups.pop()
+    parser_kernels_delete_optional.add_argument('kernel', help=Help.param_kernel)
+    parser_kernels_delete_optional.add_argument('-y', '--yes', dest='yes', action='store_true', help=Help.param_yes)
+    parser_kernels_delete._action_groups.append(parser_kernels_delete_optional)
+    parser_kernels_delete.set_defaults(func=api.kernels_delete_cli)
+
 
 def parse_models(subparsers) -> None:
     parser_models = subparsers.add_parser(
@@ -941,7 +951,7 @@ class Help(object):
     kaggle_choices = ['competitions', 'c', 'datasets', 'd', 'kernels', 'k', 'models', 'm', 'files', 'f', 'config']
     competitions_choices = ['list', 'files', 'download', 'submit', 'submissions', 'leaderboard']
     datasets_choices = ['list', 'files', 'download', 'create', 'version', 'init', 'metadata', 'status', 'delete']
-    kernels_choices = ['list', 'files', 'init', 'push', 'pull', 'output', 'status']
+    kernels_choices = ['list', 'files', 'init', 'push', 'pull', 'output', 'status', 'delete']
     models_choices = ['instances', 'get', 'list', 'init', 'create', 'delete', 'update']
     model_instances_choices = ['versions', 'get', 'files', 'init', 'create', 'delete', 'update']
     model_instance_versions_choices = ['init', 'create', 'download', 'delete', 'files']
@@ -1002,6 +1012,7 @@ class Help(object):
     command_kernels_pull = 'Pull down code from a kernel'
     command_kernels_output = 'Get data output from the latest kernel run'
     command_kernels_status = 'Display the status of the latest kernel run'
+    command_kernels_delete = 'Delete a kernel'
 
     # Models commands
     command_models_files = 'List model files'

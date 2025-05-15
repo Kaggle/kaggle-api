@@ -542,7 +542,7 @@ class TestKaggleApi(unittest.TestCase):
 
     def test_dataset_k_delete(self):
         self.test_dataset_ia_create_new(fail_if_exists=False)
-        api.dataset_delete(None, dataset_name)
+        api.dataset_delete(None, dataset_name, True)
 
     # Models
 
@@ -753,7 +753,7 @@ class TestKaggleApi(unittest.TestCase):
         if self.kernel_slug == '':
             self.test_kernels_c_push()
         try:
-            api.kernels_delete(self.kernel_slug, yes=True)
+            api.kernels_delete(self.kernel_slug, no_confirm=True)
             # The kernels_delete method prints success, no specific return to assert.
             # If no exception is raised, we assume success.
         except ApiException as e:

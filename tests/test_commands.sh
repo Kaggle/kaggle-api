@@ -2,8 +2,8 @@
 
 # Verify all options are plumbed through to the MT.
 # Set envar KAGGLE_DEVELOPER to the Kaggle user name (probably already done).
+# When prompted to delete something, respond with "no".
 
-# Use the web site to delete the dataset named "TestHere" before running.
 # Still need to adjust for assumptions about existing artifacts, like
 # the notebook "exercise-as-with"
 
@@ -39,6 +39,7 @@ kaggle k init -p tests/kernel
 echo "kaggle kernels pull"
 kaggle k pull -p tests/kernel $KAGGLE_DEVELOPER/exercise-as-with -m
 kaggle k pull --wp $KAGGLE_DEVELOPER/exercise-as-with
+sed -i s/exercise-as-with/exercise-delete/ tests/kernel/exercise-as-with.ipynb
 echo "kaggle kernels push"
 kaggle kernels push -p tests/kernel
 rm -f tests/kernel/exercise-as-with.ipynb tests/kernel/kernel-metadata.json exercise-as-with.ipynb
@@ -46,6 +47,9 @@ echo "kaggle kernels status"
 kaggle k status kerneler/sqlite-global-default
 echo "kaggle kernels output"
 kaggle k output kerneler/sqlite-global-default -o
+echo "kaggle kernels delete"
+kaggle k delete $KAGGLE_DEVELOPER/exercise-delete
+kaggle k delete $KAGGLE_DEVELOPER/exercise-delete --yes
 
 echo "kaggle datasets list"
 kaggle d list --size 10
@@ -72,6 +76,9 @@ echo "kaggle datasets metadata"
 kaggle datasets metadata goefft/public-datasets-with-file-types-and-columns -p tests/dataset
 echo "kaggle datasets status"
 kaggle d status goefft/public-datasets-with-file-types-and-columns
+echo "kaggle datasets delete"
+kaggle d delete $KAGGLE_DEVELOPER/$SLUG
+kaggle d delete $KAGGLE_DEVELOPER/$SLUG --yes
 rm -rf tmp tests/dataset/dataset-metadata.json dataset_results.csv.zip dataset_results.csv pixar-films.zip
 
 echo "kaggle models init"
@@ -117,10 +124,14 @@ echo "kaggle models instances versions download"
 kaggle models instances versions download -p tmp -q -f --untar $KAGGLE_DEVELOPER/test-model/jax/main/1
 
 rm -rf tmp
+rm -f results.csv
 
 echo "kaggle models instances versions delete"
+kaggle m instances versions delete $KAGGLE_DEVELOPER/test-model/jax/main/1
 kaggle m instances versions delete $KAGGLE_DEVELOPER/test-model/jax/main/1 -y
 echo "kaggle models instances delete"
+kaggle m instances delete $KAGGLE_DEVELOPER/test-model/jax/main
 kaggle m instances delete $KAGGLE_DEVELOPER/test-model/jax/main -y
 echo "kaggle models delete"
+kaggle m delete $KAGGLE_DEVELOPER/test-model
 kaggle m delete $KAGGLE_DEVELOPER/test-model -y

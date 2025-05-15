@@ -451,6 +451,7 @@ class ApiKernelMetadata(KaggleObject):
     model_data_sources (str)
     total_votes (int)
     current_version_number (int)
+    docker_image (str)
   """
 
   def __init__(self):
@@ -473,6 +474,7 @@ class ApiKernelMetadata(KaggleObject):
     self._model_data_sources = []
     self._total_votes = 0
     self._current_version_number = None
+    self._docker_image = None
     self._freeze()
 
   @property
@@ -731,6 +733,19 @@ class ApiKernelMetadata(KaggleObject):
     if not isinstance(current_version_number, int):
       raise TypeError('current_version_number must be of type int')
     self._current_version_number = current_version_number
+
+  @property
+  def docker_image(self) -> str:
+    return self._docker_image or ""
+
+  @docker_image.setter
+  def docker_image(self, docker_image: Optional[str]):
+    if docker_image is None:
+      del self.docker_image
+      return
+    if not isinstance(docker_image, str):
+      raise TypeError('docker_image must be of type str')
+    self._docker_image = docker_image
 
 
 class ApiListKernelFilesRequest(KaggleObject):
@@ -1990,6 +2005,7 @@ ApiKernelMetadata._fields = [
   FieldMetadata("modelDataSources", "model_data_sources", "_model_data_sources", str, [], ListSerializer(PredefinedSerializer())),
   FieldMetadata("totalVotes", "total_votes", "_total_votes", int, 0, PredefinedSerializer()),
   FieldMetadata("currentVersionNumber", "current_version_number", "_current_version_number", int, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("dockerImage", "docker_image", "_docker_image", str, None, PredefinedSerializer(), optional=True),
 ]
 
 ApiListKernelFilesRequest._fields = [

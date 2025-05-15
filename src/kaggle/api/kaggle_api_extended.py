@@ -1496,8 +1496,7 @@ class KaggleApi:
         (owner_slug, dataset_slug, effective_path) = self.dataset_metadata_prep(dataset, path)
         meta_file = self.get_dataset_metadata_file(effective_path)
         with open(meta_file, 'r') as f:
-            s = json.load(f)
-            metadata = json.loads(s)
+            metadata = json.load(f)
             update_settings = DatasetSettings()
             update_settings.title = metadata.get('title') or ''
             update_settings.subtitle = metadata.get('subtitle') or ''
@@ -1552,7 +1551,7 @@ class KaggleApi:
 
         meta_file = os.path.join(effective_path, self.DATASET_METADATA_FILE)
         with open(meta_file, 'w') as f:
-            json.dump(response.to_json(response.info), f, indent=2, default=lambda o: o.__dict__)
+            f.write(response.to_json(response.info))
 
         return meta_file
 

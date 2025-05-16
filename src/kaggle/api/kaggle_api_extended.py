@@ -3185,16 +3185,16 @@ class KaggleApi:
             result: ApiDeleteModelResponse = kaggle.models.model_api_client.delete_model(request)
             return result
 
-    def model_delete_cli(self, model, yes):
+    def model_delete_cli(self, model, no_confirm):
         """Client wrapper for deleting a model.
 
         Parameters
         ==========
         model: the string identified of the model
                  should be in format [owner]/[model-name]
-        yes: automatic confirmation
+        no_confirm: automatic confirmation
         """
-        result = self.model_delete(model, yes)
+        result = self.model_delete(model, no_confirm)
 
         if result.error:
             print('Model deletion error: ' + result.error)
@@ -3522,16 +3522,16 @@ class KaggleApi:
             result: ApiDeleteModelResponse = kaggle.models.model_api_client.delete_model_instance(request)
             return result
 
-    def model_instance_delete_cli(self, model_instance, yes):
+    def model_instance_delete_cli(self, model_instance, no_confirm):
         """Client wrapper for model_instance_delete.
 
         Parameters
         ==========
         model_instance: the string identified of the model instance
                  should be in format [owner]/[model-name]/[framework]/[instance-slug]
-        yes: automatic confirmation
+        no_confirm: automatic confirmation
         """
-        result = self.model_instance_delete(model_instance, yes)
+        result = self.model_instance_delete(model_instance, no_confirm)
 
         if len(result.error) > 0:
             print('Model instance deletion error: ' + result.error)
@@ -3944,15 +3944,15 @@ class KaggleApi:
             result: ApiDeleteModelResponse = response
             return result
 
-    def model_instance_version_delete_cli(self, model_instance_version, yes):
+    def model_instance_version_delete_cli(self, model_instance_version, no_confirm):
         """Client wrapper for model_instance_version_delete
         Parameters
         ==========
         model_instance_version: the string identified of the model instance version
             should be in format [owner]/[model-name]/[framework]/[instance-slug]/[version-number]
-        yes: automatic confirmation
+        no_confirm: automatic confirmation
         """
-        result = self.model_instance_version_delete(model_instance_version, yes)
+        result = self.model_instance_version_delete(model_instance_version, no_confirm)
 
         if len(result.error) > 0:
             print('Model instance version deletion error: ' + result.error)
@@ -4644,7 +4644,7 @@ class KaggleApi:
 
     def confirmation(self, action: str = ''):
         if len(action):
-            question = "Are you sure you want to {action}?"
+            question = f"Are you sure you want to {action}?"
         else:
             question = "Are you sure?"
         prompt = "[yes/no]"

@@ -22,6 +22,12 @@ class KernelsListViewType(enum.Enum):
   RECENTLY_VIEWED = 7
   PUBLIC_AND_USERS_PRIVATE = 8
 
+class KernelVersionType(enum.Enum):
+  KERNEL_VERSION_TYPE_UNSPECIFIED = 0
+  BATCH = 1
+  INTERACTIVE = 2
+  QUICK = 3
+
 class KernelWorkerStatus(enum.Enum):
   QUEUED = 0
   RUNNING = 1

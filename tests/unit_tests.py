@@ -240,9 +240,19 @@ class TestKaggleApi(unittest.TestCase):
             self.test_kernels_b_initialize()
         try:
             md = update_kernel_metadata_file(self.kernel_metadata_path, kernel_name)
-            push_result = api.kernels_push(kernel_directory)
-            self.assertIsNotNone(push_result.ref)
-            self.assertTrue(isinstance(push_result.version_number, int))
+
+            # Test with quick parameter
+            push_result_quick = api.kernels_push(kernel_directory, quick=True)
+            self.assertIsNotNone(push_result_quick.ref)
+            self.assertTrue(isinstance(push_result_quick.version_number, int))
+            # Add a small delay
+            time.sleep(1)
+
+            # Test without quick parameter
+            push_result_batch = api.kernels_push(kernel_directory, quick=False)
+            self.assertIsNotNone(push_result_batch.ref)
+            self.assertTrue(isinstance(push_result_batch.version_number, int))
+
             self.kernel_slug = md['id']
             time.sleep(30)
         except ApiException as e:

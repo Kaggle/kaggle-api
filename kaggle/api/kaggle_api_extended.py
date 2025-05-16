@@ -139,6 +139,7 @@ from kagglesdk.models.types.model_api_service import (
 )
 from kagglesdk.models.types.model_enums import ListModelsOrderBy, ModelInstanceType, ModelFramework
 from kagglesdk.models.types.model_types import Owner
+from kagglesdk.kernels.types.kernels_enums import KernelVersionType
 from ..models.dataset_column import DatasetColumn
 from ..models.upload_file import UploadFile
 import kagglesdk.kaggle_client
@@ -2520,7 +2521,7 @@ class KaggleApi:
         meta_file = self.kernels_initialize(folder)
         print('Kernel metadata template written to: ' + meta_file)
 
-    def kernels_push(self, folder: str, timeout: Optional[str] = None) -> ApiSaveKernelResponse:
+    def kernels_push(self, folder: str, timeout: Optional[str] = None, quick: bool = False) -> ApiSaveKernelResponse:
         """Read the metadata file and kernel files from a notebook, validate both,
         and use the Kernel API to push to Kaggle if all is valid.
 
@@ -2528,6 +2529,7 @@ class KaggleApi:
         ==========
         folder: the path of the folder
         timeout: maximum run time iin seconds
+        quick: use quick save, which does not run the code
         """
         if not os.path.isdir(folder):
             raise ValueError('Invalid folder: ' + folder)
@@ -2642,6 +2644,10 @@ class KaggleApi:
             request.docker_image_pinning_type = docker_pinning_type  # type: ignore[assignment]
             if timeout:
                 request.session_timeout_seconds = int(timeout)
+            if quick:
+                request.kernel_version_type = KernelVersionType.QUICK
+            else:
+                request.kernel_version_type = KernelVersionType.BATCH
             # Without the type hint, mypy thinks save_kernel() has type Any when checking warn_return_any.
             response: ApiSaveKernelResponse = kaggle.kernels.kernels_api_client.save_kernel(request)
             return response

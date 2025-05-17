@@ -546,6 +546,9 @@ def parse_kernels(subparsers) -> None:
     parser_kernels_push_optional.add_argument(
         '-t', '--timeout', type=int, dest='timeout', help=Help.param_kernel_timeout
     )
+    parser_kernels_push_optional.add_argument(
+        '-k', '--quick', dest='quick', action='store_true', help=Help.param_kernel_quick
+    )
     parser_kernels_push._action_groups.append(parser_kernels_push_optional)
     parser_kernels_push.set_defaults(func=api.kernels_push_cli)
 
@@ -1152,6 +1155,7 @@ class Help(object):
         'of seconds. The global maximum time will not be '
         'exceeded.'
     )
+    param_kernel_quick = 'Create a quick version of the kernel'
     param_kernel_user = 'Find kernels created by a given username'
     # TODO(b/129357583): Pull these from the same spot as the api impl
     param_kernel_language = (

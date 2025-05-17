@@ -245,6 +245,8 @@ class TestKaggleApi(unittest.TestCase):
             push_result_quick = api.kernels_push(kernel_directory, quick=True)
             self.assertIsNotNone(push_result_quick.ref)
             self.assertTrue(isinstance(push_result_quick.version_number, int))
+            if len(push_result_quick.error) > 0:
+                self.fail(push_result_quick.error)
             # Add a small delay
             time.sleep(1)
 
@@ -252,6 +254,8 @@ class TestKaggleApi(unittest.TestCase):
             push_result_batch = api.kernels_push(kernel_directory, quick=False)
             self.assertIsNotNone(push_result_batch.ref)
             self.assertTrue(isinstance(push_result_batch.version_number, int))
+            if len(push_result_quick.error) > 0:
+                self.fail(push_result_quick.error)
 
             self.kernel_slug = md['id']
             time.sleep(30)

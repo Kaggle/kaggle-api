@@ -2640,6 +2640,7 @@ class KaggleApi:
             request.model_data_sources = model_sources
             request.category_ids = self.get_or_default(meta_data, 'keywords', [])
             request.docker_image_pinning_type = docker_pinning_type  # type: ignore[assignment]
+            request.docker_image = self.get_or_default(meta_data, 'docker_image', None)
             if timeout:
                 request.session_timeout_seconds = int(timeout)
             # Without the type hint, mypy thinks save_kernel() has type Any when checking warn_return_any.

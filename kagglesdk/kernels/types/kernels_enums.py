@@ -1,5 +1,11 @@
 import enum
 
+class KernelExecutionType(enum.Enum):
+  KERNEL_EXECUTION_TYPE_UNSPECIFIED = 0
+  SAVE_AND_RUN_ALL = 1
+  INTER_ACTIVE = 2
+  QUICK_SAVE = 3
+
 class KernelsListSortType(enum.Enum):
   HOTNESS = 0
   COMMENT_COUNT = 1
@@ -21,12 +27,6 @@ class KernelsListViewType(enum.Enum):
   BOOKMARKED = 6
   RECENTLY_VIEWED = 7
   PUBLIC_AND_USERS_PRIVATE = 8
-
-class KernelVersionType(enum.Enum):
-  KERNEL_VERSION_TYPE_UNSPECIFIED = 0
-  BATCH = 1
-  INTERACTIVE = 2
-  QUICK = 3
 
 class KernelWorkerStatus(enum.Enum):
   QUEUED = 0

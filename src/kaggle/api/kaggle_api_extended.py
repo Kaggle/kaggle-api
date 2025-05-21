@@ -139,7 +139,7 @@ from kagglesdk.models.types.model_api_service import (
 )
 from kagglesdk.models.types.model_enums import ListModelsOrderBy, ModelInstanceType, ModelFramework
 from kagglesdk.models.types.model_types import Owner
-from kagglesdk.kernels.types.kernels_enums import KernelVersionType
+from kagglesdk.kernels.types.kernels_enums import KernelExecutionType
 from ..models.dataset_column import DatasetColumn
 from ..models.upload_file import UploadFile
 import kagglesdk.kaggle_client
@@ -2645,9 +2645,9 @@ class KaggleApi:
             if timeout:
                 request.session_timeout_seconds = int(timeout)
             if quick:
-                request.kernel_version_type = KernelVersionType.QUICK
+                request.kernel_version_type = KernelExecutionType.QUICK_SAVE
             else:
-                request.kernel_version_type = KernelVersionType.BATCH
+                request.kernel_version_type = KernelExecutionType.SAVE_AND_RUN_ALL
             # Without the type hint, mypy thinks save_kernel() has type Any when checking warn_return_any.
             response: ApiSaveKernelResponse = kaggle.kernels.kernels_api_client.save_kernel(request)
             return response

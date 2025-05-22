@@ -1,6 +1,12 @@
+import logging
 import os
 from enum import Enum
 
+KAGGLE_NOTEBOOK_ENV_VAR_NAME = "KAGGLE_KERNEL_RUN_TYPE"
+KAGGLE_DATA_PROXY_URL_ENV_VAR_NAME = "KAGGLE_DATA_PROXY_URL"
+KAGGLE_API_V1_TOKEN_PATH = "KAGGLE_API_V1_TOKEN"
+
+logger = logging.getLogger(__name__)
 
 class KaggleEnv(Enum):
   LOCAL = 0  # localhost
@@ -38,3 +44,16 @@ def get_env():
   if env == 'QA':
     return KaggleEnv.QA
   raise Exception(f'Unrecognized value in KAGGLE_API_ENVIRONMENT: "{env}"')
+
+
+def is_in_kaggle_notebook() -> bool:
+  if os.getenv(KAGGLE_NOTEBOOK_ENV_VAR_NAME) is not None:
+    if os.getenv(KAGGLE_DATA_PROXY_URL_ENV_VAR_NAME) is None:
+      # Missing endpoint for the Jwt client
+      logger.warning(
+        "Can't use the Kaggle Cache. "
+        f"The '{KAGGLE_DATA_PROXY_URL_ENV_VAR_NAME}' environment variable is not set."
+      )
+      return False
+    return True
+  return False

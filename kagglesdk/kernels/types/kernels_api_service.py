@@ -1,6 +1,6 @@
 from datetime import datetime
 from kagglesdk.kaggle_object import *
-from kagglesdk.kernels.types.kernels_enums import KernelsListSortType, KernelsListViewType, KernelVersionType, KernelWorkerStatus
+from kagglesdk.kernels.types.kernels_enums import KernelExecutionType, KernelsListSortType, KernelsListViewType, KernelWorkerStatus
 from typing import Optional, List
 
 class ApiDeleteKernelRequest(KaggleObject):
@@ -1317,7 +1317,7 @@ class ApiSaveKernelRequest(KaggleObject):
       Which docker image to run with. This must be one of the Kaggle-provided,
       known images. It should look something like:
       gcr.io/kaggle-images/python@sha256:f4b6dd72d4ac48c76fbb02bce0798b80b284102886ad37e6041e9ab721dc8873
-    kernel_version_type (KernelVersionType)
+    kernel_execution_type (KernelExecutionType)
       Which kernel version type to use.
   """
 
@@ -1341,7 +1341,7 @@ class ApiSaveKernelRequest(KaggleObject):
     self._session_timeout_seconds = None
     self._priority = None
     self._docker_image = None
-    self._kernel_version_type = None
+    self._kernel_execution_type = None
     self._freeze()
 
   @property
@@ -1657,18 +1657,18 @@ class ApiSaveKernelRequest(KaggleObject):
     self._docker_image = docker_image
 
   @property
-  def kernel_version_type(self) -> 'KernelVersionType':
+  def kernel_execution_type(self) -> 'KernelExecutionType':
     """Which kernel version type to use."""
-    return self._kernel_version_type or KernelVersionType.KERNEL_VERSION_TYPE_UNSPECIFIED
+    return self._kernel_execution_type or KernelExecutionType.KERNEL_EXECUTION_TYPE_UNSPECIFIED
 
-  @kernel_version_type.setter
-  def kernel_version_type(self, kernel_version_type: Optional['KernelVersionType']):
-    if kernel_version_type is None:
-      del self.kernel_version_type
+  @kernel_execution_type.setter
+  def kernel_execution_type(self, kernel_execution_type: Optional['KernelExecutionType']):
+    if kernel_execution_type is None:
+      del self.kernel_execution_type
       return
-    if not isinstance(kernel_version_type, KernelVersionType):
-      raise TypeError('kernel_version_type must be of type KernelVersionType')
-    self._kernel_version_type = kernel_version_type
+    if not isinstance(kernel_execution_type, KernelExecutionType):
+      raise TypeError('kernel_execution_type must be of type KernelExecutionType')
+    self._kernel_execution_type = kernel_execution_type
 
   def endpoint(self):
     path = '/api/v1/kernels/push'
@@ -2089,7 +2089,7 @@ ApiSaveKernelRequest._fields = [
   FieldMetadata("sessionTimeoutSeconds", "session_timeout_seconds", "_session_timeout_seconds", int, None, PredefinedSerializer(), optional=True),
   FieldMetadata("priority", "priority", "_priority", int, None, PredefinedSerializer(), optional=True),
   FieldMetadata("dockerImage", "docker_image", "_docker_image", str, None, PredefinedSerializer(), optional=True),
-  FieldMetadata("kernelVersionType", "kernel_version_type", "_kernel_version_type", KernelVersionType, None, EnumSerializer(), optional=True),
+  FieldMetadata("kernelExecutionType", "kernel_execution_type", "_kernel_execution_type", KernelExecutionType, None, EnumSerializer(), optional=True),
 ]
 
 ApiSaveKernelResponse._fields = [

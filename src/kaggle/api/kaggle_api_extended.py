@@ -2642,6 +2642,7 @@ class KaggleApi:
             request.model_data_sources = model_sources
             request.category_ids = self.get_or_default(meta_data, 'keywords', [])
             request.docker_image_pinning_type = docker_pinning_type  # type: ignore[assignment]
+            request.docker_image = self.get_or_default(meta_data, 'docker_image', None)
             if timeout:
                 request.session_timeout_seconds = int(timeout)
             if quick:
@@ -2821,6 +2822,7 @@ class KaggleApi:
             data['kernel_sources'] = server_metadata.kernel_data_sources
             data['competition_sources'] = server_metadata.competition_data_sources
             data['model_sources'] = server_metadata.model_data_sources
+            data['docker_image'] = server_metadata.docker_image
             with open(metadata_path, 'w') as f:
                 json.dump(data, f, indent=2)
 

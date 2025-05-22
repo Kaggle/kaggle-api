@@ -527,7 +527,8 @@ optional arguments:
   -t N, --timeout N     Limit the run time of a kernel to the given number  of seconds.
                         The global maximum time will not be exceeded.
   -p FOLDER, --path FOLDER
-                        Folder for upload, containing data files and a special kernel-metadata.json file (https://github.com/Kaggle/kaggle-api/wiki/Kernel-Metadata). Defaults to current working directory
+                        Folder for upload, containing data files and a special kernel-metadata.json file (https://github.com/Kaggle/kaggle-api/wiki/Kernel-Metadata). Defaults to current working directory.
+  -q, --quick           Save the kernel quickly, without running the cells
 ```
 
 Example:

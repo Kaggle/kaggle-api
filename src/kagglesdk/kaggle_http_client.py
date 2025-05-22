@@ -4,11 +4,12 @@ import json
 import os
 import urllib.parse
 from io import BytesIO
+from pathlib import Path
 
 import requests
 from urllib3.fields import RequestField
 
-from kagglesdk.kaggle_env import get_endpoint, get_env, KaggleEnv
+from kagglesdk.kaggle_env import get_endpoint, get_env, is_in_kaggle_notebook, KAGGLE_API_V1_TOKEN_PATH, KaggleEnv
 from kagglesdk.kaggle_object import KaggleObject
 from typing import Type
 
@@ -312,6 +313,17 @@ class KaggleHttpClient(object):
       self._session.auth = apikey_creds
       self._signed_in = True
       return
+      
+    if is_in_kaggle_notebook():
+      token_file_path_str = os.environ.get(KAGGLE_API_V1_TOKEN_PATH)
+      if token_file_path_str:
+        token_path = Path(token_file_path_str)
+        if token_path.exists():
+          token_value = token_path.read_text().strip()
+          if token_value:
+            self._session.auth = KaggleHttpClient.BearerAuth(token_value)
+            self._signed_in = True
+            return
 
     self._signed_in = False
 

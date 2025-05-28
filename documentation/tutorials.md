@@ -1,0 +1,207 @@
+ABOUTME: This file provides tutorials for common Kaggle CLI workflows.
+ABOUTME: It guides users through multi-step processes like creating datasets and models.
+
+# Kaggle CLI Tutorials
+
+These tutorials illustrate how to use a sequence of Kaggle CLI commands to accomplish common tasks.
+
+## Introduction
+
+Before starting these tutorials, please make sure you have:
+
+1.  Installed the Kaggle CLI.
+2.  Downloaded your `kaggle.json` API token from your Kaggle account page (e.g., `https://www.kaggle.com/YOUR_USERNAME/account`) and placed it in the `~/.kaggle/` directory (or `C:\Users\<Windows-username>\.kaggle\` on Windows).
+3.  Logged in to your kaggle.com account in a web browser. This will allow you to easily verify the results of the CLI commands in the "Your Work" section of your Kaggle profile.
+
+## Tutorial: Create a Dataset
+
+This tutorial walks you through creating a new dataset on Kaggle.
+
+1.  **Start from an empty directory.** Create a new directory for your dataset files and navigate into it.
+
+    ```bash
+    mkdir my-new-dataset
+    cd my-new-dataset
+    ```
+
+2.  **Create a sample data file.** For this example, create a CSV file named `sample_data.csv` with an index column and three random data columns, and a few rows of data.
+
+    ```bash
+    echo "id,col_a,col_b,col_c" > sample_data.csv
+    echo "1,0.5,0.2,0.8" >> sample_data.csv
+    echo "2,0.1,0.7,0.3" >> sample_data.csv
+    echo "3,0.9,0.4,0.6" >> sample_data.csv
+    ```
+
+3.  **Initialize dataset metadata.** This creates a `dataset-metadata.json` file in your current directory.
+
+    ```bash
+    kaggle datasets init
+    ```
+
+4.  **Edit the metadata file.** Open `dataset-metadata.json` in a text editor and make the following changes:
+    *   Replace `"INSERT_TITLE_HERE"` with your desired dataset title, e.g., `"My Sample Dataset"`.
+    *   Replace `"INSERT_SLUG_HERE"` with a URL-friendly version of your title, e.g., `"my-sample-dataset"`.
+    *   You can also add licenses, descriptions, and other relevant information.
+
+    *Example using `sed` (for Linux/macOS):*
+    ```bash
+    sed -i 's/INSERT_TITLE_HERE/My Sample Dataset/' dataset-metadata.json
+    sed -i 's/INSERT_SLUG_HERE/my-sample-dataset/' dataset-metadata.json
+    ```
+
+5.  **Create the dataset.** This command uploads your `sample_data.csv` and `dataset-metadata.json` to Kaggle.
+
+    ```bash
+    kaggle datasets create -p .
+    ```
+    You can add `--public` to make it public immediately.
+
+6.  **Verify on Kaggle.com.** Go to your Kaggle profile and check the "Datasets" tab in the "Your Work" section. You should see "My Sample Dataset".
+
+## Tutorial: Update a Kernel (Notebook/Script)
+
+This tutorial shows how to download an existing kernel, modify it, and push the changes back to Kaggle.
+
+1.  **Create or identify a kernel on Kaggle.com.**
+    *   Log in to kaggle.com.
+    *   Create a new notebook (or use an existing one). For this tutorial, let's assume its title is "My CLI Test Kernel".
+    *   Make a small change and **save a version** of the notebook on Kaggle.com (e.g., click "Save Version" and choose "Save & Run All (Commit)"). You cannot pull or push a kernel that is only in draft form.
+    *   Note the kernel slug from the browser's address bar. It will be something like `YOUR_USERNAME/my-cli-test-kernel`.
+
+2.  **Create a new local directory for your kernel.**
+
+    ```bash
+    mkdir my-kernel-project
+    cd my-kernel-project
+    ```
+
+3.  **Pull the kernel.** Use the `kaggle kernels pull` command with your username and the kernel slug. The `-m` flag includes the `kernel-metadata.json` file, which is required for pushing updates.
+
+    ```bash
+    # Replace YOUR_USERNAME with your actual Kaggle username
+    kaggle kernels pull YOUR_USERNAME/my-cli-test-kernel -m
+    ```
+    This will download `my-cli-test-kernel.ipynb` (or `.py`/`.Rmd`) and `kernel-metadata.json`.
+
+4.  **Edit the kernel or metadata.**
+    *   Open the downloaded notebook file (e.g., `my-cli-test-kernel.ipynb`) and make some changes to the code or content.
+    *   Open `kernel-metadata.json`. Let's add "benchmark" to the keywords. Find the `"keywords": []` line and change it to `"keywords": ["benchmark"]`.
+    *   *Note: While you can edit keywords here, it's often best to manage them on kaggle.com, as there might be a restricted list of allowed keywords.*
+
+5.  **Push the kernel.** This uploads your changes and the updated metadata, then runs the kernel on Kaggle.
+
+    ```bash
+    kaggle kernels push -p .
+    ```
+
+6.  **Verify on Kaggle.com.** Refresh the notebook page on kaggle.com. You should see your code changes and the "benchmark" tag added to the kernel settings.
+
+## Tutorial: Create a Model
+
+This tutorial guides you through creating a new model on Kaggle.
+
+1.  **Start from an empty directory.** Create a new directory for your model files and navigate into it.
+
+    ```bash
+    mkdir my-new-model
+    cd my-new-model
+    ```
+
+2.  **Copy your model definition files (optional for this step).** If you have files that define your model (e.g., Python scripts, model weights), copy them into this directory. For the `kaggle models create` step, only the metadata is strictly required, but you'll need files when you create a model instance.
+
+3.  **Initialize model metadata.** This creates a `model-metadata.json` file.
+
+    ```bash
+    kaggle models init
+    ```
+
+4.  **Edit the metadata file.** Open `model-metadata.json` and make the following changes:
+    *   Replace `"INSERT_OWNER_SLUG_HERE"` with your Kaggle username (e.g., `"YOUR_USERNAME"`).
+    *   Replace `"INSERT_TITLE_HERE"` with your model's title (e.g., `"My Awesome AI Model"`).
+    *   Replace `"INSERT_SLUG_HERE"` with a URL-friendly version of the title (e.g., `"my-awesome-ai-model"`).
+    *   Fill out the `"description"` field and other relevant sections like `"licenses"`.
+
+    *Example using `sed` (for Linux/macOS):*
+    ```bash
+    # Replace YOUR_USERNAME with your actual Kaggle username
+    sed -i 's/INSERT_OWNER_SLUG_HERE/YOUR_USERNAME/' model-metadata.json
+    sed -i 's/INSERT_TITLE_HERE/My Awesome AI Model/' model-metadata.json
+    sed -i 's/INSERT_SLUG_HERE/my-awesome-ai-model/' model-metadata.json
+    ```
+
+5.  **Create the model.**
+
+    ```bash
+    kaggle models create -p .
+    ```
+
+6.  **Verify on Kaggle.com.** Go to your Kaggle profile and check the "Models" tab in the "Your Work" section. You should see "My Awesome AI Model".
+
+## Tutorial: Create a Model Instance
+
+This tutorial shows how to create an instance under an existing model. A model instance usually represents the model implemented in a specific framework (like TensorFlow, PyTorch, JAX, etc.) and includes the actual model files.
+
+1.  **Ensure you have a parent model.** Follow the "Create a Model" tutorial if you haven't already. Let's assume your model slug is `my-awesome-ai-model` and your username is `YOUR_USERNAME`.
+
+2.  **Prepare your model instance files.** In your model directory (e.g., `my-new-model`), create or place the files for this specific instance. For example, a JAX model might have a `flax_model.params` file.
+
+    ```bash
+    # In the my-new-model directory
+    echo "This is a placeholder for JAX model parameters" > flax_model.params
+    ```
+
+3.  **Initialize model instance metadata.** This creates `model-instance-metadata.json`.
+
+    ```bash
+    # Still in the my-new-model directory
+    kaggle models instances init
+    ```
+
+4.  **Edit the instance metadata file.** Open `model-instance-metadata.json` and make changes:
+    *   Replace `"INSERT_OWNER_SLUG_HERE"` with your Kaggle username (e.g., `"YOUR_USERNAME"`).
+    *   Replace `"INSERT_EXISTING_MODEL_SLUG_HERE"` with your parent model's slug (e.g., `"my-awesome-ai-model"`).
+    *   Replace `"INSERT_INSTANCE_SLUG_HERE"` with a slug for this instance (e.g., `"jax-implementation"`).
+    *   Replace `"INSERT_FRAMEWORK_HERE"` with the model framework (e.g., `"jax"`, `"tensorflow"`, `"pytorch"`, `"sklearn"`).
+    *   Update the `"instance_size_bytes"` if known, and add a `"description"`.
+
+    *Example using `sed` (for Linux/macOS):*
+    ```bash
+    # Replace YOUR_USERNAME and my-awesome-ai-model accordingly
+    sed -i 's/INSERT_OWNER_SLUG_HERE/YOUR_USERNAME/' model-instance-metadata.json
+    sed -i 's/INSERT_EXISTING_MODEL_SLUG_HERE/my-awesome-ai-model/' model-instance-metadata.json
+    sed -i 's/INSERT_INSTANCE_SLUG_HERE/jax-implementation/' model-instance-metadata.json
+    sed -i 's/INSERT_FRAMEWORK_HERE/jax/' model-instance-metadata.json
+    ```
+
+5.  **Create the model instance.** This uploads the files in the current directory (e.g., `flax_model.params`) along with the instance metadata.
+
+    ```bash
+    kaggle models instances create -p .
+    ```
+
+6.  **Verify on Kaggle.com.** Go to your model's page on Kaggle. You should see a new "jax-implementation" instance listed, and it will have one version containing `flax_model.params`.
+
+## Tutorial: Create a Model Instance Version
+
+This tutorial explains how to add a new version to an existing model instance, for example, when you have updated model weights or files.
+
+1.  **Ensure you have a model instance.** Follow the "Create a Model Instance" tutorial. Let's assume your instance is `YOUR_USERNAME/my-awesome-ai-model/jax/jax-implementation`.
+
+2.  **Prepare your updated files.** In your model instance directory (e.g., `my-new-model`), update or add new files for this version. For example, create `flax_model_v2.params`.
+
+    ```bash
+    # In the my-new-model directory
+    echo "Updated JAX model parameters for V2" > flax_model_v2.params
+    # You might also remove or update flax_model.params if it's being replaced
+    ```
+
+3.  **Create the new model instance version.** You need to specify the parent model instance and provide version notes. The files from the `-p` path will form the contents of this new version.
+
+    ```bash
+    # Replace YOUR_USERNAME and model/instance slugs accordingly
+    kaggle models instances versions create YOUR_USERNAME/my-awesome-ai-model/jax/jax-implementation -p . -n "Second version with updated parameters"
+    ```
+    *Note: The `-p .` means all files in the current directory will be uploaded as part of this new version. If you only want to upload `flax_model_v2.params`, ensure only it (and any other V2 files) are in a directory and point `-p` to that directory, or manage your files carefully.*
+
+4.  **Verify on Kaggle.com.** Go to your model instance page on Kaggle (e.g., `YOUR_USERNAME/my-awesome-ai-model/jax/jax-implementation`). You should see a new version (e.g., version 2) listed with your notes and the new files.

@@ -1,6 +1,9 @@
-# Datasets Commands (`kaggle datasets` or `kaggle d`)
+ABOUTME: This file documents the Kaggle CLI commands for interacting with datasets.
+ABOUTME: It includes examples for listing, downloading, creating, and managing datasets.
 
-This section describes commands for interacting with Kaggle datasets.
+# Datasets Commands
+
+Commands for interacting with Kaggle datasets.
 
 ## `kaggle datasets list`
 
@@ -14,49 +17,46 @@ kaggle datasets list [options]
 
 **Options:**
 
-*   `--sort-by <SORT_BY>`: Sort results (e.g., `hottest`, `votes`).
-*   `--size <SIZE_BYTES>`: (DEPRECATED) Filter by size. Use `--min-size` and `--max-size`.
-*   `--file-type <FILE_TYPE>`: Filter by file type (e.g., `csv`, `sqlite`).
-*   `--license <LICENSE_NAME>`: Filter by license (e.g., `cc`, `gpl`).
-*   `--tags <TAG_IDS>`: Filter by tags (comma-separated).
+*   `--sort-by <SORT_BY>`: Sort results. Valid options: `hottest`, `votes`, `updated`, `active` (default: `hottest`).
+*   `--size <SIZE_CATEGORY>`: DEPRECATED. Use `--min-size` and `--max-size`.
+*   `--file-type <FILE_TYPE>`: Filter by file type. Valid options: `all`, `csv`, `sqlite`, `json`, `bigQuery`.
+*   `--license <LICENSE_NAME>`: Filter by license. Valid options: `all`, `cc`, `gpl`, `odb`, `other`.
+*   `--tags <TAG_IDS>`: Filter by tags (comma-separated tag IDs).
 *   `-s, --search <SEARCH_TERM>`: Search term.
-*   `-m, --mine`: List only your datasets.
-*   `--user <USER>`: Filter by owner username or organization.
-*   `-p, --page <PAGE>`: Page number.
-*   `-v, --csv`: Output in CSV format.
+*   `-m, --mine`: Display only your datasets.
+*   `--user <USER>`: Filter by a specific user or organization.
+*   `-p, --page <PAGE>`: Page number for results (default: 1).
+*   `-v, --csv`: Print results in CSV format.
 *   `--max-size <BYTES>`: Maximum dataset size in bytes.
 *   `--min-size <BYTES>`: Minimum dataset size in bytes.
 
-**Examples from `test_commands.sh`:**
+**Examples:**
 
-1.  ```bash
-    kaggle d list --size 10
-    ```
-    **Purpose:** Lists datasets. The `--size 10` is deprecated but was intended to filter by size.
+1.  List your own datasets:
 
-2.  ```bash
-    kaggle d list -m
+    ```bash
+    kaggle datasets list -m
     ```
-    **Purpose:** Lists only the datasets owned by the authenticated user.
 
-3.  ```bash
-    kaggle d list --user oktayrdeki --csv
-    ```
-    **Purpose:** Lists datasets owned by the user 'oktayrdeki' and outputs the list in CSV format.
+2.  List CSV datasets, page 2, sorted by last updated, containing "student" in their title, with size between 13000 and 15000 bytes:
 
-4.  ```bash
-    kaggle d list --file-type csv --page 2 --sort-by updated -s student --min-size 13000 --max-size 15000
+    ```bash
+    kaggle datasets list --file-type csv --page 2 --sort-by updated -s student --min-size 13000 --max-size 15000
     ```
-    **Purpose:** This command performs a complex search for datasets. It looks for datasets containing CSV files (`--file-type csv`), on the second page of results (`--page 2`), sorted by the last updated date (`--sort-by updated`), containing the term "student" (`-s student`), and with a size between 13000 and 15000 bytes.
 
-5.  ```bash
-    kaggle d list --license odb --tags internet --search telco
+3.  List datasets with an ODB license, tagged with "internet", and matching the search term "telco":
+
+    ```bash
+    kaggle datasets list --license odb --tags internet --search telco
     ```
-    **Purpose:** Lists datasets that have an 'odb' license, are tagged with 'internet', and contain the search term 'telco'.
+
+**Purpose:**
+
+This command helps you find datasets on Kaggle based on various criteria like owner, file type, tags, and size.
 
 ## `kaggle datasets files`
 
-Lists files within a specific dataset.
+Lists files for a specific dataset.
 
 **Usage:**
 
@@ -64,18 +64,27 @@ Lists files within a specific dataset.
 kaggle datasets files <DATASET> [options]
 ```
 
-*   `<DATASET>`: Dataset slug (e.g., `owner/dataset-name`).
-*   `-v, --csv`: Output in CSV format.
-*   `--page-size <SIZE>`: Number of items per page.
-*   `--page-token <TOKEN>`: Page token for pagination.
+**Arguments:**
 
-**Example from `test_commands.sh`:**
+*   `<DATASET>`: Dataset URL suffix in the format `owner/dataset-name` (e.g., `kerneler/brazilian-bird-observation-metadata-from-wikiaves`).
+
+**Options:**
+
+*   `-v, --csv`: Print results in CSV format.
+*   `--page-token <PAGE_TOKEN>`: Page token for results paging.
+*   `--page-size <PAGE_SIZE>`: Number of items to show on a page (default: 20, max: 200).
+
+**Example:**
+
+List the first 7 files for the dataset `kerneler/brazilian-bird-observation-metadata-from-wikiaves`:
 
 ```bash
-kaggle datasets files kerneler/brazilian-bird-observation-metadata-from-wikiaves --page-size=7 --page-token=abcd
+kaggle datasets files kerneler/brazilian-bird-observation-metadata-from-wikiaves --page-size=7
 ```
 
-**Purpose:** Lists the files in the dataset 'kerneler/brazilian-bird-observation-metadata-from-wikiaves'. It shows 7 files per page and uses 'abcd' as a page token (likely for testing pagination).
+**Purpose:**
+
+Use this command to see the individual files within a dataset before downloading.
 
 ## `kaggle datasets download`
 
@@ -87,34 +96,46 @@ Downloads dataset files.
 kaggle datasets download <DATASET> [options]
 ```
 
-*   `<DATASET>`: Dataset slug.
-*   `-f, --file <FILE_NAME>`: Specific file to download.
-*   `-p, --path <PATH>`: Path to download files to.
-*   `-w, --wp`: Download to current working path.
-*   `--unzip`: Unzip the downloaded file (if it's a zip).
+**Arguments:**
+
+*   `<DATASET>`: Dataset URL suffix (e.g., `willianoliveiragibin/pixar-films`).
+
+**Options:**
+
+*   `-f, --file <FILE_NAME>`: Specific file to download (downloads all if not specified).
+*   `-p, --path <PATH>`: Folder to download files to (defaults to current directory).
+*   `-w, --wp`: Download files to the current working path.
+*   `--unzip`: Unzip the downloaded file (deletes the .zip file afterwards).
 *   `-o, --force`: Force download, overwriting existing files.
-*   `-q, --quiet`: Suppress progress output.
+*   `-q, --quiet`: Suppress verbose output.
 
-**Examples from `test_commands.sh`:**
+**Examples:**
 
-1.  ```bash
+1.  Download all files for the dataset `willianoliveiragibin/pixar-films`:
+
+    ```bash
     kaggle datasets download -d willianoliveiragibin/pixar-films
     ```
-    **Purpose:** Downloads all files for the dataset 'willianoliveiragibin/pixar-films' to the current directory.
 
-2.  ```bash
-    kaggle d download goefft/public-datasets-with-file-types-and-columns -p tmp --unzip -o -q
-    ```
-    **Purpose:** Downloads the dataset 'goefft/public-datasets-with-file-types-and-columns' into a directory named `tmp`, unzips it (`--unzip`), overwrites if exists (`-o`), and does so quietly (`-q`).
+2.  Download the dataset `goefft/public-datasets-with-file-types-and-columns`, unzip it into the `tmp` folder, overwriting if necessary, and suppress output:
 
-3.  ```bash
-    kaggle d download goefft/public-datasets-with-file-types-and-columns -f dataset_results.csv -w -q -o
+    ```bash
+    kaggle datasets download goefft/public-datasets-with-file-types-and-columns -p tmp --unzip -o -q
     ```
-    **Purpose:** Downloads only the `dataset_results.csv` file from 'goefft/public-datasets-with-file-types-and-columns' to the current working directory (`-w`), quietly (`-q`), and overwriting if it exists (`-o`).
+
+3.  Download the specific file `dataset_results.csv` from `goefft/public-datasets-with-file-types-and-columns` to the current working directory, quietly, and force overwrite:
+
+    ```bash
+    kaggle datasets download goefft/public-datasets-with-file-types-and-columns -f dataset_results.csv -w -q -o
+    ```
+
+**Purpose:**
+
+This command allows you to retrieve dataset files for local use.
 
 ## `kaggle datasets init`
 
-Initializes a new `dataset-metadata.json` file in the specified folder.
+Initializes a metadata file (`dataset-metadata.json`) for creating a new dataset.
 
 **Usage:**
 
@@ -122,15 +143,21 @@ Initializes a new `dataset-metadata.json` file in the specified folder.
 kaggle datasets init -p <FOLDER_PATH>
 ```
 
-*   `-p <FOLDER_PATH>`: The path to the folder where the metadata file will be created. Defaults to the current directory.
+**Options:**
 
-**Example from `test_commands.sh`:**
+*   `-p, --path <FOLDER_PATH>`: The path to the folder where the `dataset-metadata.json` file will be created (defaults to the current directory).
+
+**Example:**
+
+Initialize a dataset metadata file in the `tests/dataset` folder:
 
 ```bash
-kaggle d init -p tests/dataset
+kaggle datasets init -p tests/dataset
 ```
 
-**Purpose:** Creates a template `dataset-metadata.json` file in the `tests/dataset` directory. This file is necessary for creating or updating datasets.
+**Purpose:**
+
+This command creates a template `dataset-metadata.json` file that you need to edit before creating a new dataset on Kaggle. This file contains information like the dataset title, ID (slug), and licenses.
 
 ## `kaggle datasets create`
 
@@ -142,28 +169,33 @@ Creates a new dataset on Kaggle.
 kaggle datasets create -p <FOLDER_PATH> [options]
 ```
 
-*   `-p <FOLDER_PATH>`: Path to the folder containing data files and `dataset-metadata.json`.
+**Options:**
+
+*   `-p, --path <FOLDER_PATH>`: Path to the folder containing the data files and the `dataset-metadata.json` file (defaults to the current directory).
 *   `-u, --public`: Make the dataset public (default is private).
-*   `-q, --quiet`: Suppress progress output.
-*   `-t, --keep-tabular`: Do not convert tabular files to CSV.
-*   `-r, --dir-mode <MODE>`: How to handle directories (`skip`, `zip`, `tar`). Default is `skip`.
+*   `-q, --quiet`: Suppress verbose output.
+*   `-t, --keep-tabular`: Do not convert tabular files to CSV (default is to convert).
+*   `-r, --dir-mode <MODE>`: How to handle directories: `skip` (ignore), `zip` (compressed upload), `tar` (uncompressed upload) (default: `skip`).
 
-**Example from `test_commands.sh`:**
-(Assumes `dataset-metadata.json` has been prepared in `tests/dataset`)
+**Example:**
+
+Create a new public dataset from the files in `tests/dataset`, quietly, without converting tabular files, and skipping subdirectories. (Assumes `dataset-metadata.json` in `tests/dataset` has been properly edited with title and slug):
+
 ```bash
-# Setup: Modify the metadata file (these lines are part of the test script)
-# export SLUG=testing
-# sed -i s/INSERT_TITLE_HERE/TitleHere/ tests/dataset/dataset-metadata.json
-# sed -i s/INSERT_SLUG_HERE/$SLUG/ tests/dataset/dataset-metadata.json
+# Example: Edit dataset-metadata.json first
+# sed -i 's/INSERT_TITLE_HERE/My Dataset Title/' tests/dataset/dataset-metadata.json
+# sed -i 's/INSERT_SLUG_HERE/my-dataset-slug/' tests/dataset/dataset-metadata.json
 
-kaggle d create -p tests/dataset --public -q -t -r skip
+kaggle datasets create -p tests/dataset --public -q -t -r skip
 ```
 
-**Purpose:** Creates a new public dataset on Kaggle using the files and metadata found in the `tests/dataset` folder. It suppresses output (`-q`), keeps tabular files as they are (`-t`), and skips any subdirectories (`-r skip`).
+**Purpose:**
+
+This command uploads your local data files and the associated metadata to create a new dataset on Kaggle.
 
 ## `kaggle datasets version`
 
-Creates a new version of an existing dataset. (Alias: `kaggle datasets update`)
+Creates a new version of an existing dataset.
 
 **Usage:**
 
@@ -171,24 +203,30 @@ Creates a new version of an existing dataset. (Alias: `kaggle datasets update`)
 kaggle datasets version -p <FOLDER_PATH> -m <VERSION_NOTES> [options]
 ```
 
-*   `-p <FOLDER_PATH>`: Path to the folder containing data files and `dataset-metadata.json`.
-*   `-m, --message <VERSION_NOTES>`: Notes describing the new version (required).
-*   `-q, --quiet`: Suppress progress output.
-*   `-t, --keep-tabular`: Do not convert tabular files to CSV.
-*   `-r, --dir-mode <MODE>`: How to handle directories (`skip`, `zip`, `tar`).
-*   `-d, --delete-old-versions`: Delete previous versions of the dataset.
+**Options:**
 
-**Example from `test_commands.sh`:**
-(Assumes `dataset-metadata.json` in `tests/dataset` points to an existing dataset)
+*   `-p, --path <FOLDER_PATH>`: Path to the folder containing the updated data files and `dataset-metadata.json` (defaults to current directory).
+*   `-m, --message <VERSION_NOTES>`: (Required) Message describing the new version.
+*   `-q, --quiet`: Suppress verbose output.
+*   `-t, --keep-tabular`: Do not convert tabular files to CSV.
+*   `-r, --dir-mode <MODE>`: Directory handling mode (`skip`, `zip`, `tar`).
+*   `-d, --delete-old-versions`: Delete old versions of this dataset.
+
+**Example:**
+
+Create a new version of a dataset using files from `tests/dataset` with version notes "Updated data", quietly, keeping tabular formats, skipping directories, and deleting old versions:
+
 ```bash
-kaggle d version -m VersionNotesGoHere -p tests/dataset -q -t -r skip -d
+kaggle datasets version -m "Updated data" -p tests/dataset -q -t -r skip -d
 ```
 
-**Purpose:** Creates a new version of the dataset specified in `tests/dataset/dataset-metadata.json`. It includes "VersionNotesGoHere" as version notes, processes files similarly to `create`, and deletes old versions of the dataset (`-d`).
+**Purpose:**
+
+Use this command to update an existing dataset with new files or metadata changes.
 
 ## `kaggle datasets metadata`
 
-Downloads or updates metadata for a dataset.
+Downloads metadata for a dataset or updates existing local metadata.
 
 **Usage:**
 
@@ -196,21 +234,30 @@ Downloads or updates metadata for a dataset.
 kaggle datasets metadata <DATASET> [options]
 ```
 
-*   `<DATASET>`: Dataset slug.
-*   `-p <PATH>`: Path to download/update metadata file(s). Defaults to current directory.
-*   `--update`: Update existing metadata file(s) with remote values.
+**Arguments:**
 
-**Example from `test_commands.sh`:**
+*   `<DATASET>`: Dataset URL suffix (e.g., `goefft/public-datasets-with-file-types-and-columns`).
+
+**Options:**
+
+*   `-p, --path <PATH>`: Directory to download/update metadata file (`dataset-metadata.json`). Defaults to current working directory.
+*   `--update`: Update existing local metadata file instead of downloading anew.
+
+**Example:**
+
+Download metadata for the dataset `goefft/public-datasets-with-file-types-and-columns` into the `tests/dataset` folder:
 
 ```bash
 kaggle datasets metadata goefft/public-datasets-with-file-types-and-columns -p tests/dataset
 ```
 
-**Purpose:** Downloads the metadata for the dataset 'goefft/public-datasets-with-file-types-and-columns' and saves it into the `tests/dataset` directory. If a `dataset-metadata.json` already exists there for this dataset, it would be overwritten.
+**Purpose:**
+
+This command allows you to fetch the `dataset-metadata.json` file for an existing dataset, which can be useful for inspection or as a template for creating a new version.
 
 ## `kaggle datasets status`
 
-Gets the creation/update status of a dataset.
+Gets the creation status of a dataset.
 
 **Usage:**
 
@@ -218,15 +265,21 @@ Gets the creation/update status of a dataset.
 kaggle datasets status <DATASET>
 ```
 
-*   `<DATASET>`: Dataset slug.
+**Arguments:**
 
-**Example from `test_commands.sh`:**
+*   `<DATASET>`: Dataset URL suffix (e.g., `goefft/public-datasets-with-file-types-and-columns`).
+
+**Example:**
+
+Get the status of the dataset `goefft/public-datasets-with-file-types-and-columns`:
 
 ```bash
-kaggle d status goefft/public-datasets-with-file-types-and-columns
+kaggle datasets status goefft/public-datasets-with-file-types-and-columns
 ```
 
-**Purpose:** Checks and displays the current status (e.g., processing, complete, error) of the dataset 'goefft/public-datasets-with-file-types-and-columns'.
+**Purpose:**
+
+After creating or updating a dataset, this command helps you check if the process was successful or if there were any issues.
 
 ## `kaggle datasets delete`
 
@@ -238,17 +291,22 @@ Deletes a dataset from Kaggle.
 kaggle datasets delete <DATASET> [options]
 ```
 
-*   `<DATASET>`: Dataset slug to delete.
-*   `-y, --yes`: Skip confirmation prompt.
+**Arguments:**
 
-**Examples from `test_commands.sh`:**
-(Assumes `$KAGGLE_DEVELOPER` is an environment variable with your username and `$SLUG` is `testing`)
-1.  ```bash
-    kaggle d delete $KAGGLE_DEVELOPER/$SLUG
-    ```
-    **Purpose:** Attempts to delete the dataset `$KAGGLE_DEVELOPER/$SLUG`. It will prompt for confirmation.
+*   `<DATASET>`: Dataset URL suffix (e.g., `username/dataset-slug`).
 
-2.  ```bash
-    kaggle d delete $KAGGLE_DEVELOPER/$SLUG --yes
-    ```
-    **Purpose:** Deletes the dataset `$KAGGLE_DEVELOPER/$SLUG` without prompting for confirmation (`--yes`).
+**Options:**
+
+*   `-y, --yes`: Automatically confirm deletion without prompting.
+
+**Example:**
+
+Delete the dataset `username/dataset-slug` and automatically confirm:
+
+```bash
+kaggle datasets delete username/dataset-slug --yes
+```
+
+**Purpose:**
+
+This command permanently removes one of your datasets from Kaggle. Use with caution.

@@ -1,6 +1,9 @@
-# Models Commands (`kaggle models` or `kaggle m`)
+ABOUTME: This file documents the Kaggle CLI commands for interacting with models.
+ABOUTME: It includes examples for listing, initializing, creating, updating, and deleting models.
 
-This section describes commands for interacting with Kaggle Models.
+# Models Commands
+
+Commands for interacting with Kaggle Models.
 
 ## `kaggle models list`
 
@@ -14,29 +17,34 @@ kaggle models list [options]
 
 **Options:**
 
-*   `--sort-by <SORT_BY>`: Sort results (e.g., `hotness`, `downloadCount`, `createTime`).
+*   `--owner <OWNER>`: Filter by a specific user or organization.
+*   `--sort-by <SORT_BY>`: Sort results. Valid options: `hotness`, `downloadCount`, `voteCount`, `notebookCount`, `createTime` (default: `hotness`).
 *   `-s, --search <SEARCH_TERM>`: Search term.
-*   `--owner <OWNER>`: Filter by owner username or organization.
-*   `--page-size <SIZE>`: Number of items per page.
-*   `--page-token <TOKEN>`: Page token for pagination.
-*   `-v, --csv`: Output in CSV format.
+*   `--page-size <SIZE>`: Number of items per page (default: 20).
+*   `--page-token <TOKEN>`: Page token for results paging.
+*   `-v, --csv`: Print results in CSV format.
 
-**Examples from `test_commands.sh`:**
-(Assumes `$KAGGLE_DEVELOPER` is an environment variable with your username)
+**Examples:**
 
-1.  ```bash
-    kaggle m list --owner $KAGGLE_DEVELOPER --sort-by createTime -v
+1.  List models owned by `$KAGGLE_DEVELOPER` (replace with your username), sorted by creation time, in CSV format:
+
+    ```bash
+    kaggle models list --owner $KAGGLE_DEVELOPER --sort-by createTime -v
     ```
-    **Purpose:** Lists models owned by `$KAGGLE_DEVELOPER`, sorted by their creation time, and outputs the list in CSV format.
 
-2.  ```bash
-    kaggle m list -s gemini --page-size 5
+2.  List the first 5 models matching the search term "gemini":
+
+    ```bash
+    kaggle models list -s gemini --page-size 5
     ```
-    **Purpose:** Searches for models with "gemini" in their name or description, displaying 5 results per page.
+
+**Purpose:**
+
+This command helps you find models on Kaggle, filtering by owner or searching by keywords, and sorting by various criteria.
 
 ## `kaggle models init`
 
-Initializes a new `model-metadata.json` file in the specified folder. This file is used for creating or updating models.
+Initializes a metadata file (`model-metadata.json`) for creating a new model.
 
 **Usage:**
 
@@ -44,16 +52,22 @@ Initializes a new `model-metadata.json` file in the specified folder. This file 
 kaggle models init -p <FOLDER_PATH>
 ```
 
-*   `-p <FOLDER_PATH>`: The path to the folder where the `model-metadata.json` file will be created. Defaults to the current directory.
+**Options:**
 
-**Example from `test_commands.sh`:**
+*   `-p, --path <FOLDER_PATH>`: The path to the folder where the `model-metadata.json` file will be created (defaults to the current directory).
+
+**Example:**
+
+Initialize a model metadata file in a new temporary folder `tmp`:
 
 ```bash
 mkdir tmp
-kaggle m init -p tmp
+kaggle models init -p tmp
 ```
 
-**Purpose:** Creates a directory `tmp` and then initializes a template `model-metadata.json` file inside it.
+**Purpose:**
+
+This command creates a template `model-metadata.json` file. You must edit this file with your model's details, such as owner slug, title, model slug (URL-friendly version of the title), and a description, before creating the model on Kaggle.
 
 ## `kaggle models create`
 
@@ -65,20 +79,26 @@ Creates a new model on Kaggle.
 kaggle models create -p <FOLDER_PATH>
 ```
 
-*   `-p <FOLDER_PATH>`: Path to the folder containing the `model-metadata.json` file. Defaults to the current directory. The metadata file must be populated with model details like owner, title, and slug.
+**Options:**
 
-**Example from `test_commands.sh`:**
-(Assumes `model-metadata.json` has been initialized in `tmp` and modified with necessary details)
+*   `-p, --path <FOLDER_PATH>`: Path to the folder containing the `model-metadata.json` file (defaults to the current directory). This folder should also contain your model files that you intend to upload as part of the first model instance.
+
+**Example:**
+
+Create a new model using the metadata in `tmp/model-metadata.json`. (Assumes the metadata file has been edited with owner, title, and slug):
+
 ```bash
-# Setup: Modify the metadata file (these lines are part of the test script)
-# sed -i s/INSERT_OWNER_SLUG_HERE/$KAGGLE_DEVELOPER/ tmp/model-metadata.json
-# sed -i s/INSERT_TITLE_HERE/ModelTitle/ tmp/model-metadata.json
-# sed -i s/INSERT_SLUG_HERE/test-model/ tmp/model-metadata.json
+# Example: Edit model-metadata.json first
+# sed -i 's/INSERT_OWNER_SLUG_HERE/your-username/' tmp/model-metadata.json
+# sed -i 's/INSERT_TITLE_HERE/My Awesome Model/' tmp/model-metadata.json
+# sed -i 's/INSERT_SLUG_HERE/my-awesome-model/' tmp/model-metadata.json
 
-kaggle m create -p tmp
+kaggle models create -p tmp
 ```
 
-**Purpose:** Creates a new model on Kaggle using the information provided in `tmp/model-metadata.json`.
+**Purpose:**
+
+This command registers a new model on Kaggle using the provided metadata. After this, you will typically create model instances and versions.
 
 ## `kaggle models get`
 
@@ -87,19 +107,28 @@ Downloads the `model-metadata.json` file for an existing model.
 **Usage:**
 
 ```bash
-kaggle models get <MODEL_SLUG> -p <FOLDER_PATH>
+kaggle models get <MODEL> -p <FOLDER_PATH>
 ```
 
-*   `<MODEL_SLUG>`: Model slug in the format `owner/model-name`.
-*   `-p <FOLDER_PATH>`: Path to the folder where the `model-metadata.json` will be saved. Defaults to the current directory.
+**Arguments:**
 
-**Example from `test_commands.sh`:**
-(Assumes `$KAGGLE_DEVELOPER` is an environment variable with your username and a model `test-model` exists)
+*   `<MODEL>`: Model URL suffix in the format `owner/model-slug` (e.g., `$KAGGLE_DEVELOPER/test-model`).
+
+**Options:**
+
+*   `-p, --path <FOLDER_PATH>`: Folder to download the `model-metadata.json` file to.
+
+**Example:**
+
+Download the metadata for model `$KAGGLE_DEVELOPER/test-model` into the `tmp` folder:
+
 ```bash
-kaggle m get -p tmp $KAGGLE_DEVELOPER/test-model
+kaggle models get -p tmp $KAGGLE_DEVELOPER/test-model
 ```
 
-**Purpose:** Downloads the `model-metadata.json` for the model `$KAGGLE_DEVELOPER/test-model` and saves it into the `tmp` directory.
+**Purpose:**
+
+This command retrieves the metadata file for an existing model, which can be useful for inspection or as a basis for an update.
 
 ## `kaggle models update`
 
@@ -111,15 +140,21 @@ Updates an existing model on Kaggle using a local `model-metadata.json` file.
 kaggle models update -p <FOLDER_PATH>
 ```
 
-*   `-p <FOLDER_PATH>`: Path to the folder containing the `model-metadata.json` file with updated information. The `id` field in the JSON must point to the existing model to be updated. Defaults to the current directory.
+**Options:**
 
-**Example from `test_commands.sh`:**
-(Assumes `tmp/model-metadata.json` exists and refers to an existing model owned by `$KAGGLE_DEVELOPER`)
+*   `-p, --path <FOLDER_PATH>`: Path to the folder containing the `model-metadata.json` file with the updated information (defaults to the current directory).
+
+**Example:**
+
+Update the model whose details are in `tmp/model-metadata.json` (ensure the slug and owner in the JSON match an existing model):
+
 ```bash
-kaggle m update -p tmp
+kaggle models update -p tmp
 ```
 
-**Purpose:** Updates the model on Kaggle based on the contents of `tmp/model-metadata.json`.
+**Purpose:**
+
+Use this command to change the metadata of an existing model, such as its title, description, or other fields defined in the `model-metadata.json` file.
 
 ## `kaggle models delete`
 
@@ -128,26 +163,25 @@ Deletes a model from Kaggle.
 **Usage:**
 
 ```bash
-kaggle models delete <MODEL_SLUG> [options]
+kaggle models delete <MODEL> [options]
 ```
 
-*   `<MODEL_SLUG>`: Model slug to delete (e.g., `owner/model-name`).
-*   `-y, --yes`: Skip confirmation prompt.
+**Arguments:**
 
-**Examples from `test_commands.sh`:**
-(Assumes `$KAGGLE_DEVELOPER` is an environment variable with your username and a model `test-model` exists)
-1.  ```bash
-    kaggle m delete $KAGGLE_DEVELOPER/test-model
-    ```
-    **Purpose:** Attempts to delete the model `$KAGGLE_DEVELOPER/test-model`. It will prompt for confirmation.
+*   `<MODEL>`: Model URL suffix in the format `owner/model-slug` (e.g., `$KAGGLE_DEVELOPER/test-model`).
 
-2.  ```bash
-    kaggle m delete $KAGGLE_DEVELOPER/test-model -y
-    ```
-    **Purpose:** Deletes the model `$KAGGLE_DEVELOPER/test-model` without prompting for confirmation (`--yes`).
+**Options:**
 
----
+*   `-y, --yes`: Automatically confirm deletion without prompting.
 
-For managing model instances and their versions, see:
-*   [Models Instances](./models_instances.md)
-*   [Models Instances Versions](./models_instances_versions.md)
+**Example:**
+
+Delete the model `$KAGGLE_DEVELOPER/test-model` and automatically confirm:
+
+```bash
+kaggle models delete $KAGGLE_DEVELOPER/test-model -y
+```
+
+**Purpose:**
+
+This command permanently removes one of your models (and all its instances and versions) from Kaggle. Use with caution.

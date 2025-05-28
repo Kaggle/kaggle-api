@@ -1,45 +1,27 @@
-# Configuration
+ABOUTME: This file documents the configuration options for the Kaggle CLI.
+ABOUTME: It explains how to view, set, and unset configuration values.
 
-The Kaggle CLI requires authentication to interact with your Kaggle account.
+# Kaggle CLI Configuration
 
-## Authentication
-
-Authentication is typically handled by placing a `kaggle.json` file in your `~/.kaggle/` directory. This file contains your API username and key.
-
-You can download this file from your Kaggle account page: `https://www.kaggle.com/<YOUR-USERNAME>/account` (scroll to the API section).
-
-The `kaggle.json` file should look like this:
-
-```json
-{"username":"YOUR_USERNAME","key":"YOUR_API_KEY"}
-```
-
-Ensure this file has appropriate permissions (e.g., `600`) to protect your API key.
-
-## Environment Variables
-
-Alternatively, you can set the following environment variables:
-
-*   `KAGGLE_USERNAME`: Your Kaggle username.
-*   `KAGGLE_KEY`: Your Kaggle API key.
+The Kaggle CLI uses a configuration file to store settings such as your API credentials and default values for commands.
 
 ## Configuration Commands
 
-The `kaggle config` command group allows you to view and manage CLI configuration settings.
-
-### `kaggle config view`
+### `config view`
 
 Displays the current configuration values.
 
-**Example:**
+**Usage:**
 
 ```bash
 kaggle config view
 ```
 
-**Purpose:** To check the current settings for parameters like the default download path, competition, or proxy.
+**Purpose:**
 
-### `kaggle config set`
+This command allows you to inspect the current settings of your Kaggle CLI, such as the configured API endpoint, proxy settings, and default competition.
+
+### `config set`
 
 Sets a specific configuration value.
 
@@ -49,18 +31,27 @@ Sets a specific configuration value.
 kaggle config set -n <NAME> -v <VALUE>
 ```
 
-*   `-n <NAME>`: The name of the configuration parameter (e.g., `competition`, `path`, `proxy`).
-*   `-v <VALUE>`: The value to set for the parameter.
+**Arguments:**
+
+*   `-n, --name <NAME>`: The name of the configuration parameter to set. Valid options are `competition`, `path`, and `proxy`.
+*   `-v, --value <VALUE>`: The value to set for the configuration parameter.
+    *   For `competition`: The competition URL suffix (e.g., `titanic`).
+    *   For `path`: The default folder where files will be downloaded.
+    *   For `proxy`: The proxy server URL.
 
 **Example:**
+
+Set the default competition to "titanic":
 
 ```bash
 kaggle config set -n competition -v titanic
 ```
 
-**Purpose:** To set a default competition, download path, or proxy server. For instance, setting `competition` to `titanic` means subsequent competition-specific commands (like `kaggle competitions files`) will default to the `titanic` competition if not otherwise specified.
+**Purpose:**
 
-### `kaggle config unset`
+Use this command to customize the behavior of the Kaggle CLI, such as setting a default competition to avoid specifying it in every command, defining a default download path, or configuring a proxy server.
+
+### `config unset`
 
 Clears a specific configuration value, reverting it to its default.
 
@@ -70,12 +61,32 @@ Clears a specific configuration value, reverting it to its default.
 kaggle config unset -n <NAME>
 ```
 
-*   `-n <NAME>`: The name of the configuration parameter to clear (e.g., `competition`, `path`, `proxy`).
+**Arguments:**
+
+*   `-n, --name <NAME>`: The name of the configuration parameter to clear. Valid options are `competition`, `path`, and `proxy`.
 
 **Example:**
+
+Clear the default competition:
 
 ```bash
 kaggle config unset -n competition
 ```
 
-**Purpose:** To remove a previously set configuration value, such as a default competition or proxy.
+**Purpose:**
+
+This command removes a previously set configuration value, allowing the CLI to use its default behavior or prompt for the value if required.
+
+## Configuration File Location
+
+The Kaggle CLI configuration is typically stored in a file named `kaggle.json` located in the `~/.kaggle/` directory on Linux and macOS, or `C:\Users\<Windows-username>\.kaggle\` on Windows.
+
+This file contains your API username and key:
+
+```json
+{"username":"YOUR_USERNAME","key":"YOUR_API_KEY"}
+```
+
+You can download this file from your Kaggle account page (`https://www.kaggle.com/<YOUR_USERNAME>/account`) and place it in the correct directory.
+
+Alternatively, you can set the `KAGGLE_USERNAME` and `KAGGLE_KEY` environment variables.

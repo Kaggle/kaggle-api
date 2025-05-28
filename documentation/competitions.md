@@ -1,6 +1,9 @@
-# Competitions Commands (`kaggle competitions` or `kaggle c`)
+ABOUTME: This file documents the Kaggle CLI commands for interacting with competitions.
+ABOUTME: It includes examples for listing, downloading files, submitting, and viewing leaderboards.
 
-This section describes commands for interacting with Kaggle competitions.
+# Competitions Commands
+
+Commands for interacting with Kaggle competitions.
 
 ## `kaggle competitions list`
 
@@ -14,20 +17,24 @@ kaggle competitions list [options]
 
 **Options:**
 
-*   `--group <GROUP>`: Filter by group (e.g., `general`, `entered`, `inClass`).
-*   `--category <CATEGORY>`: Filter by category (e.g., `featured`, `research`).
-*   `--sort-by <SORT_BY>`: Sort results (e.g., `prize`, `latestDeadline`).
-*   `-p, --page <PAGE>`: Page number for results.
+*   `--group <GROUP>`: Filter by competition group. Valid options: `general`, `entered`, `inClass`.
+*   `--category <CATEGORY>`: Filter by competition category. Valid options: `all`, `featured`, `research`, `recruitment`, `gettingStarted`, `masters`, `playground`.
+*   `--sort-by <SORT_BY>`: Sort results. Valid options: `grouped`, `prize`, `earliestDeadline`, `latestDeadline`, `numberOfTeams`, `recentlyCreated` (default: `latestDeadline`).
+*   `-p, --page <PAGE>`: Page number for results (default: 1).
 *   `-s, --search <SEARCH_TERM>`: Search term.
-*   `-v, --csv`: Output in CSV format.
+*   `-v, --csv`: Print results in CSV format.
 
-**Example from `test_commands.sh`:**
+**Example:**
+
+List featured competitions in the general group, sorted by prize:
 
 ```bash
 kaggle competitions list --group general --category featured --sort-by prize
 ```
 
-**Purpose:** This command lists competitions, filtered to show only 'featured' competitions in the 'general' group, sorted by the prize amount. It helps users discover relevant competitions.
+**Purpose:**
+
+This command helps you discover new competitions or find specific ones based on various criteria.
 
 ## `kaggle competitions files`
 
@@ -39,19 +46,28 @@ Lists files for a specific competition.
 kaggle competitions files <COMPETITION> [options]
 ```
 
-*   `<COMPETITION>`: The competition URL suffix (e.g., `titanic`).
-*   `-v, --csv`: Output in CSV format.
-*   `-q, --quiet`: Suppress progress output.
-*   `--page-size <SIZE>`: Number of items per page.
-*   `--page-token <TOKEN>`: Page token for pagination.
+**Arguments:**
 
-**Example from `test_commands.sh`:**
+*   `<COMPETITION>`: Competition URL suffix (e.g., `titanic`).
+
+**Options:**
+
+*   `-v, --csv`: Print results in CSV format.
+*   `-q, --quiet`: Suppress verbose output.
+*   `--page-token <PAGE_TOKEN>`: Page token for results paging.
+*   `--page-size <PAGE_SIZE>`: Number of items to show on a page (default: 20, max: 200).
+
+**Example:**
+
+List the first 3 files for the "titanic" competition in CSV format, quietly:
 
 ```bash
-kaggle competitions files titanic --page-size=3 --page-token=abcd -v -q
+kaggle competitions files titanic --page-size=3 -v -q
 ```
 
-**Purpose:** This command lists the files available for the 'titanic' competition. It displays 3 files per page, uses 'abcd' as a page token (likely for testing pagination), outputs in CSV format (`-v`), and suppresses progress messages (`-q`). This is useful for understanding the data provided for a competition.
+**Purpose:**
+
+Use this command to see the data files available for a competition before downloading them.
 
 ## `kaggle competitions download`
 
@@ -63,57 +79,73 @@ Downloads competition files.
 kaggle competitions download <COMPETITION> [options]
 ```
 
-*   `<COMPETITION>`: The competition URL suffix.
-*   `-f, --file <FILE_NAME>`: Specific file to download.
-*   `-p, --path <PATH>`: Path to download files to.
-*   `-w, --wp`: Download to current working path.
+**Arguments:**
+
+*   `<COMPETITION>`: Competition URL suffix (e.g., `titanic`).
+
+**Options:**
+
+*   `-f, --file <FILE_NAME>`: Specific file to download (downloads all if not specified).
+*   `-p, --path <PATH>`: Folder to download files to (defaults to current directory).
+*   `-w, --wp`: Download files to the current working path (equivalent to `-p .`).
 *   `-o, --force`: Force download, overwriting existing files.
-*   `-q, --quiet`: Suppress progress output.
+*   `-q, --quiet`: Suppress verbose output.
 
-**Examples from `test_commands.sh`:**
+**Examples:**
 
-1.  ```bash
-    kaggle c download titanic -w -o -q
+1.  Download all files for the "titanic" competition to the current directory, overwriting existing files, quietly:
+
+    ```bash
+    kaggle competitions download titanic -w -o -q
     ```
-    **Purpose:** Downloads all files for the 'titanic' competition to the current working directory (`-w`), overwrites existing files (`-o`), and does so quietly (`-q`).
 
-2.  ```bash
-    kaggle c download titanic -f test.csv -p tost
+2.  Download the `test.csv` file from the "titanic" competition to a folder named `tost`:
+
+    ```bash
+    kaggle competitions download titanic -f test.csv -p tost
     ```
-    **Purpose:** Downloads only the `test.csv` file from the 'titanic' competition into a directory named `tost`.
+
+**Purpose:**
+
+This command allows you to get the necessary data files for a competition onto your local machine.
 
 ## `kaggle competitions submit`
 
-Submits a prediction file to a competition.
+Makes a new submission to a competition.
 
 **Usage:**
 
 ```bash
-kaggle competitions submit <COMPETITION> -f <FILE_PATH> -m <MESSAGE> [options]
+kaggle competitions submit <COMPETITION> -f <FILE_NAME> -m <MESSAGE> [options]
 ```
 
-*   `<COMPETITION>`: The competition URL suffix.
-*   `-f, --file <FILE_PATH>`: Path to the submission file.
-*   `-m, --message <MESSAGE>`: Message describing the submission.
-*   `-k, --kernel <KERNEL_SLUG>`: Kernel to submit from.
-*   `-v, --version <VERSION>`: Kernel version to submit.
-*   `-q, --quiet`: Suppress progress output.
+**Arguments:**
 
-**Example from `test_commands.sh`:**
+*   `<COMPETITION>`: Competition URL suffix (e.g., `house-prices-advanced-regression-techniques`).
+*   `-f, --file <FILE_NAME>`: The submission file.
+*   `-m, --message <MESSAGE>`: The submission message.
+
+**Options:**
+
+*   `-k, --kernel <KERNEL>`: Name of the kernel (notebook) to submit (for code competitions).
+*   `-v, --version <VERSION>`: Version of the kernel to submit.
+*   `-q, --quiet`: Suppress verbose output.
+
+**Example:**
+
+Submit `sample_submission.csv` to the "house-prices-advanced-regression-techniques" competition with the message "Test message":
 
 ```bash
-# First, download a sample submission file (setup for the test)
-kaggle c download house-prices-advanced-regression-techniques -f sample_submission.csv
-
-# Then, submit it
-kaggle c submit house-prices-advanced-regression-techniques -f sample_submission.csv -m "Test message"
+kaggle competitions submit house-prices-advanced-regression-techniques -f sample_submission.csv -m "Test message"
 ```
 
-**Purpose:** This sequence first downloads `sample_submission.csv` for the 'house-prices-advanced-regression-techniques' competition. Then, it submits this file with the message "Test message". This illustrates how to make a submission to a competition.
+**Purpose:**
+
+Use this command to upload your predictions or code to a competition for scoring.
 
 ## `kaggle competitions submissions`
 
-Lists your past submissions for a competition.
+Shows your past submissions for a competition.
 
 **Usage:**
 
@@ -121,21 +153,30 @@ Lists your past submissions for a competition.
 kaggle competitions submissions <COMPETITION> [options]
 ```
 
-*   `<COMPETITION>`: The competition URL suffix.
-*   `-v, --csv`: Output in CSV format.
-*   `-q, --quiet`: Suppress progress output.
+**Arguments:**
 
-**Example from `test_commands.sh`:**
+*   `<COMPETITION>`: Competition URL suffix (e.g., `house-prices-advanced-regression-techniques`).
+
+**Options:**
+
+*   `-v, --csv`: Print results in CSV format.
+*   `-q, --quiet`: Suppress verbose output.
+
+**Example:**
+
+Show submissions for "house-prices-advanced-regression-techniques" in CSV format, quietly:
 
 ```bash
-kaggle c submissions house-prices-advanced-regression-techniques -v -q
+kaggle competitions submissions house-prices-advanced-regression-techniques -v -q
 ```
 
-**Purpose:** This command lists all your previous submissions for the 'house-prices-advanced-regression-techniques' competition, displaying the output in CSV format (`-v`) and suppressing progress messages (`-q`). It's useful for tracking your submission history and scores.
+**Purpose:**
+
+This command allows you to review your previous submission attempts and their scores.
 
 ## `kaggle competitions leaderboard`
 
-View or download the competition leaderboard.
+Gets competition leaderboard information.
 
 **Usage:**
 
@@ -143,21 +184,32 @@ View or download the competition leaderboard.
 kaggle competitions leaderboard <COMPETITION> [options]
 ```
 
-*   `<COMPETITION>`: The competition URL suffix.
+**Arguments:**
+
+*   `<COMPETITION>`: Competition URL suffix (e.g., `titanic`).
+
+**Options:**
+
 *   `-s, --show`: Show the top of the leaderboard in the console.
-*   `-d, --download`: Download the entire leaderboard as a CSV.
-*   `-p, --path <PATH>`: Path to download the leaderboard to (if `-d` is used).
-*   `-v, --csv`: Output in CSV format (used with `-s`).
-*   `-q, --quiet`: Suppress progress output.
+*   `-d, --download`: Download the entire leaderboard to a CSV file.
+*   `-p, --path <PATH>`: Folder to download the leaderboard to (if `-d` is used).
+*   `-v, --csv`: Print results in CSV format (used with `-s`).
+*   `-q, --quiet`: Suppress verbose output.
 
-**Examples from `test_commands.sh`:**
+**Examples:**
 
-1.  ```bash
-    kaggle c leaderboard titanic -v -q -d -p leaders
+1.  Download the "titanic" leaderboard to a folder named `leaders`, quietly:
+
+    ```bash
+    kaggle competitions leaderboard titanic -d -p leaders -q
     ```
-    **Purpose:** Downloads the entire leaderboard for the 'titanic' competition into a directory named `leaders`. The `-v` likely ensures CSV format for the downloaded file, and `-q` suppresses output.
 
-2.  ```bash
-    kaggle c leaderboard titanic -s > leaderboard.txt
+2.  Show the top of the "titanic" leaderboard in the console and save it to `leaderboard.txt`:
+
+    ```bash
+    kaggle competitions leaderboard titanic -s > leaderboard.txt
     ```
-    **Purpose:** Shows the top of the 'titanic' competition leaderboard (`-s`) and redirects the output to a file named `leaderboard.txt`. This is useful for a quick view of the top rankings.
+
+**Purpose:**
+
+This command lets you view your ranking and the scores of other participants in a competition.

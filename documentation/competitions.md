@@ -1,6 +1,3 @@
-ABOUTME: This file documents the Kaggle CLI commands for interacting with competitions.
-ABOUTME: It includes examples for listing, downloading files, submitting, and viewing leaderboards.
-
 # Competitions Commands
 
 Commands for interacting with Kaggle competitions.

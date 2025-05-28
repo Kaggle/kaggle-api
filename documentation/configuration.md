@@ -1,6 +1,3 @@
-ABOUTME: This file documents the configuration options for the Kaggle CLI.
-ABOUTME: It explains how to view, set, and unset configuration values.
-
 # Kaggle CLI Configuration
 
 The Kaggle CLI uses a configuration file to store settings such as your API credentials and default values for commands.

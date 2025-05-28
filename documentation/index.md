@@ -1,6 +1,3 @@
-ABOUTME: This file is the main index for the Kaggle CLI documentation.
-ABOUTME: It provides an overview and links to the detailed documentation for each command.
-
 # Kaggle CLI Documentation
 
 Welcome to the Kaggle CLI documentation. This guide provides detailed information on how to use the Kaggle command-line interface to interact with Kaggle's platform.

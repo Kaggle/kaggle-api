@@ -1,6 +1,3 @@
-ABOUTME: This file provides tutorials for common Kaggle CLI workflows.
-ABOUTME: It guides users through multi-step processes like creating datasets and models.
-
 # Kaggle CLI Tutorials
 
 These tutorials illustrate how to use a sequence of Kaggle CLI commands to accomplish common tasks.

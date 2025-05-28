@@ -1,6 +1,3 @@
-ABOUTME: This file documents the Kaggle CLI commands for interacting with models.
-ABOUTME: It includes examples for listing, initializing, creating, updating, and deleting models.
-
 # Models Commands
 
 Commands for interacting with Kaggle Models.

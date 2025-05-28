@@ -57,6 +57,9 @@ All the changes must be done in the `src/` directory.
 
 ### Run
 
+Use `hatch run install` to compile the program and install it in the default `hatch` environment.
+To run that version locally for testing, use hatch: `hatch run kaggle -v`.
+
 You can also run the code in python directly:
 
 ```sh

@@ -1,6 +1,32 @@
 Changelog
 ====
 
+### 1.7.5.0.dev0
+
+* Require Python 3.11.
+* Add KernelExecutionType (#775)
+* Output docker_image as part of the pull metadata (#773)
+* Allow user to specify docker_image during kernel push (#774)
+* Add kernel version type to save request (#771)
+* Add tests for delete and de-flake (#769)
+* Rename "yes" params and make confirmation consistent (#765)
+* Fix bug that caused double serialization (#764)
+* Add kaggle kernels delete (#762)
+* Add test for dataset_delete() and make script more robust (#760)
+* Check dataset status before uploading (#759)
+* Add kaggle datasets delete (#755)
+* Fix calls to download_file() (#752)
+* Add type annotations for mypy (#746)
+* Use Optional[...] in cases where the proto file does (#744)
+* Improve some type hints and fix a bug (#741)
+* Reformat everything with black (#737)
+* Add more type hints (#736)
+* Add type annotations to main file (#735)
+* Bulk reformat docstrings (#732)
+* Merge envars before sending a request (#729)
+* Use PROD if no environment is specified. (#726)
+* Add a no response action to auto-close issues (#723)
+
 ### 1.7.4.2
 
 * Fix a problem in downloading kernel output files.

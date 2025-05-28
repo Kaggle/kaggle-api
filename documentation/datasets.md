@@ -1,6 +1,3 @@
-ABOUTME: This file documents the Kaggle CLI commands for interacting with datasets.
-ABOUTME: It includes examples for listing, downloading, creating, and managing datasets.
-
 # Datasets Commands
 
 Commands for interacting with Kaggle datasets.

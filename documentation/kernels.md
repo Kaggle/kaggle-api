@@ -1,6 +1,3 @@
-ABOUTME: This file documents the Kaggle CLI commands for interacting with kernels.
-ABOUTME: It includes examples for listing, initializing, pushing, pulling, and managing kernels.
-
 # Kernels Commands
 
 Commands for interacting with Kaggle Kernels (notebooks and scripts).

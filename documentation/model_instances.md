@@ -1,6 +1,3 @@
-ABOUTME: This file documents the Kaggle CLI commands for interacting with model instances.
-ABOUTME: It includes examples for initializing, creating, updating, and deleting model instances.
-
 # Model Instances Commands
 
 Commands for interacting with instances of Kaggle Models. A model instance typically represents a specific framework or variation of a parent model.

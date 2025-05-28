@@ -1,6 +1,3 @@
-ABOUTME: This file documents the Kaggle CLI commands for model instance versions.
-ABOUTME: It covers creating, downloading, listing files for, and deleting model instance versions.
-
 # Model Instance Versions Commands
 
 Commands for managing versions of a specific Kaggle Model Instance. Each version represents a snapshot of the model instance files at a point in time.

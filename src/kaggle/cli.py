@@ -699,7 +699,7 @@ def parse_models(subparsers) -> None:
 
 def parse_model_instances(subparsers) -> None:
     parser_model_instances = subparsers.add_parser(
-        'instances', formatter_class=argparse.RawTextHelpFormatter, help=Help.group_model_instances, aliases=['mi']
+        'instances', formatter_class=argparse.RawTextHelpFormatter, help=Help.group_model_instances, aliases=['i']
     )
 
     subparsers_model_instances = parser_model_instances.add_subparsers(title='commands', dest='command')
@@ -796,7 +796,7 @@ def parse_model_instance_versions(subparsers) -> None:
         'versions',
         formatter_class=argparse.RawTextHelpFormatter,
         help=Help.group_model_instance_versions,
-        aliases=['miv'],
+        aliases=['v'],
     )
 
     subparsers_model_intance_versions = parser_model_instance_versions.add_subparsers(title='commands', dest='command')
@@ -958,8 +958,8 @@ class Help(object):
     competitions_choices = ['list', 'files', 'download', 'submit', 'submissions', 'leaderboard']
     datasets_choices = ['list', 'files', 'download', 'create', 'version', 'init', 'metadata', 'status', 'delete']
     kernels_choices = ['list', 'files', 'init', 'push', 'pull', 'output', 'status', 'delete']
-    models_choices = ['instances', 'get', 'list', 'init', 'create', 'delete', 'update']
-    model_instances_choices = ['versions', 'get', 'files', 'init', 'create', 'delete', 'update']
+    models_choices = ['instances', 'i', 'get', 'list', 'init', 'create', 'delete', 'update']
+    model_instances_choices = ['versions', 'v', 'get', 'files', 'init', 'create', 'delete', 'update']
     model_instance_versions_choices = ['init', 'create', 'download', 'delete', 'files']
     files_choices = ['upload']
     config_choices = ['view', 'set', 'unset']

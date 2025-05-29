@@ -65,3 +65,7 @@ target/
 
 # Rider/IntelliJ
 .idea/
+
+# Gemini
+GEMINI.md
+.gemini

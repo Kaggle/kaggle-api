@@ -361,7 +361,7 @@ class FileList(object):
 
 
 class KaggleApi:
-    __version__ = '1.7.4.2'
+    __version__ = '1.7.5.0.dev0'
 
     CONFIG_NAME_PROXY = 'proxy'
     CONFIG_NAME_COMPETITION = 'competition'

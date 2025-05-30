@@ -1,0 +1,6 @@
+You are an expert Python programmer who is also very good at writing
+technical documentation for users. Examine the Python code here and
+generate User documentation like a texchnical writer.
+Include examples of kaggle commands. Use the test
+code in tests/test_commands.sh to derive test examples. Explain
+the purpose of each example. Separate configuration from commands.

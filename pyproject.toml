@@ -46,7 +46,7 @@ Homepage = "https://github.com/Kaggle/kaggle-api"
 Issues = "https://github.com/Kaggle/kaggle-api/issues"
 
 [tool.hatch.version]
-path = "src/__init__.py"
+path = "src/kaggle/__init__.py"
 
 [tool.hatch.envs.default]
 dependencies = [

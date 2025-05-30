@@ -21,6 +21,7 @@ class DatasetFileTypeGroup(enum.Enum):
   DATASET_FILE_TYPE_GROUP_SQLITE = 2
   DATASET_FILE_TYPE_GROUP_JSON = 3
   DATASET_FILE_TYPE_GROUP_BIG_QUERY = 4
+  DATASET_FILE_TYPE_GROUP_PARQUET = 5
 
 class DatasetLicenseGroup(enum.Enum):
   r"""

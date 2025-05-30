@@ -460,10 +460,10 @@ commands:
     get                 Get the code for a kernel (formerly pull)
     list                List available kernels
     init                Initialize metadata file for a kernel
-    push                Deprecated: Push new code to a kernel and run the kernel
-    pull                Deprecated: Pull down code from a kernel
-    output              Get data output from the latest kernel runth new code and run it (formerly push)
-    update              Update a kernel wi
+    push                Deprecated by update: Push new code to a kernel and run the kernel
+    pull                Deprecated by get: Pull down code from a kernel
+    output              Get data output from the latest kernel run
+    update              Update a kernel with new code and run it (formerly push)
     status              Display the status of the latest kernel run
 ```
 
@@ -536,7 +536,7 @@ Example:
 
 `kaggle kernels init -p /path/to/folder`
 
-##### Push a kernel (deprecated)
+##### Push a kernel (deprecated, use update)
 
 ```
 usage: kaggle kernels push [-h] -p FOLDER
@@ -553,7 +553,7 @@ Example:
 
 `kaggle kernels push -p /path/to/folder`
 
-##### Pull a kernel (deprecated)
+##### Pull a kernel (deprecated, use get)
 
 ```
 usage: kaggle kernels pull [-h] [-p PATH] [-w] [-m] [kernel]
@@ -595,12 +595,16 @@ Example:
 ```
 usage: kaggle kernels update [-h] -p FOLDER
 
+This command should only be used after "get". Use "create" to create a new kernel.
+
 optional arguments:
   -h, --help            show this help message and exit
   -t N, --timeout N     Limit the run time of a kernel to the given number  of seconds.
                         The global maximum time will not be exceeded.
   -p FOLDER, --path FOLDER
-                        Folder for upload, containing data files and a special kernel-metadata.json file (https://github.com/Kaggle/kaggle-api/wiki/Kernel-Metadata). Defaults to current working directory
+                        Folder for upload, containing data files and a special kernel-metadata.json file
+                        (https://github.com/Kaggle/kaggle-api/wiki/Kernel-Metadata).
+                        Defaults to current working directory
 ```
 
 Example:

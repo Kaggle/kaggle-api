@@ -537,7 +537,7 @@ def parse_kernels(subparsers) -> None:
         'pull',
         formatter_class=argparse.RawTextHelpFormatter,
         help=Help.command_kernels_pull,
-        aliases=['get'],  # Could be 'read' but this is consistent with models
+        aliases=['get'],
     )
     parser_kernels_pull_optional = parser_kernels_pull._action_groups.pop()
     parser_kernels_pull_optional.add_argument('kernel', nargs='?', default=None, help=Help.param_kernel)

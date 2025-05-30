@@ -699,7 +699,10 @@ def parse_models(subparsers) -> None:
 
 def parse_model_instances(subparsers) -> None:
     parser_model_instances = subparsers.add_parser(
-        'instances', formatter_class=argparse.RawTextHelpFormatter, help=Help.group_model_instances, aliases=['i']
+        'instances',
+        formatter_class=argparse.RawTextHelpFormatter,
+        help=Help.group_model_instances,
+        aliases=['i', 'variations', 'v'],  # Is 'kaggle m v v ...' too confusing? kaggle m v n ... ? No backcompat since the old alias didn't work.
     )
 
     subparsers_model_instances = parser_model_instances.add_subparsers(title='commands', dest='command')
@@ -958,7 +961,7 @@ class Help(object):
     competitions_choices = ['list', 'files', 'download', 'submit', 'submissions', 'leaderboard']
     datasets_choices = ['list', 'files', 'download', 'create', 'version', 'init', 'metadata', 'status', 'delete']
     kernels_choices = ['list', 'files', 'init', 'push', 'pull', 'output', 'status', 'delete']
-    models_choices = ['instances', 'i', 'get', 'list', 'init', 'create', 'delete', 'update']
+    models_choices = ['instances', 'i', 'variations', 'v', 'get', 'list', 'init', 'create', 'delete', 'update']
     model_instances_choices = ['versions', 'v', 'get', 'files', 'init', 'create', 'delete', 'update']
     model_instance_versions_choices = ['init', 'create', 'download', 'delete', 'files']
     files_choices = ['upload']

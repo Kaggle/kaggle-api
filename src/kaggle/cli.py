@@ -20,8 +20,6 @@ from __future__ import print_function
 import argparse
 import json
 
-import six
-
 from kaggle import KaggleApi
 from kaggle import api
 
@@ -97,14 +95,9 @@ def __parse_body(body) -> Any:
 
 
 def parse_competitions(subparsers) -> None:
-    if six.PY2:
-        parser_competitions = subparsers.add_parser(
-            'competitions', formatter_class=argparse.RawTextHelpFormatter, help=Help.group_competitions
-        )
-    else:
-        parser_competitions = subparsers.add_parser(
-            'competitions', formatter_class=argparse.RawTextHelpFormatter, help=Help.group_competitions, aliases=['c']
-        )
+    parser_competitions = subparsers.add_parser(
+        'competitions', formatter_class=argparse.RawTextHelpFormatter, help=Help.group_competitions, aliases=['c']
+    )
     subparsers_competitions = parser_competitions.add_subparsers(title='commands', dest='command')
     subparsers_competitions.required = True
     subparsers_competitions.choices = Help.competitions_choices
@@ -260,14 +253,9 @@ def parse_competitions(subparsers) -> None:
 
 
 def parse_datasets(subparsers) -> None:
-    if six.PY2:
-        parser_datasets = subparsers.add_parser(
-            'datasets', formatter_class=argparse.RawTextHelpFormatter, help=Help.group_datasets
-        )
-    else:
-        parser_datasets = subparsers.add_parser(
-            'datasets', formatter_class=argparse.RawTextHelpFormatter, help=Help.group_datasets, aliases=['d']
-        )
+    parser_datasets = subparsers.add_parser(
+        'datasets', formatter_class=argparse.RawTextHelpFormatter, help=Help.group_datasets, aliases=['d']
+    )
     subparsers_datasets = parser_datasets.add_subparsers(title='commands', dest='command')
     subparsers_datasets.required = True
     subparsers_datasets.choices = Help.datasets_choices
@@ -456,14 +444,9 @@ def parse_datasets(subparsers) -> None:
 
 
 def parse_kernels(subparsers) -> None:
-    if six.PY2:
-        parser_kernels = subparsers.add_parser(
-            'kernels', formatter_class=argparse.RawTextHelpFormatter, help=Help.group_kernels
-        )
-    else:
-        parser_kernels = subparsers.add_parser(
-            'kernels', formatter_class=argparse.RawTextHelpFormatter, help=Help.group_kernels, aliases=['k']
-        )
+    parser_kernels = subparsers.add_parser(
+        'kernels', formatter_class=argparse.RawTextHelpFormatter, help=Help.group_kernels, aliases=['k']
+    )
     subparsers_kernels = parser_kernels.add_subparsers(title='commands', dest='command')
     subparsers_kernels.required = True
     subparsers_kernels.choices = Help.kernels_choices
@@ -702,7 +685,11 @@ def parse_model_instances(subparsers) -> None:
         'instances',
         formatter_class=argparse.RawTextHelpFormatter,
         help=Help.group_model_instances,
-        aliases=['i', 'variations', 'v'],  # Is 'kaggle m v v ...' too confusing? kaggle m v n ... ? No backcompat since the old alias didn't work.
+        aliases=[
+            'i',
+            'variations',
+            'v',
+        ],  # Is 'kaggle m v v ...' too confusing? kaggle m v n ... ? No backcompat since the old alias didn't work.
     )
 
     subparsers_model_instances = parser_model_instances.add_subparsers(title='commands', dest='command')

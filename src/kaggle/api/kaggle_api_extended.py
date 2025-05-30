@@ -447,7 +447,7 @@ class KaggleApi:
     ]
 
     # Datasets valid types
-    valid_dataset_file_types = ['all', 'csv', 'sqlite', 'json', 'bigQuery']
+    valid_dataset_file_types = ['all', 'csv', 'sqlite', 'json', 'bigQuery', 'parquet']
     valid_dataset_license_names = ['all', 'cc', 'gpl', 'odb', 'other']
     valid_dataset_sort_bys = ['hottest', 'votes', 'updated', 'active', 'published']
 

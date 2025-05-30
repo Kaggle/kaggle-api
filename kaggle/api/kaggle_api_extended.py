@@ -47,6 +47,7 @@ from tqdm import tqdm
 from urllib3.util.retry import Retry
 from google.protobuf import field_mask_pb2
 
+import kaggle
 from kaggle.configuration import Configuration
 from kagglesdk import KaggleClient, KaggleEnv  # type: ignore[attr-defined]
 from kagglesdk.admin.types.inbox_file_service import CreateInboxFileRequest
@@ -361,7 +362,7 @@ class FileList(object):
 
 
 class KaggleApi:
-    __version__ = '1.7.5.0.dev0'
+    __version__ = kaggle.__version__
 
     CONFIG_NAME_PROXY = 'proxy'
     CONFIG_NAME_COMPETITION = 'competition'

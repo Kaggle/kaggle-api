@@ -520,6 +520,7 @@ class ApiDataset(KaggleObject):
     tags (ApiCategory)
     files (ApiDatasetFile)
     versions (ApiDatasetVersion)
+    thumbnail_image_url (str)
   """
 
   def __init__(self):
@@ -548,6 +549,7 @@ class ApiDataset(KaggleObject):
     self._tags = []
     self._files = []
     self._versions = []
+    self._thumbnail_image_url = None
     self._freeze()
 
   @property
@@ -880,6 +882,19 @@ class ApiDataset(KaggleObject):
     if not all([isinstance(t, ApiDatasetVersion) for t in versions]):
       raise TypeError('versions must contain only items of type ApiDatasetVersion')
     self._versions = versions
+
+  @property
+  def thumbnail_image_url(self) -> str:
+    return self._thumbnail_image_url or ""
+
+  @thumbnail_image_url.setter
+  def thumbnail_image_url(self, thumbnail_image_url: Optional[str]):
+    if thumbnail_image_url is None:
+      del self.thumbnail_image_url
+      return
+    if not isinstance(thumbnail_image_url, str):
+      raise TypeError('thumbnail_image_url must be of type str')
+    self._thumbnail_image_url = thumbnail_image_url
 
 
 class ApiDatasetFile(KaggleObject):
@@ -2631,6 +2646,7 @@ ApiDataset._fields = [
   FieldMetadata("tags", "tags", "_tags", ApiCategory, [], ListSerializer(KaggleObjectSerializer())),
   FieldMetadata("files", "files", "_files", ApiDatasetFile, [], ListSerializer(KaggleObjectSerializer())),
   FieldMetadata("versions", "versions", "_versions", ApiDatasetVersion, [], ListSerializer(KaggleObjectSerializer())),
+  FieldMetadata("thumbnailImageUrl", "thumbnail_image_url", "_thumbnail_image_url", str, None, PredefinedSerializer(), optional=True),
 ]
 
 ApiDatasetFile._fields = [

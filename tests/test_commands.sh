@@ -36,12 +36,12 @@ echo "kaggle kernels files"
 kaggle kernels files kerneler/sqlite-global-default -v --page-size=1
 echo "kaggle kernels init"
 kaggle k init -p tests/kernel
-echo "kaggle kernels pull"
-kaggle k pull -p tests/kernel $KAGGLE_DEVELOPER/exercise-as-with -m
-kaggle k pull --wp $KAGGLE_DEVELOPER/exercise-as-with
+echo "kaggle kernels get"
+kaggle k get -p tests/kernel $KAGGLE_DEVELOPER/exercise-as-with -m
+kaggle k get --wp $KAGGLE_DEVELOPER/exercise-as-with
 sed -i s/exercise-as-with/exercise-delete/ tests/kernel/exercise-as-with.ipynb
-echo "kaggle kernels push"
-kaggle kernels push -p tests/kernel
+echo "kaggle kernels update"
+kaggle kernels update -p tests/kernel
 rm -f tests/kernel/exercise-as-with.ipynb tests/kernel/kernel-metadata.json exercise-as-with.ipynb
 echo "kaggle kernels status"
 kaggle k status kerneler/sqlite-global-default

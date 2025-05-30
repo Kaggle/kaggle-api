@@ -520,7 +520,7 @@ def parse_kernels(subparsers) -> None:
 
     # Kernels push
     parser_kernels_push = subparsers_kernels.add_parser(
-        'push', formatter_class=argparse.RawTextHelpFormatter, help=Help.command_kernels_push
+        'push', formatter_class=argparse.RawTextHelpFormatter, help=Help.command_kernels_push, aliases=['update']
     )
     parser_kernels_push_optional = parser_kernels_push._action_groups.pop()
     parser_kernels_push_optional.add_argument(
@@ -534,7 +534,10 @@ def parse_kernels(subparsers) -> None:
 
     # Kernels pull
     parser_kernels_pull = subparsers_kernels.add_parser(
-        'pull', formatter_class=argparse.RawTextHelpFormatter, help=Help.command_kernels_pull
+        'pull',
+        formatter_class=argparse.RawTextHelpFormatter,
+        help=Help.command_kernels_pull,
+        aliases=['get'],  # Could be 'read' but this is consistent with models
     )
     parser_kernels_pull_optional = parser_kernels_pull._action_groups.pop()
     parser_kernels_pull_optional.add_argument('kernel', nargs='?', default=None, help=Help.param_kernel)
@@ -947,7 +950,7 @@ class Help(object):
     kaggle_choices = ['competitions', 'c', 'datasets', 'd', 'kernels', 'k', 'models', 'm', 'files', 'f', 'config']
     competitions_choices = ['list', 'files', 'download', 'submit', 'submissions', 'leaderboard']
     datasets_choices = ['list', 'files', 'download', 'create', 'version', 'init', 'metadata', 'status', 'delete']
-    kernels_choices = ['list', 'files', 'init', 'push', 'pull', 'output', 'status', 'delete']
+    kernels_choices = ['list', 'files', 'get', 'init', 'push', 'pull', 'output', 'status', 'update', 'delete']
     models_choices = ['instances', 'i', 'variations', 'v', 'get', 'list', 'init', 'create', 'delete', 'update']
     model_instances_choices = ['versions', 'v', 'get', 'files', 'init', 'create', 'delete', 'update']
     model_instance_versions_choices = ['init', 'create', 'download', 'delete', 'files']

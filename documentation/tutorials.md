@@ -202,3 +202,64 @@ This tutorial explains how to add a new version to an existing model instance, f
     *Note: The `-p .` means all files in the current directory will be uploaded as part of this new version. If you only want to upload `flax_model_v2.params`, ensure only it (and any other V2 files) are in a directory and point `-p` to that directory, or manage your files carefully.*
 
 4.  **Verify on Kaggle.com.** Go to your model instance page on Kaggle (e.g., `YOUR_USERNAME/my-awesome-ai-model/jax/jax-implementation`). You should see a new version (e.g., version 2) listed with your notes and the new files.
+
+## Tutorial: How to Submit to a Competition
+
+This tutorial walks you through the process of making a submission to a Kaggle competition using the CLI.
+
+1.  **Find a Competition and Accept Rules.**
+    *   First, you need to find a competition. You can list active competitions using `kaggle competitions list`.
+    *   For this tutorial, we'll use the "titanic" competition, which is a common starting point. You can find it at `https://www.kaggle.com/c/titanic`.
+    *   **Important**: Before you can download data or submit, you *must* accept the competition's rules on the Kaggle website. Navigate to the competition page (e.g., `https://www.kaggle.com/c/titanic/rules`) and accept the terms.
+
+2.  **Create a Directory and Download Competition Files.**
+    *   Create a new directory for your competition files and navigate into it.
+        ```bash
+        mkdir titanic-competition
+        cd titanic-competition
+        ```
+    *   Download the competition files. This usually includes training data, test data, and a sample submission file.
+        ```bash
+        kaggle competitions download -c titanic
+        ```
+    *   This will download `titanic.zip`. You'll need to unzip it to see the files (e.g., `train.csv`, `test.csv`, `gender_submission.csv`).
+        ```bash
+        # Make sure you have unzip installed, or use your OS's GUI to extract
+        unzip titanic.zip
+        ```
+
+3.  **Create Your Submission File.**
+    *   The required format for the submission file is specific to each competition. You can find this information on the competition's "Evaluation" page or by examining the sample submission file (e.g., `gender_submission.csv` for the Titanic competition).
+    *   For the Titanic competition, the submission file needs two columns: `PassengerId` and `Survived`. The `Survived` column should contain your predictions (0 for deceased, 1 for survived).
+    *   Let's create a very simple submission file based on the `gender_submission.csv` (which predicts survival based on gender). For this tutorial, we'll just copy it and use it as our submission. In a real scenario, you would generate this file from your model's predictions on the `test.csv` data.
+        ```bash
+        cp gender_submission.csv my_submission.csv
+        ```
+    *   Your `my_submission.csv` should look something like this:
+        ```csv
+        PassengerId,Survived
+        892,0
+        893,1
+        894,0
+        ...
+        ```
+
+4.  **Submit to the Competition.**
+    *   Use the `kaggle competitions submit` command. You need to specify:
+        *   The competition ID (`-c titanic`).
+        *   The path to your submission file (`-f my_submission.csv`).
+        *   A message describing your submission (`-m "My first submission via CLI"`).
+        ```bash
+        kaggle competitions submit -c titanic -f my_submission.csv -m "My first submission via CLI"
+        ```
+
+5.  **Check Your Submission Status.**
+    *   After submitting, you'll get a message indicating success or failure.
+    *   You can check your submission's score and status on the "My Submissions" tab of the competition page on Kaggle.com (e.g., `https://www.kaggle.com/c/titanic/submissions`).
+    *   You can also list your recent submissions and their scores via the CLI:
+        ```bash
+        kaggle competitions submissions -c titanic
+        ```
+    *   This command will show your submission, its status (e.g., `complete`, `error`), and your public/private scores if available.
+
+This completes the process of submitting to a Kaggle competition using the CLI!

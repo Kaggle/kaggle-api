@@ -23,4 +23,5 @@ The Kaggle CLI is organized into several command groups:
 Explore these tutorials to learn how to perform common tasks:
 
 *   [Tutorials](./tutorials.md)
+    *   [How to Submit to a Competition](./tutorials.md#tutorial-how-to-submit-to-a-competition)
 

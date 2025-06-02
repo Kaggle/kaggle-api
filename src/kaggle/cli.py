@@ -20,6 +20,7 @@ from __future__ import print_function
 import argparse
 import json
 
+import kaggle
 from kaggle import KaggleApi
 from kaggle import api
 
@@ -35,7 +36,7 @@ def main() -> None:
         '--version',
         action='version',
         help='Print the Kaggle API version',
-        version='Kaggle API ' + KaggleApi.__version__,
+        version='Kaggle API ' + kaggle.__version__,
     )
     parser.add_argument(
         '-W',

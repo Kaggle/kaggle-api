@@ -362,8 +362,6 @@ class FileList(object):
 
 
 class KaggleApi:
-    __version__ = kaggle.__version__
-
     CONFIG_NAME_PROXY = 'proxy'
     CONFIG_NAME_COMPETITION = 'competition'
     CONFIG_NAME_PATH = 'path'
@@ -4146,7 +4144,7 @@ class KaggleApi:
         ==========
         server_version: the server version string to compare to the host
         """
-        client_split = self.__version__.split('.')
+        client_split = kaggle.__version__.split('.')
         client_len = len(client_split)
         server_split = server_version.split('.')
         server_len = len(server_split)

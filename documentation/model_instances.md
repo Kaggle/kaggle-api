@@ -1,6 +1,6 @@
 # Model Instances Commands
 
-Commands for interacting with instances of Kaggle Models. A model instance typically represents a specific framework or variation of a parent model.
+Commands for interacting with instances of Kaggle Models. A model instance typically represents a specific framework of a parent model.
 
 ## `kaggle models instances init`
 

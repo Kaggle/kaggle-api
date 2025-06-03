@@ -201,10 +201,10 @@ kaggle competitions leaderboard <COMPETITION> [options]
     kaggle competitions leaderboard titanic -d -p leaders -q
     ```
 
-2.  Show the top of the "titanic" leaderboard in the console and save it to `leaderboard.txt`:
+2.  Download the leaderboard and save it to `leaderboard.txt`:
 
     ```bash
-    kaggle competitions leaderboard titanic -s > leaderboard.txt
+    kaggle competitions leaderboard titanic > leaderboard.txt
     ```
 
 **Purpose:**

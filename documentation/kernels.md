@@ -199,7 +199,7 @@ kaggle kernels output <KERNEL> [options]
 
 **Arguments:**
 
-*   `<KERNEL>`: Kernel URL suffix (e.g., `kerneler/sqlite-global-default`).
+*   `<KERNEL>`: Kernel URL suffix (e.g., `kerneler/using-google-bird-vocalization-model`).
 
 **Options:**
 
@@ -210,7 +210,7 @@ kaggle kernels output <KERNEL> [options]
 
 **Example:**
 
-Download the output of the kernel `kerneler/sqlite-global-default`, forcing overwrite:
+Download the output of the kernel `kerneler/using-google-bird-vocalization-model`, forcing overwrite:
 
 ```bash
 kaggle kernels output kerneler/sqlite-global-default -o

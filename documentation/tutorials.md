@@ -7,7 +7,7 @@ These tutorials illustrate how to use a sequence of Kaggle CLI commands to accom
 Before starting these tutorials, please make sure you have:
 
 1.  Installed the Kaggle CLI.
-2.  Downloaded your `kaggle.json` API token from your Kaggle account page (e.g., `https://www.kaggle.com/YOUR_USERNAME/account`) and placed it in the `~/.kaggle/` directory (or `C:\Users\<Windows-username>\.kaggle\` on Windows).
+2.  Downloaded your `kaggle.json` API token from your Kaggle account page (e.g., `https://www.kaggle.com/settings`) and placed it in the `~/.kaggle/` directory (or `C:\Users\<Windows-username>\.kaggle\` on Windows).
 3.  Logged in to your kaggle.com account in a web browser. This will allow you to easily verify the results of the CLI commands in the "Your Work" section of your Kaggle profile.
 
 ## Tutorial: Create a Dataset
@@ -38,7 +38,7 @@ This tutorial walks you through creating a new dataset on Kaggle.
 
 4.  **Edit the metadata file.** Open `dataset-metadata.json` in a text editor and make the following changes:
     *   Replace `"INSERT_TITLE_HERE"` with your desired dataset title, e.g., `"My Sample Dataset"`.
-    *   Replace `"INSERT_SLUG_HERE"` with a URL-friendly version of your title, e.g., `"my-sample-dataset"`.
+    *   Replace `"INSERT_SLUG_HERE"` with a URL-friendly version of your title, e.g., `"my-sample-dataset"`. The URL-friendly version is made by converting the title to lower-case and changing spaces to dashes.
     *   You can also add licenses, descriptions, and other relevant information.
 
     *Example using `sed` (for Linux/macOS):*
@@ -62,8 +62,8 @@ This tutorial shows how to download an existing kernel, modify it, and push the 
 
 1.  **Create or identify a kernel on Kaggle.com.**
     *   Log in to kaggle.com.
-    *   Create a new notebook (or use an existing one). For this tutorial, let's assume its title is "My CLI Test Kernel".
-    *   Make a small change and **save a version** of the notebook on Kaggle.com (e.g., click "Save Version" and choose "Save & Run All (Commit)"). You cannot pull or push a kernel that is only in draft form.
+    *   Find an existing notebook (or create one). For this tutorial, let's assume its title is "My CLI Test Kernel".
+    *   If the notebook has not been saved before, make a small change and **save a version** of the notebook on Kaggle.com (e.g., click "Save Version" and choose "Save & Run All (Commit)"). You cannot pull or push a kernel that is only in draft form.
     *   Note the kernel slug from the browser's address bar. It will be something like `YOUR_USERNAME/my-cli-test-kernel`.
 
 2.  **Create a new local directory for your kernel.**

@@ -74,8 +74,8 @@ function init {
 
   mkdir -p "$KAGGLE_XDG_CONFIG_DIR" && chmod 700 "$KAGGLE_XDG_CONFIG_DIR"
 
-  echo "rm -rf kaggle kagglesdk"
-  rm -rf kaggle kagglesdk
+  echo "rm -f kaggle kagglesdk"
+  rm -f kaggle kagglesdk
 
   create-local-creds
 }
@@ -105,10 +105,8 @@ function create-local-creds {
 }
 
 function copy-src {
-  cp ./src/setup.py .
-  cp ./src/setup.cfg .
-  cp -r ./src/kaggle .
-  cp -r ./src/kagglesdk .
+  ln -s ./src/kaggle .
+  ln -s ./src/kagglesdk .
 }
 
 function run-tests {

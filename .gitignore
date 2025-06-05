@@ -15,8 +15,8 @@ dist/
 downloads/
 eggs/
 .eggs/
-kaggle/
-kagglesdk/
+kaggle
+kagglesdk
 !src/kaggle/
 !src/kagglesdk/
 lib/

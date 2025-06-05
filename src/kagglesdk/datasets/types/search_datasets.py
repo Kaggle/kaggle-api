@@ -1,0 +1,6 @@
+import enum
+
+class SearchDatasetsOrderBy(enum.Enum):
+  SEARCH_DATASETS_ORDER_BY_UNSPECIFIED = 0
+  SEARCH_DATASETS_ORDER_BY_USABILITY_RATING = 1
+

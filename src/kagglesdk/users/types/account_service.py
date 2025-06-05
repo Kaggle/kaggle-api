@@ -11,6 +11,81 @@ class ApiVersion(enum.Enum):
   API_VERSION_V2 = 2
   """Experimental, admin-only, internal ('/api/i' endpoints)."""
 
+class ExpireApiTokenRequest(KaggleObject):
+  r"""
+  Attributes:
+    token_id (int)
+      Id of the token.
+    token (str)
+      Value of the token.
+    reason (str)
+      Reason why this token is expired.
+  """
+
+  def __init__(self):
+    self._token_id = None
+    self._token = None
+    self._reason = ""
+    self._freeze()
+
+  @property
+  def token_id(self) -> int:
+    """Id of the token."""
+    return self._token_id or 0
+
+  @token_id.setter
+  def token_id(self, token_id: int):
+    if token_id is None:
+      del self.token_id
+      return
+    if not isinstance(token_id, int):
+      raise TypeError('token_id must be of type int')
+    del self.token
+    self._token_id = token_id
+
+  @property
+  def token(self) -> str:
+    """Value of the token."""
+    return self._token or ""
+
+  @token.setter
+  def token(self, token: str):
+    if token is None:
+      del self.token
+      return
+    if not isinstance(token, str):
+      raise TypeError('token must be of type str')
+    del self.token_id
+    self._token = token
+
+  @property
+  def reason(self) -> str:
+    """Reason why this token is expired."""
+    return self._reason
+
+  @reason.setter
+  def reason(self, reason: str):
+    if reason is None:
+      del self.reason
+      return
+    if not isinstance(reason, str):
+      raise TypeError('reason must be of type str')
+    self._reason = reason
+
+  def endpoint(self):
+    path = '/api/v1/tokens/revoke'
+    return path.format_map(self.to_field_map(self))
+
+
+  @staticmethod
+  def method():
+    return 'POST'
+
+  @staticmethod
+  def body_fields():
+    return '*'
+
+
 class GenerateAccessTokenRequest(KaggleObject):
   r"""
   Attributes:
@@ -136,10 +211,12 @@ class GenerateAccessTokenResponse(KaggleObject):
   r"""
   Attributes:
     token (str)
+    expires_in (int)
   """
 
   def __init__(self):
     self._token = ""
+    self._expires_in = 0
     self._freeze()
 
   @property
@@ -154,6 +231,23 @@ class GenerateAccessTokenResponse(KaggleObject):
     if not isinstance(token, str):
       raise TypeError('token must be of type str')
     self._token = token
+
+  @property
+  def expires_in(self) -> int:
+    return self._expires_in
+
+  @expires_in.setter
+  def expires_in(self, expires_in: int):
+    if expires_in is None:
+      del self.expires_in
+      return
+    if not isinstance(expires_in, int):
+      raise TypeError('expires_in must be of type int')
+    self._expires_in = expires_in
+
+  @property
+  def expiresIn(self):
+    return self.expires_in
 
 
 class AuthorizationContext(KaggleObject):
@@ -186,6 +280,12 @@ class AuthorizationContext(KaggleObject):
     self._kernel_session_id = kernel_session_id
 
 
+ExpireApiTokenRequest._fields = [
+  FieldMetadata("tokenId", "token_id", "_token_id", int, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("token", "token", "_token", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("reason", "reason", "_reason", str, "", PredefinedSerializer()),
+]
+
 GenerateAccessTokenRequest._fields = [
   FieldMetadata("refreshToken", "refresh_token", "_refresh_token", str, None, PredefinedSerializer(), optional=True),
   FieldMetadata("apiVersion", "api_version", "_api_version", ApiVersion, ApiVersion.API_VERSION_UNSPECIFIED, EnumSerializer()),
@@ -196,6 +296,7 @@ GenerateAccessTokenRequest._fields = [
 
 GenerateAccessTokenResponse._fields = [
   FieldMetadata("token", "token", "_token", str, "", PredefinedSerializer()),
+  FieldMetadata("expiresIn", "expires_in", "_expires_in", int, 0, PredefinedSerializer()),
 ]
 
 AuthorizationContext._fields = [

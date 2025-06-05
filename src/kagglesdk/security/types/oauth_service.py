@@ -96,6 +96,8 @@ class ExchangeOAuthTokenResponse(KaggleObject):
       Type of the token. Set to 'Bearer'.
     expires_in (int)
       Lifetime of the access token in seconds.
+    username (str)
+      Username of the user who authorized this token.
   """
 
   def __init__(self):
@@ -103,6 +105,7 @@ class ExchangeOAuthTokenResponse(KaggleObject):
     self._refresh_token = ""
     self._token_type = ""
     self._expires_in = 0
+    self._username = ""
     self._freeze()
 
   @property
@@ -163,6 +166,20 @@ class ExchangeOAuthTokenResponse(KaggleObject):
     if not isinstance(expires_in, int):
       raise TypeError('expires_in must be of type int')
     self._expires_in = expires_in
+
+  @property
+  def username(self) -> str:
+    """Username of the user who authorized this token."""
+    return self._username
+
+  @username.setter
+  def username(self, username: str):
+    if username is None:
+      del self.username
+      return
+    if not isinstance(username, str):
+      raise TypeError('username must be of type str')
+    self._username = username
 
   @property
   def accessToken(self):
@@ -545,6 +562,7 @@ ExchangeOAuthTokenResponse._fields = [
   FieldMetadata("refreshToken", "refresh_token", "_refresh_token", str, "", PredefinedSerializer()),
   FieldMetadata("tokenType", "token_type", "_token_type", str, "", PredefinedSerializer()),
   FieldMetadata("expiresIn", "expires_in", "_expires_in", int, 0, PredefinedSerializer()),
+  FieldMetadata("username", "username", "_username", str, "", PredefinedSerializer()),
 ]
 
 IntrospectTokenRequest._fields = [

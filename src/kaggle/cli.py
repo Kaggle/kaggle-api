@@ -55,6 +55,7 @@ def main() -> None:
     parse_models(subparsers)
     parse_files(subparsers)
     parse_config(subparsers)
+    parse_auth(subparsers)
     args = parser.parse_args()
     command_args = {}
     command_args.update(vars(args))
@@ -947,8 +948,39 @@ def parse_config(subparsers) -> None:
     parser_config_unset.set_defaults(func=api.unset_config_value)
 
 
+def parse_auth(subparsers) -> None:
+    parser_auth = subparsers.add_parser('auth', formatter_class=argparse.RawTextHelpFormatter, help=Help.group_auth)
+    subparsers_auth = parser_auth.add_subparsers(title='commands', dest='command')
+    subparsers_auth.required = True
+    subparsers_auth.choices = Help.auth_choices
+
+    parser_auth_login = subparsers_auth.add_parser(
+        'login', formatter_class=argparse.RawTextHelpFormatter, help=Help.command_auth_login
+    )
+    parser_auth_login.add_argument(
+        '--no-launch-browser',
+        dest='no_launch_browser',
+        action='store_true',
+        help='Do not launch a browser for authentication',
+    )
+    parser_auth_login.set_defaults(func=api.auth_login_cli)
+
+
 class Help(object):
-    kaggle_choices = ['competitions', 'c', 'datasets', 'd', 'kernels', 'k', 'models', 'm', 'files', 'f', 'config']
+    kaggle_choices = [
+        'competitions',
+        'c',
+        'datasets',
+        'd',
+        'kernels',
+        'k',
+        'models',
+        'm',
+        'files',
+        'f',
+        'config',
+        'auth',
+    ]
     competitions_choices = ['list', 'files', 'download', 'submit', 'submissions', 'leaderboard']
     datasets_choices = ['list', 'files', 'download', 'create', 'version', 'init', 'metadata', 'status', 'delete']
     kernels_choices = ['list', 'files', 'get', 'init', 'push', 'pull', 'output', 'status', 'update', 'delete']
@@ -957,6 +989,7 @@ class Help(object):
     model_instance_versions_choices = ['init', 'create', 'download', 'delete', 'files']
     files_choices = ['upload']
     config_choices = ['view', 'set', 'unset']
+    auth_choices = ['login']
 
     kaggle = (
         'Use one of:\ncompetitions {'
@@ -973,6 +1006,8 @@ class Help(object):
         + ', '.join(model_instance_versions_choices)
         + '}\nconfig {'
         + ', '.join(config_choices)
+        + '}\nauth {'
+        + ', '.join(auth_choices)
         + '}'
     )
 
@@ -984,6 +1019,7 @@ class Help(object):
     group_model_instance_versions = 'Commands related to Kaggle model instance versions'
     group_files = 'Commands related files'
     group_config = 'Configuration settings'
+    group_auth = 'Commands related to authentication'
 
     # Competitions commands
     command_competitions_list = 'List available competitions'
@@ -1033,6 +1069,9 @@ class Help(object):
     command_config_view = 'View current config values'
     command_config_set = 'Set a configuration value'
     command_config_unset = 'Clear a configuration value'
+
+    # Auth commands
+    command_auth_login = 'Authenticate to Kaggle'
 
     # General params
     param_downfolder = 'Folder where file(s) will be downloaded, defaults to current working ' 'directory'

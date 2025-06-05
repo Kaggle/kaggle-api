@@ -98,9 +98,9 @@ class KaggleHttpClient(object):
       self,
       env: KaggleEnv = None,
       verbose: bool = False,
-      renew_iap_token=None,
-      username=None,
-      password=None,
+      username: str = None,
+      password: str = None,
+      api_token: str = None
   ):
     self._env = env or get_env()
     self._signed_in = None
@@ -109,6 +109,7 @@ class KaggleHttpClient(object):
     self._session = None
     self._username = username
     self._password = password
+    self._api_token = api_token
 
   def call(
       self,
@@ -286,6 +287,32 @@ class KaggleHttpClient(object):
         }
     )
 
+  def build_start_oauth_url(
+    self,
+    client_id: str,
+    redirect_uri: str,
+    scope: list[str],
+    state: str,
+    code_challenge: str
+  ) -> str:
+    params = {
+        "response_type": "code",
+        "client_id": client_id,
+        "redirect_uri": redirect_uri,
+        "scope": " ".join(scope),
+        "state": state,
+        "code_challenge": code_challenge,
+        "code_challenge_method": "S256",
+        "response_type": "code",
+        "response_mode": "query",
+    }
+    auth_url = f'{self._endpoint}/api/v1/oauth2/authorize'
+    query_string = urllib.parse.urlencode(params, quote_via=urllib.parse.quote_plus)
+    return f"{auth_url}?{query_string}"
+  
+  def get_oauth_default_redirect_url(self) -> str:
+    return f"{self._endpoint}/account/api/oauth/token"
+
   class BearerAuth(requests.auth.AuthBase):
 
     def __init__(self, token):
@@ -299,7 +326,7 @@ class KaggleHttpClient(object):
     if self._signed_in is not None:
       return
 
-    api_token = os.getenv('KAGGLE_API_TOKEN')
+    api_token = self._api_token or os.getenv('KAGGLE_API_TOKEN')
     if api_token is not None:
       self._session.auth = KaggleHttpClient.BearerAuth(api_token)
       self._signed_in = True

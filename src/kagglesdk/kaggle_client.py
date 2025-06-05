@@ -50,8 +50,8 @@ class KaggleClient(object):
     def __init__(self, http_client: KaggleHttpClient):
       self.account_client = AccountClient(http_client)
 
-  def __init__(self, env: KaggleEnv = None, verbose: bool = False, username: str = None, password: str = None):
-    self._http_client = http_client = KaggleHttpClient(env, verbose, self._renew_iap_token, username=username, password=password)
+  def __init__(self, env: KaggleEnv = None, verbose: bool = False, username: str = None, password: str = None, api_token: str = None):
+    self._http_client = http_client = KaggleHttpClient(env, verbose, username=username, password=password, api_token=api_token)
     self.kernels = KaggleClient.Kernels(http_client)
     self.blobs = KaggleClient.Blobs(http_client)
     self.education = KaggleClient.Education(http_client)
@@ -64,10 +64,10 @@ class KaggleClient(object):
     self.username = username
     self.password = password
 
-  def http_client(self):
+  def http_client(self) -> KaggleHttpClient:
     return self._http_client
 
-  def _renew_iap_token(self):
+  def _renew_iap_token(self) -> str:
     return self.admin.admin_client.renew_iap_token()
 
   def __enter__(self):

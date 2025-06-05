@@ -48,8 +48,7 @@ from urllib3.util.retry import Retry
 from google.protobuf import field_mask_pb2
 
 import kaggle
-from kaggle.configuration import Configuration
-from kagglesdk import KaggleClient, KaggleEnv  # type: ignore[attr-defined]
+from kagglesdk import KaggleClient, KaggleCredentials, KaggleEnv, KaggleOAuth  # type: ignore[attr-defined]
 from kagglesdk.admin.types.inbox_file_service import CreateInboxFileRequest
 from kagglesdk.blobs.types.blob_api_service import ApiStartBlobUploadRequest, ApiStartBlobUploadResponse, ApiBlobType
 from kagglesdk.competitions.types.competition_api_service import (
@@ -367,6 +366,7 @@ class KaggleApi:
     CONFIG_NAME_PATH = 'path'
     CONFIG_NAME_USER = 'username'
     CONFIG_NAME_KEY = 'key'
+    CONFIG_NAME_TOKEN = 'token'
     CONFIG_NAME_SSL_CA_CERT = 'ssl_ca_cert'
 
     HEADER_API_VERSION = 'X-Kaggle-ApiVersion'
@@ -454,7 +454,7 @@ class KaggleApi:
     valid_model_sort_bys = ['hotness', 'downloadCount', 'voteCount', 'notebookCount', 'createTime']
 
     # Command prefixes that are valid without authentication.
-    command_prefixes_allowing_anonymous_access = ('datasets download', 'datasets files')
+    command_prefixes_allowing_anonymous_access = ('datasets download', 'datasets files', 'auth login')
 
     # Attributes
     competition_fields = ['ref', 'deadline', 'category', 'reward', 'teamCount', 'userHasEntered']
@@ -514,27 +514,31 @@ class KaggleApi:
     ## Authentication
 
     def authenticate(self) -> None:
-        """Authenticate the user with the Kaggle API.
+        if self._authenticate_with_oauth_creds():
+            return
+        self._authenticate_legacy()
+
+    def _authenticate_legacy(self) -> None:
+        """Authenticate the user with the Kaggle API using legacy API key.
 
         This method will generate a configuration, first checking the
         environment for credential variables, and falling back to looking
         for the .kaggle/kaggle.json configuration file.
         """
 
-        config_data: Dict[str, str] = {}
+        config_values: Dict[str, str] = {}
+
         # Ex: 'datasets list', 'competitions files', 'models instances get', etc.
         api_command = ' '.join(sys.argv[1:])
 
         # Step 1: try getting username/password from environment
-        config_data = self.read_config_environment(config_data)
+        config_values = self.read_config_environment(config_values)
 
         # Step 2: if credentials were not in env read in configuration file
-        if self.CONFIG_NAME_USER not in config_data or self.CONFIG_NAME_KEY not in config_data:
+        if self.CONFIG_NAME_USER not in config_values or self.CONFIG_NAME_KEY not in config_values:
             if os.path.exists(self.config):
-                config_data = self.read_config_file(config_data)
-            elif self._is_help_or_version_command(api_command) or (
-                len(sys.argv) > 2 and api_command.startswith(self.command_prefixes_allowing_anonymous_access)
-            ):
+                config_values = self.read_config_file(config_values)
+            elif self._command_allows_logged_out(api_command):
                 # Some API commands should be allowed without authentication.
                 return
             else:
@@ -545,8 +549,31 @@ class KaggleApi:
                     ' https://github.com/Kaggle/kaggle-api/'.format(self.config_file, self.config_dir)
                 )
 
-        # Step 3: load into configuration!
-        self._load_config(config_data)
+        # Step 3: Validate and save
+        # Username and password are required.
+        for item in [self.CONFIG_NAME_USER, self.CONFIG_NAME_KEY]:
+            if item not in config_values:
+                raise ValueError('Error: Missing %s in configuration.' % item)
+        self.config_values = config_values
+
+    def _authenticate_with_oauth_creds(self):
+        with self.build_kaggle_client() as kaggle:
+            creds = KaggleCredentials.load(kaggle)
+            if not creds:
+                return False
+
+            access_token = creds.get_access_token()
+            self.config_values: Dict[str, str] = {
+                self.CONFIG_NAME_TOKEN: access_token,
+                self.CONFIG_NAME_USER: creds.get_username(),
+            }
+            return True
+
+    def _command_allows_logged_out(self, api_command: str):
+        # Some API commands do not required authentication.
+        return self._is_help_or_version_command(api_command) or (
+            len(sys.argv) > 2 and api_command.startswith(self.command_prefixes_allowing_anonymous_access)
+        )
 
     def _is_help_or_version_command(self, api_command: str) -> bool:
         """Determines if the string command passed in is for a help or version
@@ -582,42 +609,6 @@ class KaggleApi:
         return config_data
 
     ## Configuration
-
-    def _load_config(self, config_data: Dict[str, str]) -> None:
-        """The final step of the authenticate steps, where we load the values from
-        config_data into the Configuration object.
-
-        Parameters
-        ==========
-        config_data: a dictionary with configuration values (keys) to read
-                     into self.config_values
-        """
-        # Username and password are required.
-
-        for item in [self.CONFIG_NAME_USER, self.CONFIG_NAME_KEY]:
-            if item not in config_data:
-                raise ValueError('Error: Missing %s in configuration.' % item)
-
-        configuration = Configuration()
-
-        # Add to the final configuration (required)
-
-        configuration.username = config_data[self.CONFIG_NAME_USER]
-        configuration.password = config_data[self.CONFIG_NAME_KEY]
-
-        # Proxy
-
-        if self.CONFIG_NAME_PROXY in config_data:
-            configuration.proxy = config_data[self.CONFIG_NAME_PROXY]
-
-        # Cert File
-
-        if self.CONFIG_NAME_SSL_CA_CERT in config_data:
-            configuration.ssl_ca_cert = config_data[self.CONFIG_NAME_SSL_CA_CERT]
-
-        # Keep config values with class instance, and load api client!
-
-        self.config_values = config_data
 
     def read_config_file(self, config_data: Optional[Dict[str, str]] = None, quiet: bool = False) -> Dict[str, str]:
         """read_config_file is the first effort to get a username and key to
@@ -735,9 +726,7 @@ class KaggleApi:
         ==========
         name: the config value key to get
         """
-        if name in self.config_values:
-            return self.config_values[name]
-        return None
+        return self.config_values.get(name)
 
     def get_default_download_dir(self, *subdirs: str) -> str:
         """Get the download path for a file. If not defined, return default from
@@ -786,6 +775,13 @@ class KaggleApi:
         self.print_config_value(self.CONFIG_NAME_PROXY, prefix=prefix)
         self.print_config_value(self.CONFIG_NAME_COMPETITION, prefix=prefix)
 
+    def auth_login_cli(self, no_launch_browser: bool = False):
+        # Allow access to all ApiV1 endpoints.
+        default_scopes = ["resources.admin:*"]
+        with self.build_kaggle_client() as kaggle:
+            oAuth = KaggleOAuth(client=kaggle)
+            oAuth.authenticate(scopes=default_scopes, no_launch_browser=no_launch_browser)
+
     def build_kaggle_client(self) -> kagglesdk.kaggle_client.KaggleClient:
         env = (
             KaggleEnv.STAGING
@@ -799,7 +795,11 @@ class KaggleApi:
         verbose = '--verbose' in self.args or '-v' in self.args
         #    config = self.api_client.configuration
         return KaggleClient(
-            env=env, verbose=verbose, username=self.config_values['username'], password=self.config_values['key']
+            env=env,
+            verbose=verbose,
+            username=self.config_values.get(self.CONFIG_NAME_USER),
+            password=self.config_values.get(self.CONFIG_NAME_KEY),
+            api_token=self.config_values.get(self.CONFIG_NAME_TOKEN),
         )
 
     def camel_to_snake(self, name: str) -> str:

@@ -105,8 +105,12 @@ function create-local-creds {
 }
 
 function copy-src {
-  ln -s ./src/kaggle .
-  ln -s ./src/kagglesdk .
+  if ! [[ -L ./kaggle ]]; then
+    ln -s ./src/kaggle .
+  fi
+  if ! [[ -L ./kagglesdk ]]; then
+    ln -s ./src/kagglesdk .
+  fi
 }
 
 function run-tests {

@@ -32,25 +32,25 @@ class ModelNewRequest(object):
     """
 
     project_types = {
-        'owner_slug': 'str',
-        'slug': 'str',
-        'title': 'str',
-        'subtitle': 'str',
-        'is_private': 'bool',
-        'description': 'str',
-        'publish_time': 'date',
-        'provenance_sources': 'str',
+        "owner_slug": "str",
+        "slug": "str",
+        "title": "str",
+        "subtitle": "str",
+        "is_private": "bool",
+        "description": "str",
+        "publish_time": "date",
+        "provenance_sources": "str",
     }
 
     attribute_map = {
-        'owner_slug': 'ownerSlug',
-        'slug': 'slug',
-        'title': 'title',
-        'subtitle': 'subtitle',
-        'is_private': 'isPrivate',
-        'description': 'description',
-        'publish_time': 'publishTime',
-        'provenance_sources': 'provenanceSources',
+        "owner_slug": "ownerSlug",
+        "slug": "slug",
+        "title": "title",
+        "subtitle": "subtitle",
+        "is_private": "isPrivate",
+        "description": "description",
+        "publish_time": "publishTime",
+        "provenance_sources": "provenanceSources",
     }
 
     def __init__(
@@ -60,9 +60,9 @@ class ModelNewRequest(object):
         title=None,
         subtitle=None,
         is_private=True,
-        description='',
+        description="",
         publish_time=None,
-        provenance_sources='',
+        provenance_sources="",
     ):  # noqa: E501
 
         self._owner_slug = None

@@ -17,8 +17,8 @@ class TestAuthenticate(unittest.TestCase):
     # Environment
 
     def test_environment_variables(self):
-        os.environ['KAGGLE_USERNAME'] = 'dinosaur'
-        os.environ['KAGGLE_KEY'] = 'xxxxxxxxxxxx'
+        os.environ["KAGGLE_USERNAME"] = "dinosaur"
+        os.environ["KAGGLE_KEY"] = "xxxxxxxxxxxx"
         api = KaggleApi()
 
         # We haven't authenticated yet
@@ -27,17 +27,17 @@ class TestAuthenticate(unittest.TestCase):
         api.authenticate()
 
         # Should be set from the environment
-        self.assertEqual(api.config_values['key'], 'xxxxxxxxxxxx')
-        self.assertEqual(api.config_values['username'], 'dinosaur')
+        self.assertEqual(api.config_values["key"], "xxxxxxxxxxxx")
+        self.assertEqual(api.config_values["username"], "dinosaur")
 
     # Configuration Actions
 
     def test_config_actions(self):
         api = KaggleApi()
 
-        self.assertTrue(api.config_dir.endswith('kaggle'))
-        self.assertEqual(api.get_config_value('doesntexist'), None)
+        self.assertTrue(api.config_dir.endswith("kaggle"))
+        self.assertEqual(api.get_config_value("doesntexist"), None)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

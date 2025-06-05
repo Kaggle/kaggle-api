@@ -182,9 +182,9 @@ class KaggleApi(object):
         :param str dataset_version_number: Dataset version number
         :return: Result
         """
-        dataset = f'{owner_slug}/{dataset_slug}'
+        dataset = f"{owner_slug}/{dataset_slug}"
         if dataset_version_number is not None:
-            dataset += f'/{dataset_version_number}'
+            dataset += f"/{dataset_version_number}"
         return self.api_client.dataset_download_files(dataset)
 
     def datasets_download_file(self, owner_slug, dataset_slug, file_name, dataset_version_number=None):  # noqa: E501
@@ -196,9 +196,9 @@ class KaggleApi(object):
         :param str dataset_version_number: Dataset version number
         :return: True if the file was downloaded successfully, False otherwise
         """
-        dataset = f'{owner_slug}/{dataset_slug}'
+        dataset = f"{owner_slug}/{dataset_slug}"
         if dataset_version_number is not None:
-            dataset += f'@{dataset_version_number}'
+            dataset += f"@{dataset_version_number}"
         return self.api_client.dataset_download_file(dataset, file_name)
 
     def datasets_list(
@@ -252,7 +252,7 @@ class KaggleApi(object):
         :param str dataset_slug: Dataset name (required)
         :return: Result
         """
-        return self.api_client.dataset_status(f'{owner_slug}/{dataset_slug})')
+        return self.api_client.dataset_status(f"{owner_slug}/{dataset_slug})")
 
     def delete_model(self, owner_slug, model_slug):  # noqa: E501
         """Delete a model  # noqa: E501.
@@ -261,7 +261,7 @@ class KaggleApi(object):
         :param str model_slug: Model name (required)
         :return: ApiDeleteModelResponse
         """
-        return self.api_client.model_delete(f'{owner_slug}/{model_slug})')
+        return self.api_client.model_delete(f"{owner_slug}/{model_slug})")
 
     def delete_model_instance(self, owner_slug, model_slug, framework, instance_slug):  # noqa: E501
         """Delete a model instance  # noqa: E501.
@@ -272,7 +272,7 @@ class KaggleApi(object):
         :param str instance_slug: Model instance slug (required)
         :return: Result
         """
-        return self.api_client.model_instance_delete(f'{owner_slug}/{model_slug}/{framework}/{instance_slug}', yes=True)
+        return self.api_client.model_instance_delete(f"{owner_slug}/{model_slug}/{framework}/{instance_slug}", yes=True)
 
     def delete_model_instance_version(
         self, owner_slug, model_slug, framework, instance_slug, version_number
@@ -287,7 +287,7 @@ class KaggleApi(object):
         :return: Result
         """
         return self.api_client.model_instance_version_delete(
-            f'{owner_slug}/{model_slug}/{framework}/{instance_slug}/{version_number}', yes=True
+            f"{owner_slug}/{model_slug}/{framework}/{instance_slug}/{version_number}", yes=True
         )
 
     def get_model(self, owner_slug, model_slug):  # noqa: E501
@@ -297,7 +297,7 @@ class KaggleApi(object):
         :param str model_slug: Model name (required)
         :return: Result
         """
-        return self.api_client.model_get(f'{owner_slug}/{model_slug}')
+        return self.api_client.model_get(f"{owner_slug}/{model_slug}")
 
     def get_model_instance(self, owner_slug, model_slug, framework, instance_slug):  # noqa: E501
         """Get a model instance  # noqa: E501.
@@ -308,7 +308,7 @@ class KaggleApi(object):
         :param str instance_slug: Model instance slug (required)
         :return: Result
         """
-        return self.api_client.model_instance_get(f'{owner_slug}/{model_slug}/{framework}/{instance_slug}')
+        return self.api_client.model_instance_get(f"{owner_slug}/{model_slug}/{framework}/{instance_slug}")
 
     def kernel_output(self, user_name, kernel_slug):  # noqa: E501
         """Download the latest output from a kernel  # noqa: E501.
@@ -317,7 +317,7 @@ class KaggleApi(object):
         :param str kernel_slug: Kernel name (required)
         :return: Result
         """
-        return self.api_client.kernels_output(f'{user_name}/{kernel_slug}', path=None, force=True)
+        return self.api_client.kernels_output(f"{user_name}/{kernel_slug}", path=None, force=True)
 
     def kernel_pull(self, user_name, kernel_slug):  # noqa: E501
         """Pull the latest code from a kernel  # noqa: E501.
@@ -326,7 +326,7 @@ class KaggleApi(object):
         :param str kernel_slug: Kernel name (required)
         :return: Result
         """
-        return self.api_client.kernels_pull(f'{user_name}/{kernel_slug}', path=None)
+        return self.api_client.kernels_pull(f"{user_name}/{kernel_slug}", path=None)
 
     def kernel_push(self, kernel_push_request):  # noqa: E501
         """Push a new kernel version.  Can be used to create a new kernel and
@@ -337,24 +337,24 @@ class KaggleApi(object):
         :return: Result
         """
         with tempfile.TemporaryDirectory() as tmpdir:
-            meta_file = os.path.join(tmpdir, 'kernel-metadata.json')
-            (fd, code_file) = tempfile.mkstemp('code', 'py', tmpdir, text=True)
+            meta_file = os.path.join(tmpdir, "kernel-metadata.json")
+            (fd, code_file) = tempfile.mkstemp("code", "py", tmpdir, text=True)
             fd.write(json.dumps(kernel_push_request.code))
             os.close(fd)
-            with open(meta_file, 'w') as f:
+            with open(meta_file, "w") as f:
                 params = kernel_push_request.to_dict()
-                params['code_file'] = code_file
-                params['competition_sources'] = params.get('competition_data_sources')
-                params['dataset_sources'] = params.get('dataset_data_sources')
-                params['kernel_sources'] = params.get('kernel_data_sources')
-                params['model_sources'] = params.get('model_data_sources')
-                params['title'] = params.get('new_title')
+                params["code_file"] = code_file
+                params["competition_sources"] = params.get("competition_data_sources")
+                params["dataset_sources"] = params.get("dataset_data_sources")
+                params["kernel_sources"] = params.get("kernel_data_sources")
+                params["model_sources"] = params.get("model_data_sources")
+                params["title"] = params.get("new_title")
                 entries_to_remove = (
-                    'competition_data_sources',
-                    'dataset_data_sources',
-                    'kernel_data_sources',
-                    'model_data_sources',
-                    'new_title',
+                    "competition_data_sources",
+                    "dataset_data_sources",
+                    "kernel_data_sources",
+                    "model_data_sources",
+                    "new_title",
                 )
                 for k in entries_to_remove:
                     params.pop(k, None)
@@ -368,7 +368,7 @@ class KaggleApi(object):
         :param str kernel_slug: Kernel name (required)
         :return: Result
         """
-        return self.api_client.kernels_status(f'{user_name}/{kernel_slug}')
+        return self.api_client.kernels_status(f"{user_name}/{kernel_slug}")
 
     def kernels_list(
         self,
@@ -378,7 +378,7 @@ class KaggleApi(object):
         competition=None,
         parent_kernel=None,
         search=None,
-        group='everyone',
+        group="everyone",
         user=None,
         language=None,
         kernel_type=None,
@@ -411,7 +411,7 @@ class KaggleApi(object):
             competition=competition,
             parent_kernel=parent_kernel,
             search=search,
-            mine=group != 'everyone',
+            mine=group != "everyone",
             user=user,
             language=language,
             kernel_type=kernel_type,
@@ -426,7 +426,7 @@ class KaggleApi(object):
         :param str dataset_slug: Dataset name (required)
         :return: Result
         """
-        return self.api_client.dataset_metadata(f'{owner_slug}/{dataset_slug}', None)
+        return self.api_client.dataset_metadata(f"{owner_slug}/{dataset_slug}", None)
 
     def metadata_post(self, owner_slug, dataset_slug, settings, request):  # noqa: E501
         """Update the metadata for a dataset  # noqa: E501.
@@ -438,13 +438,13 @@ class KaggleApi(object):
         :return: Result
         """
         with tempfile.TemporaryDirectory() as tmpdir:
-            meta_file = os.path.join(tmpdir, 'dataset-metadata.json')
-            with open(meta_file, 'w') as f:
+            meta_file = os.path.join(tmpdir, "dataset-metadata.json")
+            with open(meta_file, "w") as f:
                 params = request.to_dict()
-                params['isPrivate'] = params.get('is_private')
-                params.pop('is_private', None)
+                params["isPrivate"] = params.get("is_private")
+                params.pop("is_private", None)
                 f.write(json.dumps(params))
-            return self.api_client.dataset_metadata_update(f'{owner_slug}/{dataset_slug}', meta_file)
+            return self.api_client.dataset_metadata_update(f"{owner_slug}/{dataset_slug}", meta_file)
 
     def model_instance_versions_download(
         self, owner_slug, model_slug, framework, instance_slug, version_number
@@ -458,7 +458,7 @@ class KaggleApi(object):
         :param str version_number: Model instance version number (required)
         :return: Result
         """
-        v = f'{owner_slug}/{model_slug}/{framework}/{instance_slug}/{version_number}'
+        v = f"{owner_slug}/{model_slug}/{framework}/{instance_slug}/{version_number}"
         return self.api_client.model_instance_version_download(v)
 
     def models_create_instance(self, owner_slug, model_slug, model_new_instance_request):  # noqa: E501
@@ -500,14 +500,14 @@ class KaggleApi(object):
         :return: Result
         """
         with tempfile.TemporaryDirectory() as tmpdir:
-            meta_file = os.path.join(tmpdir, 'model-metadata.json')
-            with open(meta_file, 'w') as f:
+            meta_file = os.path.join(tmpdir, "model-metadata.json")
+            with open(meta_file, "w") as f:
                 params = model_new_request.to_dict()
-                params['ownerSlug'] = params.get('owner_slug')
-                params['isPrivate'] = params.get('is_private')
-                params['publishTime'] = params.get('publish_time')
-                params['provenanceSources'] = params.get('provenance_sources')
-                entries_to_remove = ('owner_slug', 'is_private', 'publish_time', 'provenance_sources')
+                params["ownerSlug"] = params.get("owner_slug")
+                params["isPrivate"] = params.get("is_private")
+                params["publishTime"] = params.get("publish_time")
+                params["provenanceSources"] = params.get("provenance_sources")
+                entries_to_remove = ("owner_slug", "is_private", "publish_time", "provenance_sources")
                 for k in entries_to_remove:
                     params.pop(k, None)
                 f.write(json.dumps(params))
@@ -542,15 +542,15 @@ class KaggleApi(object):
         :return: Result
         """
         with tempfile.TemporaryDirectory() as tmpdir:
-            meta_file = os.path.join(tmpdir, 'model-metadata.json')
-            with open(meta_file, 'w') as f:
+            meta_file = os.path.join(tmpdir, "model-metadata.json")
+            with open(meta_file, "w") as f:
                 params = model_update_request.to_dict()
-                params['ownerSlug'] = params.get('owner_slug')
-                params['isPrivate'] = params.get('is_private')
-                params['publishTime'] = params.get('publish_time')
-                params['provenanceSources'] = params.get('provenance_sources')
-                params['updateMask'] = params.get('update_mask')
-                entries_to_remove = ('owner_slug', 'is_private', 'publish_time', 'provenance_sources', 'update_mask')
+                params["ownerSlug"] = params.get("owner_slug")
+                params["isPrivate"] = params.get("is_private")
+                params["publishTime"] = params.get("publish_time")
+                params["provenanceSources"] = params.get("provenance_sources")
+                params["updateMask"] = params.get("update_mask")
+                entries_to_remove = ("owner_slug", "is_private", "publish_time", "provenance_sources", "update_mask")
                 for k in entries_to_remove:
                     params.pop(k, None)
                 f.write(json.dumps(params))
@@ -570,24 +570,24 @@ class KaggleApi(object):
         :return: Result
         """
         with tempfile.TemporaryDirectory() as tmpdir:
-            meta_file = os.path.join(tmpdir, 'model-instance-metadata.json')
-            with open(meta_file, 'w') as f:
+            meta_file = os.path.join(tmpdir, "model-instance-metadata.json")
+            with open(meta_file, "w") as f:
                 params = model_instance_update_request.to_dict()
-                params['licenseName'] = params.get('license_name')
-                params['fineTunable'] = params.get('fine_tunable')
-                params['trainingData'] = params.get('training_data')
-                params['modelInstanceType'] = params.get('model_instance_type')
-                params['baseModelInstance'] = params.get('base_model_instance')
-                params['externalBaseModelUrl'] = params.get('external_base_model_url')
-                params['updateMask'] = params.get('update_mask')
+                params["licenseName"] = params.get("license_name")
+                params["fineTunable"] = params.get("fine_tunable")
+                params["trainingData"] = params.get("training_data")
+                params["modelInstanceType"] = params.get("model_instance_type")
+                params["baseModelInstance"] = params.get("base_model_instance")
+                params["externalBaseModelUrl"] = params.get("external_base_model_url")
+                params["updateMask"] = params.get("update_mask")
                 entries_to_remove = (
-                    'license_name',
-                    'fine_tunable',
-                    'training_data',
-                    'model_instance_type',
-                    'base_model_instance',
-                    'external_base_model_url',
-                    'update_mask',
+                    "license_name",
+                    "fine_tunable",
+                    "training_data",
+                    "model_instance_type",
+                    "base_model_instance",
+                    "external_base_model_url",
+                    "update_mask",
                 )
                 for k in entries_to_remove:
                     params.pop(k, None)

@@ -35,23 +35,23 @@ class DatasetNewVersionRequest(object):
     """
 
     project_types = {
-        'version_notes': 'str',
-        'subtitle': 'str',
-        'description': 'str',
-        'files': 'list[UploadFile]',
-        'convert_to_csv': 'bool',
-        'category_ids': 'list[str]',
-        'delete_old_versions': 'bool',
+        "version_notes": "str",
+        "subtitle": "str",
+        "description": "str",
+        "files": "list[UploadFile]",
+        "convert_to_csv": "bool",
+        "category_ids": "list[str]",
+        "delete_old_versions": "bool",
     }
 
     attribute_map = {
-        'version_notes': 'versionNotes',
-        'subtitle': 'subtitle',
-        'description': 'description',
-        'files': 'files',
-        'convert_to_csv': 'convertToCsv',
-        'category_ids': 'categoryIds',
-        'delete_old_versions': 'deleteOldVersions',
+        "version_notes": "versionNotes",
+        "subtitle": "subtitle",
+        "description": "description",
+        "files": "files",
+        "convert_to_csv": "convertToCsv",
+        "category_ids": "categoryIds",
+        "delete_old_versions": "deleteOldVersions",
     }
 
     def __init__(

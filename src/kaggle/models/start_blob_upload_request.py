@@ -32,19 +32,19 @@ class StartBlobUploadRequest(object):
     """
 
     project_types = {
-        'type': 'object',
-        'name': 'str',
-        'content_length': 'int',
-        'content_type': 'str',
-        'last_modified_epoch_seconds': 'int',
+        "type": "object",
+        "name": "str",
+        "content_length": "int",
+        "content_type": "str",
+        "last_modified_epoch_seconds": "int",
     }
 
     attribute_map = {
-        'type': 'type',
-        'name': 'name',
-        'content_length': 'contentLength',
-        'content_type': 'contentType',
-        'last_modified_epoch_seconds': 'lastModifiedEpochSeconds',
+        "type": "type",
+        "name": "name",
+        "content_length": "contentLength",
+        "content_type": "contentType",
+        "last_modified_epoch_seconds": "lastModifiedEpochSeconds",
     }
 
     def __init__(

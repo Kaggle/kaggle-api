@@ -57,10 +57,6 @@ def clean_data(data):
     }
   if isinstance(data, list):
     return [clean_data(v) for v in data if v is not None]
-  if data is True:
-    return 'true'
-  if data is False:
-    return 'false'
   return data
 
 

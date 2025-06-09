@@ -1712,6 +1712,8 @@ class ApiModel(KaggleObject):
     provenance_sources (str)
     url (str)
     model_version_links (ModelLink)
+    vote_count (int)
+    author_image_url (str)
   """
 
   def __init__(self):
@@ -1729,6 +1731,8 @@ class ApiModel(KaggleObject):
     self._provenance_sources = ""
     self._url = ""
     self._model_version_links = []
+    self._vote_count = None
+    self._author_image_url = None
     self._freeze()
 
   @property
@@ -1919,6 +1923,32 @@ class ApiModel(KaggleObject):
     if not all([isinstance(t, ModelLink) for t in model_version_links]):
       raise TypeError('model_version_links must contain only items of type ModelLink')
     self._model_version_links = model_version_links
+
+  @property
+  def vote_count(self) -> int:
+    return self._vote_count or 0
+
+  @vote_count.setter
+  def vote_count(self, vote_count: Optional[int]):
+    if vote_count is None:
+      del self.vote_count
+      return
+    if not isinstance(vote_count, int):
+      raise TypeError('vote_count must be of type int')
+    self._vote_count = vote_count
+
+  @property
+  def author_image_url(self) -> str:
+    return self._author_image_url or ""
+
+  @author_image_url.setter
+  def author_image_url(self, author_image_url: Optional[str]):
+    if author_image_url is None:
+      del self.author_image_url
+      return
+    if not isinstance(author_image_url, str):
+      raise TypeError('author_image_url must be of type str')
+    self._author_image_url = author_image_url
 
 
 class ApiModelFile(KaggleObject):
@@ -3587,6 +3617,8 @@ ApiModel._fields = [
   FieldMetadata("provenanceSources", "provenance_sources", "_provenance_sources", str, "", PredefinedSerializer()),
   FieldMetadata("url", "url", "_url", str, "", PredefinedSerializer()),
   FieldMetadata("modelVersionLinks", "model_version_links", "_model_version_links", ModelLink, [], ListSerializer(KaggleObjectSerializer())),
+  FieldMetadata("voteCount", "vote_count", "_vote_count", int, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("authorImageUrl", "author_image_url", "_author_image_url", str, None, PredefinedSerializer(), optional=True),
 ]
 
 ApiModelFile._fields = [

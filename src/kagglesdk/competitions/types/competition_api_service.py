@@ -385,11 +385,15 @@ class ApiGetLeaderboardRequest(KaggleObject):
       By default we return the private leaderboard if it's available, otherwise
       the public LB. This flag lets you override to get public even if private
       is available.
+    page_size (int)
+    page_token (str)
   """
 
   def __init__(self):
     self._competition_name = ""
     self._override_public = None
+    self._page_size = None
+    self._page_token = None
     self._freeze()
 
   @property
@@ -424,6 +428,32 @@ class ApiGetLeaderboardRequest(KaggleObject):
       raise TypeError('override_public must be of type bool')
     self._override_public = override_public
 
+  @property
+  def page_size(self) -> int:
+    return self._page_size or 0
+
+  @page_size.setter
+  def page_size(self, page_size: Optional[int]):
+    if page_size is None:
+      del self.page_size
+      return
+    if not isinstance(page_size, int):
+      raise TypeError('page_size must be of type int')
+    self._page_size = page_size
+
+  @property
+  def page_token(self) -> str:
+    return self._page_token or ""
+
+  @page_token.setter
+  def page_token(self, page_token: Optional[str]):
+    if page_token is None:
+      del self.page_token
+      return
+    if not isinstance(page_token, str):
+      raise TypeError('page_token must be of type str')
+    self._page_token = page_token
+
   def endpoint(self):
     path = '/api/v1/competitions/{competition_name}/leaderboard/view'
     return path.format_map(self.to_field_map(self))
@@ -437,10 +467,12 @@ class ApiGetLeaderboardResponse(KaggleObject):
   r"""
   Attributes:
     submissions (ApiLeaderboardSubmission)
+    next_page_token (str)
   """
 
   def __init__(self):
     self._submissions = []
+    self._next_page_token = ""
     self._freeze()
 
   @property
@@ -457,6 +489,23 @@ class ApiGetLeaderboardResponse(KaggleObject):
     if not all([isinstance(t, ApiLeaderboardSubmission) for t in submissions]):
       raise TypeError('submissions must contain only items of type ApiLeaderboardSubmission')
     self._submissions = submissions
+
+  @property
+  def next_page_token(self) -> str:
+    return self._next_page_token
+
+  @next_page_token.setter
+  def next_page_token(self, next_page_token: str):
+    if next_page_token is None:
+      del self.next_page_token
+      return
+    if not isinstance(next_page_token, str):
+      raise TypeError('next_page_token must be of type str')
+    self._next_page_token = next_page_token
+
+  @property
+  def nextPageToken(self):
+    return self.next_page_token
 
 
 class ApiGetSubmissionRequest(KaggleObject):
@@ -1920,10 +1969,13 @@ ApiDownloadLeaderboardRequest._fields = [
 ApiGetLeaderboardRequest._fields = [
   FieldMetadata("competitionName", "competition_name", "_competition_name", str, "", PredefinedSerializer()),
   FieldMetadata("overridePublic", "override_public", "_override_public", bool, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("pageSize", "page_size", "_page_size", int, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("pageToken", "page_token", "_page_token", str, None, PredefinedSerializer(), optional=True),
 ]
 
 ApiGetLeaderboardResponse._fields = [
   FieldMetadata("submissions", "submissions", "_submissions", ApiLeaderboardSubmission, [], ListSerializer(KaggleObjectSerializer())),
+  FieldMetadata("nextPageToken", "next_page_token", "_next_page_token", str, "", PredefinedSerializer()),
 ]
 
 ApiGetSubmissionRequest._fields = [

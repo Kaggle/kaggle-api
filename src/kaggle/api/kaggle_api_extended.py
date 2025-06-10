@@ -48,7 +48,6 @@ from urllib3.util.retry import Retry
 from google.protobuf import field_mask_pb2
 
 import kaggle
-from kaggle.configuration import Configuration
 from kagglesdk import KaggleClient, KaggleEnv  # type: ignore[attr-defined]
 from kagglesdk.admin.types.inbox_file_service import CreateInboxFileRequest
 from kagglesdk.blobs.types.blob_api_service import ApiStartBlobUploadRequest, ApiStartBlobUploadResponse, ApiBlobType
@@ -597,25 +596,6 @@ class KaggleApi:
         for item in [self.CONFIG_NAME_USER, self.CONFIG_NAME_KEY]:
             if item not in config_data:
                 raise ValueError('Error: Missing %s in configuration.' % item)
-
-        configuration = Configuration()
-
-        # Add to the final configuration (required)
-
-        configuration.username = config_data[self.CONFIG_NAME_USER]
-        configuration.password = config_data[self.CONFIG_NAME_KEY]
-
-        # Proxy
-
-        if self.CONFIG_NAME_PROXY in config_data:
-            configuration.proxy = config_data[self.CONFIG_NAME_PROXY]
-
-        # Cert File
-
-        if self.CONFIG_NAME_SSL_CA_CERT in config_data:
-            configuration.ssl_ca_cert = config_data[self.CONFIG_NAME_SSL_CA_CERT]
-
-        # Keep config values with class instance, and load api client!
 
         self.config_values = config_data
 

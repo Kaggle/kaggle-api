@@ -276,7 +276,7 @@ This tutorial walks you through the process of making a submission to a Kaggle c
     *   This will download `titanic.zip`. You'll need to unzip it to see the files (e.g., `train.csv`, `test.csv`, `gender_submission.csv`).
         ```bash
         # Make sure you have unzip installed, or use your OS's GUI to extract
-        # The actual zip file name might vary based on the dataset.
+        # The actual zip file name might vary based on the competition.
         unzip titanic.zip
         ```
 

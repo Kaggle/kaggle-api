@@ -107,7 +107,7 @@ This tutorial explains how to find, download, and prepare a Kaggle dataset for l
 This completes the process of downloading a dataset and preparing it for analysis using the Kaggle CLI.
 You can adapt these steps for any dataset on Kaggle.
 
-## Tutorial: Update a Kernel (Notebook/Script)
+## Tutorial: Update a Kernel (Notebook)
 
 This tutorial shows how to download an existing kernel, modify it, and push the changes back to Kaggle.
 
@@ -277,7 +277,6 @@ This tutorial walks you through the process of making a submission to a Kaggle c
         ```bash
         # Make sure you have unzip installed, or use your OS's GUI to extract
         # The actual zip file name might vary based on the dataset.
-        # For uciml/iris, it's iris.zip
         unzip titanic.zip
         ```
 

@@ -6,7 +6,24 @@ Welcome to the Kaggle CLI documentation. This guide provides detailed informatio
 
 Before you begin, ensure you have the Kaggle CLI installed and configured with your API credentials. You can find your API token on your Kaggle account page.
 
-## Command Groups
+## Tutorials
+
+Explore these tutorials to learn how to perform common tasks:
+
+*   [Tutorials](./tutorials.md)
+    *   [Create a Dataset](./tutorials.md#tutorial-create-a-dataset)
+    *   [Download a Dataset and Prepare for Analysis](./tutorials.md#tutorial-download-a-dataset-and-prepare-for-analysis)
+    *   [Search for a Dataset](./tutorials.md#tutorial-search-for-a-dataset)
+    *   [Create a Model](./tutorials.md#tutorial-create-a-model)
+    *   [Train a Model](./tutorials.md#tutorial-train-a-model)
+    *   [Create a Model Instance](./tutorials.md#tutorial-create-a-model-instance)
+    *   [Train a Model Instance](./tutorials.md#tutorial-train-a-model-instance)
+    *   [Create a Model Instance Variation](./tutorials.md#tutorial-create-a-model-instance-variation)
+    *   [Train a Model Instance Variation](./tutorials.md#tutorial-train-a-model-instance-variation)
+    *   [How to Submit a Kernel](./tutorials.md#tutorial-how-to-submit-a-kernel)
+    *   [How to Submit to a Competition](./tutorials.md#tutorial-how-to-submit-to-a-competition)
+
+## CLI Reference
 
 The Kaggle CLI is organized into several command groups:
 
@@ -17,11 +34,3 @@ The Kaggle CLI is organized into several command groups:
 *   [Model Instances](./model_instances.md): Manage instances of your Kaggle Models.
 *   [Model Instance Variations](./model_instance_variations.md): Manage variations of your Kaggle Model Instances.
 *   [Configuration](./configuration.md): Configure the Kaggle CLI.
-
-## Tutorials
-
-Explore these tutorials to learn how to perform common tasks:
-
-*   [Tutorials](./tutorials.md)
-    *   [How to Submit to a Competition](./tutorials.md#tutorial-how-to-submit-to-a-competition)
-    *   [Download a Dataset and Prepare for Analysis](./tutorials.md#tutorial-download-a-dataset-and-prepare-for-analysis)

@@ -328,37 +328,53 @@ class KaggleApi(object):
         """
         return self.api_client.kernels_pull(f'{user_name}/{kernel_slug}', path=None)
 
-    def kernel_push(self, kernel_push_request):  # noqa: E501
-        """Push a new kernel version.  Can be used to create a new kernel and
-        update an existing one.  # noqa: E501.
+    def kernel_push(self, kernel_push_request):
+        """Push a new kernel version. Can be used to create a new kernel and
+        update an existing one.
 
         :param KernelPushRequest kernel_push_request: Information for
             pushing a new kernel version (required)
         :return: Result
         """
         with tempfile.TemporaryDirectory() as tmpdir:
+            # Prepare metadata filename
             meta_file = os.path.join(tmpdir, 'kernel-metadata.json')
-            (fd, code_file) = tempfile.mkstemp('code', 'py', tmpdir, text=True)
-            fd.write(json.dumps(kernel_push_request.code))
+
+            # Create a temp file for the code, get its fd and path
+            fd, code_file = tempfile.mkstemp(suffix='.py', prefix='code', dir=tmpdir, text=True)
+            # Close the raw fd now that we have the path
             os.close(fd)
-            with open(meta_file, 'w') as f:
-                params = kernel_push_request.to_dict()
-                params['code_file'] = code_file
-                params['competition_sources'] = params.get('competition_data_sources')
-                params['dataset_sources'] = params.get('dataset_data_sources')
-                params['kernel_sources'] = params.get('kernel_data_sources')
-                params['model_sources'] = params.get('model_data_sources')
-                params['title'] = params.get('new_title')
-                entries_to_remove = (
-                    'competition_data_sources',
-                    'dataset_data_sources',
-                    'kernel_data_sources',
-                    'model_data_sources',
-                    'new_title',
-                )
-                for k in entries_to_remove:
-                    params.pop(k, None)
-                f.write(json.dumps(params))
+
+            # Write the kernel code JSON into the file via its path
+            with open(code_file, 'w', encoding='utf-8') as f_code:
+                f_code.write(json.dumps(kernel_push_request.code))
+
+            # Build metadata JSON
+            params = kernel_push_request.to_dict()
+            params.update({
+                'code_file': code_file,
+                'competition_sources': params.get('competition_data_sources'),
+                'dataset_sources':    params.get('dataset_data_sources'),
+                'kernel_sources':     params.get('kernel_data_sources'),
+                'model_sources':      params.get('model_data_sources'),
+                'title':              params.get('new_title'),
+            })
+
+            # Remove the now-redundant entries
+            for key in (
+                'competition_data_sources',
+                'dataset_data_sources',
+                'kernel_data_sources',
+                'model_data_sources',
+                'new_title',
+            ):
+                params.pop(key, None)
+
+            # Write out the metadata file
+            with open(meta_file, 'w', encoding='utf-8') as f_meta:
+                f_meta.write(json.dumps(params))
+
+            # Finally, call the API client
             return self.api_client.kernels_push(tmpdir)
 
     def kernel_status(self, user_name, kernel_slug):  # noqa: E501

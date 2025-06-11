@@ -24,4 +24,4 @@ Explore these tutorials to learn how to perform common tasks:
 
 *   [Tutorials](./tutorials.md)
     *   [How to Submit to a Competition](./tutorials.md#tutorial-how-to-submit-to-a-competition)
-
+    *   [Download a Dataset and Prepare for Analysis](./tutorials.md#tutorial-download-a-dataset-and-prepare-for-analysis)

@@ -55,30 +55,12 @@ class EnumSerializer(ObjectSerializer):
   def _to_str(cls, v):
     # "v" corresponds to an enum instance: Example foo or Foo.Test above.
     # "cls" corresponds to the enum type Foo above.
-    # enum_prefix = f'{_pascal_case_to_upper_snake_case(cls.__name__)}_'
-    # if v.name.startswith(enum_prefix):
-    #  return v.name
-    # return f'{enum_prefix}{v.name}'
-    enum_prefix = f'{_pascal_case_to_upper_snake_case(cls.__name__)}_'
-    if v.name.find(enum_prefix) == 0:
-      return v.name[len(enum_prefix) :].lower()
     return v.name
 
   @staticmethod
   def _from_str(cls, v):
     # "v" corresponds to enum string: Example "TEST" above.
     # "cls" corresponds to the enum type Foo above.
-    # enum_items = {item.name: item for item in cls}
-    # if v in enum_items:
-    #   return enum_items[v]
-    #
-    # # Try with enum prefix. Example: EnvironmentType.JSON -> "ENVIRONMENT_TYPE_JSON"
-    # enum_prefix = _pascal_case_to_upper_snake_case(cls.__name__)
-    # if v.startswith(enum_prefix):
-    #   ix_start = len(enum_prefix) + 1
-    #   return enum_items[v[ix_start:]]
-    #
-    # return enum_items[f'{enum_prefix}_{v}']
     try:
       return cls[v]
     except KeyError:
@@ -159,9 +141,22 @@ class DateTimeSerializer(ObjectSerializer):
 
 
 class TimeDeltaSerializer(ObjectSerializer):
+  # Scaling factors idea from https://github.com/protocolbuffers/protobuf/blob/master/csharp/src/Google.Protobuf/JsonParser.cs
+  SUBSECOND_SCALING_FACTORS = [
+    0,
+    100_000_000,
+    10_000_000,
+    1_000_000,
+    100_000,
+    10_000,
+    1_000,
+    100,
+    10,
+    1,
+  ]
 
   def __init__(self):
-    """Time deltas are serialized/deserialized as a string in "mm:ss" format"""
+    """Time deltas are serialized/deserialized as a string in "<seconds>.<nanoseconds>s" format. Example: 151.500s"""
     ObjectSerializer.__init__(
         self,
         lambda cls, t, _: TimeDeltaSerializer._to_dict_value(t),
@@ -170,15 +165,30 @@ class TimeDeltaSerializer(ObjectSerializer):
 
   @staticmethod
   def _to_dict_value(delta):
-    seconds = int(delta.total_seconds())
-    minutes = seconds // 60
-    seconds -= minutes * 60
-    return '{}:{:02}'.format(int(minutes), int(seconds))
+    seconds = delta.seconds
+    nanos_str = TimeDeltaSerializer._nanos_to_str(delta.microseconds * 1000)
+    if nanos_str is None:
+      return "{}s".format(seconds)
+    return "{}.{}s".format(seconds, nanos_str)
+
+  @staticmethod
+  def _nanos_to_str(nanos):
+    if nanos == 0:
+      return None
+    if nanos < 0:
+      nanos *= -1
+    if nanos % 1000000 == 0:
+      return "{}".format(nanos / 1000000)
+    elif nanos % 1000 == 0:
+      return "{}".format(nanos / 1000)
+    else:
+      return "{}".format(nanos)
 
   @staticmethod
   def _from_dict_value(value):
-    (minutes, seconds) = value.split(':')
-    return timedelta(minutes=int(minutes), seconds=int(seconds))
+    (seconds, nanosRaw) = value.rstrip('s').split('.')
+    nanos = int(nanosRaw) * TimeDeltaSerializer.SUBSECOND_SCALING_FACTORS[len(nanosRaw)]
+    return timedelta(seconds=int(seconds), microseconds=int(int(nanos) / 1000))
 
 
 class FieldMaskSerializer(ObjectSerializer):

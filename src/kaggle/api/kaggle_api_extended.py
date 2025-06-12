@@ -19,9 +19,11 @@ from __future__ import print_function
 
 import csv
 from datetime import datetime
+from enum import Enum
 import io
 
 import json  # Needed by mypy.
+import logging
 import os
 
 import re  # Needed by mypy.
@@ -48,7 +50,7 @@ from urllib3.util.retry import Retry
 from google.protobuf import field_mask_pb2
 
 import kaggle
-from kagglesdk import KaggleClient, KaggleEnv  # type: ignore[attr-defined]
+from kagglesdk import get_access_token_from_env, KaggleClient, KaggleEnv  # type: ignore[attr-defined]
 from kagglesdk.admin.types.inbox_file_service import CreateInboxFileRequest
 from kagglesdk.blobs.types.blob_api_service import ApiStartBlobUploadRequest, ApiStartBlobUploadResponse, ApiBlobType
 from kagglesdk.competitions.types.competition_api_service import (
@@ -148,6 +150,14 @@ from requests.models import Response
 from typing import Callable, cast, Dict, List, Mapping, Optional, Tuple, Union, TypeVar, Iterable
 
 T = TypeVar('T')
+
+
+class AuthMethod(Enum):
+    LEGACY_API_KEY = 0
+    ACCESS_TOKEN = 1
+
+    def __str__(self):
+        return self.name
 
 
 class DirectoryArchive(object):
@@ -365,7 +375,9 @@ class KaggleApi:
     CONFIG_NAME_COMPETITION = 'competition'
     CONFIG_NAME_PATH = 'path'
     CONFIG_NAME_USER = 'username'
+    CONFIG_NAME_AUTH_METHOD = 'auth_method'
     CONFIG_NAME_KEY = 'key'
+    CONFIG_NAME_TOKEN = 'token'
     CONFIG_NAME_SSL_CA_CERT = 'ssl_ca_cert'
 
     HEADER_API_VERSION = 'X-Kaggle-ApiVersion'
@@ -398,10 +410,12 @@ class KaggleApi:
 
     args: List[str] = []
     if os.environ.get('KAGGLE_API_ENVIRONMENT') == 'LOCALHOST':
-        # Make it verbose when running in the debugger.
-        args = ['--verbose', '--local']
-    elif os.environ.get('KAGGLE_API_ENDPOINT') == 'http://localhost':
-        args = ['--local']
+        args.append('--local')
+    verbose = (os.environ.get('VERBOSE') or os.environ.get('VERBOSE_OUTPUT') or "false").lower()
+    if verbose in ('1', 'true', 'yes'):
+        args.append('--verbose')
+        logging.basicConfig(level=logging.DEBUG)
+    logger = logging.getLogger(__name__)
 
     # Kernels valid types
     valid_push_kernel_types = ['script', 'notebook']
@@ -513,39 +527,76 @@ class KaggleApi:
     ## Authentication
 
     def authenticate(self) -> None:
-        """Authenticate the user with the Kaggle API.
+        if self._authenticate_with_access_token():
+            return
+        if self._authenticate_with_legacy_apikey():
+            return
+        print(
+            'Could not find {}. Make sure it\'s located in'
+            ' {}. Or use the environment method. See setup'
+            ' instructions at'
+            ' https://github.com/Kaggle/kaggle-api/'.format(self.config_file, self.config_dir)
+        )
+        exit(1)
+
+    def _authenticate_with_legacy_apikey(self) -> bool:
+        """Authenticate the user with the Kaggle API using legacy API key.
 
         This method will generate a configuration, first checking the
         environment for credential variables, and falling back to looking
         for the .kaggle/kaggle.json configuration file.
         """
 
-        config_data: Dict[str, str] = {}
+        config_values: Dict[str, str] = {}
         # Ex: 'datasets list', 'competitions files', 'models instances get', etc.
         api_command = ' '.join(sys.argv[1:])
 
         # Step 1: try getting username/password from environment
-        config_data = self.read_config_environment(config_data)
+        config_values = self.read_config_environment(config_values)
 
         # Step 2: if credentials were not in env read in configuration file
-        if self.CONFIG_NAME_USER not in config_data or self.CONFIG_NAME_KEY not in config_data:
+        if self.CONFIG_NAME_USER not in config_values or self.CONFIG_NAME_KEY not in config_values:
             if os.path.exists(self.config):
-                config_data = self.read_config_file(config_data)
-            elif self._is_help_or_version_command(api_command) or (
-                len(sys.argv) > 2 and api_command.startswith(self.command_prefixes_allowing_anonymous_access)
-            ):
+                config_values = self.read_config_file(config_values)
+            elif self._command_allows_logged_out(api_command):
                 # Some API commands should be allowed without authentication.
-                return
+                return True
             else:
-                raise IOError(
-                    'Could not find {}. Make sure it\'s located in'
-                    ' {}. Or use the environment method. See setup'
-                    ' instructions at'
-                    ' https://github.com/Kaggle/kaggle-api/'.format(self.config_file, self.config_dir)
-                )
+                return False
 
-        # Step 3: load into configuration!
-        self._load_config(config_data)
+        # Step 3: Validate and save
+        # Username and password are required.
+        for item in [self.CONFIG_NAME_USER, self.CONFIG_NAME_KEY]:
+            if item not in config_values:
+                raise ValueError('Error: Missing %s in configuration.' % item)
+        self.config_values = config_values
+        self.config_values[self.CONFIG_NAME_AUTH_METHOD] = AuthMethod.LEGACY_API_KEY
+        self.logger.debug(f'Authenticated with legacy api key in: {self.config}')
+        return True
+
+    def _authenticate_with_access_token(self) -> bool:
+        (access_token, source) = get_access_token_from_env()
+        if not access_token:
+            return False
+
+        username = self._introspect_token(access_token)
+        if not username:
+            self.logger.debug(f'Ignoring invalid/expired access token in \"{source}\".')
+            return False
+
+        self.config_values: Dict[str, str] = {
+            self.CONFIG_NAME_TOKEN: access_token,
+            self.CONFIG_NAME_USER: username,
+            self.CONFIG_NAME_AUTH_METHOD: AuthMethod.ACCESS_TOKEN,
+        }
+        self.logger.debug(f'Authenticated with access token in: {source}')
+        return True
+
+    def _command_allows_logged_out(self, api_command: str) -> bool:
+        # Some API commands do not required authentication.
+        return self._is_help_or_version_command(api_command) or (
+            len(sys.argv) > 2 and api_command.startswith(self.command_prefixes_allowing_anonymous_access)
+        )
 
     def _is_help_or_version_command(self, api_command: str) -> bool:
         """Determines if the string command passed in is for a help or version
@@ -581,23 +632,6 @@ class KaggleApi:
         return config_data
 
     ## Configuration
-
-    def _load_config(self, config_data: Dict[str, str]) -> None:
-        """The final step of the authenticate steps, where we load the values from
-        config_data into the Configuration object.
-
-        Parameters
-        ==========
-        config_data: a dictionary with configuration values (keys) to read
-                     into self.config_values
-        """
-        # Username and password are required.
-
-        for item in [self.CONFIG_NAME_USER, self.CONFIG_NAME_KEY]:
-            if item not in config_data:
-                raise ValueError('Error: Missing %s in configuration.' % item)
-
-        self.config_values = config_data
 
     def read_config_file(self, config_data: Optional[Dict[str, str]] = None, quiet: bool = False) -> Dict[str, str]:
         """read_config_file is the first effort to get a username and key to
@@ -715,9 +749,7 @@ class KaggleApi:
         ==========
         name: the config value key to get
         """
-        if name in self.config_values:
-            return self.config_values[name]
-        return None
+        return self.config_values.get(name)
 
     def get_default_download_dir(self, *subdirs: str) -> str:
         """Get the download path for a file. If not defined, return default from
@@ -749,7 +781,7 @@ class KaggleApi:
         value_out = 'None'
         if name in self.config_values and self.config_values[name] is not None:
             value_out = self.config_values[name]
-        print(prefix + name + separator + value_out)
+        print(f"{prefix}{name}{separator}{value_out}")
 
     def print_config_values(self, prefix='- '):
         """Print all configuration values.
@@ -762,6 +794,7 @@ class KaggleApi:
             return
         print('Configuration values from ' + self.config_dir)
         self.print_config_value(self.CONFIG_NAME_USER, prefix=prefix)
+        self.print_config_value(self.CONFIG_NAME_AUTH_METHOD, prefix=prefix)
         self.print_config_value(self.CONFIG_NAME_PATH, prefix=prefix)
         self.print_config_value(self.CONFIG_NAME_PROXY, prefix=prefix)
         self.print_config_value(self.CONFIG_NAME_COMPETITION, prefix=prefix)
@@ -777,9 +810,12 @@ class KaggleApi:
             )
         )
         verbose = '--verbose' in self.args or '-v' in self.args
-        #    config = self.api_client.configuration
         return KaggleClient(
-            env=env, verbose=verbose, username=self.config_values['username'], password=self.config_values['key']
+            env=env,
+            verbose=verbose,
+            username=self.config_values.get(self.CONFIG_NAME_USER),
+            password=self.config_values.get(self.CONFIG_NAME_KEY),
+            api_token=self.config_values.get(self.CONFIG_NAME_TOKEN),
         )
 
     def camel_to_snake(self, name: str) -> str:

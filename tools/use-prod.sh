@@ -7,7 +7,7 @@ if [[ "$0" == "$BASH_SOURCE" ]]; then
   exit 1
 fi
 
-unset KAGGLE_API_ENDPOINT
+unset KAGGLE_API_ENVIRONMENT
 unset KAGGLE_CONFIG_DIR
 
 if ! [[ -f "${XDG_CONFIG_HOME:-$HOME/.config}/kaggle/kaggle.json" ]]; then

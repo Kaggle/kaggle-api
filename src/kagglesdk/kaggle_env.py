@@ -1,12 +1,14 @@
 import logging
 import os
 from enum import Enum
+from pathlib import Path
 
 KAGGLE_NOTEBOOK_ENV_VAR_NAME = "KAGGLE_KERNEL_RUN_TYPE"
 KAGGLE_DATA_PROXY_URL_ENV_VAR_NAME = "KAGGLE_DATA_PROXY_URL"
 KAGGLE_API_V1_TOKEN_PATH = "KAGGLE_API_V1_TOKEN"
 
-logger = logging.getLogger(__name__)
+def get_logger():
+    return logging.getLogger(__name__)
 
 class KaggleEnv(Enum):
   LOCAL = 0  # localhost
@@ -50,10 +52,38 @@ def is_in_kaggle_notebook() -> bool:
   if os.getenv(KAGGLE_NOTEBOOK_ENV_VAR_NAME) is not None:
     if os.getenv(KAGGLE_DATA_PROXY_URL_ENV_VAR_NAME) is None:
       # Missing endpoint for the Jwt client
-      logger.warning(
+      get_logger().warning(
         "Can't use the Kaggle Cache. "
         f"The '{KAGGLE_DATA_PROXY_URL_ENV_VAR_NAME}' environment variable is not set."
       )
       return False
     return True
   return False
+
+def _get_access_token_from_file(path):
+  if not path:
+    return (None, None)
+  
+  token_path = Path(path)
+  if not token_path.exists():
+    return (None, None)
+  
+  token_value = token_path.read_text().strip()
+  if not token_value:
+    return (None, None)
+  
+  get_logger().debug(f"Using access token from file: \"{path}\"")
+  return (token_value, path)
+
+def get_access_token_from_env():
+  if is_in_kaggle_notebook():
+      token = _get_access_token_from_file(os.environ.get(KAGGLE_API_V1_TOKEN_PATH))
+      if token:
+        return (token, KAGGLE_API_V1_TOKEN_PATH)
+  
+  access_token = os.environ.get('KAGGLE_API_TOKEN')
+  if access_token is not None:
+    get_logger().debug("Using access token from KAGGLE_API_TOKEN environment variable")
+    return (access_token, 'KAGGLE_API_TOKEN')
+  
+  return (None, None)

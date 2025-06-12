@@ -9,7 +9,7 @@ from pathlib import Path
 import requests
 from urllib3.fields import RequestField
 
-from kagglesdk.kaggle_env import get_endpoint, get_env, is_in_kaggle_notebook, KAGGLE_API_V1_TOKEN_PATH, KaggleEnv
+from kagglesdk.kaggle_env import get_endpoint, get_env, is_in_kaggle_notebook, get_access_token_from_env, KaggleEnv
 from kagglesdk.kaggle_object import KaggleObject
 from typing import Type
 
@@ -94,9 +94,9 @@ class KaggleHttpClient(object):
       self,
       env: KaggleEnv = None,
       verbose: bool = False,
-      renew_iap_token=None,
-      username=None,
-      password=None,
+      username: str = None,
+      password: str = None,
+      api_token: str = None
   ):
     self._env = env or get_env()
     self._signed_in = None
@@ -105,6 +105,7 @@ class KaggleHttpClient(object):
     self._session = None
     self._username = username
     self._password = password
+    self._api_token = api_token
 
   def call(
       self,
@@ -295,7 +296,7 @@ class KaggleHttpClient(object):
     if self._signed_in is not None:
       return
 
-    api_token = os.getenv('KAGGLE_API_TOKEN')
+    api_token = self._api_token or os.getenv('KAGGLE_API_TOKEN')
     if api_token is not None:
       self._session.auth = KaggleHttpClient.BearerAuth(api_token)
       self._signed_in = True
@@ -310,16 +311,11 @@ class KaggleHttpClient(object):
       self._signed_in = True
       return
       
-    if is_in_kaggle_notebook():
-      token_file_path_str = os.environ.get(KAGGLE_API_V1_TOKEN_PATH)
-      if token_file_path_str:
-        token_path = Path(token_file_path_str)
-        if token_path.exists():
-          token_value = token_path.read_text().strip()
-          if token_value:
-            self._session.auth = KaggleHttpClient.BearerAuth(token_value)
-            self._signed_in = True
-            return
+    (api_token, _) = get_access_token_from_env()
+    if api_token is not None:
+      self._session.auth = KaggleHttpClient.BearerAuth(api_token)
+      self._signed_in = True
+      return
 
     self._signed_in = False
 

@@ -7,7 +7,7 @@ if [[ "$0" == "$BASH_SOURCE" ]]; then
   exit 1
 fi
 
-export KAGGLE_API_ENDPOINT=http://localhost
+export KAGGLE_API_ENVIRONMENT=LOCALHOST
 export KAGGLE_CONFIG_DIR=$(realpath "${XDG_CONFIG_HOME:-$HOME/.config}/kaggle/dev")
 
 KAGGLE_CONFIG_FILE="$KAGGLE_CONFIG_DIR/kaggle.json"

@@ -28,7 +28,6 @@ ApiException = IOError
 # Give it the module: unit_tests.TestKaggleApi
 # Set the working directory to: kaggle-api/tests
 # Define some envars:
-# KAGGLE_API_ENDPOINT=http://localhost
 # KAGGLE_API_ENVIRONMENT=LOCALHOST
 # KAGGLE_CONFIG_DIR=/home/kaggle/.config/kaggle/dev
 # KAGGLE_KEY=local_api_token

@@ -13,15 +13,11 @@ Explore these tutorials to learn how to perform common tasks:
 *   [Tutorials](./tutorials.md)
     *   [Create a Dataset](./tutorials.md#tutorial-create-a-dataset)
     *   [Download a Dataset and Prepare for Analysis](./tutorials.md#tutorial-download-a-dataset-and-prepare-for-analysis)
-    *   [Search for a Dataset](./tutorials.md#tutorial-search-for-a-dataset)
     *   [Create a Model](./tutorials.md#tutorial-create-a-model)
-    *   [Train a Model](./tutorials.md#tutorial-train-a-model)
     *   [Create a Model Instance](./tutorials.md#tutorial-create-a-model-instance)
-    *   [Train a Model Instance](./tutorials.md#tutorial-train-a-model-instance)
-    *   [Create a Model Instance Variation](./tutorials.md#tutorial-create-a-model-instance-variation)
-    *   [Train a Model Instance Variation](./tutorials.md#tutorial-train-a-model-instance-variation)
-    *   [How to Submit a Kernel](./tutorials.md#tutorial-how-to-submit-a-kernel)
+    *   [Create a Model Instance Version](./tutorials.md#tutorial-create-a-model-instance-version)
     *   [How to Submit to a Competition](./tutorials.md#tutorial-how-to-submit-to-a-competition)
+    *   [How to Submit to a Code Competition](./tutorials.md#tutorial-how-to-submit-to-a-code-competition)
 
 ## CLI Reference
 

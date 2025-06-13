@@ -65,10 +65,10 @@ This tutorial explains how to find, download, and prepare a Kaggle dataset for l
         ```bash
         kaggle datasets list -s iris
         ```
-    *   This command will list datasets matching your search query. Note the dataset's "ref" (e.g., `uciml/iris`) which you'll use for downloading.
+    *   This command will list datasets matching your search query. Note the dataset's "id" (e.g., `uciml/iris`) which you'll use for downloading.
 
 2.  **Choose a Dataset and Create a Directory.**
-    *   For this tutorial, we'll use the classic "Iris" dataset, which has the ref `uciml/iris`.
+    *   For this tutorial, we'll use the classic "Iris" dataset, which has the id `uciml/iris`.
     *   Create a new directory for your dataset and navigate into it:
         ```bash
         mkdir iris-dataset-analysis
@@ -76,7 +76,7 @@ This tutorial explains how to find, download, and prepare a Kaggle dataset for l
         ```
 
 3.  **Download the Dataset.**
-    *   Use the `kaggle datasets download` command with the dataset's ref.
+    *   Use the `kaggle datasets download` command with the dataset's id.
         ```bash
         kaggle datasets download -d uciml/iris
         ```
@@ -315,3 +315,45 @@ This tutorial walks you through the process of making a submission to a Kaggle c
     *   This command will show your submission, its status (e.g., `complete`, `error`), and your public/private scores if available.
 
 This completes the process of submitting to a Kaggle competition using the CLI!
+
+# Tutorial: How to Submit to a Code Competition
+
+This tutorial walks you through the process of submitting to a code competition on Kaggle.
+
+## Step 1: Find a Code Competition
+
+First, you need to find a code competition to participate in. You can browse the available competitions on the [Kaggle competitions page](https://www.kaggle.com/competitions).
+
+## Step 2: Download the Dataset
+
+Once you have chosen a competition, you need to download the dataset. You can do this using the `kaggle competitions download` command:
+
+```
+kaggle competitions download -c <competition-name>
+```
+
+Replace `<competition-name>` with the name of the competition you want to participate in.
+
+## Step 3: Create a Kernel
+
+Next, you need to create a kernel to work on your submission. A kernel is a computational environment that you can use to write and run your code. You can create a new kernel on the Kaggle website or by using the `kaggle kernels init` command.
+
+## Step 4: Write Your Code
+
+Now it's time to write your code! You can use any programming language or framework that you are comfortable with. The goal is to create a model that can make predictions on the test set.
+
+## Step 5: Submit Your Predictions
+
+Once you are happy with your model, you can submit your predictions to the competition. You can do this using the `kaggle competitions submit` command:
+
+```
+kaggle competitions submit -c <competition-name> -f <submission-file> -m <message>
+```
+
+Replace `<competition-name>` with the name of the competition, `<submission-file>` with the path to your submission file, and `<message>` with a brief description of your submission.
+
+## Step 6: Check Your Score
+
+After you have submitted your predictions, you can check your score on the competition leaderboard. The leaderboard shows the scores of all the participants in the competition.
+
+That's it! You have now successfully submitted to a code competition on Kaggle.

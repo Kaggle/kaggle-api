@@ -2,6 +2,10 @@
 
 Commands for interacting with Kaggle competitions.
 
+For tutorials on how to submit to competitions :
+* [How to Submit to a Competition](./tutorials.md#tutorial-how-to-submit-to-a-competition)
+* [How to Submit to a Code Competition](./tutorials.md#tutorial-how-to-submit-to-a-code-competition)
+
 ## `kaggle competitions list`
 
 Lists available competitions.

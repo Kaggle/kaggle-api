@@ -56,7 +56,58 @@ This tutorial walks you through creating a new dataset on Kaggle.
 
 6.  **Verify on Kaggle.com.** Go to your Kaggle profile and check the "Datasets" tab in the "Your Work" section. You should see "My Sample Dataset".
 
-## Tutorial: Update a Kernel (Notebook/Script)
+## Tutorial: Download a Dataset and Prepare for Analysis
+
+This tutorial explains how to find, download, and prepare a Kaggle dataset for local analysis using the CLI.
+
+1.  **Search for a Dataset (Optional).**
+    *   If you know the dataset you want, you can skip this step. Otherwise, you can search for datasets. For example, to search for datasets related to "iris":
+        ```bash
+        kaggle datasets list -s iris
+        ```
+    *   This command will list datasets matching your search query. Note the dataset's "id" (e.g., `uciml/iris`) which you'll use for downloading.
+
+2.  **Choose a Dataset and Create a Directory.**
+    *   For this tutorial, we'll use the classic "Iris" dataset, which has the id `uciml/iris`.
+    *   Create a new directory for your dataset and navigate into it:
+        ```bash
+        mkdir iris-dataset-analysis
+        cd iris-dataset-analysis
+        ```
+
+3.  **Download the Dataset.**
+    *   Use the `kaggle datasets download` command with the dataset's id.
+        ```bash
+        kaggle datasets download -d uciml/iris
+        ```
+    *   This will download the dataset files, typically as a ZIP archive (e.g., `iris.zip`), into your current directory (`iris-dataset-analysis`).
+
+4.  **Unzip the Dataset.**
+    *   Note: you could skip this step by using the `--unzip` flag on the previous command.
+    *   Most datasets are downloaded as ZIP files. You'll need to unzip the archive to access the data files (e.g., CSV files).
+        ```bash
+        # Make sure you have unzip installed, or use your OS's GUI to extract
+        # The actual zip file name might vary based on the dataset.
+        # For uciml/iris, it's iris.zip
+        unzip iris.zip
+        ```
+    *   After unzipping, you should see the data files (e.g., `Iris.csv`, `database.sqlite`).
+
+5.  **Prepare for Analysis.**
+    *   The dataset is now downloaded and extracted. The primary data file for the Iris dataset is `Iris.csv`.
+    *   You can now use your preferred tools (e.g., Python with libraries like Pandas and Scikit-learn, R, etc.) to load and analyze the data.
+    *   For example, in a Python script within the `iris-dataset-analysis` directory, you might load the data using Pandas:
+        ```python
+        import pandas as pd
+        df = pd.read_csv('Iris.csv')
+        print(df.head())
+        print(df.info())
+        ```
+
+This completes the process of downloading a dataset and preparing it for analysis using the Kaggle CLI.
+You can adapt these steps for any dataset on Kaggle.
+
+## Tutorial: Update a Kernel (Notebook)
 
 This tutorial shows how to download an existing kernel, modify it, and push the changes back to Kaggle.
 
@@ -225,6 +276,7 @@ This tutorial walks you through the process of making a submission to a Kaggle c
     *   This will download `titanic.zip`. You'll need to unzip it to see the files (e.g., `train.csv`, `test.csv`, `gender_submission.csv`).
         ```bash
         # Make sure you have unzip installed, or use your OS's GUI to extract
+        # The actual zip file name might vary based on the competition.
         unzip titanic.zip
         ```
 
@@ -263,3 +315,45 @@ This tutorial walks you through the process of making a submission to a Kaggle c
     *   This command will show your submission, its status (e.g., `complete`, `error`), and your public/private scores if available.
 
 This completes the process of submitting to a Kaggle competition using the CLI!
+
+# Tutorial: How to Submit to a Code Competition
+
+This tutorial walks you through the process of submitting to a code competition on Kaggle.
+
+## Step 1: Find a Code Competition
+
+First, you need to find a code competition to participate in. You can browse the available competitions on the [Kaggle competitions page](https://www.kaggle.com/competitions).
+
+## Step 2: Download the Dataset
+
+Once you have chosen a competition, you need to download the dataset. You can do this using the `kaggle competitions download` command:
+
+```
+kaggle competitions download -c <competition-name>
+```
+
+Replace `<competition-name>` with the name of the competition you want to participate in.
+
+## Step 3: Create a Kernel
+
+Next, you need to create a kernel to work on your submission. A kernel is a computational environment that you can use to write and run your code. You can create a new kernel on the Kaggle website or by using the `kaggle kernels init` command.
+
+## Step 4: Write Your Code
+
+Now it's time to write your code! You can use any programming language or framework that you are comfortable with. The goal is to create a model that can make predictions on the test set.
+
+## Step 5: Submit Your Predictions
+
+Once you are happy with your model, you can submit your predictions to the competition. You can do this using the `kaggle competitions submit` command:
+
+```
+kaggle competitions submit -c <competition-name> -f <submission-file> -m <message>
+```
+
+Replace `<competition-name>` with the name of the competition, `<submission-file>` with the path to your submission file, and `<message>` with a brief description of your submission.
+
+## Step 6: Check Your Score
+
+After you have submitted your predictions, you can check your score on the competition leaderboard. The leaderboard shows the scores of all the participants in the competition.
+
+That's it! You have now successfully submitted to a code competition on Kaggle.

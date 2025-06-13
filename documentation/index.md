@@ -6,7 +6,20 @@ Welcome to the Kaggle CLI documentation. This guide provides detailed informatio
 
 Before you begin, ensure you have the Kaggle CLI installed and configured with your API credentials. You can find your API token on your Kaggle account page.
 
-## Command Groups
+## Tutorials
+
+Explore these tutorials to learn how to perform common tasks:
+
+*   [Tutorials](./tutorials.md)
+    *   [Create a Dataset](./tutorials.md#tutorial-create-a-dataset)
+    *   [Download a Dataset and Prepare for Analysis](./tutorials.md#tutorial-download-a-dataset-and-prepare-for-analysis)
+    *   [Create a Model](./tutorials.md#tutorial-create-a-model)
+    *   [Create a Model Instance](./tutorials.md#tutorial-create-a-model-instance)
+    *   [Create a Model Instance Version](./tutorials.md#tutorial-create-a-model-instance-version)
+    *   [How to Submit to a Competition](./tutorials.md#tutorial-how-to-submit-to-a-competition)
+    *   [How to Submit to a Code Competition](./tutorials.md#tutorial-how-to-submit-to-a-code-competition)
+
+## CLI Reference
 
 The Kaggle CLI is organized into several command groups:
 
@@ -17,11 +30,3 @@ The Kaggle CLI is organized into several command groups:
 *   [Model Instances](./model_instances.md): Manage instances of your Kaggle Models.
 *   [Model Instance Variations](./model_instance_variations.md): Manage variations of your Kaggle Model Instances.
 *   [Configuration](./configuration.md): Configure the Kaggle CLI.
-
-## Tutorials
-
-Explore these tutorials to learn how to perform common tasks:
-
-*   [Tutorials](./tutorials.md)
-    *   [How to Submit to a Competition](./tutorials.md#tutorial-how-to-submit-to-a-competition)
-

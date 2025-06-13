@@ -18,7 +18,7 @@
 from __future__ import print_function
 
 import csv
-from datetime import datetime
+from datetime import datetime, timedelta
 from enum import Enum
 import io
 
@@ -33,6 +33,7 @@ import tarfile
 import tempfile
 import time
 import zipfile
+from dateutil.relativedelta import relativedelta
 from os.path import expanduser
 from random import random
 
@@ -50,7 +51,7 @@ from urllib3.util.retry import Retry
 from google.protobuf import field_mask_pb2
 
 import kaggle
-from kagglesdk import get_access_token_from_env, KaggleClient, KaggleEnv  # type: ignore[attr-defined]
+from kagglesdk import get_access_token_from_env, KaggleClient, KaggleCredentials, KaggleEnv, KaggleOAuth  # type: ignore[attr-defined]
 from kagglesdk.admin.types.inbox_file_service import CreateInboxFileRequest
 from kagglesdk.blobs.types.blob_api_service import ApiStartBlobUploadRequest, ApiStartBlobUploadResponse, ApiBlobType
 from kagglesdk.competitions.types.competition_api_service import (
@@ -141,6 +142,7 @@ from kagglesdk.models.types.model_api_service import (
 )
 from kagglesdk.models.types.model_enums import ListModelsOrderBy, ModelInstanceType, ModelFramework
 from kagglesdk.models.types.model_types import Owner
+from kagglesdk.security.types.oauth_service import IntrospectTokenRequest
 from ..models.dataset_column import DatasetColumn
 from ..models.upload_file import UploadFile
 import kagglesdk.kaggle_client
@@ -155,6 +157,7 @@ T = TypeVar('T')
 class AuthMethod(Enum):
     LEGACY_API_KEY = 0
     ACCESS_TOKEN = 1
+    OAUTH = 2
 
     def __str__(self):
         return self.name
@@ -467,7 +470,7 @@ class KaggleApi:
     valid_model_sort_bys = ['hotness', 'downloadCount', 'voteCount', 'notebookCount', 'createTime']
 
     # Command prefixes that are valid without authentication.
-    command_prefixes_allowing_anonymous_access = ('datasets download', 'datasets files')
+    command_prefixes_allowing_anonymous_access = ('datasets download', 'datasets files', 'auth login')
 
     # Attributes
     competition_fields = ['ref', 'deadline', 'category', 'reward', 'teamCount', 'userHasEntered']
@@ -527,6 +530,8 @@ class KaggleApi:
     ## Authentication
 
     def authenticate(self) -> None:
+        # if self._authenticate_with_oauth_creds():
+        #     return
         if self._authenticate_with_access_token():
             return
         if self._authenticate_with_legacy_apikey():
@@ -537,6 +542,8 @@ class KaggleApi:
             ' instructions at'
             ' https://github.com/Kaggle/kaggle-api/'.format(self.config_file, self.config_dir)
         )
+        # print('You must log in to Kaggle to use the Kaggle API.')
+        # print('Please run "kaggle auth login" to log in.')
         exit(1)
 
     def _authenticate_with_legacy_apikey(self) -> bool:
@@ -548,6 +555,7 @@ class KaggleApi:
         """
 
         config_values: Dict[str, str] = {}
+
         # Ex: 'datasets list', 'competitions files', 'models instances get', etc.
         api_command = ' '.join(sys.argv[1:])
 
@@ -557,9 +565,9 @@ class KaggleApi:
         # Step 2: if credentials were not in env read in configuration file
         if self.CONFIG_NAME_USER not in config_values or self.CONFIG_NAME_KEY not in config_values:
             if os.path.exists(self.config):
-                config_values = self.read_config_file(config_values)
+                config_values = self.read_config_file(config_values, quiet=True)
             elif self._command_allows_logged_out(api_command):
-                # Some API commands should be allowed without authentication.
+                config_values = self.read_config_file(config_values, quiet=True)
                 return True
             else:
                 return False
@@ -574,7 +582,7 @@ class KaggleApi:
         self.logger.debug(f'Authenticated with legacy api key in: {self.config}')
         return True
 
-    def _authenticate_with_access_token(self) -> bool:
+    def _authenticate_with_access_token(self):
         (access_token, source) = get_access_token_from_env()
         if not access_token:
             return False
@@ -591,6 +599,44 @@ class KaggleApi:
         }
         self.logger.debug(f'Authenticated with access token in: {source}')
         return True
+
+    def _authenticate_with_oauth_creds(self) -> bool:
+        with self.build_kaggle_client() as kaggle:
+            creds = KaggleCredentials.load(client=kaggle)
+            if not creds:
+                return False
+            try:
+                access_token = creds.get_access_token()
+            except HTTPError as e:
+                if e.response.status_code == 401:
+                    print('Invalid credentials!')
+                    creds.delete()
+                    return False
+                raise
+            self.config_values: Dict[str, str] = {
+                self.CONFIG_NAME_TOKEN: access_token,
+                self.CONFIG_NAME_USER: creds.get_username(),
+                self.CONFIG_NAME_AUTH_METHOD: AuthMethod.OAUTH,
+            }
+            creds_path = os.path.expanduser(KaggleCredentials.DEFAULT_CREDENTIALS_FILE)
+            self.logger.debug(f'Authenticated with OAuth credentials in: {creds_path}')
+            return True
+        
+
+    def _introspect_token(self, access_token: str) -> str:
+        with self.build_kaggle_client() as kaggle:
+            request = IntrospectTokenRequest()
+            request.token = access_token
+            try:
+                response = kaggle.security.oauth_client.introspect_token(request)
+                if not response.active or not response.username:
+                    return None
+                return response.username
+            except HTTPError as e:
+                if e.response.status_code in (400, 403, 404):
+                    self.logger.debug("Access token invalid: %s", e)
+                    return None
+                raise
 
     def _command_allows_logged_out(self, api_command: str) -> bool:
         # Some API commands do not required authentication.
@@ -798,6 +844,44 @@ class KaggleApi:
         self.print_config_value(self.CONFIG_NAME_PATH, prefix=prefix)
         self.print_config_value(self.CONFIG_NAME_PROXY, prefix=prefix)
         self.print_config_value(self.CONFIG_NAME_COMPETITION, prefix=prefix)
+
+    def auth_login_cli(self, no_launch_browser: bool = False):
+        # Allow access to all ApiV1 endpoints.
+        default_scopes = ['resources.admin:*']
+        with self.build_kaggle_client() as kaggle:
+            oAuth = KaggleOAuth(client=kaggle)
+            oAuth.authenticate(scopes=default_scopes, no_launch_browser=no_launch_browser)
+
+    def auth_print_access_token(self, expiration_duration: str = None):
+        expiration =  self._parse_duration(expiration_duration) if expiration_duration else None
+        with self.build_kaggle_client() as kaggle:
+            creds = KaggleCredentials.load(client=kaggle)
+            if creds is None:
+                print('You must log in to Kaggle to print an access token.')
+                print('Please run "kaggle auth login" to log in.')
+                exit(1)
+            response = creds.generate_access_token(expiration)
+            if response is None:
+                print('Unable to generate an access token. Please run "kaggle auth login" and try again.')
+                exit(1)
+            print(response.token)
+
+    
+    def _parse_duration(self, duration_str: str) -> timedelta:
+        try:
+            delta = relativedelta(**{duration_str[-1]: int(duration_str[:-1])})
+            return delta
+        except ValueError:
+            raise ValueError("Invalid duration format. Please use one of the following formats: 1h, 30s, 2h30s, 2:30")
+
+
+    def auth_revoke_token(self, reason: str):
+        with self.build_kaggle_client() as kaggle:
+            creds = KaggleCredentials.load(client=kaggle)
+            if creds is None:
+                print('There is no token to revoke.')
+                exit(0)
+            creds.revoke_token(reason or 'Manually revoked by user with kaggle-cli')
 
     def build_kaggle_client(self) -> kagglesdk.kaggle_client.KaggleClient:
         env = (

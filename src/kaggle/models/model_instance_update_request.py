@@ -32,34 +32,34 @@ class ModelInstanceUpdateRequest(object):
     """
 
     project_types = {
-        'overview': 'str',
-        'usage': 'str',
-        'license_name': 'str',
-        'fine_tunable': 'bool',
-        'training_data': 'list[str]',
-        'model_instance_type': 'str',
-        'base_model_instance': 'str',
-        'external_base_model_url': 'int',
-        'update_mask': 'str',
+        "overview": "str",
+        "usage": "str",
+        "license_name": "str",
+        "fine_tunable": "bool",
+        "training_data": "list[str]",
+        "model_instance_type": "str",
+        "base_model_instance": "str",
+        "external_base_model_url": "int",
+        "update_mask": "str",
     }
 
     attribute_map = {
-        'overview': 'overview',
-        'usage': 'usage',
-        'license_name': 'licenseName',
-        'fine_tunable': 'fineTunable',
-        'training_data': 'trainingData',
-        'model_instance_type': 'modelInstanceType',
-        'base_model_instance': 'baseModelInstance',
-        'external_base_model_url': 'externalBaseModelUrl',
-        'update_mask': 'updateMask',
+        "overview": "overview",
+        "usage": "usage",
+        "license_name": "licenseName",
+        "fine_tunable": "fineTunable",
+        "training_data": "trainingData",
+        "model_instance_type": "modelInstanceType",
+        "base_model_instance": "baseModelInstance",
+        "external_base_model_url": "externalBaseModelUrl",
+        "update_mask": "updateMask",
     }
 
     def __init__(
         self,
         overview=None,
         usage=None,
-        license_name='Apache 2.0',
+        license_name="Apache 2.0",
         fine_tunable=True,
         training_data=None,
         model_instance_type=None,

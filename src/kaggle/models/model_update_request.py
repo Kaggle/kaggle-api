@@ -32,23 +32,23 @@ class ModelUpdateRequest(object):
     """
 
     project_types = {
-        'title': 'str',
-        'subtitle': 'str',
-        'is_private': 'bool',
-        'description': 'str',
-        'publish_time': 'date',
-        'provenance_sources': 'str',
-        'update_mask': 'str',
+        "title": "str",
+        "subtitle": "str",
+        "is_private": "bool",
+        "description": "str",
+        "publish_time": "date",
+        "provenance_sources": "str",
+        "update_mask": "str",
     }
 
     attribute_map = {
-        'title': 'title',
-        'subtitle': 'subtitle',
-        'is_private': 'isPrivate',
-        'description': 'description',
-        'publish_time': 'publishTime',
-        'provenance_sources': 'provenanceSources',
-        'update_mask': 'updateMask',
+        "title": "title",
+        "subtitle": "subtitle",
+        "is_private": "isPrivate",
+        "description": "description",
+        "publish_time": "publishTime",
+        "provenance_sources": "provenanceSources",
+        "update_mask": "updateMask",
     }
 
     def __init__(
@@ -56,9 +56,9 @@ class ModelUpdateRequest(object):
         title=None,
         subtitle=None,
         is_private=True,
-        description='',
+        description="",
         publish_time=None,
-        provenance_sources='',
+        provenance_sources="",
         update_mask=None,
     ):  # noqa: E501
 

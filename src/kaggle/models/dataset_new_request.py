@@ -34,29 +34,29 @@ class DatasetNewRequest(object):
     """
 
     project_types = {
-        'title': 'str',
-        'slug': 'str',
-        'owner_slug': 'str',
-        'license_name': 'str',
-        'subtitle': 'str',
-        'description': 'str',
-        'files': 'list[UploadFile]',
-        'is_private': 'bool',
-        'convert_to_csv': 'bool',
-        'category_ids': 'list[str]',
+        "title": "str",
+        "slug": "str",
+        "owner_slug": "str",
+        "license_name": "str",
+        "subtitle": "str",
+        "description": "str",
+        "files": "list[UploadFile]",
+        "is_private": "bool",
+        "convert_to_csv": "bool",
+        "category_ids": "list[str]",
     }
 
     attribute_map = {
-        'title': 'title',
-        'slug': 'slug',
-        'owner_slug': 'ownerSlug',
-        'license_name': 'licenseName',
-        'subtitle': 'subtitle',
-        'description': 'description',
-        'files': 'files',
-        'is_private': 'isPrivate',
-        'convert_to_csv': 'convertToCsv',
-        'category_ids': 'categoryIds',
+        "title": "title",
+        "slug": "slug",
+        "owner_slug": "ownerSlug",
+        "license_name": "licenseName",
+        "subtitle": "subtitle",
+        "description": "description",
+        "files": "files",
+        "is_private": "isPrivate",
+        "convert_to_csv": "convertToCsv",
+        "category_ids": "categoryIds",
     }
 
     def __init__(
@@ -64,9 +64,9 @@ class DatasetNewRequest(object):
         title=None,
         slug=None,
         owner_slug=None,
-        license_name='unknown',
+        license_name="unknown",
         subtitle=None,
-        description='',
+        description="",
         files=None,
         is_private=True,
         convert_to_csv=True,
@@ -240,14 +240,14 @@ class DatasetNewRequest(object):
             )
         else:
             license_name = license_name.lower()
-            if license_name[0 - 1] == 'cc':
-                license_name = 'cc'
-            elif license_name[0 - 3] == 'gpl':
-                license_name = 'gpl'
-            elif license_name[0 - 3] == 'odb':
-                license_name = 'odb'
+            if license_name[0 - 1] == "cc":
+                license_name = "cc"
+            elif license_name[0 - 3] == "gpl":
+                license_name = "gpl"
+            elif license_name[0 - 3] == "odb":
+                license_name = "odb"
             else:
-                license_name = 'other'
+                license_name = "other"
         self._license_name = license_name
 
     @property

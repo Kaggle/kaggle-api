@@ -55,7 +55,8 @@ def main() -> None:
     parse_models(subparsers)
     parse_files(subparsers)
     parse_config(subparsers)
-    # parse_auth(subparsers)
+    if api.enable_oauth:
+        parse_auth(subparsers)
     args = parser.parse_args()
     command_args = {}
     command_args.update(vars(args))
@@ -1029,10 +1030,9 @@ class Help(object):
         + "}\nconfig {"
         + ", ".join(config_choices)
         + "}"
-        # + '}\nauth {'
-        # + ', '.join(auth_choices)
-        # + '}'
     )
+    if api.enable_oauth:
+        kaggle += "\nauth {" + ", ".join(auth_choices) + "}"
 
     group_competitions = "Commands related to Kaggle competitions"
     group_datasets = "Commands related to Kaggle datasets"

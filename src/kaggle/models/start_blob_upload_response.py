@@ -31,9 +31,9 @@ class StartBlobUploadResponse(object):
                             and the value is json key in definition.
     """
 
-    project_types = {'token': 'str', 'create_url': 'str'}
+    project_types = {"token": "str", "create_url": "str"}
 
-    attribute_map = {'token': 'token', 'create_url': 'createUrl'}
+    attribute_map = {"token": "token", "create_url": "createUrl"}
 
     def __init__(self, token=None, create_url=None):  # noqa: E501
         """StartBlobUploadResponse - a model defined in Swagger"""  # noqa: E501

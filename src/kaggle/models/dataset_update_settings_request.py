@@ -32,25 +32,25 @@ class DatasetUpdateSettingsRequest(object):
     """
 
     project_types = {
-        'title': 'str',
-        'subtitle': 'str',
-        'description': 'str',
-        'is_private': 'bool',
-        'licenses': 'list[object]',
-        'keywords': 'list[str]',
-        'collaborators': 'list[object]',
-        'data': 'list[object]',
+        "title": "str",
+        "subtitle": "str",
+        "description": "str",
+        "is_private": "bool",
+        "licenses": "list[object]",
+        "keywords": "list[str]",
+        "collaborators": "list[object]",
+        "data": "list[object]",
     }
 
     attribute_map = {
-        'title': 'title',
-        'subtitle': 'subtitle',
-        'description': 'description',
-        'is_private': 'isPrivate',
-        'licenses': 'licenses',
-        'keywords': 'keywords',
-        'collaborators': 'collaborators',
-        'data': 'data',
+        "title": "title",
+        "subtitle": "subtitle",
+        "description": "description",
+        "is_private": "isPrivate",
+        "licenses": "licenses",
+        "keywords": "keywords",
+        "collaborators": "collaborators",
+        "data": "data",
     }
 
     def __init__(

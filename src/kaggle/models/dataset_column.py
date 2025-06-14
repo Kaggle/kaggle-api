@@ -31,14 +31,14 @@ class DatasetColumn(object):
                             and the value is json key in definition.
     """
 
-    column_types = {'order': 'float', 'name': 'str', 'type': 'str', 'original_type': 'str', 'description': 'str'}
+    column_types = {"order": "float", "name": "str", "type": "str", "original_type": "str", "description": "str"}
 
     attribute_map = {
-        'order': 'order',
-        'name': 'name',
-        'type': 'type',
-        'original_type': 'originalType',
-        'description': 'description',
+        "order": "order",
+        "name": "name",
+        "type": "type",
+        "original_type": "originalType",
+        "description": "description",
     }
 
     def __init__(self, order=None, name=None, type=None, original_type=None, description=None):  # noqa: E501

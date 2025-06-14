@@ -92,8 +92,8 @@ class Metadata(object):
     def __init__(self, init_info):
         parsed_info = {k: parse(v) for k, v in init_info.items()}
         # backwards compatibility
-        self.id = parsed_info["ownerUser"] + "/" + parsed_info['datasetSlug']
-        self.id_no = parsed_info['datasetId']
+        self.id = parsed_info["ownerUser"] + "/" + parsed_info["datasetSlug"]
+        self.id_no = parsed_info["datasetId"]
         self.__dict__.update(parsed_info)
 
     def __repr__(self):
@@ -130,12 +130,12 @@ class File(object):
 
     @staticmethod
     def get_size(size, precision=0):
-        suffixes = ['B', 'KB', 'MB', 'GB', 'TB']
+        suffixes = ["B", "KB", "MB", "GB", "TB"]
         suffix_index = 0
         while size >= 1024 and suffix_index < 4:
             suffix_index += 1
             size /= 1024.0
-        return '%.*f%s' % (precision, size, suffixes[suffix_index])
+        return "%.*f%s" % (precision, size, suffixes[suffix_index])
 
 
 class Tag(object):
@@ -172,9 +172,9 @@ class ListFilesResult(object):
 
     def __init__(self, init_dict):
         try:  # TODO Remove try-block
-            self.error_message = init_dict['errorMessage']
-            files = init_dict['datasetFiles']
-            token = init_dict['nextPageToken']
+            self.error_message = init_dict["errorMessage"]
+            files = init_dict["datasetFiles"]
+            token = init_dict["nextPageToken"]
         except TypeError:
             self.error_message = init_dict.error_message
             files = init_dict.dataset_files
@@ -233,7 +233,7 @@ class ModelDeleteResponse(object):
 
 
 def parse(string):
-    time_formats = ['%Y-%m-%dT%H:%M:%S', '%Y-%m-%dT%H:%M:%SZ', '%Y-%m-%dT%H:%M:%S.%f', '%Y-%m-%dT%H:%M:%S.%fZ']
+    time_formats = ["%Y-%m-%dT%H:%M:%S", "%Y-%m-%dT%H:%M:%SZ", "%Y-%m-%dT%H:%M:%S.%f", "%Y-%m-%dT%H:%M:%S.%fZ"]
     for t in time_formats:
         try:
             result = datetime.strptime(string[:26], t).replace(microsecond=0)

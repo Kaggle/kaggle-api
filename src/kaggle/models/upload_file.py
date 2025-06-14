@@ -33,9 +33,9 @@ class UploadFile(object):
                             and the value is json key in definition.
     """
 
-    column_types = {'token': 'str', 'description': 'str', 'columns': 'list[DatasetColumn]'}
+    column_types = {"token": "str", "description": "str", "columns": "list[DatasetColumn]"}
 
-    attribute_map = {'token': 'token', 'description': 'description', 'columns': 'columns'}
+    attribute_map = {"token": "token", "description": "description", "columns": "columns"}
 
     def __init__(self, token=None, description=None, columns=None):  # noqa: E501
         """UploadFile - a model defined in Swagger"""  # noqa: E501

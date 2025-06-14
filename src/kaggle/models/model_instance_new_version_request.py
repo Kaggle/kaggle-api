@@ -33,9 +33,9 @@ class ModelInstanceNewVersionRequest(object):
                             and the value is json key in definition.
     """
 
-    project_types = {'version_notes': 'str', 'files': 'list[UploadFile]'}
+    project_types = {"version_notes": "str", "files": "list[UploadFile]"}
 
-    attribute_map = {'version_notes': 'versionNotes', 'files': 'files'}
+    attribute_map = {"version_notes": "versionNotes", "files": "files"}
 
     def __init__(self, version_notes=None, files=None):  # noqa: E501
 

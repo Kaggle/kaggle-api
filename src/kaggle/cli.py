@@ -964,6 +964,12 @@ def parse_auth(subparsers) -> None:
         action="store_true",
         help="Do not launch a browser for authentication",
     )
+    parser_auth_login.add_argument(
+        "--force",
+        dest="force",
+        action="store_true",
+        help="Re-run the login flow even if the current account is already logged-in",
+    )
     parser_auth_login.set_defaults(func=api.auth_login_cli)
 
     parser_auth_print_access_token = subparsers_auth.add_parser(

@@ -850,10 +850,15 @@ class KaggleApi:
         self.print_config_value(self.CONFIG_NAME_PROXY, prefix=prefix)
         self.print_config_value(self.CONFIG_NAME_COMPETITION, prefix=prefix)
 
-    def auth_login_cli(self, no_launch_browser: bool = False):
+    def auth_login_cli(self, no_launch_browser: bool = False, force: bool = False):
         # Allow access to all ApiV1 endpoints.
         default_scopes = ["resources.admin:*"]
-        with KaggleApi.build_kaggle_client_with_params(args=self.args) as kaggle:
+        with self.build_kaggle_client() as kaggle:
+            creds = KaggleCredentials.load(client=kaggle)
+            if creds is not None and not force:
+                print(f"You are already logged-in to Kaggle as [{creds.get_username()}].")
+                print("Please use the --force flag to override.")
+                exit(1)
             oAuth = KaggleOAuth(client=kaggle)
             oAuth.authenticate(scopes=default_scopes, no_launch_browser=no_launch_browser)
 

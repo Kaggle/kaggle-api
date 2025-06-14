@@ -320,7 +320,7 @@ class KaggleHttpClient(object):
         if self._signed_in is not None:
             return
 
-        api_token = self._api_token or os.getenv("KAGGLE_API_TOKEN")
+        (api_token, _) = get_access_token_from_env()
         if api_token is not None:
             self._session.auth = KaggleHttpClient.BearerAuth(api_token)
             self._signed_in = True
@@ -332,12 +332,6 @@ class KaggleHttpClient(object):
             apikey_creds = _get_apikey_creds()
         if apikey_creds is not None:
             self._session.auth = apikey_creds
-            self._signed_in = True
-            return
-
-        (api_token, _) = get_access_token_from_env()
-        if api_token is not None:
-            self._session.auth = KaggleHttpClient.BearerAuth(api_token)
             self._signed_in = True
             return
 

@@ -603,6 +603,7 @@ class KaggleApi:
             self.CONFIG_NAME_AUTH_METHOD: AuthMethod.ACCESS_TOKEN,
         }
         self.logger.debug(f"Authenticated with access token in: {source}")
+        del os.environ["KAGGLE_API_TOKEN"]
         return True
 
     def _authenticate_with_oauth_creds(self) -> bool:
@@ -852,7 +853,7 @@ class KaggleApi:
     def auth_login_cli(self, no_launch_browser: bool = False):
         # Allow access to all ApiV1 endpoints.
         default_scopes = ["resources.admin:*"]
-        with self.build_kaggle_client() as kaggle:
+        with KaggleApi.build_kaggle_client_with_params(args=self.args) as kaggle:
             oAuth = KaggleOAuth(client=kaggle)
             oAuth.authenticate(scopes=default_scopes, no_launch_browser=no_launch_browser)
 
@@ -886,22 +887,29 @@ class KaggleApi:
             creds.revoke_token(reason or "Manually revoked by user with kaggle-cli")
 
     def build_kaggle_client(self) -> kagglesdk.kaggle_client.KaggleClient:
-        env = (
-            KaggleEnv.STAGING
-            if "--staging" in self.args
-            else (
-                KaggleEnv.ADMIN
-                if "--admin" in self.args
-                else KaggleEnv.LOCAL if "--local" in self.args else KaggleEnv.PROD
-            )
-        )
-        verbose = "--verbose" in self.args or "-v" in self.args
-        return KaggleClient(
-            env=env,
-            verbose=verbose,
+        return KaggleApi.build_kaggle_client_with_params(
+            args=self.args,
             username=self.config_values.get(self.CONFIG_NAME_USER),
             password=self.config_values.get(self.CONFIG_NAME_KEY),
             api_token=self.config_values.get(self.CONFIG_NAME_TOKEN),
+        )
+
+    @staticmethod
+    def build_kaggle_client_with_params(
+        args: List[str], username: str = None, password: str = None, api_token: str = None
+    ) -> kagglesdk.kaggle_client.KaggleClient:
+        env = (
+            KaggleEnv.STAGING
+            if "--staging" in args
+            else (KaggleEnv.ADMIN if "--admin" in args else KaggleEnv.LOCAL if "--local" in args else KaggleEnv.PROD)
+        )
+        verbose = "--verbose" in args or "-v" in args
+        return KaggleClient(
+            env=env,
+            verbose=verbose,
+            username=username,
+            password=password,
+            api_token=api_token,
         )
 
     def camel_to_snake(self, name: str) -> str:

@@ -485,6 +485,9 @@ class KaggleApi:
     model_all_fields = ["id", "ref", "author", "slug", "title", "subtitle", "isPrivate", "description", "publishTime"]
     model_file_fields = ["name", "size", "creationDate"]
 
+    def __init__(self, enable_oauth: bool = False):
+        self.enable_oauth = enable_oauth
+
     def _is_retriable(self, e: HTTPError) -> bool:
         return (
             issubclass(type(e), ConnectionError)
@@ -530,20 +533,22 @@ class KaggleApi:
     ## Authentication
 
     def authenticate(self) -> None:
-        # if self._authenticate_with_oauth_creds():
-        #     return
+        if self.enable_oauth and self._authenticate_with_oauth_creds():
+            return
         if self._authenticate_with_access_token():
             return
         if self._authenticate_with_legacy_apikey():
             return
-        print(
-            "Could not find {}. Make sure it's located in"
-            " {}. Or use the environment method. See setup"
-            " instructions at"
-            " https://github.com/Kaggle/kaggle-api/".format(self.config_file, self.config_dir)
-        )
-        # print('You must log in to Kaggle to use the Kaggle API.')
-        # print('Please run "kaggle auth login" to log in.')
+        if self.enable_oauth:
+            print("You must log in to Kaggle to use the Kaggle API.")
+            print('Please run "kaggle auth login" to log in.')
+        else:
+            print(
+                "Could not find {}. Make sure it's located in"
+                " {}. Or use the environment method. See setup"
+                " instructions at"
+                " https://github.com/Kaggle/kaggle-api/".format(self.config_file, self.config_dir)
+            )
         exit(1)
 
     def _authenticate_with_legacy_apikey(self) -> bool:

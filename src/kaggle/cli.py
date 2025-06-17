@@ -872,7 +872,7 @@ def parse_model_instance_versions(subparsers) -> None:
         "model_instance_version", help=Help.param_model_instance_version
     )
     parser_model_instance_versions_delete_optional.add_argument(
-        "-y", "--yes", dest="yes", action="store_true", help=Help.param_yes
+        "-y", "--yes", dest="no_confirm", action="store_true", help=Help.param_yes
     )
     parser_model_instance_versions_delete._action_groups.append(parser_model_instance_versions_delete_optional)
     parser_model_instance_versions_delete.set_defaults(func=api.model_instance_version_delete_cli)

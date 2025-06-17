@@ -299,7 +299,7 @@ class TestKaggleApi(unittest.TestCase):
             self.test_kernels_c_push()
         fs = ""
         try:
-            fs = api.kernels_pull(f"{test_user}/testing", "kernel/tmp", metadata=True)
+            fs = api.kernels_pull(f"{test_user}/{kernel_name}", "kernel/tmp", metadata=True)
             self.assertTrue(os.path.exists(fs))
             with open(f'{fs}/{self.kernel_metadata_path.split("/")[1]}') as f:
                 metadata = json.load(f)

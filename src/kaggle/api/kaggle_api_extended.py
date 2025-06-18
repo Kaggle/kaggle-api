@@ -72,6 +72,7 @@ from kagglesdk.competitions.types.competition_api_service import (
     ApiGetLeaderboardRequest,
     ApiDataFile,
     ApiCreateCodeSubmissionResponse,
+    ApiListCompetitionsResponse,
 )
 from kagglesdk.competitions.types.competition_enums import (
     CompetitionListTab,
@@ -650,8 +651,7 @@ class KaggleApi:
     ## Authentication
 
     def authenticate(self) -> None:
-        """Authenticate the user with the Kaggle API, using either a legacy API key or a Kaggle OAuth token.
-        """
+        """Authenticate the user with the Kaggle API, using either a legacy API key or a Kaggle OAuth token."""
         if self.enable_oauth and self._authenticate_with_oauth_creds():
             return
         if self._authenticate_with_access_token():
@@ -1118,7 +1118,9 @@ class KaggleApi:
         sort_by: Optional[str] = None,
         page: Optional[int] = 1,
         search: Optional[str] = None,
-    ) -> list[ApiCompetition | None] | None:
+        page_size: Optional[int] = 20,
+        page_token: Optional[str] = None,
+    ) -> ApiListCompetitionsResponse | None:
         """Make a call to list competitions, format the response, and return a list
         of ApiCompetition instances.
 
@@ -1130,6 +1132,8 @@ class KaggleApi:
         sort_by: how to sort the result, see valid_competition_sort_by for options
         category: category to filter result to; use 'all' to get closed competitions
         group: group to filter result to
+        page_size: the number of items to show on a page
+        page_token: the page token for pagination
         """
         group_val = CompetitionListTab.COMPETITION_LIST_TAB_EVERYTHING
         if group:
@@ -1160,13 +1164,15 @@ class KaggleApi:
         with self.build_kaggle_client() as kaggle:
             request = ApiListCompetitionsRequest()
             request.group = group_val
-            request.page = page or 1
+            # -1 is the default in argparse. We don't set it here to indicate we are using new pagination.
+            if page != -1:
+                request.page = page
             request.category = category_val
             request.search = search or ""
             request.sort_by = sort_by_val
-            response = kaggle.competitions.competition_api_client.list_competitions(request)
-            result: list[ApiCompetition | None] | None = response.competitions
-            return result
+            request.page_size = page_size
+            request.page_token = page_token
+            return kaggle.competitions.competition_api_client.list_competitions(request)
 
     def competitions_list_cli(
         self,
@@ -1176,6 +1182,8 @@ class KaggleApi:
         page: Optional[int] = 1,
         search: Optional[str] = None,
         csv_display: Optional[bool] = False,
+        page_size: Optional[int] = 20,
+        page_token: Optional[str] = None,
     ) -> None:
         """A wrapper for competitions_list for the client.
 
@@ -1187,8 +1195,21 @@ class KaggleApi:
         page: the page to return (default is 1)
         search: a search term to use (default is empty string)
         csv_display: if True, print comma separated values
+        page_size: the number of items to show on a page
+        page_token: the page token for pagination
         """
-        competitions = self.competitions_list(group=group, category=category, sort_by=sort_by, page=page, search=search)
+        response = self.competitions_list(
+            group=group,
+            category=category,
+            sort_by=sort_by,
+            page=page,
+            search=search,
+            page_size=page_size,
+            page_token=page_token,
+        )
+        if response.next_page_token:
+            print("Next Page Token = {}".format(response.next_page_token))
+        competitions = response.competitions
         if competitions:
             if csv_display:
                 self.print_csv(competitions, self.competition_fields)
@@ -1563,22 +1584,39 @@ class KaggleApi:
         outfile = os.path.join(effective_path, file_name)
         self.download_file(response, outfile, kaggle.http_client(), quiet)
 
-    def competition_leaderboard_view(self, competition: str) -> list[ApiLeaderboardSubmission | None] | None:
+    def competition_leaderboard_view(
+        self, competition: str, page_size: Optional[int] = 20, page_token: Optional[str] = None
+    ) -> list[ApiLeaderboardSubmission | None] | None:
         """View a leaderboard based on a competition name.
 
         Parameters
         ==========
         competition: the competition name to view leadboard for
+        page_size: the number of items to show on a page
+        page_token: the page token for pagination
         """
         with self.build_kaggle_client() as kaggle:
             request = ApiGetLeaderboardRequest()
             request.competition_name = competition
+            request.page_size = page_size
+            request.page_token = page_token
             response = kaggle.competitions.competition_api_client.get_leaderboard(request)
+        if response.next_page_token:
+            print("Next Page Token = {}".format(response.next_page_token))
         result: list[ApiLeaderboardSubmission | None] | None = response.submissions
         return result
 
     def competition_leaderboard_cli(
-        self, competition, competition_opt=None, path=None, view=False, download=False, csv_display=False, quiet=False
+        self,
+        competition,
+        competition_opt=None,
+        path=None,
+        view=False,
+        download=False,
+        csv_display=False,
+        quiet=False,
+        page_size: Optional[int] = 20,
+        page_token: Optional[str] = None,
     ):
         """A wrapper for competition_leaderbord_view that will print the results as
         a table or comma separated values.
@@ -1592,6 +1630,8 @@ class KaggleApi:
         download: if True, download the entire leaderboard
         csv_display: if True, print comma separated values instead of table
         quiet: suppress verbose output (default is False)
+        page_size: the number of items to show on a page
+        page_token: the page token for pagination
         """
         competition = competition or competition_opt
         if not view and not download:
@@ -1609,7 +1649,7 @@ class KaggleApi:
             self.competition_leaderboard_download(competition, path, quiet)
 
         if view:
-            results = self.competition_leaderboard_view(competition)
+            results = self.competition_leaderboard_view(competition, page_size, page_token)
             if results:
                 if csv_display:
                     self.print_csv(results, self.competition_leaderboard_fields)

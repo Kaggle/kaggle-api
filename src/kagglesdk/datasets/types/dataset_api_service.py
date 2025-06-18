@@ -2070,7 +2070,7 @@ class ApiListDatasetsRequest(KaggleObject):
         self._page_size = page_size
 
     def endpoint(self):
-        path = "/api/v1/datasets/list"
+        path = "/api/v1/datasets/list-paged"
         return path.format_map(self.to_field_map(self))
 
 

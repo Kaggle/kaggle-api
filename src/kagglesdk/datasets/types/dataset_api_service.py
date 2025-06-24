@@ -1690,10 +1690,6 @@ class ApiGetDatasetStatusResponse(KaggleObject):
             raise TypeError("status must be of type DatabundleVersionStatus")
         self._status = status
 
-    @classmethod
-    def prepare_from(cls, http_response):
-        return cls.from_dict({"status": json.loads(http_response.text)})
-
 
 class ApiListDatasetFilesRequest(KaggleObject):
     r"""
@@ -2082,10 +2078,12 @@ class ApiListDatasetsResponse(KaggleObject):
     r"""
     Attributes:
       datasets (ApiDataset)
+      next_page_token (str)
     """
 
     def __init__(self):
         self._datasets = []
+        self._next_page_token = ""
         self._freeze()
 
     @property
@@ -2103,9 +2101,22 @@ class ApiListDatasetsResponse(KaggleObject):
             raise TypeError("datasets must contain only items of type ApiDataset")
         self._datasets = datasets
 
-    @classmethod
-    def prepare_from(cls, http_response):
-        return cls.from_dict({"datasets": json.loads(http_response.text)})
+    @property
+    def next_page_token(self) -> str:
+        return self._next_page_token
+
+    @next_page_token.setter
+    def next_page_token(self, next_page_token: str):
+        if next_page_token is None:
+            del self.next_page_token
+            return
+        if not isinstance(next_page_token, str):
+            raise TypeError("next_page_token must be of type str")
+        self._next_page_token = next_page_token
+
+    @property
+    def nextPageToken(self):
+        return self.next_page_token
 
 
 class ApiUpdateDatasetMetadataRequest(KaggleObject):
@@ -2847,6 +2858,7 @@ ApiListDatasetsRequest._fields = [
 
 ApiListDatasetsResponse._fields = [
     FieldMetadata("datasets", "datasets", "_datasets", ApiDataset, [], ListSerializer(KaggleObjectSerializer())),
+    FieldMetadata("nextPageToken", "next_page_token", "_next_page_token", str, "", PredefinedSerializer()),
 ]
 
 ApiUpdateDatasetMetadataRequest._fields = [

@@ -50,7 +50,7 @@ class ModelApiClient(object):
         if request is None:
             request = ApiCreateModelRequest()
 
-        return self._client.call("models.ModelApiService", "ApiCreateModel", request, ApiCreateModelResponse)
+        return self._client.call("models.ModelApiService", "CreateModel", request, ApiCreateModelResponse)
 
     def create_model_instance(self, request: ApiCreateModelInstanceRequest = None) -> ApiCreateModelResponse:
         r"""
@@ -62,7 +62,7 @@ class ModelApiClient(object):
         if request is None:
             request = ApiCreateModelInstanceRequest()
 
-        return self._client.call("models.ModelApiService", "ApiCreateModelInstance", request, ApiCreateModelResponse)
+        return self._client.call("models.ModelApiService", "CreateModelInstance", request, ApiCreateModelResponse)
 
     def create_model_instance_version(
         self, request: ApiCreateModelInstanceVersionRequest = None
@@ -77,7 +77,7 @@ class ModelApiClient(object):
             request = ApiCreateModelInstanceVersionRequest()
 
         return self._client.call(
-            "models.ModelApiService", "ApiCreateModelInstanceVersion", request, ApiCreateModelResponse
+            "models.ModelApiService", "CreateModelInstanceVersion", request, ApiCreateModelResponse
         )
 
     def delete_model(self, request: ApiDeleteModelRequest = None) -> ApiDeleteModelResponse:
@@ -90,7 +90,7 @@ class ModelApiClient(object):
         if request is None:
             request = ApiDeleteModelRequest()
 
-        return self._client.call("models.ModelApiService", "ApiDeleteModel", request, ApiDeleteModelResponse)
+        return self._client.call("models.ModelApiService", "DeleteModel", request, ApiDeleteModelResponse)
 
     def delete_model_instance(self, request: ApiDeleteModelInstanceRequest = None) -> ApiDeleteModelResponse:
         r"""
@@ -102,7 +102,7 @@ class ModelApiClient(object):
         if request is None:
             request = ApiDeleteModelInstanceRequest()
 
-        return self._client.call("models.ModelApiService", "ApiDeleteModelInstance", request, ApiDeleteModelResponse)
+        return self._client.call("models.ModelApiService", "DeleteModelInstance", request, ApiDeleteModelResponse)
 
     def delete_model_instance_version(
         self, request: ApiDeleteModelInstanceVersionRequest = None
@@ -117,7 +117,7 @@ class ModelApiClient(object):
             request = ApiDeleteModelInstanceVersionRequest()
 
         return self._client.call(
-            "models.ModelApiService", "ApiDeleteModelInstanceVersion", request, ApiDeleteModelResponse
+            "models.ModelApiService", "DeleteModelInstanceVersion", request, ApiDeleteModelResponse
         )
 
     def get_model(self, request: ApiGetModelRequest = None) -> ApiModel:
@@ -130,7 +130,7 @@ class ModelApiClient(object):
         if request is None:
             request = ApiGetModelRequest()
 
-        return self._client.call("models.ModelApiService", "ApiGetModel", request, ApiModel)
+        return self._client.call("models.ModelApiService", "GetModel", request, ApiModel)
 
     def get_model_instance(self, request: ApiGetModelInstanceRequest = None) -> ApiModelInstance:
         r"""
@@ -142,7 +142,7 @@ class ModelApiClient(object):
         if request is None:
             request = ApiGetModelInstanceRequest()
 
-        return self._client.call("models.ModelApiService", "ApiGetModelInstance", request, ApiModelInstance)
+        return self._client.call("models.ModelApiService", "GetModelInstance", request, ApiModelInstance)
 
     def download_model_instance_version(self, request: ApiDownloadModelInstanceVersionRequest = None) -> HttpRedirect:
         r"""
@@ -154,7 +154,7 @@ class ModelApiClient(object):
         if request is None:
             request = ApiDownloadModelInstanceVersionRequest()
 
-        return self._client.call("models.ModelApiService", "ApiDownloadModelInstanceVersion", request, HttpRedirect)
+        return self._client.call("models.ModelApiService", "DownloadModelInstanceVersion", request, HttpRedirect)
 
     def list_models(self, request: ApiListModelsRequest = None) -> ApiListModelsResponse:
         r"""
@@ -166,7 +166,7 @@ class ModelApiClient(object):
         if request is None:
             request = ApiListModelsRequest()
 
-        return self._client.call("models.ModelApiService", "ApiListModels", request, ApiListModelsResponse)
+        return self._client.call("models.ModelApiService", "ListModels", request, ApiListModelsResponse)
 
     def list_model_instance_version_files(
         self, request: ApiListModelInstanceVersionFilesRequest = None
@@ -181,10 +181,7 @@ class ModelApiClient(object):
             request = ApiListModelInstanceVersionFilesRequest()
 
         return self._client.call(
-            "models.ModelApiService",
-            "ApiListModelInstanceVersionFiles",
-            request,
-            ApiListModelInstanceVersionFilesResponse,
+            "models.ModelApiService", "ListModelInstanceVersionFiles", request, ApiListModelInstanceVersionFilesResponse
         )
 
     def update_model(self, request: ApiUpdateModelRequest = None) -> ApiUpdateModelResponse:
@@ -197,7 +194,7 @@ class ModelApiClient(object):
         if request is None:
             request = ApiUpdateModelRequest()
 
-        return self._client.call("models.ModelApiService", "ApiUpdateModel", request, ApiUpdateModelResponse)
+        return self._client.call("models.ModelApiService", "UpdateModel", request, ApiUpdateModelResponse)
 
     def update_model_instance(self, request: ApiUpdateModelInstanceRequest = None) -> ApiUpdateModelResponse:
         r"""
@@ -209,7 +206,7 @@ class ModelApiClient(object):
         if request is None:
             request = ApiUpdateModelInstanceRequest()
 
-        return self._client.call("models.ModelApiService", "ApiUpdateModelInstance", request, ApiUpdateModelResponse)
+        return self._client.call("models.ModelApiService", "UpdateModelInstance", request, ApiUpdateModelResponse)
 
     def upload_model_file(self, request: ApiUploadModelFileRequest = None) -> ApiUploadModelFileResponse:
         r"""
@@ -223,7 +220,7 @@ class ModelApiClient(object):
         if request is None:
             request = ApiUploadModelFileRequest()
 
-        return self._client.call("models.ModelApiService", "ApiUploadModelFile", request, ApiUploadModelFileResponse)
+        return self._client.call("models.ModelApiService", "UploadModelFile", request, ApiUploadModelFileResponse)
 
     def create_model_signing_token(
         self, request: CreateModelSigningTokenRequest = None
@@ -293,7 +290,7 @@ class ModelApiClient(object):
             request = ApiListModelGatingUserConsentsRequest()
 
         return self._client.call(
-            "models.ModelApiService", "ApiListModelGatingUserConsents", request, ApiListModelGatingUserConsentsResponse
+            "models.ModelApiService", "ListModelGatingUserConsents", request, ApiListModelGatingUserConsentsResponse
         )
 
     def review_model_gating_user_consent(self, request: ApiReviewModelGatingUserConsentRequest = None):
@@ -309,4 +306,4 @@ class ModelApiClient(object):
         if request is None:
             request = ApiReviewModelGatingUserConsentRequest()
 
-        self._client.call("models.ModelApiService", "ApiReviewModelGatingUserConsent", request, None)
+        self._client.call("models.ModelApiService", "ReviewModelGatingUserConsent", request, None)

@@ -41,7 +41,7 @@ class DatasetApiClient(object):
         if request is None:
             request = ApiListDatasetsRequest()
 
-        return self._client.call("datasets.DatasetApiService", "ApiListDatasets", request, ApiListDatasetsResponse)
+        return self._client.call("datasets.DatasetApiService", "ListDatasets", request, ApiListDatasetsResponse)
 
     def get_dataset(self, request: ApiGetDatasetRequest = None) -> ApiDataset:
         r"""
@@ -53,7 +53,7 @@ class DatasetApiClient(object):
         if request is None:
             request = ApiGetDatasetRequest()
 
-        return self._client.call("datasets.DatasetApiService", "ApiGetDataset", request, ApiDataset)
+        return self._client.call("datasets.DatasetApiService", "GetDataset", request, ApiDataset)
 
     def list_dataset_files(self, request: ApiListDatasetFilesRequest = None) -> ApiListDatasetFilesResponse:
         r"""
@@ -65,9 +65,7 @@ class DatasetApiClient(object):
         if request is None:
             request = ApiListDatasetFilesRequest()
 
-        return self._client.call(
-            "datasets.DatasetApiService", "ApiListDatasetFiles", request, ApiListDatasetFilesResponse
-        )
+        return self._client.call("datasets.DatasetApiService", "ListDatasetFiles", request, ApiListDatasetFilesResponse)
 
     def get_dataset_metadata(self, request: ApiGetDatasetMetadataRequest = None) -> ApiGetDatasetMetadataResponse:
         r"""
@@ -80,7 +78,7 @@ class DatasetApiClient(object):
             request = ApiGetDatasetMetadataRequest()
 
         return self._client.call(
-            "datasets.DatasetApiService", "ApiGetDatasetMetadata", request, ApiGetDatasetMetadataResponse
+            "datasets.DatasetApiService", "GetDatasetMetadata", request, ApiGetDatasetMetadataResponse
         )
 
     def update_dataset_metadata(
@@ -96,7 +94,7 @@ class DatasetApiClient(object):
             request = ApiUpdateDatasetMetadataRequest()
 
         return self._client.call(
-            "datasets.DatasetApiService", "ApiUpdateDatasetMetadata", request, ApiUpdateDatasetMetadataResponse
+            "datasets.DatasetApiService", "UpdateDatasetMetadata", request, ApiUpdateDatasetMetadataResponse
         )
 
     def download_dataset(self, request: ApiDownloadDatasetRequest = None) -> HttpRedirect:
@@ -109,7 +107,7 @@ class DatasetApiClient(object):
         if request is None:
             request = ApiDownloadDatasetRequest()
 
-        return self._client.call("datasets.DatasetApiService", "ApiDownloadDataset", request, HttpRedirect)
+        return self._client.call("datasets.DatasetApiService", "DownloadDataset", request, HttpRedirect)
 
     def download_dataset_raw(self, request: ApiDownloadDatasetRawRequest = None) -> HttpRedirect:
         r"""
@@ -125,7 +123,7 @@ class DatasetApiClient(object):
         if request is None:
             request = ApiDownloadDatasetRawRequest()
 
-        return self._client.call("datasets.DatasetApiService", "ApiDownloadDatasetRaw", request, HttpRedirect)
+        return self._client.call("datasets.DatasetApiService", "DownloadDatasetRaw", request, HttpRedirect)
 
     def create_dataset_version(self, request: ApiCreateDatasetVersionRequest = None) -> ApiCreateDatasetResponse:
         r"""
@@ -138,7 +136,7 @@ class DatasetApiClient(object):
             request = ApiCreateDatasetVersionRequest()
 
         return self._client.call(
-            "datasets.DatasetApiService", "ApiCreateDatasetVersion", request, ApiCreateDatasetResponse
+            "datasets.DatasetApiService", "CreateDatasetVersion", request, ApiCreateDatasetResponse
         )
 
     def create_dataset_version_by_id(
@@ -154,7 +152,7 @@ class DatasetApiClient(object):
             request = ApiCreateDatasetVersionByIdRequest()
 
         return self._client.call(
-            "datasets.DatasetApiService", "ApiCreateDatasetVersionById", request, ApiCreateDatasetResponse
+            "datasets.DatasetApiService", "CreateDatasetVersionById", request, ApiCreateDatasetResponse
         )
 
     def create_dataset(self, request: ApiCreateDatasetRequest = None) -> ApiCreateDatasetResponse:
@@ -167,7 +165,7 @@ class DatasetApiClient(object):
         if request is None:
             request = ApiCreateDatasetRequest()
 
-        return self._client.call("datasets.DatasetApiService", "ApiCreateDataset", request, ApiCreateDatasetResponse)
+        return self._client.call("datasets.DatasetApiService", "CreateDataset", request, ApiCreateDatasetResponse)
 
     def get_dataset_status(self, request: ApiGetDatasetStatusRequest = None) -> ApiGetDatasetStatusResponse:
         r"""
@@ -179,9 +177,7 @@ class DatasetApiClient(object):
         if request is None:
             request = ApiGetDatasetStatusRequest()
 
-        return self._client.call(
-            "datasets.DatasetApiService", "ApiGetDatasetStatus", request, ApiGetDatasetStatusResponse
-        )
+        return self._client.call("datasets.DatasetApiService", "GetDatasetStatus", request, ApiGetDatasetStatusResponse)
 
     def upload_dataset_file(self, request: ApiUploadDatasetFileRequest = None) -> ApiUploadDatasetFileResponse:
         r"""
@@ -196,7 +192,7 @@ class DatasetApiClient(object):
             request = ApiUploadDatasetFileRequest()
 
         return self._client.call(
-            "datasets.DatasetApiService", "ApiUploadDatasetFile", request, ApiUploadDatasetFileResponse
+            "datasets.DatasetApiService", "UploadDatasetFile", request, ApiUploadDatasetFileResponse
         )
 
     def delete_dataset(self, request: ApiDeleteDatasetRequest = None) -> ApiDeleteDatasetResponse:
@@ -209,4 +205,4 @@ class DatasetApiClient(object):
         if request is None:
             request = ApiDeleteDatasetRequest()
 
-        return self._client.call("datasets.DatasetApiService", "ApiDeleteDataset", request, ApiDeleteDatasetResponse)
+        return self._client.call("datasets.DatasetApiService", "DeleteDataset", request, ApiDeleteDatasetResponse)

@@ -39,10 +39,11 @@ kaggle k init -p tests/kernel
 echo "kaggle kernels get"
 kaggle k get -p tests/kernel $KAGGLE_DEVELOPER/exercise-as-with -m
 kaggle k get --wp $KAGGLE_DEVELOPER/exercise-as-with
-sed -i s/exercise-as-with/exercise-delete/ tests/kernel/exercise-as-with.ipynb
+sed -i s/exercise-as-with/exercise-delete/ tests/kernel/kernel-metadata.json
+sed -i s/As \& With/Delete/ tests/kernel/kernel-metadata.json
+mv tests/kernel/exercise-as-with.ipynb tests/kernel/exercise-delete.ipynb
 echo "kaggle kernels update"
 kaggle kernels update -p tests/kernel
-rm -f tests/kernel/exercise-as-with.ipynb tests/kernel/kernel-metadata.json exercise-as-with.ipynb
 echo "kaggle kernels status"
 kaggle k status kerneler/sqlite-global-default
 echo "kaggle kernels output"
@@ -50,6 +51,7 @@ kaggle k output kerneler/sqlite-global-default -o
 echo "kaggle kernels delete"
 kaggle k delete $KAGGLE_DEVELOPER/exercise-delete
 kaggle k delete $KAGGLE_DEVELOPER/exercise-delete --yes
+rm -f tests/kernel/exercise-delete.ipynb tests/kernel/kernel-metadata.json exercise-as-with.ipynb
 
 echo "kaggle datasets list"
 kaggle d list --size 10

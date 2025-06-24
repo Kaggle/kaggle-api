@@ -23,4 +23,4 @@ class BlobApiClient(object):
         if request is None:
             request = ApiStartBlobUploadRequest()
 
-        return self._client.call("blobs.BlobApiService", "ApiStartBlobUpload", request, ApiStartBlobUploadResponse)
+        return self._client.call("blobs.BlobApiService", "StartBlobUpload", request, ApiStartBlobUploadResponse)

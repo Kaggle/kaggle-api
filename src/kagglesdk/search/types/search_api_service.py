@@ -385,6 +385,8 @@ class ListEntitiesDocument(KaggleObject):
       model_document (ApiSearchModelsDocument)
       discussion_document (ApiSearchDiscussionsDocument)
       user_document (ApiSearchUsersDocument)
+      slug (str)
+        The slug of the document (which may be close to the url)
     """
 
     def __init__(self):
@@ -404,6 +406,7 @@ class ListEntitiesDocument(KaggleObject):
         self._model_document = None
         self._discussion_document = None
         self._user_document = None
+        self._slug = None
         self._freeze()
 
     @property
@@ -659,6 +662,20 @@ class ListEntitiesDocument(KaggleObject):
         del self.model_document
         del self.discussion_document
         self._user_document = user_document
+
+    @property
+    def slug(self) -> str:
+        """The slug of the document (which may be close to the url)"""
+        return self._slug or ""
+
+    @slug.setter
+    def slug(self, slug: Optional[str]):
+        if slug is None:
+            del self.slug
+            return
+        if not isinstance(slug, str):
+            raise TypeError("slug must be of type str")
+        self._slug = slug
 
 
 class ListEntitiesFilters(KaggleObject):
@@ -2421,6 +2438,7 @@ ListEntitiesDocument._fields = [
         KaggleObjectSerializer(),
         optional=True,
     ),
+    FieldMetadata("slug", "slug", "_slug", str, None, PredefinedSerializer(), optional=True),
 ]
 
 ListEntitiesFilters._fields = [

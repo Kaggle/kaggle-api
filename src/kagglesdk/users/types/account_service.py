@@ -27,7 +27,7 @@ class ExpireApiTokenRequest(KaggleObject):
     def __init__(self):
         self._token_id = None
         self._token = None
-        self._reason = ""
+        self._reason = None
         self._freeze()
 
     @property
@@ -63,10 +63,10 @@ class ExpireApiTokenRequest(KaggleObject):
     @property
     def reason(self) -> str:
         """Reason why this token is expired."""
-        return self._reason
+        return self._reason or ""
 
     @reason.setter
-    def reason(self, reason: str):
+    def reason(self, reason: Optional[str]):
         if reason is None:
             del self.reason
             return
@@ -283,7 +283,7 @@ class AuthorizationContext(KaggleObject):
 ExpireApiTokenRequest._fields = [
     FieldMetadata("tokenId", "token_id", "_token_id", int, None, PredefinedSerializer(), optional=True),
     FieldMetadata("token", "token", "_token", str, None, PredefinedSerializer(), optional=True),
-    FieldMetadata("reason", "reason", "_reason", str, "", PredefinedSerializer()),
+    FieldMetadata("reason", "reason", "_reason", str, None, PredefinedSerializer(), optional=True),
 ]
 
 GenerateAccessTokenRequest._fields = [

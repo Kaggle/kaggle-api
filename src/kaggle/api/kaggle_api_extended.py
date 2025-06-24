@@ -1309,7 +1309,7 @@ class KaggleApi:
             request.competition_name = competition
             request.file_name = file_name
             response = kaggle.competitions.competition_api_client.download_data_file(request)
-        url = response.history[0].url
+        url = response.request.url
         outfile = os.path.join(effective_path, url.split("?")[0].split("/")[-1])
 
         if force or self.download_needed(response, outfile, quiet):
@@ -1336,11 +1336,11 @@ class KaggleApi:
             request = ApiDownloadDataFilesRequest()
             request.competition_name = competition
             response = kaggle.competitions.competition_api_client.download_data_files(request)
-        url = response.url.split("?")[0]
-        outfile = os.path.join(effective_path, competition + "." + url.split(".")[-1])
+            url = response.url.split("?")[0]
+            outfile = os.path.join(effective_path, competition + "." + url.split(".")[-1])
 
-        if force or self.download_needed(response, outfile, quiet):
-            self.download_file(response, outfile, kaggle.http_client(), quiet, not force)
+            if force or self.download_needed(response, outfile, quiet):
+                self.download_file(response, outfile, kaggle.http_client(), quiet, not force)
 
     def competition_download_cli(
         self, competition, competition_opt=None, file_name=None, path=None, force=False, quiet=False
@@ -1807,7 +1807,7 @@ class KaggleApi:
             request.dataset_version_number = dataset_version_number
             request.file_name = file_name
             response = kaggle.datasets.dataset_api_client.download_dataset(request)
-        url = response.history[0].url
+        url = response.request.url
         outfile = os.path.join(effective_path, url.split("?")[0].split("/")[-1])
 
         if force or self.download_needed(response, outfile, quiet):

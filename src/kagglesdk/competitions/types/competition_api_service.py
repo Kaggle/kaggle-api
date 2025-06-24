@@ -634,6 +634,8 @@ class ApiListCompetitionsRequest(KaggleObject):
         Filter competitions by search terms.
       page (int)
         Page number (default is 1).
+      page_token (str)
+      page_size (int)
     """
 
     def __init__(self):
@@ -642,6 +644,8 @@ class ApiListCompetitionsRequest(KaggleObject):
         self._sort_by = None
         self._search = None
         self._page = None
+        self._page_token = None
+        self._page_size = None
         self._freeze()
 
     @property
@@ -725,6 +729,32 @@ class ApiListCompetitionsRequest(KaggleObject):
             raise TypeError("page must be of type int")
         self._page = page
 
+    @property
+    def page_token(self) -> str:
+        return self._page_token or ""
+
+    @page_token.setter
+    def page_token(self, page_token: Optional[str]):
+        if page_token is None:
+            del self.page_token
+            return
+        if not isinstance(page_token, str):
+            raise TypeError("page_token must be of type str")
+        self._page_token = page_token
+
+    @property
+    def page_size(self) -> int:
+        return self._page_size or 0
+
+    @page_size.setter
+    def page_size(self, page_size: Optional[int]):
+        if page_size is None:
+            del self.page_size
+            return
+        if not isinstance(page_size, int):
+            raise TypeError("page_size must be of type int")
+        self._page_size = page_size
+
     def endpoint(self):
         path = "/api/v1/competitions/list"
         return path.format_map(self.to_field_map(self))
@@ -734,10 +764,12 @@ class ApiListCompetitionsResponse(KaggleObject):
     r"""
     Attributes:
       competitions (ApiCompetition)
+      next_page_token (str)
     """
 
     def __init__(self):
         self._competitions = []
+        self._next_page_token = ""
         self._freeze()
 
     @property
@@ -755,9 +787,22 @@ class ApiListCompetitionsResponse(KaggleObject):
             raise TypeError("competitions must contain only items of type ApiCompetition")
         self._competitions = competitions
 
-    @classmethod
-    def prepare_from(cls, http_response):
-        return cls.from_dict({"competitions": json.loads(http_response.text)})
+    @property
+    def next_page_token(self) -> str:
+        return self._next_page_token
+
+    @next_page_token.setter
+    def next_page_token(self, next_page_token: str):
+        if next_page_token is None:
+            del self.next_page_token
+            return
+        if not isinstance(next_page_token, str):
+            raise TypeError("next_page_token must be of type str")
+        self._next_page_token = next_page_token
+
+    @property
+    def nextPageToken(self):
+        return self.next_page_token
 
 
 class ApiListDataFilesRequest(KaggleObject):
@@ -895,6 +940,8 @@ class ApiListSubmissionsRequest(KaggleObject):
       sort_by (SubmissionSortBy)
       group (SubmissionGroup)
       page (int)
+      page_token (str)
+      page_size (int)
     """
 
     def __init__(self):
@@ -902,6 +949,8 @@ class ApiListSubmissionsRequest(KaggleObject):
         self._sort_by = SubmissionSortBy.SUBMISSION_SORT_BY_DATE
         self._group = SubmissionGroup.SUBMISSION_GROUP_ALL
         self._page = None
+        self._page_token = None
+        self._page_size = None
         self._freeze()
 
     @property
@@ -956,6 +1005,32 @@ class ApiListSubmissionsRequest(KaggleObject):
             raise TypeError("page must be of type int")
         self._page = page
 
+    @property
+    def page_token(self) -> str:
+        return self._page_token or ""
+
+    @page_token.setter
+    def page_token(self, page_token: Optional[str]):
+        if page_token is None:
+            del self.page_token
+            return
+        if not isinstance(page_token, str):
+            raise TypeError("page_token must be of type str")
+        self._page_token = page_token
+
+    @property
+    def page_size(self) -> int:
+        return self._page_size or 0
+
+    @page_size.setter
+    def page_size(self, page_size: Optional[int]):
+        if page_size is None:
+            del self.page_size
+            return
+        if not isinstance(page_size, int):
+            raise TypeError("page_size must be of type int")
+        self._page_size = page_size
+
     def endpoint(self):
         path = "/api/v1/competitions/submissions/list/{competition_name}"
         return path.format_map(self.to_field_map(self))
@@ -969,10 +1044,12 @@ class ApiListSubmissionsResponse(KaggleObject):
     r"""
     Attributes:
       submissions (ApiSubmission)
+      next_page_token (str)
     """
 
     def __init__(self):
         self._submissions = []
+        self._next_page_token = ""
         self._freeze()
 
     @property
@@ -990,9 +1067,22 @@ class ApiListSubmissionsResponse(KaggleObject):
             raise TypeError("submissions must contain only items of type ApiSubmission")
         self._submissions = submissions
 
-    @classmethod
-    def prepare_from(cls, http_response):
-        return cls.from_dict({"submissions": json.loads(http_response.text)})
+    @property
+    def next_page_token(self) -> str:
+        return self._next_page_token
+
+    @next_page_token.setter
+    def next_page_token(self, next_page_token: str):
+        if next_page_token is None:
+            del self.next_page_token
+            return
+        if not isinstance(next_page_token, str):
+            raise TypeError("next_page_token must be of type str")
+        self._next_page_token = next_page_token
+
+    @property
+    def nextPageToken(self):
+        return self.next_page_token
 
 
 class ApiStartSubmissionUploadRequest(KaggleObject):
@@ -2025,12 +2115,15 @@ ApiListCompetitionsRequest._fields = [
     FieldMetadata("sortBy", "sort_by", "_sort_by", CompetitionSortBy, None, EnumSerializer(), optional=True),
     FieldMetadata("search", "search", "_search", str, None, PredefinedSerializer(), optional=True),
     FieldMetadata("page", "page", "_page", int, None, PredefinedSerializer(), optional=True),
+    FieldMetadata("pageToken", "page_token", "_page_token", str, None, PredefinedSerializer(), optional=True),
+    FieldMetadata("pageSize", "page_size", "_page_size", int, None, PredefinedSerializer(), optional=True),
 ]
 
 ApiListCompetitionsResponse._fields = [
     FieldMetadata(
         "competitions", "competitions", "_competitions", ApiCompetition, [], ListSerializer(KaggleObjectSerializer())
     ),
+    FieldMetadata("nextPageToken", "next_page_token", "_next_page_token", str, "", PredefinedSerializer()),
 ]
 
 ApiListDataFilesRequest._fields = [
@@ -2054,12 +2147,15 @@ ApiListSubmissionsRequest._fields = [
     ),
     FieldMetadata("group", "group", "_group", SubmissionGroup, SubmissionGroup.SUBMISSION_GROUP_ALL, EnumSerializer()),
     FieldMetadata("page", "page", "_page", int, None, PredefinedSerializer(), optional=True),
+    FieldMetadata("pageToken", "page_token", "_page_token", str, None, PredefinedSerializer(), optional=True),
+    FieldMetadata("pageSize", "page_size", "_page_size", int, None, PredefinedSerializer(), optional=True),
 ]
 
 ApiListSubmissionsResponse._fields = [
     FieldMetadata(
         "submissions", "submissions", "_submissions", ApiSubmission, [], ListSerializer(KaggleObjectSerializer())
     ),
+    FieldMetadata("nextPageToken", "next_page_token", "_next_page_token", str, "", PredefinedSerializer()),
 ]
 
 ApiStartSubmissionUploadRequest._fields = [

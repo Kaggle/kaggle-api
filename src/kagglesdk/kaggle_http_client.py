@@ -24,15 +24,6 @@ from typing import Type
 # auth handling. The new client requires KAGGLE_API_TOKEN, so it is not
 # currently usable by the CLI.
 
-# TODO: Extend kapigen to add a boolean to these requests indicating that they use forms.
-REQUESTS_REQUIRING_FORMS = [
-    "ApiUploadDatasetFileRequest",
-    "ApiCreateSubmissionRequest",
-    "ApiCreateCodeSubmissionRequest",
-    "ApiStartSubmissionUploadRequest",
-    "ApiUploadModelFileRequest",
-]
-
 
 def _headers_to_str(headers):
     return "\n".join(f"{k}: {v}" for k, v in headers.items())
@@ -54,38 +45,6 @@ def _get_apikey_creds():
     username = api_key_data["username"]
     api_key = api_key_data["key"]
     return username, api_key
-
-
-def clean_data(data):
-    if isinstance(data, dict):
-        return {to_lower_camel_case(k): clean_data(v) for k, v in data.items() if v is not None}
-    if isinstance(data, list):
-        return [clean_data(v) for v in data if v is not None]
-    return data
-
-
-def find_words(source, left="{", right="}"):
-    words = []
-    split_str = source.split(left)
-
-    for s in split_str[1:]:
-        split_s = s.split(right)
-        if len(split_s) > 1:
-            words.append(split_s[0])
-
-    return words
-
-
-def to_camel_case(snake_str):
-    return "".join(x.capitalize() for x in snake_str.lower().split("_"))
-
-
-def to_lower_camel_case(snake_str):
-    # https://stackoverflow.com/questions/19053707/converting-snake-case-to-lower-camel-case-lowercamelcase
-    # We capitalize the first letter of each component except the first one
-    # with the 'capitalize' method and join them together.
-    camel_string = to_camel_case(snake_str)
-    return snake_str[0].lower() + camel_string[1:]
 
 
 class KaggleHttpClient(object):
@@ -129,62 +88,17 @@ class KaggleHttpClient(object):
         return response
 
     def _prepare_request(self, service_name: str, request_name: str, request: KaggleObject):
-        request_url = self._get_request_url(request)
-        method = request.method()
-        data = ""
-        if method == "GET":
-            data = request.__class__.to_dict(request, ignore_defaults=False)
-            if request.endpoint_path():
-                words = find_words(request.endpoint_path())
-                list(map(data.pop, [to_lower_camel_case(w) for w in words]))
-                if len(data) == 0:
-                    data = None
-            if data:
-                request_url = f"{request_url}?{urllib.parse.urlencode(clean_data(data))}"
-            data = ""
-            self._session.headers.update(
-                {
-                    "Accept": "application/json",
-                    "Content-Type": "text/plain",
-                }
-            )
-        elif method == "POST":
-            data = request.to_field_map(request, ignore_defaults=True)
-            if isinstance(data, dict):
-                fields = request.body_fields()
-                if fields is not None:
-                    if fields != "*":
-                        data = data[fields]
-                data = clean_data(data)
-                if self.requires_form(request):
-                    data, content_type = self.make_form(data)
-                else:
-                    content_type = "application/json"
-                    data = json.dumps(data)
-                self._session.headers.update(
-                    {
-                        "Accept": "application/json",
-                        "Content-Type": content_type,
-                    }
-                )
+        request_url = self._get_request_url(service_name, request_name)
         http_request = requests.Request(
-            method=method,
+            method="POST",
             url=request_url,
-            data=data,
+            json=request.__class__.to_dict(request),
             headers=self._session.headers,
-            # cookies=self._get_xsrf_cookies(),
             auth=self._session.auth,
         )
         prepared_request = http_request.prepare()
         self._print_request(prepared_request)
         return prepared_request
-
-    def _get_xsrf_cookies(self):
-        cookies = requests.cookies.RequestsCookieJar()
-        for cookie in self._session.cookies:
-            if cookie.name in KaggleHttpClient._xsrf_cookies:
-                cookies[cookie.name] = cookie.value
-        return cookies
 
     def _prepare_response(self, response_type, http_response):
         """Extract the kaggle response and raise an exception if it is an error."""
@@ -231,12 +145,7 @@ class KaggleHttpClient(object):
             return self._session
 
         self._session = requests.Session()
-        self._session.headers.update(
-            {
-                "User-Agent": "kaggle-api/v1.7.0",  # Was: V2
-                "Content-Type": "application/x-www-form-urlencoded",  # Was: /json
-            }
-        )
+        self._session.headers.update({"User-Agent": "kaggle-api/v1.7.0", "Content-Type": "application/json"})  # Was: V2
 
         iap_token = self._get_iap_token_if_required()
         if iap_token is not None:
@@ -340,38 +249,5 @@ class KaggleHttpClient(object):
 
         self._signed_in = False
 
-    def _get_request_url(self, request):
-        return f"{self._endpoint}{request.endpoint()}"
-
-    @staticmethod
-    def make_form(fields):
-        body = BytesIO()
-        boundary = binascii.hexlify(os.urandom(16)).decode()
-        writer = codecs.lookup("utf-8")[3]
-
-        for field in fields.items():
-            field = RequestField.from_tuples(*field)
-            body.write(f"--{boundary}\r\n".encode("latin-1"))
-
-            writer(body).write(field.render_headers())
-            data = field.data
-
-            if isinstance(data, int):
-                data = str(data)
-
-            if isinstance(data, str):
-                writer(body).write(data)
-            else:
-                body.write(data)
-
-            body.write(b"\r\n")
-
-        body.write(f"--{boundary}--\r\n".encode("latin-1"))
-
-        content_type = f"multipart/form-data; boundary={boundary}"
-
-        return body.getvalue(), content_type
-
-    @staticmethod
-    def requires_form(request):
-        return type(request).__name__ in REQUESTS_REQUIRING_FORMS
+    def _get_request_url(self, service_name: str, request_name: str):
+        return f"{self._endpoint}/api/v1/{service_name}/{request_name}"

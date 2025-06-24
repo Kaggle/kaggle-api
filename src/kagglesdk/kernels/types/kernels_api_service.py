@@ -1035,6 +1035,7 @@ class ApiListKernelsRequest(KaggleObject):
         Page number (default is 1).
       page_size (int)
         Page size, i.e., maximum number of results to return.
+      page_token (str)
     """
 
     def __init__(self):
@@ -1050,6 +1051,7 @@ class ApiListKernelsRequest(KaggleObject):
         self._user = None
         self._page = None
         self._page_size = None
+        self._page_token = None
         self._freeze()
 
     @property
@@ -1229,6 +1231,19 @@ class ApiListKernelsRequest(KaggleObject):
             raise TypeError("page_size must be of type int")
         self._page_size = page_size
 
+    @property
+    def page_token(self) -> str:
+        return self._page_token or ""
+
+    @page_token.setter
+    def page_token(self, page_token: Optional[str]):
+        if page_token is None:
+            del self.page_token
+            return
+        if not isinstance(page_token, str):
+            raise TypeError("page_token must be of type str")
+        self._page_token = page_token
+
     def endpoint(self):
         path = "/api/v1/kernels/list"
         return path.format_map(self.to_field_map(self))
@@ -1238,10 +1253,12 @@ class ApiListKernelsResponse(KaggleObject):
     r"""
     Attributes:
       kernels (ApiKernelMetadata)
+      next_page_token (str)
     """
 
     def __init__(self):
         self._kernels = []
+        self._next_page_token = ""
         self._freeze()
 
     @property
@@ -1259,9 +1276,22 @@ class ApiListKernelsResponse(KaggleObject):
             raise TypeError("kernels must contain only items of type ApiKernelMetadata")
         self._kernels = kernels
 
-    @classmethod
-    def prepare_from(cls, http_response):
-        return cls.from_dict({"kernels": json.loads(http_response.text)})
+    @property
+    def next_page_token(self) -> str:
+        return self._next_page_token
+
+    @next_page_token.setter
+    def next_page_token(self, next_page_token: str):
+        if next_page_token is None:
+            del self.next_page_token
+            return
+        if not isinstance(next_page_token, str):
+            raise TypeError("next_page_token must be of type str")
+        self._next_page_token = next_page_token
+
+    @property
+    def nextPageToken(self):
+        return self.next_page_token
 
 
 class ApiSaveKernelRequest(KaggleObject):
@@ -2116,10 +2146,12 @@ ApiListKernelsRequest._fields = [
     FieldMetadata("user", "user", "_user", str, None, PredefinedSerializer(), optional=True),
     FieldMetadata("page", "page", "_page", int, None, PredefinedSerializer(), optional=True),
     FieldMetadata("pageSize", "page_size", "_page_size", int, None, PredefinedSerializer(), optional=True),
+    FieldMetadata("pageToken", "page_token", "_page_token", str, None, PredefinedSerializer(), optional=True),
 ]
 
 ApiListKernelsResponse._fields = [
     FieldMetadata("kernels", "kernels", "_kernels", ApiKernelMetadata, [], ListSerializer(KaggleObjectSerializer())),
+    FieldMetadata("nextPageToken", "next_page_token", "_next_page_token", str, "", PredefinedSerializer()),
 ]
 
 ApiSaveKernelRequest._fields = [

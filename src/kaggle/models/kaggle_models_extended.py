@@ -124,6 +124,7 @@ class File(object):
                 self.size = File.get_size(init_dict.total_bytes)
             except Exception:  # AttributeError would be preferred but doesn't work.
                 self.size = File.get_size(init_dict.size)
+        self.total_bytes = self.size
 
     def __repr__(self):
         return self.name

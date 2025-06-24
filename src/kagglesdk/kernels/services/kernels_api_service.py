@@ -36,7 +36,7 @@ class KernelsApiClient(object):
         if request is None:
             request = ApiListKernelsRequest()
 
-        return self._client.call("kernels.KernelsApiService", "ApiListKernels", request, ApiListKernelsResponse)
+        return self._client.call("kernels.KernelsApiService", "ListKernels", request, ApiListKernelsResponse)
 
     def list_kernel_files(self, request: ApiListKernelFilesRequest = None) -> ApiListKernelFilesResponse:
         r"""
@@ -48,7 +48,7 @@ class KernelsApiClient(object):
         if request is None:
             request = ApiListKernelFilesRequest()
 
-        return self._client.call("kernels.KernelsApiService", "ApiListKernelFiles", request, ApiListKernelFilesResponse)
+        return self._client.call("kernels.KernelsApiService", "ListKernelFiles", request, ApiListKernelFilesResponse)
 
     def get_kernel(self, request: ApiGetKernelRequest = None) -> ApiGetKernelResponse:
         r"""
@@ -60,7 +60,7 @@ class KernelsApiClient(object):
         if request is None:
             request = ApiGetKernelRequest()
 
-        return self._client.call("kernels.KernelsApiService", "ApiGetKernel", request, ApiGetKernelResponse)
+        return self._client.call("kernels.KernelsApiService", "GetKernel", request, ApiGetKernelResponse)
 
     def save_kernel(self, request: ApiSaveKernelRequest = None) -> ApiSaveKernelResponse:
         r"""
@@ -72,7 +72,7 @@ class KernelsApiClient(object):
         if request is None:
             request = ApiSaveKernelRequest()
 
-        return self._client.call("kernels.KernelsApiService", "ApiSaveKernel", request, ApiSaveKernelResponse)
+        return self._client.call("kernels.KernelsApiService", "SaveKernel", request, ApiSaveKernelResponse)
 
     def list_kernel_session_output(
         self, request: ApiListKernelSessionOutputRequest = None
@@ -87,7 +87,7 @@ class KernelsApiClient(object):
             request = ApiListKernelSessionOutputRequest()
 
         return self._client.call(
-            "kernels.KernelsApiService", "ApiListKernelSessionOutput", request, ApiListKernelSessionOutputResponse
+            "kernels.KernelsApiService", "ListKernelSessionOutput", request, ApiListKernelSessionOutputResponse
         )
 
     def get_kernel_session_status(
@@ -103,7 +103,7 @@ class KernelsApiClient(object):
             request = ApiGetKernelSessionStatusRequest()
 
         return self._client.call(
-            "kernels.KernelsApiService", "ApiGetKernelSessionStatus", request, ApiGetKernelSessionStatusResponse
+            "kernels.KernelsApiService", "GetKernelSessionStatus", request, ApiGetKernelSessionStatusResponse
         )
 
     def download_kernel_output(self, request: ApiDownloadKernelOutputRequest = None) -> HttpRedirect:
@@ -118,7 +118,7 @@ class KernelsApiClient(object):
         if request is None:
             request = ApiDownloadKernelOutputRequest()
 
-        return self._client.call("kernels.KernelsApiService", "ApiDownloadKernelOutput", request, HttpRedirect)
+        return self._client.call("kernels.KernelsApiService", "DownloadKernelOutput", request, HttpRedirect)
 
     def download_kernel_output_zip(self, request: ApiDownloadKernelOutputZipRequest = None) -> FileDownload:
         r"""
@@ -132,7 +132,7 @@ class KernelsApiClient(object):
         if request is None:
             request = ApiDownloadKernelOutputZipRequest()
 
-        return self._client.call("kernels.KernelsApiService", "ApiDownloadKernelOutputZip", request, FileDownload)
+        return self._client.call("kernels.KernelsApiService", "DownloadKernelOutputZip", request, FileDownload)
 
     def delete_kernel(self, request: ApiDeleteKernelRequest = None) -> ApiDeleteKernelResponse:
         r"""
@@ -144,4 +144,4 @@ class KernelsApiClient(object):
         if request is None:
             request = ApiDeleteKernelRequest()
 
-        return self._client.call("kernels.KernelsApiService", "ApiDeleteKernel", request, ApiDeleteKernelResponse)
+        return self._client.call("kernels.KernelsApiService", "DeleteKernel", request, ApiDeleteKernelResponse)

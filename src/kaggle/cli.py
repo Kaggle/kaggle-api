@@ -770,7 +770,7 @@ def parse_model_instances(subparsers) -> None:
     parser_model_instances_delete_optional = parser_model_instances_delete._action_groups.pop()
     parser_model_instances_delete_optional.add_argument("model_instance", help=Help.param_model_instance)
     parser_model_instances_delete_optional.add_argument(
-        "-y", "--yes", dest="yes", action="store_true", help=Help.param_yes
+        "-y", "--yes", dest="no_confirm", action="store_true", help=Help.param_yes
     )
     parser_model_instances_delete._action_groups.append(parser_model_instances_delete_optional)
     parser_model_instances_delete.set_defaults(func=api.model_instance_delete_cli)

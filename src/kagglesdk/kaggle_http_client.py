@@ -94,19 +94,11 @@ class KaggleHttpClient(object):
             url=request_url,
             json=request.__class__.to_dict(request),
             headers=self._session.headers,
-            cookies=self._get_xsrf_cookies(),
             auth=self._session.auth,
         )
         prepared_request = http_request.prepare()
         self._print_request(prepared_request)
         return prepared_request
-
-    def _get_xsrf_cookies(self):
-        cookies = requests.cookies.RequestsCookieJar()
-        for cookie in self._session.cookies:
-            if cookie.name in KaggleHttpClient._xsrf_cookies:
-                cookies[cookie.name] = cookie.value
-        return cookies
 
     def _prepare_response(self, response_type, http_response):
         """Extract the kaggle response and raise an exception if it is an error."""

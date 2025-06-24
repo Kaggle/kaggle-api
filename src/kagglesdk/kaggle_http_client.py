@@ -250,4 +250,4 @@ class KaggleHttpClient(object):
         self._signed_in = False
 
     def _get_request_url(self, service_name: str, request_name: str):
-        return f"{self._endpoint}/api/v1/{service_name}/{request_name}"
+        return f"{self._endpoint}/v1/{service_name}/{request_name}"

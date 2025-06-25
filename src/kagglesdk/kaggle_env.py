@@ -27,7 +27,7 @@ _env_to_endpoint = {
     KaggleEnv.ADMIN: "https://admin.kaggle.com",
     KaggleEnv.QA: "https://qa.kaggle.com",
     # See the comment above in KaggleEnv enum.
-    KaggleEnv.PROD: "https://www.kaggle.com",
+    KaggleEnv.PROD: "https://api.kaggle.com",
 }
 
 

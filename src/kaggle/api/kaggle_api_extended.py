@@ -71,6 +71,7 @@ from kagglesdk.competitions.types.competition_api_service import (
     ApiLeaderboardSubmission,
     ApiGetLeaderboardRequest,
     ApiDataFile,
+    ApiCreateCodeSubmissionResponse,
 )
 from kagglesdk.competitions.types.competition_enums import (
     CompetitionListTab,
@@ -164,6 +165,12 @@ class AuthMethod(Enum):
 
 
 class DirectoryArchive(object):
+    """
+    Context manager for handling directory archives.
+
+    This class provides a context manager for working with directory archives in various formats.
+    It manages the lifecycle of the archive, including opening and closing resources as needed.
+    """
 
     def __init__(self, fullpath, fmt):
         self._fullpath = fullpath
@@ -183,6 +190,13 @@ class DirectoryArchive(object):
 
 
 class ResumableUploadContext(object):
+    """
+    Context manager for handling resumable file uploads.
+
+    This class manages the context for resumable uploads, allowing multiple files to be uploaded
+    with the ability to resume interrupted uploads. It manages temporary directories and tracks
+    the state of each file upload within the context.
+    """
 
     def __init__(self, no_resume: bool = False) -> None:
         self.no_resume = no_resume
@@ -206,6 +220,15 @@ class ResumableUploadContext(object):
             file_upload.cleanup()
 
     def get_upload_info_file_path(self, path: str) -> str:
+        """
+        Returns the path to the upload info file for a given file.
+
+        Args:
+            path: The path to the file for which to get the upload info file path.
+
+        Returns:
+            The path to the upload info file.
+        """
         return os.path.join(self._temp_dir, "%s.json" % path.replace(os.path.sep, "_").replace(":", "_"))
 
     def new_resumable_file_upload(
@@ -224,6 +247,14 @@ class ResumableUploadContext(object):
 
 
 class ResumableFileUpload(object):
+    """
+    Represents a single file upload that supports resuming after interruption.
+
+    This class manages the state and metadata for uploading a file in a resumable way,
+    including saving and loading upload progress, handling upload tokens, and managing
+    temporary files used to track the upload state.
+    """
+
     # Reference: https://cloud.google.com/storage/docs/resumable-uploads
     # A resumable upload must be completed within a week of being initiated
     RESUMABLE_UPLOAD_EXPIRY_SECONDS = 6 * 24 * 3600
@@ -243,11 +274,26 @@ class ResumableFileUpload(object):
         self._upload_info_file_path = self.context.get_upload_info_file_path(path)
 
     def get_token(self):
+        """
+        Retrieves the upload token for a completed upload.
+
+        This method returns the token of the blob upload response if the upload is complete.
+        If the upload is not complete, it returns None.
+
+        :return: The upload token if the upload is complete, otherwise None.
+        """
         if self.upload_complete:
             return cast(ApiStartBlobUploadResponse, self.start_blob_upload_response).token
         return None
 
     def load(self) -> None:
+        """
+        Loads a previous upload if it exists and is valid.
+
+        This method checks for a previous upload information file and, if it exists,
+        validates it. If the previous upload is valid, it loads the information
+        and sets the `can_resume` flag to True.
+        """
         if self.context.no_resume:
             return
         self._load_previous_if_any()
@@ -276,6 +322,14 @@ class ResumableFileUpload(object):
         )
 
     def upload_initiated(self, start_blob_upload_response: ApiStartBlobUploadResponse) -> None:
+        """
+        Saves the upload information to a file.
+
+        This method is called after an upload has been initiated. It saves the
+        upload information to a file so that it can be resumed later.
+
+        :param start_blob_upload_response: The response from the start blob upload request.
+        """
         if self.context.no_resume:
             return
 
@@ -284,6 +338,12 @@ class ResumableFileUpload(object):
             json.dump(self.to_dict(), f, indent=True)
 
     def upload_completed(self):
+        """
+        Marks the upload as complete.
+
+        This method sets the `upload_complete` flag to True and saves the upload
+        information to a file.
+        """
         if self.context.no_resume:
             return
 
@@ -295,6 +355,12 @@ class ResumableFileUpload(object):
             json.dump(self.to_dict(), f, indent=True)
 
     def cleanup(self):
+        """
+        Removes the upload information file.
+
+        This method is called to clean up the upload information file after the
+        upload is complete.
+        """
         if self.context.no_resume:
             return
 
@@ -304,6 +370,11 @@ class ResumableFileUpload(object):
             pass
 
     def to_dict(self):
+        """
+        Converts the ResumableFileUpload object to a dictionary.
+
+        :return: A dictionary representation of the ResumableFileUpload object.
+        """
         return {
             "path": self.path,
             "start_blob_upload_request": self.start_blob_upload_request.to_dict(),
@@ -316,6 +387,13 @@ class ResumableFileUpload(object):
 
     @staticmethod
     def from_dict(other, context):
+        """
+        Creates a ResumableFileUpload object from a dictionary.
+
+        :param other: A dictionary containing the ResumableFileUpload object's data.
+        :param context: The ResumableUploadContext object.
+        :return: A new ResumableFileUpload object.
+        """
         req = ApiStartBlobUploadRequest()
         req.from_dict(other["start_blob_upload_request"])
         new = ResumableFileUpload(other["path"], req, context)
@@ -329,6 +407,11 @@ class ResumableFileUpload(object):
         return new
 
     def to_str(self):
+        """
+        Converts the ResumableFileUpload object to a string.
+
+        :return: A string representation of the ResumableFileUpload object.
+        """
         return str(self.to_dict())
 
     def __repr__(self):
@@ -336,6 +419,12 @@ class ResumableFileUpload(object):
 
 
 class FileList(object):
+    """
+    Represents a list of files returned from a Kaggle API response.
+
+    This class parses and stores information about files (such as datasets or model files)
+    returned by the Kaggle API, including handling pagination tokens and error messages.
+    """
 
     def __init__(self, init_dict):
         self.error_message = ""
@@ -355,6 +444,12 @@ class FileList(object):
 
     @staticmethod
     def from_response(response: ApiListModelInstanceVersionFilesResponse) -> "FileList":
+        """
+        Creates a FileList object from an API response.
+
+        :param response: The API response.
+        :return: A new FileList object.
+        """
         inst = FileList({"files": [], "nextPageToken": ""})
         inst.error_message = ""
         files = response.files
@@ -374,6 +469,28 @@ class FileList(object):
 
 
 class KaggleApi:
+    """
+    KaggleApi provides methods for interacting with Kaggle's public API.
+
+    This class manages authentication, configuration, and communication with Kaggle endpoints
+    for datasets, competitions, kernels, models, and more. It supports downloading and uploading
+    datasets, managing competition submissions, handling kernels (notebooks and scripts), and
+    querying Kaggle resources.
+
+    Configuration is handled via environment variables or a configuration file, and the class
+    supports both API key and OAuth authentication methods. It validates input parameters for
+    various Kaggle resource types and manages local paths and proxy settings.
+
+    Usage:<br>
+        api = KaggleApi()<br>
+        api.authenticate()<br>
+        api.dataset_download_files('username/dataset-name')<br>
+        api.competition_submit('submission.csv', 'My submission', 'competition-name')<br>
+
+    There are many methods that have the suffix '_cli' in their name, which are intended to be used
+    only from the command line interface (cli.py). These methods are not part of the public API.
+    """
+
     CONFIG_NAME_PROXY = "proxy"
     CONFIG_NAME_COMPETITION = "competition"
     CONFIG_NAME_PATH = "path"
@@ -533,6 +650,8 @@ class KaggleApi:
     ## Authentication
 
     def authenticate(self) -> None:
+        """Authenticate the user with the Kaggle API, using either a legacy API key or a Kaggle OAuth token.
+        """
         if self.enable_oauth and self._authenticate_with_oauth_creds():
             return
         if self._authenticate_with_access_token():
@@ -661,7 +780,7 @@ class KaggleApi:
         return api_command.endswith(("-h", "--help", "-v", "--version"))
 
     def read_config_environment(self, config_data: Optional[Dict[str, str]] = None) -> Dict[str, str]:
-        """read_config_environment is the second effort to get a username and key
+        """read_config_environment() is the second effort to get a username and key
         to authenticate to the Kaggle API. The environment keys are equivalent to
         the kaggle.json file, but with "KAGGLE_" prefix to define a unique
         namespace.
@@ -685,7 +804,7 @@ class KaggleApi:
     ## Configuration
 
     def read_config_file(self, config_data: Optional[Dict[str, str]] = None, quiet: bool = False) -> Dict[str, str]:
-        """read_config_file is the first effort to get a username and key to
+        """read_config_file() is the first effort to get a username and key to
         authenticate to the Kaggle API. Since we can get the username and password
         from the environment, it's not required.
 
@@ -745,7 +864,7 @@ class KaggleApi:
         with open(self.config, "w") as f:
             json.dump(config_data, f, indent=indent)
 
-    def set_config_value(self, name, value, quiet=False):
+    def set_config_value(self, name: str, value: str, quiet: bool = False) -> None:
         """A client helper function to set a configuration value, meaning reading
         in the configuration file (if it exists), saving a new config value, and
         then writing back.
@@ -774,8 +893,9 @@ class KaggleApi:
                 self.print_config_value(name, separator=" is now set to: ")
 
     def unset_config_value(self, name, quiet=False):
-        """unset a configuration value
-         Parameters
+        """Remove a configuration value from the config file.
+
+        Parameters
         ==========
         name: the name of the value to unset (remove key in dictionary)
         quiet: disable verbose output if True (default is False)
@@ -803,8 +923,8 @@ class KaggleApi:
         return self.config_values.get(name)
 
     def get_default_download_dir(self, *subdirs: str) -> str:
-        """Get the download path for a file. If not defined, return default from
-        config.
+        """Get the download path for a file. If not set in the config file
+        then return the current working directory.
 
         Parameters
         ==========
@@ -851,6 +971,12 @@ class KaggleApi:
         self.print_config_value(self.CONFIG_NAME_COMPETITION, prefix=prefix)
 
     def auth_login_cli(self, no_launch_browser: bool = False, force: bool = False):
+        """
+        Login to Kaggle.
+
+        :param no_launch_browser: Don't launch a browser. Print a URL instead.
+        :param force: Force a new login, even if already logged in.
+        """
         # Allow access to all ApiV1 endpoints.
         default_scopes = ["resources.admin:*"]
         with self.build_kaggle_client() as kaggle:
@@ -863,6 +989,17 @@ class KaggleApi:
             oAuth.authenticate(scopes=default_scopes, no_launch_browser=no_launch_browser)
 
     def auth_print_access_token(self, expiration_duration: str = None):
+        """
+        Print the current OAuth access token.
+
+        If an expiration duration is provided, a new token will be generated with the specified
+        expiration duration. Otherwise, the current token will be printed.
+
+        The expiration duration should be in the format of a string with a number followed by a unit,
+        e.g. "1h" for one hour, "2d" for two days, etc.
+
+        :param expiration_duration: The duration the generated token should be valid for. Defaults to None.
+        """
         expiration = self._parse_duration(expiration_duration) if expiration_duration else None
         with self.build_kaggle_client() as kaggle:
             creds = KaggleCredentials.load(client=kaggle)
@@ -876,7 +1013,7 @@ class KaggleApi:
                 exit(1)
             print(response.token)
 
-    def _parse_duration(self, duration_str: str) -> timedelta:
+    def _parse_duration(self, duration_str: str) -> relativedelta:
         try:
             delta = relativedelta(**{duration_str[-1]: int(duration_str[:-1])})
             return delta
@@ -884,6 +1021,15 @@ class KaggleApi:
             raise ValueError("Invalid duration format. Please use one of the following formats: 1h, 30s, 2h30s, 2:30")
 
     def auth_revoke_token(self, reason: str):
+        """
+        Revoke the current OAuth access token.
+
+        This command will revoke the current access token. If a reason is provided, it will be
+        sent to the server as part of the revocation request. If no reason is provided, "Manually
+        revoked by user with kaggle-cli" will be sent.
+
+        :param reason: The reason for revoking the token. Defaults to None.
+        """
         with self.build_kaggle_client() as kaggle:
             creds = KaggleCredentials.load(client=kaggle)
             if creds is None:
@@ -892,6 +1038,11 @@ class KaggleApi:
             creds.revoke_token(reason or "Manually revoked by user with kaggle-cli")
 
     def build_kaggle_client(self) -> kagglesdk.kaggle_client.KaggleClient:
+        """
+        Build a Kaggle client.
+
+        :return: A Kaggle client.
+        """
         return KaggleApi.build_kaggle_client_with_params(
             args=self.args,
             username=self.config_values.get(self.CONFIG_NAME_USER),
@@ -903,6 +1054,15 @@ class KaggleApi:
     def build_kaggle_client_with_params(
         args: List[str], username: str = None, password: str = None, api_token: str = None
     ) -> kagglesdk.kaggle_client.KaggleClient:
+        """
+        Build a Kaggle client with the given parameters.
+
+        :param args: A list of arguments.
+        :param username: The username to use for authentication.
+        :param password: The password to use for authentication.
+        :param api_token: The API token to use for authentication.
+        :return: A Kaggle client.
+        """
         env = (
             KaggleEnv.STAGING
             if "--staging" in args
@@ -1037,7 +1197,15 @@ class KaggleApi:
         else:
             print("No competitions found")
 
-    def competition_submit_code(self, file_name, message, competition, kernel=None, kernel_version=None, quiet=False):
+    def competition_submit_code(
+        self,
+        file_name: str,
+        message: str,
+        competition: Optional[str] = None,
+        kernel: Optional[str] = None,
+        kernel_version: Optional[int] = None,
+        quiet: bool = False,
+    ) -> ApiCreateCodeSubmissionResponse:
         """Submit to a code competition.
 
         Parameters
@@ -1232,7 +1400,7 @@ class KaggleApi:
                 print("No submissions found")
 
     def competition_list_files(
-        self, competition: str, page_token: None = None, page_size: int = 20
+        self, competition: str, page_token: Optional[str] = None, page_size: int = 20
     ) -> ApiListDataFilesResponse:
         """List files for a competition.
 
@@ -1287,9 +1455,10 @@ class KaggleApi:
             else:
                 print("No files found")
 
-    def competition_download_file(self, competition, file_name, path=None, force=False, quiet=False):
-        """Download a competition file to a designated location, or use a default
-        location.
+    def competition_download_file(
+        self, competition: str, file_name: str, path: None = None, force: bool = False, quiet: bool = False
+    ) -> None:
+        """Download a competition file to a designated location, or use a default location.
 
         Parameters
         =========
@@ -1310,7 +1479,7 @@ class KaggleApi:
             request.file_name = file_name
             response = kaggle.competitions.competition_api_client.download_data_file(request)
         url = response.request.url
-        outfile = os.path.join(effective_path, url.split("?")[0].split("/")[-1])
+        outfile = cast(str, os.path.join(effective_path, url.split("?")[0].split("/")[-1]))
 
         if force or self.download_needed(response, outfile, quiet):
             self.download_file(response, outfile, kaggle.http_client(), quiet, not force)
@@ -1588,6 +1757,13 @@ class KaggleApi:
             print("No datasets found")
 
     def dataset_metadata_prep(self, dataset, path):
+        """
+        Prepare the dataset metadata for download.
+
+        :param dataset: The dataset to prepare.
+        :param path: The path to download the metadata to.
+        :return: A tuple containing the owner slug, dataset slug, and effective path.
+        """
         if dataset is None:
             raise ValueError("A dataset must be specified")
         if "/" in dataset:
@@ -1607,6 +1783,12 @@ class KaggleApi:
         return (owner_slug, dataset_slug, effective_path)
 
     def dataset_metadata_update(self, dataset, path):
+        """
+        Update the metadata for a dataset.
+
+        :param dataset: The dataset to update.
+        :param path: The path to the metadata file.
+        """
         (owner_slug, dataset_slug, effective_path) = self.dataset_metadata_prep(dataset, path)
         meta_file = self.get_dataset_metadata_file(effective_path)
         with open(meta_file, "r") as f:
@@ -1650,7 +1832,14 @@ class KaggleApi:
         return u
 
     def dataset_metadata(self, dataset, path):
-        (owner_slug, dataset_slug, effective_path) = self.dataset_metadata_prep(dataset, path)
+        """
+        Download the metadata for a dataset.
+
+        :param dataset: The dataset to download the metadata for.
+        :param path: The path to download the metadata to.
+        :return: The path to the downloaded metadata file.
+        """
+        (owner_slug, dataset_slug, effective_path) = self._dataset_metadata_prep(dataset, path)
 
         if not os.path.exists(effective_path):
             os.makedirs(effective_path)
@@ -1670,6 +1859,14 @@ class KaggleApi:
         return meta_file
 
     def dataset_metadata_cli(self, dataset, path, update, dataset_opt=None):
+        """
+        Download or update the metadata for a dataset.
+
+        :param dataset: The dataset to download the metadata for.
+        :param path: The path to download the metadata to.
+        :param update: Whether to update the metadata or not.
+        :param dataset_opt: An alternative to providing a dataset.
+        """
         dataset = dataset or dataset_opt
         if update:
             print("updating dataset metadata")
@@ -1684,7 +1881,7 @@ class KaggleApi:
 
         Parameters
         ==========
-        dataset: the string identified of the dataset
+        dataset: the string identifier of the dataset
                  should be in format [owner]/[dataset-name]
         page_token: the page token for pagination
         page_size: the number of items per page
@@ -1709,7 +1906,7 @@ class KaggleApi:
 
         Parameters
         ==========
-        dataset: the string identified of the dataset
+        dataset: the string identifier of the dataset
                  should be in format [owner]/[dataset-name]
         dataset_opt: an alternative option to providing a dataset
         csv_display: if True, print comma separated values instead of table
@@ -1735,7 +1932,7 @@ class KaggleApi:
         else:
             print("No files found")
 
-    def dataset_status(self, dataset):
+    def dataset_status(self, dataset: str) -> str:
         """Call to get the status of a dataset from the API.
 
         Parameters
@@ -1777,7 +1974,7 @@ class KaggleApi:
 
         Parameters
         ==========
-        dataset: the string identified of the dataset
+        dataset: the string identifier of the dataset
                  should be in format [owner]/[dataset-name]
         file_name: the dataset configuration file
         path: if defined, download to this location
@@ -1821,7 +2018,7 @@ class KaggleApi:
 
         Parameters
         ==========
-        dataset: the string identified of the dataset
+        dataset: the string identifier of the dataset
                  should be in format [owner]/[dataset-name]
         path: the path to download the dataset to
         force: force the download if the file already exists (default False)
@@ -1901,7 +2098,7 @@ class KaggleApi:
 
         Parameters
         ==========
-        dataset: the string identified of the dataset
+        dataset: the string identifier of the dataset
                  should be in format [owner]/[dataset-name]
         dataset_opt: an alternative option to providing a dataset
         file_name: the dataset configuration file
@@ -3306,7 +3503,7 @@ class KaggleApi:
 
         Parameters
         ==========
-        model: the string identified of the model
+        model: the string identifier of the model
                  should be in format [owner]/[model-name]
         no_confirm: automatic confirmation
         """
@@ -3616,7 +3813,7 @@ class KaggleApi:
 
         Parameters
         ==========
-        model_instance: the string identified of the model instance
+        model_instance: the string identifier of the model instance
                  should be in format [owner]/[model-name]/[framework]/[instance-slug]
         no_confirm: if True, skip confirmation (default is False)
         """
@@ -3643,7 +3840,7 @@ class KaggleApi:
 
         Parameters
         ==========
-        model_instance: the string identified of the model instance
+        model_instance: the string identifier of the model instance
                  should be in format [owner]/[model-name]/[framework]/[instance-slug]
         no_confirm: automatic confirmation
         """
@@ -3698,7 +3895,7 @@ class KaggleApi:
 
         Parameters
         ==========
-        model_instance: the string identified of the model instance version
+        model_instance: the string identifier of the model instance version
                 should be in format [owner]/[model-name]/[framework]/[instance-slug]
         page_token: token for pagination
         page_size: the number of items per page
@@ -3824,7 +4021,7 @@ class KaggleApi:
         """Create a new model instance version.
         Parameters
         ==========
-        model_instance: the string identified of the model instance
+        model_instance: the string identifier of the model instance
                  should be in format [owner]/[model-name]/[framework]/[instance-slug]
         folder: the folder to get the metadata file from
         version_notes: the version notes to record for this new version
@@ -4064,7 +4261,7 @@ class KaggleApi:
         """Client wrapper for model_instance_version_delete
         Parameters
         ==========
-        model_instance_version: the string identified of the model instance version
+        model_instance_version: the string identifier of the model instance version
             should be in format [owner]/[model-name]/[framework]/[instance-slug]/[version-number]
         no_confirm: automatic confirmation
         """

@@ -61,7 +61,9 @@ install-unzip = """sudo apt-get install -y unzip || echo 'unzip could not be ins
 # TODO: install in Mac/Windows
 install-black = """pip3 install black --break-system-packages || echo 'black could not be installed'"""
 install-toml = """sudo apt-get install -y python3-toml || echo 'toml could not be installed'"""
-install-deps = "hatch run install-unzip && hatch run install-black && hatch run install-toml"
+install-sphinx = """pip3 install sphinx --break-system-packages || echo 'sphinx could not be installed'"""
+install-myst = """pip3 install myst-parser --break-system-packages || echo 'myst-parser could not be installed'"""
+install-deps = "hatch run install-unzip && hatch run install-black && hatch run install-toml && hatch run install-sphinx && hatch run install-myst"
 
 integration-test = "pytest {args:integration_tests}"
 

@@ -1245,7 +1245,7 @@ class ApiListKernelsRequest(KaggleObject):
         self._page_token = page_token
 
     def endpoint(self):
-        path = "/api/v1/kernels/list-paged"
+        path = "/api/v1/kernels/list"
         return path.format_map(self.to_field_map(self))
 
 

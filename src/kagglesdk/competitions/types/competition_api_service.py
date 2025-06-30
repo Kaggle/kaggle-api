@@ -756,7 +756,7 @@ class ApiListCompetitionsRequest(KaggleObject):
         self._page_size = page_size
 
     def endpoint(self):
-        path = "/api/v1/competitions/list-paged"
+        path = "/api/v1/competitions/list"
         return path.format_map(self.to_field_map(self))
 
 
@@ -1032,7 +1032,7 @@ class ApiListSubmissionsRequest(KaggleObject):
         self._page_size = page_size
 
     def endpoint(self):
-        path = "/api/v1/competitions/submissions/list-paged/{competition_name}"
+        path = "/api/v1/competitions/submissions/list/{competition_name}"
         return path.format_map(self.to_field_map(self))
 
     @staticmethod

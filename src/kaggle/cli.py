@@ -120,13 +120,19 @@ def parse_competitions(subparsers) -> None:
         "--sort-by", dest="sort_by", required=False, help=Help.param_competition_sort_by
     )
     parser_competitions_list_optional.add_argument(
-        "-p", "--page", dest="page", default=1, type=int, required=False, help=Help.param_page
+        "-p", "--page", dest="page", default=-1, type=int, required=False, help=Help.param_page
     )
     parser_competitions_list_optional.add_argument(
         "-s", "--search", dest="search", required=False, help=Help.param_search
     )
     parser_competitions_list_optional.add_argument(
         "-v", "--csv", dest="csv_display", action="store_true", help=Help.param_csv
+    )
+    parser_competitions_list_optional.add_argument(
+        "--page-size", dest="page_size", required=False, type=int, help=Help.param_page_size
+    )
+    parser_competitions_list_optional.add_argument(
+        "--page-token", dest="page_token", required=False, help=Help.param_page_token
     )
     parser_competitions_list._action_groups.append(parser_competitions_list_optional)
     parser_competitions_list.set_defaults(func=api.competitions_list_cli)
@@ -250,6 +256,12 @@ def parse_competitions(subparsers) -> None:
     )
     parser_competitions_leaderboard_optional.add_argument(
         "-q", "--quiet", dest="quiet", action="store_true", help=Help.param_quiet
+    )
+    parser_competitions_leaderboard_optional.add_argument(
+        "--page-size", dest="page_size", required=False, type=int, help=Help.param_page_size
+    )
+    parser_competitions_leaderboard_optional.add_argument(
+        "--page-token", dest="page_token", required=False, help=Help.param_page_token
     )
     parser_competitions_leaderboard._action_groups.append(parser_competitions_leaderboard_optional)
     parser_competitions_leaderboard.set_defaults(func=api.competition_leaderboard_cli)

@@ -221,8 +221,7 @@ class ResumableUploadContext(object):
             file_upload.cleanup()
 
     def get_upload_info_file_path(self, path: str) -> str:
-        """
-        Returns the path to the upload info file for a given file.
+        """Returns the path to the upload info file for a given file.
 
         Args:
             path: The path to the file for which to get the upload info file path.
@@ -275,21 +274,20 @@ class ResumableFileUpload(object):
         self._upload_info_file_path = self.context.get_upload_info_file_path(path)
 
     def get_token(self):
-        """
-        Retrieves the upload token for a completed upload.
+        """Retrieves the upload token for a completed upload.
 
         This method returns the token of the blob upload response if the upload is complete.
         If the upload is not complete, it returns None.
 
-        :return: The upload token if the upload is complete, otherwise None.
+        Returns:
+            The upload token if the upload is complete, otherwise None.
         """
         if self.upload_complete:
             return cast(ApiStartBlobUploadResponse, self.start_blob_upload_response).token
         return None
 
     def load(self) -> None:
-        """
-        Loads a previous upload if it exists and is valid.
+        """Loads a previous upload if it exists and is valid.
 
         This method checks for a previous upload information file and, if it exists,
         validates it. If the previous upload is valid, it loads the information
@@ -323,13 +321,13 @@ class ResumableFileUpload(object):
         )
 
     def upload_initiated(self, start_blob_upload_response: ApiStartBlobUploadResponse) -> None:
-        """
-        Saves the upload information to a file.
+        """Saves the upload information to a file.
 
         This method is called after an upload has been initiated. It saves the
         upload information to a file so that it can be resumed later.
 
-        :param start_blob_upload_response: The response from the start blob upload request.
+        Args:
+            start_blob_upload_response: The response from the start blob upload request.
         """
         if self.context.no_resume:
             return
@@ -339,8 +337,7 @@ class ResumableFileUpload(object):
             json.dump(self.to_dict(), f, indent=True)
 
     def upload_completed(self):
-        """
-        Marks the upload as complete.
+        """Marks the upload as complete.
 
         This method sets the `upload_complete` flag to True and saves the upload
         information to a file.
@@ -356,8 +353,7 @@ class ResumableFileUpload(object):
             json.dump(self.to_dict(), f, indent=True)
 
     def cleanup(self):
-        """
-        Removes the upload information file.
+        """Removes the upload information file.
 
         This method is called to clean up the upload information file after the
         upload is complete.
@@ -371,10 +367,10 @@ class ResumableFileUpload(object):
             pass
 
     def to_dict(self):
-        """
-        Converts the ResumableFileUpload object to a dictionary.
+        """Converts the ResumableFileUpload object to a dictionary.
 
-        :return: A dictionary representation of the ResumableFileUpload object.
+        Returns:
+            A dictionary representation of the ResumableFileUpload object.
         """
         return {
             "path": self.path,
@@ -388,12 +384,14 @@ class ResumableFileUpload(object):
 
     @staticmethod
     def from_dict(other, context):
-        """
-        Creates a ResumableFileUpload object from a dictionary.
+        """Creates a ResumableFileUpload object from a dictionary.
 
-        :param other: A dictionary containing the ResumableFileUpload object's data.
-        :param context: The ResumableUploadContext object.
-        :return: A new ResumableFileUpload object.
+        Args:
+            other: A dictionary containing the ResumableFileUpload object's data.
+            context: The ResumableUploadContext object.
+        
+        Returns:
+            A new ResumableFileUpload object.
         """
         req = ApiStartBlobUploadRequest()
         req.from_dict(other["start_blob_upload_request"])
@@ -408,10 +406,10 @@ class ResumableFileUpload(object):
         return new
 
     def to_str(self):
-        """
-        Converts the ResumableFileUpload object to a string.
+        """Converts the ResumableFileUpload object to a string.
 
-        :return: A string representation of the ResumableFileUpload object.
+        Returns:
+            A string representation of the ResumableFileUpload object.
         """
         return str(self.to_dict())
 
@@ -445,11 +443,13 @@ class FileList(object):
 
     @staticmethod
     def from_response(response: ApiListModelInstanceVersionFilesResponse) -> "FileList":
-        """
-        Creates a FileList object from an API response.
+        """Creates a FileList object from an API response.
 
-        :param response: The API response.
-        :return: A new FileList object.
+        Args:
+            response: The API response.
+        
+        Returns:
+            A new FileList object.
         """
         inst = FileList({"files": [], "nextPageToken": ""})
         inst.error_message = ""
@@ -772,22 +772,22 @@ class KaggleApi:
         """Determines if the string command passed in is for a help or version
         command.
 
-        Parameters
-        ----------
-        api_command: a string, 'datasets list', 'competitions files',
-                     'models instances get', etc.
+        Args:
+            api_command: a string, 'datasets list', 'competitions files',
+                'models instances get', etc.
         """
         return api_command.endswith(("-h", "--help", "-v", "--version"))
 
     def read_config_environment(self, config_data: Optional[Dict[str, str]] = None) -> Dict[str, str]:
-        """read_config_environment() is the second effort to get a username and key
-        to authenticate to the Kaggle API. The environment keys are equivalent to
+        """Reads config values from environment variables.
+
+        This method is the second effort to get a username and key to
+        authenticate to the Kaggle API. The environment keys are equivalent to
         the kaggle.json file, but with "KAGGLE_" prefix to define a unique
         namespace.
 
-        Parameters
-        ----------
-        config_data: a partially loaded configuration dictionary (optional)
+        Args:
+            config_data: a partially loaded configuration dictionary (optional)
         """
 
         # Add all variables that start with KAGGLE_ to config data
@@ -804,15 +804,16 @@ class KaggleApi:
     ## Configuration
 
     def read_config_file(self, config_data: Optional[Dict[str, str]] = None, quiet: bool = False) -> Dict[str, str]:
-        """read_config_file() is the first effort to get a username and key to
+        """Reads config values from the config file.
+
+        This method is the first effort to get a username and key to
         authenticate to the Kaggle API. Since we can get the username and password
         from the environment, it's not required.
 
-        Parameters
-        ----------
-        config_data: the Configuration object to save a username and
-                     password, if defined
-        quiet: suppress verbose print of output (default is False)
+        Args:
+            config_data: the Configuration object to save a username and
+                password, if defined
+            quiet: suppress verbose print of output (default is False)
         """
         if config_data is None:
             config_data = {}
@@ -842,7 +843,10 @@ class KaggleApi:
         return config_data
 
     def _read_config_file(self):
-        """Read in the configuration file, a json file defined at self.config."""
+        """Reads the config file.
+
+        The config file is a json file defined at self.config.
+        """
 
         try:
             with open(self.config, "r") as f:
@@ -853,27 +857,27 @@ class KaggleApi:
         return config_data
 
     def _write_config_file(self, config_data, indent=2):
-        """Write config data to file.
+        """Writes config data to file.
 
-        Parameters
-        ----------
-        config_data: the Configuration object to save a username and
-                     password, if defined
-        indent: number of tab indentations to use when writing json
+        Args:
+            config_data: the Configuration object to save a username and
+                password, if defined
+            indent: number of tab indentations to use when writing json
         """
         with open(self.config, "w") as f:
             json.dump(config_data, f, indent=indent)
 
     def set_config_value(self, name: str, value: str, quiet: bool = False) -> None:
-        """A client helper function to set a configuration value, meaning reading
+        """Sets a config value.
+
+        A client helper function to set a configuration value, meaning reading
         in the configuration file (if it exists), saving a new config value, and
         then writing back.
 
-        Parameters
-        ----------
-        name: the name of the value to set (key in dictionary)
-        value: the value to set at the key
-        quiet: disable verbose output if True (default is False)
+        Args:
+            name: the name of the value to set (key in dictionary)
+            value: the value to set at the key
+            quiet: disable verbose output if True (default is False)
         """
 
         config_data = self._read_config_file()
@@ -893,12 +897,11 @@ class KaggleApi:
                 self.print_config_value(name, separator=" is now set to: ")
 
     def unset_config_value(self, name, quiet=False):
-        """Remove a configuration value from the config file.
+        """Removes a configuration value from the config file.
 
-        Parameters
-        ----------
-        name: the name of the value to unset (remove key in dictionary)
-        quiet: disable verbose output if True (default is False)
+        Args:
+            name: the name of the value to unset (remove key in dictionary)
+            quiet: disable verbose output if True (default is False)
         """
 
         config_data = self._read_config_file()
@@ -913,22 +916,23 @@ class KaggleApi:
                 self.print_config_value(name, separator=" is now set to: ")
 
     def get_config_value(self, name: str) -> Optional[str]:
-        """Return a config value (with key name) if it's in the config_values,
-        otherwise return None.
+        """Returns a config value.
 
-        Parameters
-        ----------
-        name: the config value key to get
+        Args:
+            name: the config value key to get
+        
+        Returns:
+            The config value if it's in the config_values, otherwise None.
         """
         return self.config_values.get(name)
 
     def get_default_download_dir(self, *subdirs: str) -> str:
-        """Get the download path for a file. If not set in the config file
-        then return the current working directory.
+        """Gets the download path for a file.
+        
+        If not set in the config file then return the current working directory.
 
-        Parameters
-        ----------
-        subdirs: a single (or list of) subfolders under the basepath
+        Args:
+            subdirs: a single (or list of) subfolders under the basepath
         """
         # Look up value for key "path" in the config
         path = self.get_config_value(self.CONFIG_NAME_PATH)
@@ -940,13 +944,12 @@ class KaggleApi:
         return os.path.join(path, *subdirs)
 
     def print_config_value(self, name, prefix="- ", separator=": "):
-        """Print a single configuration value, based on a prefix and separator.
+        """Prints a single configuration value.
 
-        Parameters
-        ----------
-        name: the key of the config valur in self.config_values to print
-        prefix: the prefix to print
-        separator: the separator to use (default is : )
+        Args:
+            name: the key of the config valur in self.config_values to print
+            prefix: the prefix to print
+            separator: the separator to use (default is : )
         """
 
         value_out = "None"
@@ -955,11 +958,11 @@ class KaggleApi:
         print(f"{prefix}{name}{separator}{value_out}")
 
     def print_config_values(self, prefix="- "):
-        """Print all configuration values.
+        """Prints all configuration values.
 
-         Parameters
-        ----------
-        prefix: the character prefix to put before the printed config value, defaults to "- "
+        Args:
+            prefix: the character prefix to put before the printed config value,
+                defaults to "- "
         """
         if not self.config_dir:
             return
@@ -971,11 +974,11 @@ class KaggleApi:
         self.print_config_value(self.CONFIG_NAME_COMPETITION, prefix=prefix)
 
     def auth_login_cli(self, no_launch_browser: bool = False, force: bool = False):
-        """
-        Login to Kaggle.
+        """Logs in to Kaggle.
 
-        :param no_launch_browser: Don't launch a browser. Print a URL instead.
-        :param force: Force a new login, even if already logged in.
+        Args:
+            no_launch_browser: Don't launch a browser. Print a URL instead.
+            force: Force a new login, even if already logged in.
         """
         # Allow access to all ApiV1 endpoints.
         default_scopes = ["resources.admin:*"]
@@ -989,8 +992,7 @@ class KaggleApi:
             oAuth.authenticate(scopes=default_scopes, no_launch_browser=no_launch_browser)
 
     def auth_print_access_token(self, expiration_duration: str = None):
-        """
-        Print the current OAuth access token.
+        """Prints the current OAuth access token.
 
         If an expiration duration is provided, a new token will be generated with the specified
         expiration duration. Otherwise, the current token will be printed.
@@ -998,7 +1000,8 @@ class KaggleApi:
         The expiration duration should be in the format of a string with a number followed by a unit,
         e.g. "1h" for one hour, "2d" for two days, etc.
 
-        :param expiration_duration: The duration the generated token should be valid for. Defaults to None.
+        Args:
+            expiration_duration: The duration the generated token should be valid for. Defaults to None.
         """
         expiration = self._parse_duration(expiration_duration) if expiration_duration else None
         with self.build_kaggle_client() as kaggle:
@@ -1021,14 +1024,14 @@ class KaggleApi:
             raise ValueError("Invalid duration format. Please use one of the following formats: 1h, 30s, 2h30s, 2:30")
 
     def auth_revoke_token(self, reason: str):
-        """
-        Revoke the current OAuth access token.
+        """Revokes the current OAuth access token.
 
         This command will revoke the current access token. If a reason is provided, it will be
         sent to the server as part of the revocation request. If no reason is provided, "Manually
         revoked by user with kaggle-cli" will be sent.
 
-        :param reason: The reason for revoking the token. Defaults to None.
+        Args:
+            reason: The reason for revoking the token. Defaults to None.
         """
         with self.build_kaggle_client() as kaggle:
             creds = KaggleCredentials.load(client=kaggle)
@@ -1038,10 +1041,10 @@ class KaggleApi:
             creds.revoke_token(reason or "Manually revoked by user with kaggle-cli")
 
     def build_kaggle_client(self) -> kagglesdk.kaggle_client.KaggleClient:
-        """
-        Build a Kaggle client.
+        """Builds a Kaggle client.
 
-        :return: A Kaggle client.
+        Returns:
+            A Kaggle client.
         """
         return KaggleApi.build_kaggle_client_with_params(
             args=self.args,
@@ -1054,14 +1057,16 @@ class KaggleApi:
     def build_kaggle_client_with_params(
         args: List[str], username: str = None, password: str = None, api_token: str = None
     ) -> kagglesdk.kaggle_client.KaggleClient:
-        """
-        Build a Kaggle client with the given parameters.
+        """Builds a Kaggle client with the given parameters.
 
-        :param args: A list of arguments.
-        :param username: The username to use for authentication.
-        :param password: The password to use for authentication.
-        :param api_token: The API token to use for authentication.
-        :return: A Kaggle client.
+        Args:
+            args: A list of arguments.
+            username: The username to use for authentication.
+            password: The password to use for authentication.
+            api_token: The API token to use for authentication.
+        
+        Returns:
+            A Kaggle client.
         """
         env = (
             KaggleEnv.STAGING
@@ -1078,9 +1083,13 @@ class KaggleApi:
         )
 
     def camel_to_snake(self, name: str) -> str:
-        """
-        :param name: field in camel case
-        :return: field in snake case
+        """Converts a camel case string to snake case.
+
+        Args:
+            name: The string in camel case.
+        
+        Returns:
+            The string in snake case.
         """
         name = re.sub("(.)([A-Z][a-z]+)", r"\1_\2", name)
         return re.sub("([a-z0-9])([A-Z])", r"\1_\2", name).lower()
@@ -1186,16 +1195,15 @@ class KaggleApi:
     ) -> None:
         """A wrapper for competitions_list for the client.
 
-        Parameters
-        ----------
-        group: group to filter result to
-        category: category to filter result to
-        sort_by: how to sort the result, see valid_sort_by for options
-        page: the page to return (default is 1)
-        search: a search term to use (default is empty string)
-        csv_display: if True, print comma separated values
-        page_size: the number of items to show on a page
-        page_token: the page token for pagination
+        Args:
+            group: group to filter result to
+            category: category to filter result to
+            sort_by: how to sort the result, see valid_sort_by for options
+            page: the page to return (default is 1)
+            search: a search term to use (default is empty string)
+            csv_display: if True, print comma separated values
+            page_size: the number of items to show on a page
+            page_token: the page token for pagination
         """
         response = self.competitions_list(
             group=group,
@@ -1266,14 +1274,13 @@ class KaggleApi:
     def competition_submit(
         self, file_name: str, message: str, competition: str, quiet: bool = False
     ) -> ApiCreateSubmissionResponse:
-        """Submit to a competition.
+        """Submits to a competition.
 
-        Parameters
-        ----------
-        file_name: the competition metadata file
-        message: the submission description
-        competition: the competition name; if not given use the 'competition' config value
-        quiet: suppress verbose output (default is False)
+        Args:
+            file_name: The competition metadata file.
+            message: The submission description.
+            competition: The competition name.
+            quiet: Suppress verbose output (default is False).
         """
         if competition is None:
             competition = self.get_config_value(self.CONFIG_NAME_COMPETITION)
@@ -1320,18 +1327,16 @@ class KaggleApi:
         competition_opt: Optional[str] = None,
         quiet: bool = False,
     ) -> str:
-        """Submit a competition using the client. Arguments are same as for
-        competition_submit, except for extra arguments provided here.
+        """Submits a competition using the client.
 
-        Parameters
-        ----------
-        file_name: the competition metadata file
-        message: the submission description
-        competition: the competition name; if not given use the 'competition' config value
-        kernel: the name of the kernel to submit to a code competition
-        version: the version of the kernel to submit to a code competition, e.g. '1'
-        quiet: suppress verbose output (default is False)
-        competition_opt: an alternative competition option provided by cli
+        Args:
+            file_name: The competition metadata file.
+            message: The submission description.
+            competition: The competition name.
+            kernel: The name of the kernel to submit to a code competition.
+            version: The version of the kernel to submit to a code competition, e.g. '1'.
+            quiet: Suppress verbose output (default is False).
+            competition_opt: An alternative competition option provided by cli.
         """
         if kernel and not version or version and not kernel:
             raise ValueError("Code competition submissions require both the output file name and the version label")
@@ -1365,15 +1370,14 @@ class KaggleApi:
         page_token: int = 0,
         page_size: int = 20,
     ) -> list[ApiSubmission | None] | None:
-        """Get the list of Submission for a particular competition.
+        """Gets the list of submissions for a competition.
 
-        Parameters
-        ----------
-        competition: the name of the competition
-        group: the submission group
-        sort: the sort-by option
-        page_token: token for pagination
-        page_size: the number of items per page
+        Args:
+            competition: The name of the competition.
+            group: The submission group.
+            sort: The sort-by option.
+            page_token: Token for pagination.
+            page_size: The number of items per page.
         """
         with self.build_kaggle_client() as kaggle:
             request = ApiListSubmissionsRequest()
@@ -1389,17 +1393,15 @@ class KaggleApi:
         self, competition=None, competition_opt=None, csv_display=False, page_token=None, page_size=20, quiet=False
     ):
         """A wrapper to competition_submission, will return either json or csv to
-        the user. Additional parameters are listed below, see
-        competition_submissions for rest.
+        the user.
 
-        Parameters
-        ----------
-        competition: the name of the competition. If None, look to config
-        competition_opt: an alternative competition option provided by cli
-        csv_display: if True, print comma separated values
-        page_token: token for pagination
-        page_size: the number of items per page
-        quiet: suppress verbose output (default is False)
+        Args:
+            competition: the name of the competition. If None, look to config
+            competition_opt: an alternative competition option provided by cli
+            csv_display: if True, print comma separated values
+            page_token: token for pagination
+            page_size: the number of items per page
+            quiet: suppress verbose output (default is False)
         """
         competition = competition or competition_opt
         if competition is None:
@@ -1422,13 +1424,12 @@ class KaggleApi:
     def competition_list_files(
         self, competition: str, page_token: Optional[str] = None, page_size: int = 20
     ) -> ApiListDataFilesResponse:
-        """List files for a competition.
+        """Lists files for a competition.
 
-        Parameters
-        ----------
-        competition: the name of the competition
-        page_token: the page token for pagination
-        page_size: the number of items per page
+        Args:
+            competition: The name of the competition.
+            page_token: The page token for pagination.
+            page_size: The number of items per page.
         """
         with self.build_kaggle_client() as kaggle:
             request = ApiListDataFilesRequest()
@@ -1478,15 +1479,14 @@ class KaggleApi:
     def competition_download_file(
         self, competition: str, file_name: str, path: Optional[str] = None, force: bool = False, quiet: bool = False
     ) -> None:
-        """Download a competition file to a designated location, or use a default location.
+        """Downloads a competition file.
 
-        Parameters
-        ----------
-        competition: the name of the competition
-        file_name: the configuration file name
-        path: a path to download the file to
-        force: force the download if the file already exists (default False)
-        quiet: suppress verbose output (default is False)
+        Args:
+            competition: The name of the competition.
+            file_name: The configuration file name.
+            path: A path to download the file to.
+            force: Force the download if the file already exists (default False).
+            quiet: Suppress verbose output (default is False).
         """
         if path is None:
             effective_path = self.get_default_download_dir("competitions", competition)
@@ -1507,14 +1507,13 @@ class KaggleApi:
     def competition_download_files(
         self, competition: str, path: Optional[str] = None, force: bool = False, quiet: bool = True
     ) -> None:
-        """Download all competition files.
+        """Downloads all competition files.
 
-        Parameters
-        ----------
-        competition: the name of the competition
-        path: a path to download the file to
-        force: force the download if the file already exists (default False)
-        quiet: suppress verbose output (default is True)
+        Args:
+            competition: The name of the competition.
+            path: A path to download the file to.
+            force: Force the download if the file already exists (default False).
+            quiet: Suppress verbose output (default is True).
         """
         if path is None:
             effective_path = self.get_default_download_dir("competitions", competition)
@@ -1534,18 +1533,15 @@ class KaggleApi:
     def competition_download_cli(
         self, competition, competition_opt=None, file_name=None, path=None, force=False, quiet=False
     ):
-        """A wrapper to competition_download_files, but first will parse input from
-        API client. Additional parameters are listed here, see competition_download
-        for remaining.
+        """Downloads competition files.
 
-        Parameters
-        ----------
-        competition: the name of the competition
-        competition_opt: an alternative competition option provided by cli
-        file_name: the configuration file name
-        path: a path to download the file to
-        force: force the download if the file already exists (default False)
-        quiet: suppress verbose output (default is False)
+        Args:
+            competition: The name of the competition.
+            competition_opt: An alternative competition option provided by cli.
+            file_name: The configuration file name.
+            path: A path to download the file to.
+            force: Force the download if the file already exists (default False).
+            quiet: Suppress verbose output (default is False).
         """
         competition = competition or competition_opt
         if competition is None:
@@ -1562,13 +1558,12 @@ class KaggleApi:
                 self.competition_download_file(competition, file_name, path, force, quiet)
 
     def competition_leaderboard_download(self, competition: str, path: str, quiet: bool = True) -> None:
-        """Download a competition leaderboard.
+        """Downloads a competition leaderboard.
 
-        Parameters
-        ----------
-        competition: the name of the competition
-        path: a path to download the file to
-        quiet: suppress verbose output (default is True)
+        Args:
+            competition: The name of the competition.
+            path: A path to download the file to.
+            quiet: Suppress verbose output (default is True).
         """
         with self.build_kaggle_client() as kaggle:
             request = ApiDownloadLeaderboardRequest()
@@ -1620,17 +1615,16 @@ class KaggleApi:
         """A wrapper for competition_leaderbord_view that will print the results as
         a table or comma separated values.
 
-        Parameters
-        ----------
-        competition: the competition name to view leadboard for
-        competition_opt: an alternative competition option provided by cli
-        path: a path to download to, if download is True
-        view: if True, show the results in the terminal as csv or table
-        download: if True, download the entire leaderboard
-        csv_display: if True, print comma separated values instead of table
-        quiet: suppress verbose output (default is False)
-        page_size: the number of items to show on a page
-        page_token: the page token for pagination
+        Args:
+            competition: the competition name to view leadboard for
+            competition_opt: an alternative competition option provided by cli
+            path: a path to download to, if download is True
+            view: if True, show the results in the terminal as csv or table
+            download: if True, download the entire leaderboard
+            csv_display: if True, print comma separated values instead of table
+            quiet: suppress verbose output (default is False)
+            page_size: the number of items to show on a page
+            page_token: the page token for pagination
         """
         competition = competition or competition_opt
         if not view and not download:
@@ -1766,23 +1760,21 @@ class KaggleApi:
         max_size=None,
         min_size=None,
     ):
-        """A wrapper to dataset_list for the client. Additional parameters are
-        described here, see dataset_list for others.
+        """A wrapper to dataset_list for the client.
 
-        Parameters
-        ----------
-        sort_by: how to sort the result, see valid_dataset_sort_bys for options
-        size: DEPRECATED
-        file_type: the format, see valid_dataset_file_types for string options
-        license_name: string descriptor for license, see valid_dataset_license_names
-        tag_ids: tag identifiers to filter the search
-        search: a search term to use (default is empty string)
-        user: username to filter the search to
-        mine: boolean if True, group is changed to "my" to return personal
-        page: the page to return (default is 1)
-        csv_display: if True, print comma separated values instead of table
-        max_size: the maximum size of the dataset to return (bytes)
-        min_size: the minimum size of the dataset to return (bytes)
+        Args:
+            sort_by: how to sort the result, see valid_dataset_sort_bys for options
+            size: DEPRECATED
+            file_type: the format, see valid_dataset_file_types for string options
+            license_name: string descriptor for license, see valid_dataset_license_names
+            tag_ids: tag identifiers to filter the search
+            search: a search term to use (default is empty string)
+            user: username to filter the search to
+            mine: boolean if True, group is changed to "my" to return personal
+            page: the page to return (default is 1)
+            csv_display: if True, print comma separated values instead of table
+            max_size: the maximum size of the dataset to return (bytes)
+            min_size: the minimum size of the dataset to return (bytes)
         """
         datasets = self.dataset_list(
             sort_by, size, file_type, license_name, tag_ids, search, user, mine, page, max_size, min_size
@@ -1822,11 +1814,11 @@ class KaggleApi:
         return (owner_slug, dataset_slug, effective_path)
 
     def dataset_metadata_update(self, dataset, path):
-        """
-        Update the metadata for a dataset.
+        """Updates the metadata for a dataset.
 
-        :param dataset: The dataset to update.
-        :param path: The path to the metadata file.
+        Args:
+            dataset: The dataset to update.
+            path: The path to the metadata file.
         """
         (owner_slug, dataset_slug, effective_path) = self.dataset_metadata_prep(dataset, path)
         meta_file = self.get_dataset_metadata_file(effective_path)
@@ -1871,12 +1863,14 @@ class KaggleApi:
         return u
 
     def dataset_metadata(self, dataset, path):
-        """
-        Download the metadata for a dataset.
+        """Downloads the metadata for a dataset.
 
-        :param dataset: The dataset to download the metadata for.
-        :param path: The path to download the metadata to.
-        :return: The path to the downloaded metadata file.
+        Args:
+            dataset: The dataset to download the metadata for.
+            path: The path to download the metadata to.
+        
+        Returns:
+            The path to the downloaded metadata file.
         """
         (owner_slug, dataset_slug, effective_path) = self._dataset_metadata_prep(dataset, path)
 
@@ -1898,13 +1892,13 @@ class KaggleApi:
         return meta_file
 
     def dataset_metadata_cli(self, dataset, path, update, dataset_opt=None):
-        """
-        Download or update the metadata for a dataset.
+        """Downloads or updates the metadata for a dataset.
 
-        :param dataset: The dataset to download the metadata for.
-        :param path: The path to download the metadata to.
-        :param update: Whether to update the metadata or not.
-        :param dataset_opt: An alternative to providing a dataset.
+        Args:
+            dataset: The dataset to download the metadata for.
+            path: The path to download the metadata to.
+            update: Whether to update the metadata or not.
+            dataset_opt: An alternative to providing a dataset.
         """
         dataset = dataset or dataset_opt
         if update:
@@ -1916,14 +1910,12 @@ class KaggleApi:
             print("Downloaded metadata to " + meta_file)
 
     def dataset_list_files(self, dataset, page_token=None, page_size=20):
-        """List files for a dataset.
+        """Lists files for a dataset.
 
-        Parameters
-        ----------
-        dataset: the string identifier of the dataset
-                 should be in format [owner]/[dataset-name]
-        page_token: the page token for pagination
-        page_size: the number of items per page
+        Args:
+            dataset: The string identifier of the dataset, in the format [owner]/[dataset-name].
+            page_token: The page token for pagination.
+            page_size: The number of items per page.
         """
         if dataset is None:
             raise ValueError("A dataset must be specified")
@@ -1940,17 +1932,14 @@ class KaggleApi:
             return response
 
     def dataset_list_files_cli(self, dataset, dataset_opt=None, csv_display=False, page_token=None, page_size=20):
-        """A wrapper to dataset_list_files for the client (list files for a
-        dataset).
+        """A wrapper for dataset_list_files for the client.
 
-        Parameters
-        ----------
-        dataset: the string identifier of the dataset
-                 should be in format [owner]/[dataset-name]
-        dataset_opt: an alternative option to providing a dataset
-        csv_display: if True, print comma separated values instead of table
-        page_token: the page token for pagination
-        page_size: the number of items per page
+        Args:
+            dataset: The string identifier of the dataset, in the format [owner]/[dataset-name].
+            dataset_opt: An alternative option to providing a dataset.
+            csv_display: If True, print comma-separated values instead of a table.
+            page_token: The page token for pagination.
+            page_size: The number of items per page.
         """
         dataset = dataset or dataset_opt
         result = self.dataset_list_files(dataset, page_token, page_size)
@@ -1972,12 +1961,13 @@ class KaggleApi:
             print("No files found")
 
     def dataset_status(self, dataset: str) -> str:
-        """Call to get the status of a dataset from the API.
+        """Gets the status of a dataset.
 
-        Parameters
-        ----------
-        dataset: the string identifier of the dataset
-                 should be in format [owner]/[dataset-name]
+        Args:
+            dataset: The string identifier of the dataset, in the format [owner]/[dataset-name].
+        
+        Returns:
+            The status of the dataset.
         """
         if dataset is None:
             raise ValueError("A dataset must be specified")

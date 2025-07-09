@@ -82,4 +82,4 @@ import kaggle
 ```
 
 For more information about the Python API, see the
-<a href="./api/kaggle.api.kaggle_api_extended.html" target="_blank" rel="alternate">Kaggle Python API documentation</a>.
+<a href="./source/kaggle.api.html" target="_blank" rel="alternate">Kaggle Python API documentation</a>.

@@ -5,6 +5,31 @@
 
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path("..", "src").resolve()))
+
+
+def autodoc_skip_member(app, what, name, obj, skip, options):
+    # 'what' is the type of the object (e.g., 'function', 'class')
+    # 'name' is the name of the object (e.g., 'myfunction')
+    # 'obj' is the Python object itself
+    # 'skip' is a boolean indicating whether it's already marked to be skipped
+    # 'options' are the autodoc options
+
+    # Skip all CLI methods
+    if name.endswith("_cli"):
+        # Param what should be 'method' but is 'class'; obj is the function object.
+        # https://github.com/sphinx-doc/sphinx/issues/6808
+        return True
+
+    return skip  # Return the original skip value for other members
+
+
+def setup(app):
+    app.connect("autodoc-skip-member", autodoc_skip_member)
+
 
 project = "kaggle-api"
 copyright = "2025, Kaggle"
@@ -18,11 +43,12 @@ extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.autosectionlabel",
     "sphinx.ext.autosummary",
+    "sphinx.ext.napoleon",
     "myst_parser",
 ]
 
 templates_path = ["_templates"]
-exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
+exclude_patterns = ["_build", "Thumbs.db", ".DS_Store", "**/kaggle_api.py", "**/kaggle/models/*"]
 
 
 # -- Options for HTML output -------------------------------------------------
@@ -33,3 +59,4 @@ html_theme = "alabaster"
 apidoc_modules = [
     {"path": "../src/kaggle", "destination": "source/"},
 ]
+autoclass_content = "both"

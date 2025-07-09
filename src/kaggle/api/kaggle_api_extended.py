@@ -1316,9 +1316,9 @@ class KaggleApi:
         file_name: Optional[str] = None,
         message: Optional[str] = None,
         competition: Optional[str] = None,
-        kernel: None = None,
-        version: None = None,
-        competition_opt: None = None,
+        kernel: Optional[str] = None,
+        version: Optional[str] = None,
+        competition_opt: Optional[str] = None,
         quiet: bool = False,
     ) -> str:
         """Submit a competition using the client. Arguments are same as for
@@ -1477,7 +1477,7 @@ class KaggleApi:
                 print("No files found")
 
     def competition_download_file(
-        self, competition: str, file_name: str, path: None = None, force: bool = False, quiet: bool = False
+        self, competition: str, file_name: str, path: Optional[str] = None, force: bool = False, quiet: bool = False
     ) -> None:
         """Download a competition file to a designated location, or use a default location.
 
@@ -1506,7 +1506,7 @@ class KaggleApi:
             self.download_file(response, outfile, kaggle.http_client(), quiet, not force)
 
     def competition_download_files(
-        self, competition: str, path: None = None, force: bool = False, quiet: bool = True
+        self, competition: str, path: Optional[str] = None, force: bool = False, quiet: bool = True
     ) -> None:
         """Download all competition files.
 
@@ -2642,15 +2642,15 @@ class KaggleApi:
         self,
         page: int = 1,
         page_size: int = 20,
-        dataset: None = None,
-        competition: None = None,
-        parent_kernel: None = None,
-        search: None = None,
+        dataset: Optional[str] = None,
+        competition: Optional[str] = None,
+        parent_kernel: Optional[str] = None,
+        search: Optional[str] = None,
         mine: bool = False,
         user: Optional[str] = None,
         language: Optional[str] = None,
-        kernel_type: None = None,
-        output_type: None = None,
+        kernel_type: Optional[str] = None,
+        output_type: Optional[str] = None,
         sort_by: Optional[str] = None,
     ) -> list[ApiKernelMetadata | None] | None:
         """List kernels based on a set of search criteria.
@@ -3350,11 +3350,11 @@ class KaggleApi:
 
     def model_list(
         self,
-        sort_by: None = None,
-        search: None = None,
-        owner: None = None,
+        sort_by: Optional[str] = None,
+        search: Optional[str] = None,
+        owner: Optional[str] = None,
         page_size: int = 20,
-        page_token: None = None,
+        page_token: Optional[str] = None,
     ) -> list[ApiModel | None] | None:
         """Return a list of models.
 

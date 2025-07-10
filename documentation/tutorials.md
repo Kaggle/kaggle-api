@@ -288,7 +288,7 @@ This tutorial walks you through the process of making a submission to a Kaggle c
         cp gender_submission.csv my_submission.csv
         ```
     *   Your `my_submission.csv` should look something like this:
-        ```csv
+        ```
         PassengerId,Survived
         892,0
         893,1

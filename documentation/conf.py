@@ -48,8 +48,13 @@ extensions = [
 ]
 
 templates_path = ["_templates"]
-exclude_patterns = ["_build", "Thumbs.db", ".DS_Store", "**/kaggle_api.py", "**/kaggle/models/*"]
+exclude_patterns = ["_build", "Thumbs.db", ".DS_Store", "**/kaggle_api.py", "**/kaggle/models/*.py"]
 
+source_suffix = {
+    ".rst": "restructuredtext",
+    ".txt": "restructuredtext",
+    ".md": "markdown",
+}
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output

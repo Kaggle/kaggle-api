@@ -24,7 +24,7 @@
 # Anlyzing Python Code
 - When analyzing Python code, use the `api` module to parse it, UNLESS instructed otherwise.
 - Use `api.get_docstring()` to locate a docstring for an item.
-- To find type hints, walk the AST using `api.walk_tree()` looking for type parameters with `ast.TypeVar()`, 'ast.ParamSpec()', and 'ast.TypeVarTuple()'.
+- To find type hints, walk the AST using `api.walk_tree()` looking for type parameters with `ast.TypeVar()`, `ast.ParamSpec()`, and `ast.TypeVarTuple()`.
 
 # Getting Help
 - Ask for clarification.

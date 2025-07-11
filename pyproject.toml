@@ -24,6 +24,7 @@ keywords = ["Kaggle", "API"]
 requires-python = ">=3.11"
 dependencies = [
     "bleach",
+    "kagglesdk",
     "python-slugify",
     "requests",
     "setuptools>=21.0.0", # unused if setup.py is removed

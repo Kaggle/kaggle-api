@@ -797,7 +797,7 @@ class KaggleApi:
         namespace.
 
         Args:
-            config_data (OptionalDict[str, str]): a partially loaded configuration dictionary (optional)
+            config_data (Optional[Dict[str, str][): a partially loaded configuration dictionary (optional)
 
         Returns:
             Dict[str, str]:
@@ -824,7 +824,7 @@ class KaggleApi:
         from the environment, it's not required.
 
         Args:
-            config_data (OptionalDict[str, str]): the Configuration object to save a username and
+            config_data (Optional[Dict[str, str]]): the Configuration object to save a username and
             quiet (bool): suppress verbose print of output (default is False)
 
         Returns:
@@ -1154,13 +1154,13 @@ class KaggleApi:
         """Make a call to list competitions, format the response, and return a list of ApiCompetition instances.
 
         Args:
-            group (Optionalstr): group to filter result to
-            category (Optionalstr): category to filter result to; use 'all' to get closed competitions
-            sort_by (Optionalstr): how to sort the result, see valid_competition_sort_by for options
-            page (Optionalint): the page to return (default is 1)
-            search (Optionalstr): a search term to use (default is empty string)
-            page_size (Optionalint): the number of items to show on a page
-            page_token (Optionalstr): the page token for pagination
+            group (Optional[str]): group to filter result to
+            category (Optional[str]): category to filter result to; use 'all' to get closed competitions
+            sort_by (Optional[str]): how to sort the result, see valid_competition_sort_by for options
+            page (Optional[int]): the page to return (default is 1)
+            search (Optional[str]): a search term to use (default is empty string)
+            page_size (Optional[int]): the number of items to show on a page
+            page_token (Optional[str]): the page token for pagination
 
         Returns:
             Union[ApiListCompetitionsResponse, None]:
@@ -1218,14 +1218,14 @@ class KaggleApi:
         """A wrapper for competitions_list for the client.
 
         Args:
-            group (Optionalstr): group to filter result to
-            category (Optionalstr): category to filter result to
-            sort_by (Optionalstr): how to sort the result, see valid_sort_by for options
-            page (Optionalint): the page to return (default is 1)
-            search (Optionalstr): a search term to use (default is empty string)
-            csv_display (Optionalbool): if True, print comma separated values
-            page_size (Optionalint): the number of items to show on a page
-            page_token (Optionalstr): the page token for pagination
+            group (Optional[str]): group to filter result to
+            category (Optional[str]): category to filter result to
+            sort_by (Optional[str]): how to sort the result, see valid_sort_by for options
+            page (Optional[int]): the page to return (default is 1)
+            search (Optional[str]): a search term to use (default is empty string)
+            csv_display (Optional[bool]): if True, print comma separated values
+            page_size (Optional[int]): the number of items to show on a page
+            page_token (Optional[str]): the page token for pagination
 
         Returns:
             None:
@@ -1264,9 +1264,9 @@ class KaggleApi:
         Args:
             file_name (str): the name of  the output file created by the kernel (not used for packages)
             message (str): the submission description
-            competition (Optionalstr): the competition name; if not given use the 'competition' config value
-            kernel (Optionalstr): the <owner>/<notebook> of the notebook to use for a code competition
-            kernel_version (Optionalint): the version number, returned by 'kaggle kernels push ...'
+            competition (Optional[str]): the competition name; if not given use the 'competition' config value
+            kernel (Optional[str]): the <owner>/<notebook> of the notebook to use for a code competition
+            kernel_version (Optional[int]): the version number, returned by 'kaggle kernels push ...'
             quiet (bool): suppress verbose output (default is False)
 
         Returns:
@@ -1360,12 +1360,12 @@ class KaggleApi:
         """Submits a competition using the client.
 
         Args:
-            file_name (Optionalstr): The competition metadata file.
-            message (Optionalstr): The submission description.
-            competition (Optionalstr): The competition name.
-            kernel (Optionalstr): The name of the kernel to submit to a code competition.
-            version (Optionalstr): The version of the kernel to submit to a code competition, e.g. '1'.
-            competition_opt (Optionalstr): An alternative competition option provided by cli.
+            file_name (Optional[str]): The competition metadata file.
+            message (Optional[str]): The submission description.
+            competition (Optional[str]): The competition name.
+            kernel (Optional[str]): The name of the kernel to submit to a code competition.
+            version (Optional[str]): The version of the kernel to submit to a code competition, e.g. '1'.
+            competition_opt (Optional[str]): An alternative competition option provided by cli.
             quiet (bool): Suppress verbose output (default is False).
 
         Returns:
@@ -1464,7 +1464,7 @@ class KaggleApi:
 
         Args:
             competition (str): The name of the competition.
-            page_token (Optionalstr): The page token for pagination.
+            page_token (Optional[str]): The page token for pagination.
             page_size (int): The number of items per page.
 
         Returns:
@@ -1522,7 +1522,7 @@ class KaggleApi:
         Args:
             competition (str): The name of the competition.
             file_name (str): The configuration file name.
-            path (Optionalstr): A path to download the file to.
+            path (Optional[str]): A path to download the file to.
             force (bool): Force the download if the file already exists (default False).
             quiet (bool): Suppress verbose output (default is False).
 
@@ -1552,7 +1552,7 @@ class KaggleApi:
 
         Args:
             competition (str): The name of the competition.
-            path (Optionalstr): A path to download the file to.
+            path (Optional[str]): A path to download the file to.
             force (bool): Force the download if the file already exists (default False).
             quiet (bool): Suppress verbose output (default is True).
 
@@ -1632,8 +1632,8 @@ class KaggleApi:
 
         Args:
             competition (str): the competition name to view leadboard for
-            page_size (Optionalint): the number of items to show on a page
-            page_token (Optionalstr): the page token for pagination
+            page_size (Optional[int]): the number of items to show on a page
+            page_token (Optional[str]): the page token for pagination
 
         Returns:
             Union[listApiLeaderboardSubmission, None, None]:
@@ -1671,8 +1671,8 @@ class KaggleApi:
             download (Any): if True, download the entire leaderboard
             csv_display (Any): if True, print comma separated values instead of table
             quiet (Any): suppress verbose output (default is False)
-            page_size (Optionalint): the number of items to show on a page
-            page_token (Optionalstr): the page token for pagination
+            page_size (Optional[int]): the number of items to show on a page
+            page_token (Optional[str]): the page token for pagination
         """
         competition = competition or competition_opt
         if not view and not download:
@@ -1716,17 +1716,17 @@ class KaggleApi:
         """Return a list of datasets.
 
         Args:
-            sort_by (Optionalstr): how to sort the result, see valid_dataset_sort_bys for options
-            size (Optionalstr): Deprecated
-            file_type (Optionalstr): the format, see valid_dataset_file_types for string options
-            license_name (Optionalstr): string descriptor for license, see valid_dataset_license_names
-            tag_ids (Optionalstr): tag identifiers to filter the search
-            search (Optionalstr): a search term to use (default is empty string)
-            user (Optionalstr): username to filter the search to
-            mine (Optionalbool): boolean if True, group is changed to "my" to return personal
-            page (Optionalint): the page to return (default is 1)
-            max_size (Optionalstr): the maximum size of the dataset to return (bytes)
-            min_size (Optionalstr): the minimum size of the dataset to return (bytes)
+            sort_by (Optional[str]): how to sort the result, see valid_dataset_sort_bys for options
+            size (Optional[str]): Deprecated
+            file_type (Optional[str]): the format, see valid_dataset_file_types for string options
+            license_name (Optional[str]): string descriptor for license, see valid_dataset_license_names
+            tag_ids (Optional[str]): tag identifiers to filter the search
+            search (Optional[str]): a search term to use (default is empty string)
+            user (Optional[str]): username to filter the search to
+            mine (Optional[bool]): boolean if True, group is changed to "my" to return personal
+            page (Optional[int]): the page to return (default is 1)
+            max_size (Optional[str]): the maximum size of the dataset to return (bytes)
+            min_size (Optional[str]): the minimum size of the dataset to return (bytes)
 
         Returns:
             Union[listApiDataset, None, None]:
@@ -2705,16 +2705,16 @@ class KaggleApi:
         Args:
             page (int): The page of results to return (default is 1).
             page_size (int): The number of results per page (default is 20).
-            dataset (Optionalstr): If defined, filter to this dataset (default is None).
-            competition (Optionalstr): If defined, filter to this competition (default is None).
-            parent_kernel (Optionalstr): If defined, filter to those with the specified parent.
-            search (Optionalstr): A custom search string to pass to the list query.
+            dataset (Optional[str]): If defined, filter to this dataset (default is None).
+            competition (Optional[str]): If defined, filter to this competition (default is None).
+            parent_kernel (Optional[str]): If defined, filter to those with the specified parent.
+            search (Optional[str]): A custom search string to pass to the list query.
             mine (bool): If True, return personal kernels.
-            user (Optionalstr): Filter results to a specific user.
-            language (Optionalstr): The programming language of the kernel.
-            kernel_type (Optionalstr): The type of kernel, one of valid_list_kernel_types.
-            output_type (Optionalstr): The output type, one of valid_list_output_types.
-            sort_by (Optionalstr): How to sort the result, see valid_list_sort_by for options.
+            user (Optional[str]): Filter results to a specific user.
+            language (Optional[str]): The programming language of the kernel.
+            kernel_type (Optional[str]): The type of kernel, one of valid_list_kernel_types.
+            output_type (Optional[str]): The output type, one of valid_list_output_types.
+            sort_by (Optional[str]): How to sort the result, see valid_list_sort_by for options.
 
         Returns:
             Union[[ListApiKernelMetadata, None], None]: A list of ApiKernelMetadata objects.
@@ -2939,7 +2939,7 @@ class KaggleApi:
 
         Args:
             folder (str): The path to the folder.
-            timeout (Optionalstr): The maximum run time in seconds.
+            timeout (Optional[str]): The maximum run time in seconds.
 
         Returns:
             ApiSaveKernelResponse: An ApiSaveKernelResponse object.
@@ -3432,11 +3432,11 @@ class KaggleApi:
         """Returns a list of models.
 
         Args:
-            sort_by (Optionalstr): How to sort the result, see valid_model_sort_bys for options.
-            search (Optionalstr): A search term to use (default is empty string).
-            owner (Optionalstr): The username or organization slug to which to filter the search.
+            sort_by (Optional[str]): How to sort the result, see valid_model_sort_bys for options.
+            search (Optional[str]): A search term to use (default is empty string).
+            owner (Optional[str]): The username or organization slug to which to filter the search.
             page_size (int): The page size to return (default is 20).
-            page_token (Optionalstr): The page token for pagination.
+            page_token (Optional[str]): The page token for pagination.
 
         Returns:
             Union[[ListApiModel, None], None]: A list of ApiModel objects.
@@ -4193,7 +4193,7 @@ class KaggleApi:
 
         Args:
             model_instance_version (str): The string identifier of the model instance version, in format [owner]/[model-name]/[framework]/[instance-slug]/[version-number].
-            path (Optionalstr): The path to which to download the model instance version.
+            path (Optional[str]): The path to which to download the model instance version.
             force (bool): Force the download if the file already exists (default is False).
             quiet (bool): Suppress verbose output (default is True).
             untar (bool): If True, untar files upon download (default is False).
@@ -4875,7 +4875,7 @@ class KaggleApi:
         {username}/{dataset-slug} or {username}/{dataset-slug}/{version-number}.
 
         Args:
-            dataset (Optionalstr): The dataset name to validate.
+            dataset (Optional[str]): The dataset name to validate.
 
         Returns:
             None:
@@ -5012,7 +5012,7 @@ class KaggleApi:
         A kernel string is valid if it is in the format {username}/{kernel-slug}.
 
         Args:
-            kernel (Optionalstr): The kernel name to validate.
+            kernel (Optional[str]): The kernel name to validate.
 
         Returns:
             None:

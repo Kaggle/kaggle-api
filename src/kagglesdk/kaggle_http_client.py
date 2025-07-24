@@ -64,6 +64,7 @@ class KaggleHttpClient(object):
         self._env = env or get_env()
         self._signed_in = None
         self._endpoint = get_endpoint(self._env)
+        print('endpoint', self._endpoint)
         self._verbose = verbose
         self._session = None
         self._username = username
@@ -204,8 +205,8 @@ class KaggleHttpClient(object):
             "redirect_uri": redirect_uri,
             "scope": " ".join(scope),
             "state": state,
-            "code_challenge": code_challenge,
-            "code_challenge_method": "S256",
+            #"code_challenge": code_challenge,
+            #"code_challenge_method": "S256",
             "response_type": "code",
             "response_mode": "query",
         }
@@ -250,4 +251,4 @@ class KaggleHttpClient(object):
         self._signed_in = False
 
     def _get_request_url(self, service_name: str, request_name: str):
-        return f"{self._endpoint}/v1/{service_name}/{request_name}"
+        return f"{self._endpoint}/api/v1/{service_name}/{request_name}"

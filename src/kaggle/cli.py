@@ -230,6 +230,15 @@ def parse_competitions(subparsers) -> None:
     parser_competitions_submissions_optional.add_argument(
         "-q", "--quiet", dest="quiet", action="store_true", help=Help.param_quiet
     )
+    parser_competitions_submissions_optional.add_argument(
+        "--page-size", dest="page_size", required=False, type=int, help=Help.param_page_size
+    )
+    parser_competitions_submissions_optional.add_argument(
+        "--page-token", dest="page_token", required=False, help=Help.param_page_token
+    )
+    parser_competitions_submissions_optional.add_argument(
+        "--page", dest="page", required=False, type=int, help=Help.param_page
+    )
     parser_competitions_submissions._action_groups.append(parser_competitions_submissions_optional)
     parser_competitions_submissions.set_defaults(func=api.competition_submissions_cli)
 

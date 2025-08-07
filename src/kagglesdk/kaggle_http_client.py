@@ -103,10 +103,13 @@ class KaggleHttpClient(object):
     def _prepare_response(self, response_type, http_response):
         """Extract the kaggle response and raise an exception if it is an error."""
         self._print_response(http_response)
-        if "application/json" in http_response.headers["Content-Type"]:
-            resp = http_response.json()
-            if "code" in resp and resp["code"] >= 400:
-                raise requests.exceptions.HTTPError(resp["message"], response=http_response)
+        try:
+            if "application/json" in http_response.headers["Content-Type"]:
+                resp = http_response.json()
+                if "code" in resp and resp["code"] >= 400:
+                    raise requests.exceptions.HTTPError(resp["message"], response=http_response)
+        except KeyError:
+            pass
         http_response.raise_for_status()
         if response_type is None:  # Method doesn't have a return type
             return None

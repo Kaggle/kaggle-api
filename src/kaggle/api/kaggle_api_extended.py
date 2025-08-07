@@ -1081,7 +1081,7 @@ class KaggleApi:
         """Builds a Kaggle client with the given parameters.
 
         Args:
-            args (Liststr): A list of arguments.
+            args (List[str]): A list of arguments.
             username (str): The username to use for authentication.
             password (str): The password to use for authentication.
             api_token (str): The API token to use for authentication.
@@ -1664,13 +1664,13 @@ class KaggleApi:
         """A wrapper for competition_leaderbord_view that will print the results as a table or comma separated values.
 
         Args:
-            competition (Any): the competition name to view leadboard for
-            competition_opt (Any): an alternative competition option provided by cli
+            competition (str): the competition name to view leadboard for
+            competition_opt (str): an alternative competition option provided by cli
             path (Any): a path to download to, if download is True
-            view (Any): if True, show the results in the terminal as csv or table
-            download (Any): if True, download the entire leaderboard
-            csv_display (Any): if True, print comma separated values instead of table
-            quiet (Any): suppress verbose output (default is False)
+            view (bool): if True, show the results in the terminal as csv or table
+            download (bool): if True, download the entire leaderboard
+            csv_display (bool): if True, print comma separated values instead of table
+            quiet (bool): suppress verbose output (default is False)
             page_size (Optional[int]): the number of items to show on a page
             page_token (Optional[str]): the page token for pagination
         """
@@ -2717,7 +2717,7 @@ class KaggleApi:
             sort_by (Optional[str]): How to sort the result, see valid_list_sort_by for options.
 
         Returns:
-            Union[[ListApiKernelMetadata, None], None]: A list of ApiKernelMetadata objects.
+            Union[List[ApiKernelMetadata, None], None]: A list of ApiKernelMetadata objects.
         """
         if int(page) <= 0:
             raise ValueError("Page number must be >= 1")
@@ -3439,7 +3439,7 @@ class KaggleApi:
             page_token (Optional[str]): The page token for pagination.
 
         Returns:
-            Union[[ListApiModel, None], None]: A list of ApiModel objects.
+            Union[List[ApiModel, None], None]: A list of ApiModel objects.
         """
         sort_by_val = ListModelsOrderBy.LIST_MODELS_ORDER_BY_HOTNESS
         if sort_by:

@@ -1400,7 +1400,8 @@ class KaggleApi:
         competition: str,
         group: SubmissionGroup = SubmissionGroup.SUBMISSION_GROUP_ALL,
         sort: SubmissionSortBy = SubmissionSortBy.SUBMISSION_SORT_BY_DATE,
-        page_token: int = 0,
+        page_number: int = -1,
+        page_token: str = "",
         page_size: int = 20,
     ) -> list[ApiSubmission | None] | None:
         """Gets the list of submissions for a competition.
@@ -1409,7 +1410,8 @@ class KaggleApi:
             competition (str): The name of the competition.
             group (SubmissionGroup): The submission group.
             sort (SubmissionSortBy): The sort-by option.
-            page_token (int): Token for pagination.
+            page_number (int): Page number for old-style pagination.
+            page_token (str): The pageToken for pagination.
             page_size (int): The number of items per page.
 
         Returns:
@@ -1418,7 +1420,9 @@ class KaggleApi:
         with self.build_kaggle_client() as kaggle:
             request = ApiListSubmissionsRequest()
             request.competition_name = competition
-            request.page = page_token
+            request.page = page_number
+            request.page_token = page_token
+            request.page_size = page_size
             request.group = group
             request.sort_by = sort
             response = kaggle.competitions.competition_api_client.list_submissions(request)
@@ -1426,15 +1430,22 @@ class KaggleApi:
             return result
 
     def competition_submissions_cli(
-        self, competition=None, competition_opt=None, csv_display=False, page_token=None, page_size=20, quiet=False
+        self,
+        competition=None,
+        competition_opt=None,
+        csv_display=False,
+        page=-1,
+        page_token="",
+        page_size=20,
+        quiet=False,
     ):
-        """A wrapper to competition_submission, will return either json or csv to
-        the user.
+        """A wrapper to competition_submission, will return either json or csv to the user.
 
         Args:
             competition: the name of the competition. If None, look to config
             competition_opt: an alternative competition option provided by cli
             csv_display: if True, print comma separated values
+            page: page number
             page_token: token for pagination
             page_size: the number of items per page
             quiet: suppress verbose output (default is False)
@@ -1448,7 +1459,9 @@ class KaggleApi:
         if competition is None:
             raise ValueError("No competition specified")
         else:
-            submissions = self.competition_submissions(competition, page_token=page_token, page_size=page_size)
+            submissions = self.competition_submissions(
+                competition, page_number=page, page_token=page_token, page_size=page_size
+            )
             if submissions:
                 if csv_display:
                     self.print_csv(submissions, self.submission_fields)

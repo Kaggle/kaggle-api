@@ -701,6 +701,21 @@ class TestKaggleApi(unittest.TestCase):
         except ApiException as e:
             self.fail(f"model_instance_update failed: {e}")
 
+    def test_model_instance_f_list(self):
+        if self.model_instance == "":
+            self.test_model_instance_c_get()
+        try:
+            a, b, c, d = self.model_instance.split("/")
+            inst_files_resp = api.model_instances_list(f"{a}/{b}")
+            self.assertIsInstance(inst_files_resp.instances, list)
+            self.assertGreater(len(inst_files_resp.instances), 0)
+            [
+                self.assertTrue(hasattr(inst_files_resp.piListModelInstancesResponse[0], api.camel_to_snake(f)))
+                for f in api.model_instance_fields
+            ]
+        except ApiException as e:
+            self.fail(f"model_instance_files failed: {e}")
+
     # Model instance versions
 
     def test_model_instance_version_a_create(self):
@@ -744,6 +759,10 @@ class TestKaggleApi(unittest.TestCase):
                 if os.path.exists("tmp"):
                     os.rmdir("tmp")
                 return
+
+
+    def test_model_instance_version_d_list(self):
+        pass
 
     # Kernel deletion
 

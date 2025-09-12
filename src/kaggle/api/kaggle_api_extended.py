@@ -141,6 +141,10 @@ from kagglesdk.models.types.model_api_service import (
     ApiDeleteModelResponse,
     ApiModelInstance,
     ApiListModelInstanceVersionFilesResponse,
+    ApiListModelInstanceVersionsRequest,
+    ApiListModelInstanceVersionsResponse,
+    ApiListModelInstancesRequest,
+    ApiListModelInstancesResponse,
 )
 from kagglesdk.models.types.model_enums import ListModelsOrderBy, ModelInstanceType, ModelFramework
 from kagglesdk.models.types.model_types import Owner
@@ -604,6 +608,10 @@ class KaggleApi:
     model_fields = ["id", "ref", "title", "subtitle", "author"]
     model_all_fields = ["id", "ref", "author", "slug", "title", "subtitle", "isPrivate", "description", "publishTime"]
     model_file_fields = ["name", "size", "creationDate"]
+    model_instance_fields = ["versionNumber", "versionNotes", "creationStatus", "totalUncompressedBytes"]
+    model_instance_labels = ["version", "notes", "created", "size"]
+    model_instance_version_fields = ["versionNumber", "variationSlug", "modelTitle", "isPrivate"]
+    model_instance_version_labels = ["version", "variation", "title", "private"]
 
     def __init__(self, enable_oauth: bool = False):
         self.enable_oauth = enable_oauth
@@ -4042,6 +4050,29 @@ class KaggleApi:
             else:
                 self.print_table(result.files, fields)
 
+    def model_instances_list(self, model_instance, page_size=20, page_token=None) -> ApiListModelInstancesResponse:
+        owner_slug, model_slug = self.split_model_string(model_instance)
+        with self.build_kaggle_client() as kaggle:
+            request = ApiListModelInstancesRequest()
+            request.owner_slug = owner_slug
+            request.model_slug = model_slug
+            request.page_size = page_size
+            request.page_token = page_token
+            return kaggle.models.model_api_client.list_model_instances(request)
+
+    def model_instances_list_cli(self, model_instance, csv_display=False, page_size=20, page_token=None):
+        response = self.model_instances_list(model_instance, page_size, page_token)
+        if response.next_page_token:
+            print("Next Page Token = {}".format(response.next_page_token))
+        instances = response.instances
+        if instances:
+            if csv_display:
+                self.print_csv(instances, self.model_instance_fields, self.model_instance_labels)
+            else:
+                self.print_table(instances, self.model_instance_fields, self.model_instance_labels)
+        else:
+            print("No instances found")
+
     def model_instance_update(self, folder):
         """Updates a model instance.
 
@@ -4348,6 +4379,37 @@ class KaggleApi:
                 self.print_csv(result.files, fields, labels)
             else:
                 self.print_table(result.files, fields, labels)
+
+    def model_instance_versions_list(
+        self, model_instance, page_size=20, page_token=None
+    ) -> ApiListModelInstanceVersionsResponse:
+        owner_slug, model_slug, framework, instance_slug = self.split_model_instance_string(model_instance)
+        with self.build_kaggle_client() as kaggle:
+            request = ApiListModelInstanceVersionsRequest()
+            request.owner_slug = owner_slug
+            request.model_slug = model_slug
+            request.framework = self.lookup_enum(ModelFramework, ModelFramework.MODEL_FRAMEWORK_UNSPECIFIED, framework)
+            request.instance_slug = instance_slug
+            request.page_size = page_size
+            request.page_token = page_token
+            return kaggle.models.model_api_client.list_model_instance_versions(request)
+
+    def model_instance_versions_list_cli(self, model_instance, csv_display=False, page_size=20, page_token=None):
+        response = self.model_instance_versions_list(model_instance, page_size, page_token)
+        if response.next_page_token:
+            print("Next Page Token = {}".format(response.next_page_token))
+        versions = response.version_list
+        if versions:
+            if csv_display:
+                self.print_csv(
+                    versions.versions, self.model_instance_version_fields, self.model_instance_version_labels
+                )
+            else:
+                self.print_table(
+                    versions.versions, self.model_instance_version_fields, self.model_instance_version_labels
+                )
+        else:
+            print("No versions found")
 
     def model_instance_version_delete(
         self, model_instance_version: str, no_confirm: bool = False

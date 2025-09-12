@@ -781,6 +781,24 @@ def parse_model_instances(subparsers) -> None:
     parser_model_instances_files._action_groups.append(parser_model_instances_files_optional)
     parser_model_instances_files.set_defaults(func=api.model_instance_files_cli)
 
+    # Model Instances list
+    parser_model_instances_list = subparsers_model_instances.add_parser(
+        "list", formatter_class=argparse.RawTextHelpFormatter, help=Help.command_model_instances_list
+    )
+    parser_model_instances_list_optional = parser_model_instances_list._action_groups.pop()
+    parser_model_instances_list_optional.add_argument("model_instance", help=Help.param_model_instance)
+    parser_model_instances_list_optional.add_argument(
+        "-v", "--csv", dest="csv_display", action="store_true", help=Help.param_csv
+    )
+    parser_model_instances_list_optional.add_argument(
+        "--page-size", dest="page_size", default=20, type=int, help=Help.param_page_size
+    )
+    parser_model_instances_list_optional.add_argument(
+        "--page-token", dest="page_token", required=False, help=Help.param_page_token
+    )
+    parser_model_instances_list._action_groups.append(parser_model_instances_list_optional)
+    parser_model_instances_list.set_defaults(func=api.model_instances_list_cli)
+
     # Models Instances delete
     parser_model_instances_delete = subparsers_model_instances.add_parser(
         "delete", formatter_class=argparse.RawTextHelpFormatter, help=Help.command_model_instances_delete
@@ -816,6 +834,24 @@ def parse_model_instance_versions(subparsers) -> None:
     subparsers_model_intance_versions = parser_model_instance_versions.add_subparsers(title="commands", dest="command")
     subparsers_model_intance_versions.required = True
     subparsers_model_intance_versions.choices = Help.model_instance_versions_choices
+
+    # Model Instance Versions list
+    parser_model_instance_versions_list = subparsers_model_intance_versions.add_parser(
+        "list", formatter_class=argparse.RawTextHelpFormatter, help=Help.command_model_instance_versions_list
+    )
+    parser_model_instance_versions_list_optional = parser_model_instance_versions_list._action_groups.pop()
+    parser_model_instance_versions_list_optional.add_argument("model_instance", help=Help.param_model_instance)
+    parser_model_instance_versions_list_optional.add_argument(
+        "-v", "--csv", dest="csv_display", action="store_true", help=Help.param_csv
+    )
+    parser_model_instance_versions_list_optional.add_argument(
+        "--page-size", dest="page_size", default=20, type=int, help=Help.param_page_size
+    )
+    parser_model_instance_versions_list_optional.add_argument(
+        "--page-token", dest="page_token", required=False, help=Help.param_page_token
+    )
+    parser_model_instance_versions_list._action_groups.append(parser_model_instance_versions_list_optional)
+    parser_model_instance_versions_list.set_defaults(func=api.model_instance_versions_list_cli)
 
     # Model Instance Versions create
     parser_model_instance_versions_create = subparsers_model_intance_versions.add_parser(
@@ -1032,8 +1068,8 @@ class Help(object):
     datasets_choices = ["list", "files", "download", "create", "version", "init", "metadata", "status", "delete"]
     kernels_choices = ["list", "files", "get", "init", "push", "pull", "output", "status", "update", "delete"]
     models_choices = ["instances", "i", "variations", "v", "get", "list", "init", "create", "delete", "update"]
-    model_instances_choices = ["versions", "v", "get", "files", "init", "create", "delete", "update"]
-    model_instance_versions_choices = ["init", "create", "download", "delete", "files"]
+    model_instances_choices = ["versions", "v", "get", "files", "list", "init", "create", "delete", "update"]
+    model_instance_versions_choices = ["init", "create", "download", "delete", "files", "list"]
     files_choices = ["upload"]
     config_choices = ["view", "set", "unset"]
     auth_choices = ["login", "print-access-token", "revoke"]
@@ -1280,6 +1316,7 @@ class Help(object):
     command_model_instances_get = "Get a model instance"
     command_model_instances_init = "Initialize metadata file for model instance creation"
     command_model_instances_files = "List files for the current version of a model instance"
+    command_model_instances_list = "List instances of a model"
     command_model_instances_new = "Create a new model instance"
     param_model_instance_downfile = (
         "Folder for downloading the special model-instance-metadata.json file "
@@ -1305,6 +1342,7 @@ class Help(object):
     command_model_instance_versions_delete = "Delete a model instance version"
     command_model_instance_versions_download = "Download model instance version files"
     command_model_instance_versions_files = "List model instance version files"
+    command_model_instance_versions_list = "List model instance versions"
     param_model_instance_version_notes = "Version notes to record for the new model instance version"
 
     # Files params

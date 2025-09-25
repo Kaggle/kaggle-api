@@ -710,7 +710,7 @@ class TestKaggleApi(unittest.TestCase):
             self.assertIsInstance(inst_files_resp.instances, list)
             self.assertGreater(len(inst_files_resp.instances), 0)
             [
-                self.assertTrue(hasattr(inst_files_resp.piListModelInstancesResponse[0], api.camel_to_snake(f)))
+                self.assertTrue(hasattr(inst_files_resp.instances[0], api.camel_to_snake(f)))
                 for f in api.model_instance_fields
             ]
         except ApiException as e:
@@ -759,7 +759,6 @@ class TestKaggleApi(unittest.TestCase):
                 if os.path.exists("tmp"):
                     os.rmdir("tmp")
                 return
-
 
     def test_model_instance_version_d_list(self):
         pass

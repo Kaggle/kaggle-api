@@ -1895,6 +1895,7 @@ class KaggleApi:
         meta_file = self.get_dataset_metadata_file(effective_path)
         with open(meta_file, "r") as f:
             metadata = json.load(f)
+            metadata = metadata.get("info") or metadata
             update_settings = DatasetSettings()
             update_settings.title = metadata.get("title") or ""
             update_settings.subtitle = metadata.get("subtitle") or ""
@@ -1943,7 +1944,7 @@ class KaggleApi:
         Returns:
             The path to the downloaded metadata file.
         """
-        (owner_slug, dataset_slug, effective_path) = self._dataset_metadata_prep(dataset, path)
+        (owner_slug, dataset_slug, effective_path) = self.dataset_metadata_prep(dataset, path)
 
         if not os.path.exists(effective_path):
             os.makedirs(effective_path)

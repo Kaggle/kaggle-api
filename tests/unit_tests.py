@@ -330,11 +330,11 @@ class TestKaggleApi(unittest.TestCase):
 
     def test_competition_a_list(self):
         try:
-            competitions = api.competitions_list(group="general")
+            competitions = api.competitions_list(group="general").competitions
             self.assertGreater(len(competitions), 0)
             self.assertLessEqual(len(competitions), 20)
             [self.assertTrue(hasattr(competitions[0], api.camel_to_snake(f))) for f in api.competition_fields]
-            competitions = api.competitions_list(page=2, category="gettingStarted", sort_by="prize")
+            competitions = api.competitions_list(page=2, category="gettingStarted", sort_by="prize").competitions
             self.assertEqual(len(competitions), 1)
         except ApiException as e:
             self.fail(f"competitions_list failed: {e}")
@@ -710,7 +710,7 @@ class TestKaggleApi(unittest.TestCase):
             self.assertIsInstance(inst_files_resp.instances, list)
             self.assertGreater(len(inst_files_resp.instances), 0)
             [
-                self.assertTrue(hasattr(inst_files_resp.piListModelInstancesResponse[0], api.camel_to_snake(f)))
+                self.assertTrue(hasattr(inst_files_resp.instances[0], api.camel_to_snake(f)))
                 for f in api.model_instance_fields
             ]
         except ApiException as e:
@@ -759,7 +759,6 @@ class TestKaggleApi(unittest.TestCase):
                 if os.path.exists("tmp"):
                     os.rmdir("tmp")
                 return
-
 
     def test_model_instance_version_d_list(self):
         pass

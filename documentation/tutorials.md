@@ -6,9 +6,9 @@ These tutorials illustrate how to use a sequence of Kaggle CLI commands to accom
 
 Before starting these tutorials, please make sure you have:
 
-1.  Installed the Kaggle CLI.
-2.  Downloaded your `kaggle.json` API token from your Kaggle account page (e.g., `https://www.kaggle.com/settings`) and placed it in the `~/.kaggle/` directory (or `C:\Users\<Windows-username>\.kaggle\` on Windows).
-3.  Logged in to your kaggle.com account in a web browser. This will allow you to easily verify the results of the CLI commands in the "Your Work" section of your Kaggle profile.
+1.  Installed the Kaggle CLI, following the instructions [here](https://github.com/Kaggle/kaggle-api/blob/main/documentation/intro.md#installation).
+2.  Set up your API credentials, following the instructions [here](https://github.com/Kaggle/kaggle-api/blob/main/documentation/intro.md#api-credentials)
+3.  Logged in to Kaggle in a web browser. This will allow you to verify the results of the CLI commands in the [`Your Work`](https://www.kaggle.com/work) section of your Kaggle profile.
 
 ## Tutorial: Create a Dataset
 
@@ -54,11 +54,11 @@ This tutorial walks you through creating a new dataset on Kaggle.
     ```
     You can add `--public` to make it public immediately.
 
-6.  **Verify on Kaggle.com.** Go to your Kaggle profile and check the "Datasets" tab in the "Your Work" section. You should see "My Sample Dataset".
+6.  **Verify on Kaggle.com.** Refresh the [`Datasets` tab in `Your Work`](https://www.kaggle.com/work/datasets). You should see "My Sample Dataset".
 
-## Tutorial: Download a Dataset and Prepare for Analysis
+## Tutorial: Find and Download a Dataset
 
-This tutorial explains how to find, download, and prepare a Kaggle dataset for local analysis using the CLI.
+This tutorial explains how to find and download using the CLI.
 
 1.  **Search for a Dataset (Optional).**
     *   If you know the dataset you want, you can skip this step. Otherwise, you can search for datasets. For example, to search for datasets related to "iris":
@@ -91,21 +91,11 @@ This tutorial explains how to find, download, and prepare a Kaggle dataset for l
         # For uciml/iris, it's iris.zip
         unzip iris.zip
         ```
+    
+
+5.  **Verify the results.**
     *   After unzipping, you should see the data files (e.g., `Iris.csv`, `database.sqlite`).
 
-5.  **Prepare for Analysis.**
-    *   The dataset is now downloaded and extracted. The primary data file for the Iris dataset is `Iris.csv`.
-    *   You can now use your preferred tools (e.g., Python with libraries like Pandas and Scikit-learn, R, etc.) to load and analyze the data.
-    *   For example, in a Python script within the `iris-dataset-analysis` directory, you might load the data using Pandas:
-        ```python
-        import pandas as pd
-        df = pd.read_csv('Iris.csv')
-        print(df.head())
-        print(df.info())
-        ```
-
-This completes the process of downloading a dataset and preparing it for analysis using the Kaggle CLI.
-You can adapt these steps for any dataset on Kaggle.
 
 ## Tutorial: Update a Kernel (Notebook)
 
@@ -113,8 +103,7 @@ This tutorial shows how to download an existing kernel, modify it, and push the 
 
 1.  **Create or identify a kernel on Kaggle.com.**
     *   Log in to kaggle.com.
-    *   Find an existing notebook (or create one). For this tutorial, let's assume its title is "My CLI Test Kernel".
-    *   If the notebook has not been saved before, make a small change and **save a version** of the notebook on Kaggle.com (e.g., click "Save Version" and choose "Save & Run All (Commit)"). You cannot pull or push a kernel that is only in draft form.
+    *   Find an existing notebook you own (or create one). For this tutorial, let's assume its title is "My CLI Test Kernel".
     *   Note the kernel slug from the browser's address bar. It will be something like `YOUR_USERNAME/my-cli-test-kernel`.
 
 2.  **Create a new local directory for your kernel.**
@@ -135,7 +124,7 @@ This tutorial shows how to download an existing kernel, modify it, and push the 
 4.  **Edit the kernel or metadata.**
     *   Open the downloaded notebook file (e.g., `my-cli-test-kernel.ipynb`) and make some changes to the code or content.
     *   Open `kernel-metadata.json`. Let's add "benchmark" to the keywords. Find the `"keywords": []` line and change it to `"keywords": ["benchmark"]`.
-    *   *Note: While you can edit keywords here, it's often best to manage them on kaggle.com, as there might be a restricted list of allowed keywords.*
+    *   *Note: While you can edit keywords here, it's often best to manage them on kaggle.com, as there is a restricted list of allowed keywords.*
 
 5.  **Push the kernel.** This uploads your changes and the updated metadata, then runs the kernel on Kaggle.
 
@@ -143,7 +132,7 @@ This tutorial shows how to download an existing kernel, modify it, and push the 
     kaggle kernels push -p .
     ```
 
-6.  **Verify on Kaggle.com.** Refresh the notebook page on kaggle.com. You should see your code changes and the "benchmark" tag added to the kernel settings.
+6.  **Verify on Kaggle.com.** Refresh the [`Code` tab in `Your Work`](https://www.kaggle.com/work/code). You should see your code changes and the "benchmark" tag added to the kernel settings.
 
 ## Tutorial: Create a Model
 
@@ -184,7 +173,7 @@ This tutorial guides you through creating a new model on Kaggle.
     kaggle models create -p .
     ```
 
-6.  **Verify on Kaggle.com.** Go to your Kaggle profile and check the "Models" tab in the "Your Work" section. You should see "My Awesome AI Model".
+6.  **Verify on Kaggle.com.** Refresh the [`Models` tab in `Your Work`](https://www.kaggle.com/work/models). You should see "My Awesome AI Model".
 
 ## Tutorial: Create a Model Instance
 
@@ -228,7 +217,7 @@ This tutorial shows how to create an instance under an existing model. A model i
     kaggle models instances create -p .
     ```
 
-6.  **Verify on Kaggle.com.** Go to your model's page on Kaggle. You should see a new "jax-implementation" instance listed, and it will have one version containing `flax_model.params`.
+6.  **Verify on Kaggle.com.** Go to your model's page on Kaggle by clicking on the model under in the [`Models` tab on `Your Work`](https://www.kaggle.com/work/models). You should see a new "jax-implementation" instance listed, and it will have one version containing `flax_model.params`.
 
 ## Tutorial: Create a Model Instance Version
 
@@ -252,7 +241,7 @@ This tutorial explains how to add a new version to an existing model instance, f
     ```
     *Note: The `-p .` means all files in the current directory will be uploaded as part of this new version. If you only want to upload `flax_model_v2.params`, ensure only it (and any other V2 files) are in a directory and point `-p` to that directory, or manage your files carefully.*
 
-4.  **Verify on Kaggle.com.** Go to your model instance page on Kaggle (e.g., `YOUR_USERNAME/my-awesome-ai-model/jax/jax-implementation`). You should see a new version (e.g., version 2) listed with your notes and the new files.
+4.  **Verify on Kaggle.com.** Go to your model instance page on Kaggle (e.g., `YOUR_USERNAME/my-awesome-ai-model/jax/jax-implementation`) by clicking on the [`Models` tab on `Your Work`](https://www.kaggle.com/work/models). You should see a new version (e.g., version 2) listed with your notes and the new files.
 
 ## Tutorial: How to Submit to a Competition
 
@@ -260,8 +249,8 @@ This tutorial walks you through the process of making a submission to a Kaggle c
 
 1.  **Find a Competition and Accept Rules.**
     *   First, you need to find a competition. You can list active competitions using `kaggle competitions list`.
-    *   For this tutorial, we'll use the "titanic" competition, which is a common starting point. You can find it at `https://www.kaggle.com/c/titanic`.
-    *   **Important**: Before you can download data or submit, you *must* accept the competition's rules on the Kaggle website. Navigate to the competition page (e.g., `https://www.kaggle.com/c/titanic/rules`) and accept the terms.
+    *   For this tutorial, we'll use the "titanic" competition, which is a common starting point. You can find it at [`https://www.kaggle.com/c/titanic`](https://www.kaggle.com/c/titanic).
+    *   **Important**: Before you can download data or submit, you *must* join the competition and accept the competition's rules on the Kaggle website. Navigate to the competition on kaggle.com to do this.
 
 2.  **Create a Directory and Download Competition Files.**
     *   Create a new directory for your competition files and navigate into it.
@@ -307,14 +296,13 @@ This tutorial walks you through the process of making a submission to a Kaggle c
 
 5.  **Check Your Submission Status.**
     *   After submitting, you'll get a message indicating success or failure.
-    *   You can check your submission's score and status on the "My Submissions" tab of the competition page on Kaggle.com (e.g., `https://www.kaggle.com/c/titanic/submissions`).
+    *   You can check your submission's score and status on the "My Submissions" tab of the competition page on Kaggle.com (e.g., [`https://www.kaggle.com/c/titanic/submissions`](https://www.kaggle.com/c/titanic/submissions)).
     *   You can also list your recent submissions and their scores via the CLI:
         ```bash
         kaggle competitions submissions -c titanic
         ```
     *   This command will show your submission, its status (e.g., `complete`, `error`), and your public/private scores if available.
 
-This completes the process of submitting to a Kaggle competition using the CLI!
 
 ## Tutorial: How to Submit to a Code Competition
 
@@ -322,7 +310,7 @@ This tutorial walks you through the process of submitting to a code competition 
 
 1.  **Find a Code Competition.**
 
-    *   First, you need to find a code competition to participate in. You can browse the available competitions on the [Kaggle competitions page](https://www.kaggle.com/competitions).
+    *   First, you need to find a code competition to participate in. You can browse the available competitions on the [Kaggle competitions page](https://www.kaggle.com/competitions). Many Featured Competitions are code competitions.
 
 2.  **Download the Dataset.**
 
@@ -332,24 +320,26 @@ This tutorial walks you through the process of submitting to a code competition 
     ```
     *   Replace `<competition-name>` with the name of the competition you want to participate in.
 
-3.  **Create a Kernel.**
+3.  **Create a Notebook.**
 
-    *   Next, you need to create a kernel to work on your submission. A kernel is a computational environment that you can use to write and run your code. You can create a new kernel on the Kaggle website or by using the `kaggle kernels init` command.
+    *   Next, you need to create a Kaggle Notebook to work on your submission. A Kaggle Notebook contains the code and environment settings for Kaggle to run and evaluate your submission.  Follow the tutorial on [Creating / Updating Notebooks](https://github.com/Kaggle/kaggle-api/blob/main/documentation/tutorials.md#tutorial-update-a-kernel-notebook) if you're not sure how to do this.
 
 4.  **Write Your Code.**
 
-    *   Now it's time to write your code! You can use any programming language or framework that you are comfortable with. The goal is to create a model that can make predictions on the test set.
+    *   Now it's time to write your code! You can use any programming language or framework that is supported by Kaggle. The goal is to create a model that can make predictions on the test set.
 
 5.  **Submit Your Prediction.**
 
     *   Once you are happy with your model, you can submit your prediction to the competition. You can do this using the `kaggle competitions submit` command:
     ```bash
-    kaggle competitions submit -c <competition-name> -f <submission-file> -m <message>
+    kaggle competitions submit -c <competition-name> -k <username>/<notebook-slug> -m <message>
     ```
-    *   Replace `<competition-name>` with the name of the competition, `<submission-file>` with the path to your submission file, and `<message>` with a brief description of your submission.
+    *   Replace `<competition-name>` with the name of the competition, `<username>/<notebook-slug>` with the identifier of your notebook, and `<message>` with a brief description of your submission.
 
 6.  **Check Your Score.**
 
-    *   After you have submitted your prediction, you can check your score on the competition leaderboard. The leaderboard shows the scores of all the participants in the competition.
+    *   After you have submitted your prediction, you can check your score on the competition leaderboard. The leaderboard shows the scores of all the participants in the competition.  You can download the leaderboard using the `kaggle competitions leaderboard` command:
+    ```bash
+    kaggle competitions leaderboard <competition-name>
+    ```
 
-That's it! You have now successfully submitted to a code competition on Kaggle.

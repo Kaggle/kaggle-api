@@ -41,12 +41,6 @@ This tutorial walks you through creating a new dataset on Kaggle.
     *   Replace `"INSERT_SLUG_HERE"` with a URL-friendly version of your title, e.g., `"my-sample-dataset"`. The URL-friendly version is made by converting the title to lower-case and changing spaces to dashes.
     *   You can also add licenses, descriptions, and other relevant information.
 
-    *Example using `sed` (for Linux/macOS):*
-    ```bash
-    sed -i 's/INSERT_TITLE_HERE/My Sample Dataset/' dataset-metadata.json
-    sed -i 's/INSERT_SLUG_HERE/my-sample-dataset/' dataset-metadata.json
-    ```
-
 5.  **Create the dataset.** This command uploads your `sample_data.csv` and `dataset-metadata.json` to Kaggle.
 
     ```bash
@@ -159,14 +153,6 @@ This tutorial guides you through creating a new model on Kaggle.
     *   Replace `"INSERT_SLUG_HERE"` with a URL-friendly version of the title (e.g., `"my-awesome-ai-model"`).
     *   Fill out the `"description"` field and other relevant sections like `"licenses"`.
 
-    *Example using `sed` (for Linux/macOS):*
-    ```bash
-    # Replace YOUR_USERNAME with your actual Kaggle username
-    sed -i 's/INSERT_OWNER_SLUG_HERE/YOUR_USERNAME/' model-metadata.json
-    sed -i 's/INSERT_TITLE_HERE/My Awesome AI Model/' model-metadata.json
-    sed -i 's/INSERT_SLUG_HERE/my-awesome-ai-model/' model-metadata.json
-    ```
-
 5.  **Create the model.**
 
     ```bash
@@ -201,15 +187,6 @@ This tutorial shows how to create an instance under an existing model. A model i
     *   Replace `"INSERT_INSTANCE_SLUG_HERE"` with a slug for this instance (e.g., `"jax-implementation"`).
     *   Replace `"INSERT_FRAMEWORK_HERE"` with the model framework (e.g., `"jax"`, `"tensorflow"`, `"pytorch"`, `"sklearn"`).
     *   Update the `"instance_size_bytes"` if known, and add a `"description"`.
-
-    *Example using `sed` (for Linux/macOS):*
-    ```bash
-    # Replace YOUR_USERNAME and my-awesome-ai-model accordingly
-    sed -i 's/INSERT_OWNER_SLUG_HERE/YOUR_USERNAME/' model-instance-metadata.json
-    sed -i 's/INSERT_EXISTING_MODEL_SLUG_HERE/my-awesome-ai-model/' model-instance-metadata.json
-    sed -i 's/INSERT_INSTANCE_SLUG_HERE/jax-implementation/' model-instance-metadata.json
-    sed -i 's/INSERT_FRAMEWORK_HERE/jax/' model-instance-metadata.json
-    ```
 
 5.  **Create the model instance.** This uploads the files in the current directory (e.g., `flax_model.params`) along with the instance metadata.
 

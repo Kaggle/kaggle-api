@@ -1408,7 +1408,6 @@ class KaggleApi:
         competition: str,
         group: SubmissionGroup = SubmissionGroup.SUBMISSION_GROUP_ALL,
         sort: SubmissionSortBy = SubmissionSortBy.SUBMISSION_SORT_BY_DATE,
-        page_number: int = -1,
         page_token: str = "",
         page_size: int = 20,
     ) -> list[ApiSubmission | None] | None:
@@ -1418,7 +1417,6 @@ class KaggleApi:
             competition (str): The name of the competition.
             group (SubmissionGroup): The submission group.
             sort (SubmissionSortBy): The sort-by option.
-            page_number (int): Page number for old-style pagination.
             page_token (str): The pageToken for pagination.
             page_size (int): The number of items per page.
 
@@ -1428,7 +1426,6 @@ class KaggleApi:
         with self.build_kaggle_client() as kaggle:
             request = ApiListSubmissionsRequest()
             request.competition_name = competition
-            request.page = page_number
             request.page_token = page_token
             request.page_size = page_size
             request.group = group

@@ -11,6 +11,36 @@ class ApiVersion(enum.Enum):
   API_VERSION_V2 = 2
   """Experimental, admin-only, internal ('/api/i' endpoints)."""
 
+class AuthorizationContext(KaggleObject):
+  r"""
+  Attributes:
+    kernel_session_id (int)
+      If set, access token is restricted to be used only from the specified
+      notebook session.
+  """
+
+  def __init__(self):
+    self._kernel_session_id = None
+    self._freeze()
+
+  @property
+  def kernel_session_id(self) -> int:
+    r"""
+    If set, access token is restricted to be used only from the specified
+    notebook session.
+    """
+    return self._kernel_session_id or 0
+
+  @kernel_session_id.setter
+  def kernel_session_id(self, kernel_session_id: Optional[int]):
+    if kernel_session_id is None:
+      del self.kernel_session_id
+      return
+    if not isinstance(kernel_session_id, int):
+      raise TypeError('kernel_session_id must be of type int')
+    self._kernel_session_id = kernel_session_id
+
+
 class ExpireApiTokenRequest(KaggleObject):
   r"""
   Attributes:
@@ -212,11 +242,15 @@ class GenerateAccessTokenResponse(KaggleObject):
   Attributes:
     token (str)
     expires_in (int)
+    user_name (str)
+    user_id (int)
   """
 
   def __init__(self):
     self._token = ""
     self._expires_in = 0
+    self._user_name = ""
+    self._user_id = 0
     self._freeze()
 
   @property
@@ -246,39 +280,47 @@ class GenerateAccessTokenResponse(KaggleObject):
     self._expires_in = expires_in
 
   @property
+  def user_name(self) -> str:
+    return self._user_name
+
+  @user_name.setter
+  def user_name(self, user_name: str):
+    if user_name is None:
+      del self.user_name
+      return
+    if not isinstance(user_name, str):
+      raise TypeError('user_name must be of type str')
+    self._user_name = user_name
+
+  @property
+  def user_id(self) -> int:
+    return self._user_id
+
+  @user_id.setter
+  def user_id(self, user_id: int):
+    if user_id is None:
+      del self.user_id
+      return
+    if not isinstance(user_id, int):
+      raise TypeError('user_id must be of type int')
+    self._user_id = user_id
+
+  @property
   def expiresIn(self):
     return self.expires_in
 
-
-class AuthorizationContext(KaggleObject):
-  r"""
-  Attributes:
-    kernel_session_id (int)
-      If set, access token is restricted to be used only from the specified
-      notebook session.
-  """
-
-  def __init__(self):
-    self._kernel_session_id = None
-    self._freeze()
+  @property
+  def userName(self):
+    return self.user_name
 
   @property
-  def kernel_session_id(self) -> int:
-    r"""
-    If set, access token is restricted to be used only from the specified
-    notebook session.
-    """
-    return self._kernel_session_id or 0
+  def userId(self):
+    return self.user_id
 
-  @kernel_session_id.setter
-  def kernel_session_id(self, kernel_session_id: Optional[int]):
-    if kernel_session_id is None:
-      del self.kernel_session_id
-      return
-    if not isinstance(kernel_session_id, int):
-      raise TypeError('kernel_session_id must be of type int')
-    self._kernel_session_id = kernel_session_id
 
+AuthorizationContext._fields = [
+  FieldMetadata("kernelSessionId", "kernel_session_id", "_kernel_session_id", int, None, PredefinedSerializer(), optional=True),
+]
 
 ExpireApiTokenRequest._fields = [
   FieldMetadata("tokenId", "token_id", "_token_id", int, None, PredefinedSerializer(), optional=True),
@@ -297,9 +339,7 @@ GenerateAccessTokenRequest._fields = [
 GenerateAccessTokenResponse._fields = [
   FieldMetadata("token", "token", "_token", str, "", PredefinedSerializer()),
   FieldMetadata("expiresIn", "expires_in", "_expires_in", int, 0, PredefinedSerializer()),
-]
-
-AuthorizationContext._fields = [
-  FieldMetadata("kernelSessionId", "kernel_session_id", "_kernel_session_id", int, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("userName", "user_name", "_user_name", str, "", PredefinedSerializer()),
+  FieldMetadata("userId", "user_id", "_user_id", int, 0, PredefinedSerializer()),
 ]
 

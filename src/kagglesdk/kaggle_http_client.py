@@ -12,7 +12,6 @@ from urllib3.fields import RequestField
 from kagglesdk.kaggle_env import (
     get_endpoint,
     get_env,
-    is_in_kaggle_notebook,
     get_access_token_from_env,
     KaggleEnv,
 )

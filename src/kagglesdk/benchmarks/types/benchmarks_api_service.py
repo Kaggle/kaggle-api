@@ -1,4 +1,4 @@
-from kagglesdk.benchmarks.types.benchmark_types import BenchmarkResult, BenchmarkVersionIdentifier
+from kagglesdk.benchmarks.types.benchmark_types import BenchmarkResult
 from kagglesdk.kaggle_object import *
 from typing import List, Optional
 
@@ -156,38 +156,66 @@ class ApiBenchmarkLeaderboard(KaggleObject):
 class ApiGetBenchmarkLeaderboardRequest(KaggleObject):
   r"""
   Attributes:
-    identifier (BenchmarkVersionIdentifier)
+    owner_slug (str)
+    benchmark_slug (str)
+    version_number (int)
   """
 
   def __init__(self):
-    self._identifier = None
+    self._owner_slug = ""
+    self._benchmark_slug = ""
+    self._version_number = None
     self._freeze()
 
   @property
-  def identifier(self) -> Optional['BenchmarkVersionIdentifier']:
-    return self._identifier
+  def owner_slug(self) -> str:
+    return self._owner_slug
 
-  @identifier.setter
-  def identifier(self, identifier: Optional['BenchmarkVersionIdentifier']):
-    if identifier is None:
-      del self.identifier
+  @owner_slug.setter
+  def owner_slug(self, owner_slug: str):
+    if owner_slug is None:
+      del self.owner_slug
       return
-    if not isinstance(identifier, BenchmarkVersionIdentifier):
-      raise TypeError('identifier must be of type BenchmarkVersionIdentifier')
-    self._identifier = identifier
+    if not isinstance(owner_slug, str):
+      raise TypeError('owner_slug must be of type str')
+    self._owner_slug = owner_slug
+
+  @property
+  def benchmark_slug(self) -> str:
+    return self._benchmark_slug
+
+  @benchmark_slug.setter
+  def benchmark_slug(self, benchmark_slug: str):
+    if benchmark_slug is None:
+      del self.benchmark_slug
+      return
+    if not isinstance(benchmark_slug, str):
+      raise TypeError('benchmark_slug must be of type str')
+    self._benchmark_slug = benchmark_slug
+
+  @property
+  def version_number(self) -> int:
+    return self._version_number or 0
+
+  @version_number.setter
+  def version_number(self, version_number: Optional[int]):
+    if version_number is None:
+      del self.version_number
+      return
+    if not isinstance(version_number, int):
+      raise TypeError('version_number must be of type int')
+    self._version_number = version_number
 
   def endpoint(self):
-    path = '/api/v1/benchmarks/leaderboard'
+    if self.version_number:
+      path = '/api/v1/benchmarks/{owner_slug}/{benchmark_slug}/versions/{version_number}/leaderboard'
+    else:
+      path = '/api/v1/benchmarks/{owner_slug}/{benchmark_slug}/leaderboard'
     return path.format_map(self.to_field_map(self))
 
-
   @staticmethod
-  def method():
-    return 'POST'
-
-  @staticmethod
-  def body_fields():
-    return '*'
+  def endpoint_path():
+    return '/api/v1/benchmarks/{owner_slug}/{benchmark_slug}/leaderboard'
 
 
 ApiBenchmarkLeaderboard.LeaderboardRow._fields = [
@@ -208,6 +236,8 @@ ApiBenchmarkLeaderboard._fields = [
 ]
 
 ApiGetBenchmarkLeaderboardRequest._fields = [
-  FieldMetadata("identifier", "identifier", "_identifier", BenchmarkVersionIdentifier, None, KaggleObjectSerializer()),
+  FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "", PredefinedSerializer()),
+  FieldMetadata("benchmarkSlug", "benchmark_slug", "_benchmark_slug", str, "", PredefinedSerializer()),
+  FieldMetadata("versionNumber", "version_number", "_version_number", int, None, PredefinedSerializer(), optional=True),
 ]
 

@@ -649,14 +649,14 @@ class ApiKernelMetadata(KaggleObject):
     kernel_type (str)
     is_private (bool)
     enable_gpu (bool)
-    enable_tpu (bool)
     enable_internet (bool)
     category_ids (str)
     dataset_data_sources (str)
     kernel_data_sources (str)
     competition_data_sources (str)
-    model_data_sources (str)
     total_votes (int)
+    model_data_sources (str)
+    enable_tpu (bool)
     current_version_number (int)
     docker_image (str)
     machine_shape (str)
@@ -676,14 +676,14 @@ class ApiKernelMetadata(KaggleObject):
     self._kernel_type = None
     self._is_private = None
     self._enable_gpu = None
-    self._enable_tpu = None
     self._enable_internet = None
     self._category_ids = []
     self._dataset_data_sources = []
     self._kernel_data_sources = []
     self._competition_data_sources = []
-    self._model_data_sources = []
     self._total_votes = 0
+    self._model_data_sources = []
+    self._enable_tpu = None
     self._current_version_number = None
     self._docker_image = None
     self._machine_shape = None
@@ -976,6 +976,99 @@ class ApiKernelMetadata(KaggleObject):
     if not isinstance(machine_shape, str):
       raise TypeError('machine_shape must be of type str')
     self._machine_shape = machine_shape
+
+
+class ApiKernelSessionOutputFile(KaggleObject):
+  r"""
+  Attributes:
+    url (str)
+    file_name (str)
+  """
+
+  def __init__(self):
+    self._url = None
+    self._file_name = None
+    self._freeze()
+
+  @property
+  def url(self) -> str:
+    return self._url or ""
+
+  @url.setter
+  def url(self, url: Optional[str]):
+    if url is None:
+      del self.url
+      return
+    if not isinstance(url, str):
+      raise TypeError('url must be of type str')
+    self._url = url
+
+  @property
+  def file_name(self) -> str:
+    return self._file_name or ""
+
+  @file_name.setter
+  def file_name(self, file_name: Optional[str]):
+    if file_name is None:
+      del self.file_name
+      return
+    if not isinstance(file_name, str):
+      raise TypeError('file_name must be of type str')
+    self._file_name = file_name
+
+
+class ApiListKernelFilesItem(KaggleObject):
+  r"""
+  Attributes:
+    name (str)
+    size (int)
+    creation_date (str)
+  """
+
+  def __init__(self):
+    self._name = ""
+    self._size = 0
+    self._creation_date = ""
+    self._freeze()
+
+  @property
+  def name(self) -> str:
+    return self._name
+
+  @name.setter
+  def name(self, name: str):
+    if name is None:
+      del self.name
+      return
+    if not isinstance(name, str):
+      raise TypeError('name must be of type str')
+    self._name = name
+
+  @property
+  def size(self) -> int:
+    return self._size
+
+  @size.setter
+  def size(self, size: int):
+    if size is None:
+      del self.size
+      return
+    if not isinstance(size, int):
+      raise TypeError('size must be of type int')
+    self._size = size
+
+  @property
+  def creation_date(self) -> str:
+    return self._creation_date
+
+  @creation_date.setter
+  def creation_date(self, creation_date: str):
+    if creation_date is None:
+      del self.creation_date
+      return
+    if not isinstance(creation_date, str):
+      raise TypeError('creation_date must be of type str')
+    self._creation_date = creation_date
 
 
 class ApiListKernelFilesRequest(KaggleObject):
@@ -1555,9 +1648,6 @@ class ApiSaveKernelRequest(KaggleObject):
     enable_gpu (bool)
       Whether or not the kernel should run on a GPU.
       DEPRECATED: use `machine_shape` instead
-    enable_tpu (bool)
-      Whether or not the kernel should run on a TPU.
-      DEPRECATED: use `machine_shape` instead
     enable_internet (bool)
       Whether or not the kernel should be able to access the internet.
     docker_image_pinning_type (str)
@@ -1568,6 +1658,9 @@ class ApiSaveKernelRequest(KaggleObject):
       `{username}/{model-slug}/{framework}/{variation-slug}`
       Or versioned:
       `{username}/{model-slug}/{framework}/{variation-slug}/{version-number}`
+    enable_tpu (bool)
+      Whether or not the kernel should run on a TPU.
+      DEPRECATED: use `machine_shape` instead
     session_timeout_seconds (int)
       If specified, terminate the kernel session after this many seconds of
       runtime, which must be lower than the global maximum.
@@ -1601,10 +1694,10 @@ class ApiSaveKernelRequest(KaggleObject):
     self._category_ids = []
     self._is_private = None
     self._enable_gpu = None
-    self._enable_tpu = None
     self._enable_internet = None
     self._docker_image_pinning_type = None
     self._model_data_sources = []
+    self._enable_tpu = None
     self._session_timeout_seconds = None
     self._priority = None
     self._docker_image = None
@@ -1989,6 +2082,7 @@ class ApiSaveKernelResponse(KaggleObject):
     invalid_competition_sources (str)
     invalid_kernel_sources (str)
     invalid_model_sources (str)
+    kernel_id (int)
   """
 
   def __init__(self):
@@ -2001,6 +2095,7 @@ class ApiSaveKernelResponse(KaggleObject):
     self._invalid_competition_sources = []
     self._invalid_kernel_sources = []
     self._invalid_model_sources = []
+    self._kernel_id = 0
     self._freeze()
 
   @property
@@ -2131,6 +2226,19 @@ class ApiSaveKernelResponse(KaggleObject):
     self._invalid_model_sources = invalid_model_sources
 
   @property
+  def kernel_id(self) -> int:
+    return self._kernel_id
+
+  @kernel_id.setter
+  def kernel_id(self, kernel_id: int):
+    if kernel_id is None:
+      del self.kernel_id
+      return
+    if not isinstance(kernel_id, int):
+      raise TypeError('kernel_id must be of type int')
+    self._kernel_id = kernel_id
+
+  @property
   def versionNumber(self):
     return self.version_number
 
@@ -2154,98 +2262,9 @@ class ApiSaveKernelResponse(KaggleObject):
   def invalidModelSources(self):
     return self.invalid_model_sources
 
-
-class ApiKernelSessionOutputFile(KaggleObject):
-  r"""
-  Attributes:
-    url (str)
-    file_name (str)
-  """
-
-  def __init__(self):
-    self._url = None
-    self._file_name = None
-    self._freeze()
-
   @property
-  def url(self) -> str:
-    return self._url or ""
-
-  @url.setter
-  def url(self, url: Optional[str]):
-    if url is None:
-      del self.url
-      return
-    if not isinstance(url, str):
-      raise TypeError('url must be of type str')
-    self._url = url
-
-  @property
-  def file_name(self) -> str:
-    return self._file_name or ""
-
-  @file_name.setter
-  def file_name(self, file_name: Optional[str]):
-    if file_name is None:
-      del self.file_name
-      return
-    if not isinstance(file_name, str):
-      raise TypeError('file_name must be of type str')
-    self._file_name = file_name
-
-
-class ApiListKernelFilesItem(KaggleObject):
-  r"""
-  Attributes:
-    name (str)
-    size (int)
-    creation_date (str)
-  """
-
-  def __init__(self):
-    self._name = ""
-    self._size = 0
-    self._creation_date = ""
-    self._freeze()
-
-  @property
-  def name(self) -> str:
-    return self._name
-
-  @name.setter
-  def name(self, name: str):
-    if name is None:
-      del self.name
-      return
-    if not isinstance(name, str):
-      raise TypeError('name must be of type str')
-    self._name = name
-
-  @property
-  def size(self) -> int:
-    return self._size
-
-  @size.setter
-  def size(self, size: int):
-    if size is None:
-      del self.size
-      return
-    if not isinstance(size, int):
-      raise TypeError('size must be of type int')
-    self._size = size
-
-  @property
-  def creation_date(self) -> str:
-    return self._creation_date
-
-  @creation_date.setter
-  def creation_date(self, creation_date: str):
-    if creation_date is None:
-      del self.creation_date
-      return
-    if not isinstance(creation_date, str):
-      raise TypeError('creation_date must be of type str')
-    self._creation_date = creation_date
+  def kernelId(self):
+    return self.kernel_id
 
 
 ApiCancelKernelSessionRequest._fields = [
@@ -2323,17 +2342,28 @@ ApiKernelMetadata._fields = [
   FieldMetadata("kernelType", "kernel_type", "_kernel_type", str, None, PredefinedSerializer(), optional=True),
   FieldMetadata("isPrivate", "is_private", "_is_private", bool, None, PredefinedSerializer(), optional=True),
   FieldMetadata("enableGpu", "enable_gpu", "_enable_gpu", bool, None, PredefinedSerializer(), optional=True),
-  FieldMetadata("enableTpu", "enable_tpu", "_enable_tpu", bool, None, PredefinedSerializer(), optional=True),
   FieldMetadata("enableInternet", "enable_internet", "_enable_internet", bool, None, PredefinedSerializer(), optional=True),
   FieldMetadata("categoryIds", "category_ids", "_category_ids", str, [], ListSerializer(PredefinedSerializer())),
   FieldMetadata("datasetDataSources", "dataset_data_sources", "_dataset_data_sources", str, [], ListSerializer(PredefinedSerializer())),
   FieldMetadata("kernelDataSources", "kernel_data_sources", "_kernel_data_sources", str, [], ListSerializer(PredefinedSerializer())),
   FieldMetadata("competitionDataSources", "competition_data_sources", "_competition_data_sources", str, [], ListSerializer(PredefinedSerializer())),
-  FieldMetadata("modelDataSources", "model_data_sources", "_model_data_sources", str, [], ListSerializer(PredefinedSerializer())),
   FieldMetadata("totalVotes", "total_votes", "_total_votes", int, 0, PredefinedSerializer()),
+  FieldMetadata("modelDataSources", "model_data_sources", "_model_data_sources", str, [], ListSerializer(PredefinedSerializer())),
+  FieldMetadata("enableTpu", "enable_tpu", "_enable_tpu", bool, None, PredefinedSerializer(), optional=True),
   FieldMetadata("currentVersionNumber", "current_version_number", "_current_version_number", int, None, PredefinedSerializer(), optional=True),
   FieldMetadata("dockerImage", "docker_image", "_docker_image", str, None, PredefinedSerializer(), optional=True),
   FieldMetadata("machineShape", "machine_shape", "_machine_shape", str, None, PredefinedSerializer(), optional=True),
+]
+
+ApiKernelSessionOutputFile._fields = [
+  FieldMetadata("url", "url", "_url", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("fileName", "file_name", "_file_name", str, None, PredefinedSerializer(), optional=True),
+]
+
+ApiListKernelFilesItem._fields = [
+  FieldMetadata("name", "name", "_name", str, "", PredefinedSerializer()),
+  FieldMetadata("size", "size", "_size", int, 0, PredefinedSerializer()),
+  FieldMetadata("creationDate", "creation_date", "_creation_date", str, "", PredefinedSerializer()),
 ]
 
 ApiListKernelFilesRequest._fields = [
@@ -2395,10 +2425,10 @@ ApiSaveKernelRequest._fields = [
   FieldMetadata("categoryIds", "category_ids", "_category_ids", str, [], ListSerializer(PredefinedSerializer())),
   FieldMetadata("isPrivate", "is_private", "_is_private", bool, None, PredefinedSerializer(), optional=True),
   FieldMetadata("enableGpu", "enable_gpu", "_enable_gpu", bool, None, PredefinedSerializer(), optional=True),
-  FieldMetadata("enableTpu", "enable_tpu", "_enable_tpu", bool, None, PredefinedSerializer(), optional=True),
   FieldMetadata("enableInternet", "enable_internet", "_enable_internet", bool, None, PredefinedSerializer(), optional=True),
   FieldMetadata("dockerImagePinningType", "docker_image_pinning_type", "_docker_image_pinning_type", str, None, PredefinedSerializer(), optional=True),
   FieldMetadata("modelDataSources", "model_data_sources", "_model_data_sources", str, [], ListSerializer(PredefinedSerializer())),
+  FieldMetadata("enableTpu", "enable_tpu", "_enable_tpu", bool, None, PredefinedSerializer(), optional=True),
   FieldMetadata("sessionTimeoutSeconds", "session_timeout_seconds", "_session_timeout_seconds", int, None, PredefinedSerializer(), optional=True),
   FieldMetadata("priority", "priority", "_priority", int, None, PredefinedSerializer(), optional=True),
   FieldMetadata("dockerImage", "docker_image", "_docker_image", str, None, PredefinedSerializer(), optional=True),
@@ -2416,16 +2446,6 @@ ApiSaveKernelResponse._fields = [
   FieldMetadata("invalidCompetitionSources", "invalid_competition_sources", "_invalid_competition_sources", str, [], ListSerializer(PredefinedSerializer())),
   FieldMetadata("invalidKernelSources", "invalid_kernel_sources", "_invalid_kernel_sources", str, [], ListSerializer(PredefinedSerializer())),
   FieldMetadata("invalidModelSources", "invalid_model_sources", "_invalid_model_sources", str, [], ListSerializer(PredefinedSerializer())),
-]
-
-ApiKernelSessionOutputFile._fields = [
-  FieldMetadata("url", "url", "_url", str, None, PredefinedSerializer(), optional=True),
-  FieldMetadata("fileName", "file_name", "_file_name", str, None, PredefinedSerializer(), optional=True),
-]
-
-ApiListKernelFilesItem._fields = [
-  FieldMetadata("name", "name", "_name", str, "", PredefinedSerializer()),
-  FieldMetadata("size", "size", "_size", int, 0, PredefinedSerializer()),
-  FieldMetadata("creationDate", "creation_date", "_creation_date", str, "", PredefinedSerializer()),
+  FieldMetadata("kernelId", "kernel_id", "_kernel_id", int, 0, PredefinedSerializer()),
 ]
 

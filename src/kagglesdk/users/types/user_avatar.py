@@ -11,18 +11,18 @@ class UserAvatar(KaggleObject):
       Thumbnail URL for the given user
     url (str)
       Profile URL for the given user
-    profile_url (str)
-      Alternate name for 'url', to aid in refactoring both are provided.
-      TODO(http://b/402224065) remove once clients have migrated from this.
     user_name (str)
       User name for the given user
     tier (UserAchievementTier)
       Tier for the given user
+    id (int)
+      ID for the given user
+    profile_url (str)
+      Alternate name for 'url', to aid in refactoring both are provided.
+      TODO(http://b/402224065) remove once clients have migrated from this.
     performance_tier (UserAchievementTier)
       Alternate name for `tier`, to aid in refactoring both are provided.
       TODO(http://b/402224065) remove once clients have migrated from this.
-    id (int)
-      ID for the given user
     user_id (int)
       Alternate name for `id`, to aid in refactoring both are provided.
       TODO(http://b/402224065) remove once clients have migrated from this.
@@ -36,11 +36,11 @@ class UserAvatar(KaggleObject):
     self._display_name = None
     self._thumbnail_url = None
     self._url = None
-    self._profile_url = None
     self._user_name = None
     self._tier = UserAchievementTier.NOVICE
-    self._performance_tier = None
     self._id = 0
+    self._profile_url = None
+    self._performance_tier = None
     self._user_id = None
     self._progression_opt_out = None
     self._is_phone_verified = None
@@ -214,11 +214,11 @@ UserAvatar._fields = [
   FieldMetadata("displayName", "display_name", "_display_name", str, None, PredefinedSerializer(), optional=True),
   FieldMetadata("thumbnailUrl", "thumbnail_url", "_thumbnail_url", str, None, PredefinedSerializer(), optional=True),
   FieldMetadata("url", "url", "_url", str, None, PredefinedSerializer(), optional=True),
-  FieldMetadata("profileUrl", "profile_url", "_profile_url", str, None, PredefinedSerializer(), optional=True),
   FieldMetadata("userName", "user_name", "_user_name", str, None, PredefinedSerializer(), optional=True),
   FieldMetadata("tier", "tier", "_tier", UserAchievementTier, UserAchievementTier.NOVICE, EnumSerializer()),
-  FieldMetadata("performanceTier", "performance_tier", "_performance_tier", UserAchievementTier, None, EnumSerializer(), optional=True),
   FieldMetadata("id", "id", "_id", int, 0, PredefinedSerializer()),
+  FieldMetadata("profileUrl", "profile_url", "_profile_url", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("performanceTier", "performance_tier", "_performance_tier", UserAchievementTier, None, EnumSerializer(), optional=True),
   FieldMetadata("userId", "user_id", "_user_id", int, None, PredefinedSerializer(), optional=True),
   FieldMetadata("progressionOptOut", "progression_opt_out", "_progression_opt_out", bool, None, PredefinedSerializer(), optional=True),
   FieldMetadata("isPhoneVerified", "is_phone_verified", "_is_phone_verified", bool, None, PredefinedSerializer(), optional=True),

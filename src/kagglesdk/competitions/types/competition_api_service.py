@@ -4,6 +4,137 @@ from kagglesdk.competitions.types.submission_status import SubmissionStatus
 from kagglesdk.kaggle_object import *
 from typing import Optional, List
 
+class ApiCategory(KaggleObject):
+  r"""
+  TODO(erdalsivri): Consider reusing with Kaggle.Sdk.Datasets.ApiCategory.
+
+  Attributes:
+    ref (str)
+    name (str)
+    description (str)
+    full_path (str)
+    competition_count (int)
+    dataset_count (int)
+    script_count (int)
+    total_count (int)
+  """
+
+  def __init__(self):
+    self._ref = ""
+    self._name = None
+    self._description = None
+    self._full_path = None
+    self._competition_count = 0
+    self._dataset_count = 0
+    self._script_count = 0
+    self._total_count = 0
+    self._freeze()
+
+  @property
+  def ref(self) -> str:
+    return self._ref
+
+  @ref.setter
+  def ref(self, ref: str):
+    if ref is None:
+      del self.ref
+      return
+    if not isinstance(ref, str):
+      raise TypeError('ref must be of type str')
+    self._ref = ref
+
+  @property
+  def name(self) -> str:
+    return self._name or ""
+
+  @name.setter
+  def name(self, name: Optional[str]):
+    if name is None:
+      del self.name
+      return
+    if not isinstance(name, str):
+      raise TypeError('name must be of type str')
+    self._name = name
+
+  @property
+  def description(self) -> str:
+    return self._description or ""
+
+  @description.setter
+  def description(self, description: Optional[str]):
+    if description is None:
+      del self.description
+      return
+    if not isinstance(description, str):
+      raise TypeError('description must be of type str')
+    self._description = description
+
+  @property
+  def full_path(self) -> str:
+    return self._full_path or ""
+
+  @full_path.setter
+  def full_path(self, full_path: Optional[str]):
+    if full_path is None:
+      del self.full_path
+      return
+    if not isinstance(full_path, str):
+      raise TypeError('full_path must be of type str')
+    self._full_path = full_path
+
+  @property
+  def competition_count(self) -> int:
+    return self._competition_count
+
+  @competition_count.setter
+  def competition_count(self, competition_count: int):
+    if competition_count is None:
+      del self.competition_count
+      return
+    if not isinstance(competition_count, int):
+      raise TypeError('competition_count must be of type int')
+    self._competition_count = competition_count
+
+  @property
+  def dataset_count(self) -> int:
+    return self._dataset_count
+
+  @dataset_count.setter
+  def dataset_count(self, dataset_count: int):
+    if dataset_count is None:
+      del self.dataset_count
+      return
+    if not isinstance(dataset_count, int):
+      raise TypeError('dataset_count must be of type int')
+    self._dataset_count = dataset_count
+
+  @property
+  def script_count(self) -> int:
+    return self._script_count
+
+  @script_count.setter
+  def script_count(self, script_count: int):
+    if script_count is None:
+      del self.script_count
+      return
+    if not isinstance(script_count, int):
+      raise TypeError('script_count must be of type int')
+    self._script_count = script_count
+
+  @property
+  def total_count(self) -> int:
+    return self._total_count
+
+  @total_count.setter
+  def total_count(self, total_count: int):
+    if total_count is None:
+      del self.total_count
+      return
+    if not isinstance(total_count, int):
+      raise TypeError('total_count must be of type int')
+    self._total_count = total_count
+
+
 class ApiCompetition(KaggleObject):
   r"""
   Attributes:
@@ -658,6 +789,105 @@ class ApiCreateSubmissionResponse(KaggleObject):
     if not isinstance(ref, int):
       raise TypeError('ref must be of type int')
     self._ref = ref
+
+
+class ApiDataFile(KaggleObject):
+  r"""
+  Attributes:
+    ref (str)
+    name (str)
+    description (str)
+    total_bytes (int)
+    url (str)
+    creation_date (datetime)
+  """
+
+  def __init__(self):
+    self._ref = ""
+    self._name = None
+    self._description = None
+    self._total_bytes = 0
+    self._url = None
+    self._creation_date = None
+    self._freeze()
+
+  @property
+  def ref(self) -> str:
+    return self._ref
+
+  @ref.setter
+  def ref(self, ref: str):
+    if ref is None:
+      del self.ref
+      return
+    if not isinstance(ref, str):
+      raise TypeError('ref must be of type str')
+    self._ref = ref
+
+  @property
+  def name(self) -> str:
+    return self._name or ""
+
+  @name.setter
+  def name(self, name: Optional[str]):
+    if name is None:
+      del self.name
+      return
+    if not isinstance(name, str):
+      raise TypeError('name must be of type str')
+    self._name = name
+
+  @property
+  def description(self) -> str:
+    return self._description or ""
+
+  @description.setter
+  def description(self, description: Optional[str]):
+    if description is None:
+      del self.description
+      return
+    if not isinstance(description, str):
+      raise TypeError('description must be of type str')
+    self._description = description
+
+  @property
+  def total_bytes(self) -> int:
+    return self._total_bytes
+
+  @total_bytes.setter
+  def total_bytes(self, total_bytes: int):
+    if total_bytes is None:
+      del self.total_bytes
+      return
+    if not isinstance(total_bytes, int):
+      raise TypeError('total_bytes must be of type int')
+    self._total_bytes = total_bytes
+
+  @property
+  def url(self) -> str:
+    return self._url or ""
+
+  @url.setter
+  def url(self, url: Optional[str]):
+    if url is None:
+      del self.url
+      return
+    if not isinstance(url, str):
+      raise TypeError('url must be of type str')
+    self._url = url
+
+  @property
+  def creation_date(self) -> datetime:
+    return self._creation_date
+
+  @creation_date.setter
+  def creation_date(self, creation_date: datetime):
+    if creation_date is None:
+      del self.creation_date
+      return
+    if not isinstance(creation_date, datetime):
+      raise TypeError('creation_date must be of type datetime')
+    self._creation_date = creation_date
 
 
 class ApiDownloadDataFileRequest(KaggleObject):
@@ -1967,235 +2197,16 @@ class ApiSubmission(KaggleObject):
     self._url = url
 
 
-class ApiCategory(KaggleObject):
-  r"""
-  TODO(erdalsivri): Consider reusing with Kaggle.Sdk.Datasets.ApiCategory.
-
-  Attributes:
-    ref (str)
-    name (str)
-    description (str)
-    full_path (str)
-    competition_count (int)
-    dataset_count (int)
-    script_count (int)
-    total_count (int)
-  """
-
-  def __init__(self):
-    self._ref = ""
-    self._name = None
-    self._description = None
-    self._full_path = None
-    self._competition_count = 0
-    self._dataset_count = 0
-    self._script_count = 0
-    self._total_count = 0
-    self._freeze()
-
-  @property
-  def ref(self) -> str:
-    return self._ref
-
-  @ref.setter
-  def ref(self, ref: str):
-    if ref is None:
-      del self.ref
-      return
-    if not isinstance(ref, str):
-      raise TypeError('ref must be of type str')
-    self._ref = ref
-
-  @property
-  def name(self) -> str:
-    return self._name or ""
-
-  @name.setter
-  def name(self, name: Optional[str]):
-    if name is None:
-      del self.name
-      return
-    if not isinstance(name, str):
-      raise TypeError('name must be of type str')
-    self._name = name
-
-  @property
-  def description(self) -> str:
-    return self._description or ""
-
-  @description.setter
-  def description(self, description: Optional[str]):
-    if description is None:
-      del self.description
-      return
-    if not isinstance(description, str):
-      raise TypeError('description must be of type str')
-    self._description = description
-
-  @property
-  def full_path(self) -> str:
-    return self._full_path or ""
-
-  @full_path.setter
-  def full_path(self, full_path: Optional[str]):
-    if full_path is None:
-      del self.full_path
-      return
-    if not isinstance(full_path, str):
-      raise TypeError('full_path must be of type str')
-    self._full_path = full_path
-
-  @property
-  def competition_count(self) -> int:
-    return self._competition_count
-
-  @competition_count.setter
-  def competition_count(self, competition_count: int):
-    if competition_count is None:
-      del self.competition_count
-      return
-    if not isinstance(competition_count, int):
-      raise TypeError('competition_count must be of type int')
-    self._competition_count = competition_count
-
-  @property
-  def dataset_count(self) -> int:
-    return self._dataset_count
-
-  @dataset_count.setter
-  def dataset_count(self, dataset_count: int):
-    if dataset_count is None:
-      del self.dataset_count
-      return
-    if not isinstance(dataset_count, int):
-      raise TypeError('dataset_count must be of type int')
-    self._dataset_count = dataset_count
-
-  @property
-  def script_count(self) -> int:
-    return self._script_count
-
-  @script_count.setter
-  def script_count(self, script_count: int):
-    if script_count is None:
-      del self.script_count
-      return
-    if not isinstance(script_count, int):
-      raise TypeError('script_count must be of type int')
-    self._script_count = script_count
-
-  @property
-  def total_count(self) -> int:
-    return self._total_count
-
-  @total_count.setter
-  def total_count(self, total_count: int):
-    if total_count is None:
-      del self.total_count
-      return
-    if not isinstance(total_count, int):
-      raise TypeError('total_count must be of type int')
-    self._total_count = total_count
-
-
-class ApiDataFile(KaggleObject):
-  r"""
-  Attributes:
-    ref (str)
-    name (str)
-    description (str)
-    total_bytes (int)
-    url (str)
-    creation_date (datetime)
-  """
-
-  def __init__(self):
-    self._ref = ""
-    self._name = None
-    self._description = None
-    self._total_bytes = 0
-    self._url = None
-    self._creation_date = None
-    self._freeze()
-
-  @property
-  def ref(self) -> str:
-    return self._ref
-
-  @ref.setter
-  def ref(self, ref: str):
-    if ref is None:
-      del self.ref
-      return
-    if not isinstance(ref, str):
-      raise TypeError('ref must be of type str')
-    self._ref = ref
-
-  @property
-  def name(self) -> str:
-    return self._name or ""
-
-  @name.setter
-  def name(self, name: Optional[str]):
-    if name is None:
-      del self.name
-      return
-    if not isinstance(name, str):
-      raise TypeError('name must be of type str')
-    self._name = name
-
-  @property
-  def description(self) -> str:
-    return self._description or ""
-
-  @description.setter
-  def description(self, description: Optional[str]):
-    if description is None:
-      del self.description
-      return
-    if not isinstance(description, str):
-      raise TypeError('description must be of type str')
-    self._description = description
-
-  @property
-  def total_bytes(self) -> int:
-    return self._total_bytes
-
-  @total_bytes.setter
-  def total_bytes(self, total_bytes: int):
-    if total_bytes is None:
-      del self.total_bytes
-      return
-    if not isinstance(total_bytes, int):
-      raise TypeError('total_bytes must be of type int')
-    self._total_bytes = total_bytes
-
-  @property
-  def url(self) -> str:
-    return self._url or ""
-
-  @url.setter
-  def url(self, url: Optional[str]):
-    if url is None:
-      del self.url
-      return
-    if not isinstance(url, str):
-      raise TypeError('url must be of type str')
-    self._url = url
-
-  @property
-  def creation_date(self) -> datetime:
-    return self._creation_date
-
-  @creation_date.setter
-  def creation_date(self, creation_date: datetime):
-    if creation_date is None:
-      del self.creation_date
-      return
-    if not isinstance(creation_date, datetime):
-      raise TypeError('creation_date must be of type datetime')
-    self._creation_date = creation_date
-
+ApiCategory._fields = [
+  FieldMetadata("ref", "ref", "_ref", str, "", PredefinedSerializer()),
+  FieldMetadata("name", "name", "_name", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("description", "description", "_description", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("fullPath", "full_path", "_full_path", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("competitionCount", "competition_count", "_competition_count", int, 0, PredefinedSerializer()),
+  FieldMetadata("datasetCount", "dataset_count", "_dataset_count", int, 0, PredefinedSerializer()),
+  FieldMetadata("scriptCount", "script_count", "_script_count", int, 0, PredefinedSerializer()),
+  FieldMetadata("totalCount", "total_count", "_total_count", int, 0, PredefinedSerializer()),
+]
 
 ApiCompetition._fields = [
   FieldMetadata("id", "id", "_id", int, 0, PredefinedSerializer()),
@@ -2249,6 +2260,15 @@ ApiCreateSubmissionRequest._fields = [
 ApiCreateSubmissionResponse._fields = [
   FieldMetadata("message", "message", "_message", str, "", PredefinedSerializer()),
   FieldMetadata("ref", "ref", "_ref", int, 0, PredefinedSerializer()),
+]
+
+ApiDataFile._fields = [
+  FieldMetadata("ref", "ref", "_ref", str, "", PredefinedSerializer()),
+  FieldMetadata("name", "name", "_name", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("description", "description", "_description", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("totalBytes", "total_bytes", "_total_bytes", int, 0, PredefinedSerializer()),
+  FieldMetadata("url", "url", "_url", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("creationDate", "creation_date", "_creation_date", datetime, None, DateTimeSerializer()),
 ]
 
 ApiDownloadDataFileRequest._fields = [
@@ -2369,25 +2389,5 @@ ApiSubmission._fields = [
   FieldMetadata("submittedByRef", "submitted_by_ref", "_submitted_by_ref", str, None, PredefinedSerializer(), optional=True),
   FieldMetadata("teamName", "team_name", "_team_name", str, None, PredefinedSerializer(), optional=True),
   FieldMetadata("url", "url", "_url", str, None, PredefinedSerializer(), optional=True),
-]
-
-ApiCategory._fields = [
-  FieldMetadata("ref", "ref", "_ref", str, "", PredefinedSerializer()),
-  FieldMetadata("name", "name", "_name", str, None, PredefinedSerializer(), optional=True),
-  FieldMetadata("description", "description", "_description", str, None, PredefinedSerializer(), optional=True),
-  FieldMetadata("fullPath", "full_path", "_full_path", str, None, PredefinedSerializer(), optional=True),
-  FieldMetadata("competitionCount", "competition_count", "_competition_count", int, 0, PredefinedSerializer()),
-  FieldMetadata("datasetCount", "dataset_count", "_dataset_count", int, 0, PredefinedSerializer()),
-  FieldMetadata("scriptCount", "script_count", "_script_count", int, 0, PredefinedSerializer()),
-  FieldMetadata("totalCount", "total_count", "_total_count", int, 0, PredefinedSerializer()),
-]
-
-ApiDataFile._fields = [
-  FieldMetadata("ref", "ref", "_ref", str, "", PredefinedSerializer()),
-  FieldMetadata("name", "name", "_name", str, None, PredefinedSerializer(), optional=True),
-  FieldMetadata("description", "description", "_description", str, None, PredefinedSerializer(), optional=True),
-  FieldMetadata("totalBytes", "total_bytes", "_total_bytes", int, 0, PredefinedSerializer()),
-  FieldMetadata("url", "url", "_url", str, None, PredefinedSerializer(), optional=True),
-  FieldMetadata("creationDate", "creation_date", "_creation_date", datetime, None, DateTimeSerializer()),
 ]
 

@@ -23,842 +23,6 @@ class ApiListType(enum.Enum):
   API_LIST_TYPE_UNSPECIFIED = 0
   API_LIST_TYPE_YOUR_WORK = 1
 
-class ListEntitiesRequest(KaggleObject):
-  r"""
-  Attributes:
-    filters (ListEntitiesFilters)
-      Canonical filters to apply to the search
-    canonical_order_by (ListSearchContentOrderBy)
-      Canonical order to apply to the results
-    competitions_order_by (SearchCompetitionsOrderBy)
-      Competitions order to apply to the results
-    datasets_order_by (SearchDatasetsOrderBy)
-      Datasets order to apply to the results
-    kernels_order_by (SearchKernelsOrderBy)
-      Kernels order to apply to the results
-    models_order_by (SearchModelsOrderBy)
-      Models order to apply to the results
-    discussions_order_by (SearchDiscussionsOrderBy)
-      Discussions order to apply to the results
-    users_order_by (SearchUsersOrderBy)
-      Users order to apply to the results
-    page_token (str)
-      Page token for paging (see aip.dev/158)
-    page_size (int)
-      Number of documents per page to return
-    skip (int)
-      How many results to skip
-  """
-
-  def __init__(self):
-    self._filters = None
-    self._canonical_order_by = None
-    self._competitions_order_by = None
-    self._datasets_order_by = None
-    self._kernels_order_by = None
-    self._models_order_by = None
-    self._discussions_order_by = None
-    self._users_order_by = None
-    self._page_token = ""
-    self._page_size = 0
-    self._skip = 0
-    self._freeze()
-
-  @property
-  def filters(self) -> Optional['ListEntitiesFilters']:
-    """Canonical filters to apply to the search"""
-    return self._filters
-
-  @filters.setter
-  def filters(self, filters: Optional['ListEntitiesFilters']):
-    if filters is None:
-      del self.filters
-      return
-    if not isinstance(filters, ListEntitiesFilters):
-      raise TypeError('filters must be of type ListEntitiesFilters')
-    self._filters = filters
-
-  @property
-  def canonical_order_by(self) -> 'ListSearchContentOrderBy':
-    """Canonical order to apply to the results"""
-    return self._canonical_order_by or ListSearchContentOrderBy.LIST_SEARCH_CONTENT_ORDER_BY_UNSPECIFIED
-
-  @canonical_order_by.setter
-  def canonical_order_by(self, canonical_order_by: 'ListSearchContentOrderBy'):
-    if canonical_order_by is None:
-      del self.canonical_order_by
-      return
-    if not isinstance(canonical_order_by, ListSearchContentOrderBy):
-      raise TypeError('canonical_order_by must be of type ListSearchContentOrderBy')
-    del self.competitions_order_by
-    del self.datasets_order_by
-    del self.kernels_order_by
-    del self.models_order_by
-    del self.discussions_order_by
-    del self.users_order_by
-    self._canonical_order_by = canonical_order_by
-
-  @property
-  def competitions_order_by(self) -> 'SearchCompetitionsOrderBy':
-    """Competitions order to apply to the results"""
-    return self._competitions_order_by or SearchCompetitionsOrderBy.SEARCH_COMPETITIONS_ORDER_BY_UNSPECIFIED
-
-  @competitions_order_by.setter
-  def competitions_order_by(self, competitions_order_by: 'SearchCompetitionsOrderBy'):
-    if competitions_order_by is None:
-      del self.competitions_order_by
-      return
-    if not isinstance(competitions_order_by, SearchCompetitionsOrderBy):
-      raise TypeError('competitions_order_by must be of type SearchCompetitionsOrderBy')
-    del self.canonical_order_by
-    del self.datasets_order_by
-    del self.kernels_order_by
-    del self.models_order_by
-    del self.discussions_order_by
-    del self.users_order_by
-    self._competitions_order_by = competitions_order_by
-
-  @property
-  def datasets_order_by(self) -> 'SearchDatasetsOrderBy':
-    """Datasets order to apply to the results"""
-    return self._datasets_order_by or SearchDatasetsOrderBy.SEARCH_DATASETS_ORDER_BY_UNSPECIFIED
-
-  @datasets_order_by.setter
-  def datasets_order_by(self, datasets_order_by: 'SearchDatasetsOrderBy'):
-    if datasets_order_by is None:
-      del self.datasets_order_by
-      return
-    if not isinstance(datasets_order_by, SearchDatasetsOrderBy):
-      raise TypeError('datasets_order_by must be of type SearchDatasetsOrderBy')
-    del self.canonical_order_by
-    del self.competitions_order_by
-    del self.kernels_order_by
-    del self.models_order_by
-    del self.discussions_order_by
-    del self.users_order_by
-    self._datasets_order_by = datasets_order_by
-
-  @property
-  def kernels_order_by(self) -> 'SearchKernelsOrderBy':
-    """Kernels order to apply to the results"""
-    return self._kernels_order_by or SearchKernelsOrderBy.SEARCH_KERNELS_ORDER_BY_UNSPECIFIED
-
-  @kernels_order_by.setter
-  def kernels_order_by(self, kernels_order_by: 'SearchKernelsOrderBy'):
-    if kernels_order_by is None:
-      del self.kernels_order_by
-      return
-    if not isinstance(kernels_order_by, SearchKernelsOrderBy):
-      raise TypeError('kernels_order_by must be of type SearchKernelsOrderBy')
-    del self.canonical_order_by
-    del self.competitions_order_by
-    del self.datasets_order_by
-    del self.models_order_by
-    del self.discussions_order_by
-    del self.users_order_by
-    self._kernels_order_by = kernels_order_by
-
-  @property
-  def models_order_by(self) -> 'SearchModelsOrderBy':
-    """Models order to apply to the results"""
-    return self._models_order_by or SearchModelsOrderBy.MODELS_SEARCH_ORDER_BY_UNSPECIFIED
-
-  @models_order_by.setter
-  def models_order_by(self, models_order_by: 'SearchModelsOrderBy'):
-    if models_order_by is None:
-      del self.models_order_by
-      return
-    if not isinstance(models_order_by, SearchModelsOrderBy):
-      raise TypeError('models_order_by must be of type SearchModelsOrderBy')
-    del self.canonical_order_by
-    del self.competitions_order_by
-    del self.datasets_order_by
-    del self.kernels_order_by
-    del self.discussions_order_by
-    del self.users_order_by
-    self._models_order_by = models_order_by
-
-  @property
-  def discussions_order_by(self) -> 'SearchDiscussionsOrderBy':
-    """Discussions order to apply to the results"""
-    return self._discussions_order_by or SearchDiscussionsOrderBy.SEARCH_DISCUSSIONS_ORDER_BY_UNSPECIFIED
-
-  @discussions_order_by.setter
-  def discussions_order_by(self, discussions_order_by: 'SearchDiscussionsOrderBy'):
-    if discussions_order_by is None:
-      del self.discussions_order_by
-      return
-    if not isinstance(discussions_order_by, SearchDiscussionsOrderBy):
-      raise TypeError('discussions_order_by must be of type SearchDiscussionsOrderBy')
-    del self.canonical_order_by
-    del self.competitions_order_by
-    del self.datasets_order_by
-    del self.kernels_order_by
-    del self.models_order_by
-    del self.users_order_by
-    self._discussions_order_by = discussions_order_by
-
-  @property
-  def users_order_by(self) -> 'SearchUsersOrderBy':
-    """Users order to apply to the results"""
-    return self._users_order_by or SearchUsersOrderBy.SEARCH_USERS_ORDER_BY_UNSPECIFIED
-
-  @users_order_by.setter
-  def users_order_by(self, users_order_by: 'SearchUsersOrderBy'):
-    if users_order_by is None:
-      del self.users_order_by
-      return
-    if not isinstance(users_order_by, SearchUsersOrderBy):
-      raise TypeError('users_order_by must be of type SearchUsersOrderBy')
-    del self.canonical_order_by
-    del self.competitions_order_by
-    del self.datasets_order_by
-    del self.kernels_order_by
-    del self.models_order_by
-    del self.discussions_order_by
-    self._users_order_by = users_order_by
-
-  @property
-  def page_token(self) -> str:
-    """Page token for paging (see aip.dev/158)"""
-    return self._page_token
-
-  @page_token.setter
-  def page_token(self, page_token: str):
-    if page_token is None:
-      del self.page_token
-      return
-    if not isinstance(page_token, str):
-      raise TypeError('page_token must be of type str')
-    self._page_token = page_token
-
-  @property
-  def page_size(self) -> int:
-    """Number of documents per page to return"""
-    return self._page_size
-
-  @page_size.setter
-  def page_size(self, page_size: int):
-    if page_size is None:
-      del self.page_size
-      return
-    if not isinstance(page_size, int):
-      raise TypeError('page_size must be of type int')
-    self._page_size = page_size
-
-  @property
-  def skip(self) -> int:
-    """How many results to skip"""
-    return self._skip
-
-  @skip.setter
-  def skip(self, skip: int):
-    if skip is None:
-      del self.skip
-      return
-    if not isinstance(skip, int):
-      raise TypeError('skip must be of type int')
-    self._skip = skip
-
-  def endpoint(self):
-    path = '/api/v1/search/list-entities'
-    return path.format_map(self.to_field_map(self))
-
-
-class ListEntitiesResponse(KaggleObject):
-  r"""
-  Attributes:
-    documents (ListEntitiesDocument)
-      The list of documents returned after filtering
-    total_documents (int)
-      The total number of documents matching any filters
-    next_page_token (str)
-      The token to request the next page
-  """
-
-  def __init__(self):
-    self._documents = []
-    self._total_documents = 0
-    self._next_page_token = ""
-    self._freeze()
-
-  @property
-  def documents(self) -> Optional[List[Optional['ListEntitiesDocument']]]:
-    """The list of documents returned after filtering"""
-    return self._documents
-
-  @documents.setter
-  def documents(self, documents: Optional[List[Optional['ListEntitiesDocument']]]):
-    if documents is None:
-      del self.documents
-      return
-    if not isinstance(documents, list):
-      raise TypeError('documents must be of type list')
-    if not all([isinstance(t, ListEntitiesDocument) for t in documents]):
-      raise TypeError('documents must contain only items of type ListEntitiesDocument')
-    self._documents = documents
-
-  @property
-  def total_documents(self) -> int:
-    """The total number of documents matching any filters"""
-    return self._total_documents
-
-  @total_documents.setter
-  def total_documents(self, total_documents: int):
-    if total_documents is None:
-      del self.total_documents
-      return
-    if not isinstance(total_documents, int):
-      raise TypeError('total_documents must be of type int')
-    self._total_documents = total_documents
-
-  @property
-  def next_page_token(self) -> str:
-    """The token to request the next page"""
-    return self._next_page_token
-
-  @next_page_token.setter
-  def next_page_token(self, next_page_token: str):
-    if next_page_token is None:
-      del self.next_page_token
-      return
-    if not isinstance(next_page_token, str):
-      raise TypeError('next_page_token must be of type str')
-    self._next_page_token = next_page_token
-
-  @property
-  def totalDocuments(self):
-    return self.total_documents
-
-  @property
-  def nextPageToken(self):
-    return self.next_page_token
-
-
-class ListEntitiesDocument(KaggleObject):
-  r"""
-  Based on kaggle.search.ListSearchContentDocument
-
-  Attributes:
-    id (int)
-      The DB ID (i.e. the PK from the table) of the document
-    document_type (DocumentType)
-      The type of content of the document
-    title (str)
-      The canonical title of the document
-    image_url (str)
-      The thumbnail URL of the document
-    create_time (datetime)
-      The canonical creation time of the document; May mean different things
-      between content types
-    update_time (datetime)
-      The canonical update time of the document; May be different between content
-      types
-    is_private (bool)
-      Whether the content is marked as private
-    votes (int)
-      The total votes (or score, if downvotes are supported) for the document
-    owner_user (ApiUserAvatar)
-    owner_organization (ApiOrganizationCard)
-    competition_document (ApiSearchCompetitionsDocument)
-    dataset_document (ApiSearchDatasetsDocument)
-    kernel_document (ApiSearchKernelsDocument)
-    model_document (ApiSearchModelsDocument)
-    discussion_document (ApiSearchDiscussionsDocument)
-    user_document (ApiSearchUsersDocument)
-    slug (str)
-      The slug of the document (which may be close to the url)
-  """
-
-  def __init__(self):
-    self._id = 0
-    self._document_type = DocumentType.DOCUMENT_TYPE_UNSPECIFIED
-    self._title = ""
-    self._image_url = ""
-    self._create_time = None
-    self._update_time = None
-    self._is_private = None
-    self._votes = None
-    self._owner_user = None
-    self._owner_organization = None
-    self._competition_document = None
-    self._dataset_document = None
-    self._kernel_document = None
-    self._model_document = None
-    self._discussion_document = None
-    self._user_document = None
-    self._slug = None
-    self._freeze()
-
-  @property
-  def id(self) -> int:
-    """The DB ID (i.e. the PK from the table) of the document"""
-    return self._id
-
-  @id.setter
-  def id(self, id: int):
-    if id is None:
-      del self.id
-      return
-    if not isinstance(id, int):
-      raise TypeError('id must be of type int')
-    self._id = id
-
-  @property
-  def document_type(self) -> 'DocumentType':
-    """The type of content of the document"""
-    return self._document_type
-
-  @document_type.setter
-  def document_type(self, document_type: 'DocumentType'):
-    if document_type is None:
-      del self.document_type
-      return
-    if not isinstance(document_type, DocumentType):
-      raise TypeError('document_type must be of type DocumentType')
-    self._document_type = document_type
-
-  @property
-  def title(self) -> str:
-    """The canonical title of the document"""
-    return self._title
-
-  @title.setter
-  def title(self, title: str):
-    if title is None:
-      del self.title
-      return
-    if not isinstance(title, str):
-      raise TypeError('title must be of type str')
-    self._title = title
-
-  @property
-  def image_url(self) -> str:
-    """The thumbnail URL of the document"""
-    return self._image_url
-
-  @image_url.setter
-  def image_url(self, image_url: str):
-    if image_url is None:
-      del self.image_url
-      return
-    if not isinstance(image_url, str):
-      raise TypeError('image_url must be of type str')
-    self._image_url = image_url
-
-  @property
-  def create_time(self) -> datetime:
-    r"""
-    The canonical creation time of the document; May mean different things
-    between content types
-    """
-    return self._create_time
-
-  @create_time.setter
-  def create_time(self, create_time: datetime):
-    if create_time is None:
-      del self.create_time
-      return
-    if not isinstance(create_time, datetime):
-      raise TypeError('create_time must be of type datetime')
-    self._create_time = create_time
-
-  @property
-  def update_time(self) -> datetime:
-    r"""
-    The canonical update time of the document; May be different between content
-    types
-    """
-    return self._update_time or None
-
-  @update_time.setter
-  def update_time(self, update_time: Optional[datetime]):
-    if update_time is None:
-      del self.update_time
-      return
-    if not isinstance(update_time, datetime):
-      raise TypeError('update_time must be of type datetime')
-    self._update_time = update_time
-
-  @property
-  def is_private(self) -> bool:
-    """Whether the content is marked as private"""
-    return self._is_private or False
-
-  @is_private.setter
-  def is_private(self, is_private: Optional[bool]):
-    if is_private is None:
-      del self.is_private
-      return
-    if not isinstance(is_private, bool):
-      raise TypeError('is_private must be of type bool')
-    self._is_private = is_private
-
-  @property
-  def votes(self) -> int:
-    """The total votes (or score, if downvotes are supported) for the document"""
-    return self._votes or 0
-
-  @votes.setter
-  def votes(self, votes: Optional[int]):
-    if votes is None:
-      del self.votes
-      return
-    if not isinstance(votes, int):
-      raise TypeError('votes must be of type int')
-    self._votes = votes
-
-  @property
-  def owner_user(self) -> Optional['ApiUserAvatar']:
-    return self._owner_user or None
-
-  @owner_user.setter
-  def owner_user(self, owner_user: Optional['ApiUserAvatar']):
-    if owner_user is None:
-      del self.owner_user
-      return
-    if not isinstance(owner_user, ApiUserAvatar):
-      raise TypeError('owner_user must be of type ApiUserAvatar')
-    del self.owner_organization
-    self._owner_user = owner_user
-
-  @property
-  def owner_organization(self) -> Optional['ApiOrganizationCard']:
-    return self._owner_organization or None
-
-  @owner_organization.setter
-  def owner_organization(self, owner_organization: Optional['ApiOrganizationCard']):
-    if owner_organization is None:
-      del self.owner_organization
-      return
-    if not isinstance(owner_organization, ApiOrganizationCard):
-      raise TypeError('owner_organization must be of type ApiOrganizationCard')
-    del self.owner_user
-    self._owner_organization = owner_organization
-
-  @property
-  def competition_document(self) -> Optional['ApiSearchCompetitionsDocument']:
-    return self._competition_document or None
-
-  @competition_document.setter
-  def competition_document(self, competition_document: Optional['ApiSearchCompetitionsDocument']):
-    if competition_document is None:
-      del self.competition_document
-      return
-    if not isinstance(competition_document, ApiSearchCompetitionsDocument):
-      raise TypeError('competition_document must be of type ApiSearchCompetitionsDocument')
-    del self.dataset_document
-    del self.kernel_document
-    del self.model_document
-    del self.discussion_document
-    del self.user_document
-    self._competition_document = competition_document
-
-  @property
-  def dataset_document(self) -> Optional['ApiSearchDatasetsDocument']:
-    return self._dataset_document or None
-
-  @dataset_document.setter
-  def dataset_document(self, dataset_document: Optional['ApiSearchDatasetsDocument']):
-    if dataset_document is None:
-      del self.dataset_document
-      return
-    if not isinstance(dataset_document, ApiSearchDatasetsDocument):
-      raise TypeError('dataset_document must be of type ApiSearchDatasetsDocument')
-    del self.competition_document
-    del self.kernel_document
-    del self.model_document
-    del self.discussion_document
-    del self.user_document
-    self._dataset_document = dataset_document
-
-  @property
-  def kernel_document(self) -> Optional['ApiSearchKernelsDocument']:
-    return self._kernel_document or None
-
-  @kernel_document.setter
-  def kernel_document(self, kernel_document: Optional['ApiSearchKernelsDocument']):
-    if kernel_document is None:
-      del self.kernel_document
-      return
-    if not isinstance(kernel_document, ApiSearchKernelsDocument):
-      raise TypeError('kernel_document must be of type ApiSearchKernelsDocument')
-    del self.competition_document
-    del self.dataset_document
-    del self.model_document
-    del self.discussion_document
-    del self.user_document
-    self._kernel_document = kernel_document
-
-  @property
-  def model_document(self) -> Optional['ApiSearchModelsDocument']:
-    return self._model_document or None
-
-  @model_document.setter
-  def model_document(self, model_document: Optional['ApiSearchModelsDocument']):
-    if model_document is None:
-      del self.model_document
-      return
-    if not isinstance(model_document, ApiSearchModelsDocument):
-      raise TypeError('model_document must be of type ApiSearchModelsDocument')
-    del self.competition_document
-    del self.dataset_document
-    del self.kernel_document
-    del self.discussion_document
-    del self.user_document
-    self._model_document = model_document
-
-  @property
-  def discussion_document(self) -> Optional['ApiSearchDiscussionsDocument']:
-    return self._discussion_document or None
-
-  @discussion_document.setter
-  def discussion_document(self, discussion_document: Optional['ApiSearchDiscussionsDocument']):
-    if discussion_document is None:
-      del self.discussion_document
-      return
-    if not isinstance(discussion_document, ApiSearchDiscussionsDocument):
-      raise TypeError('discussion_document must be of type ApiSearchDiscussionsDocument')
-    del self.competition_document
-    del self.dataset_document
-    del self.kernel_document
-    del self.model_document
-    del self.user_document
-    self._discussion_document = discussion_document
-
-  @property
-  def user_document(self) -> Optional['ApiSearchUsersDocument']:
-    return self._user_document or None
-
-  @user_document.setter
-  def user_document(self, user_document: Optional['ApiSearchUsersDocument']):
-    if user_document is None:
-      del self.user_document
-      return
-    if not isinstance(user_document, ApiSearchUsersDocument):
-      raise TypeError('user_document must be of type ApiSearchUsersDocument')
-    del self.competition_document
-    del self.dataset_document
-    del self.kernel_document
-    del self.model_document
-    del self.discussion_document
-    self._user_document = user_document
-
-  @property
-  def slug(self) -> str:
-    """The slug of the document (which may be close to the url)"""
-    return self._slug or ""
-
-  @slug.setter
-  def slug(self, slug: Optional[str]):
-    if slug is None:
-      del self.slug
-      return
-    if not isinstance(slug, str):
-      raise TypeError('slug must be of type str')
-    self._slug = slug
-
-
-class ListEntitiesFilters(KaggleObject):
-  r"""
-   Based on kaggle.search.ListSearchContentFilters
-
-  Attributes:
-    query (str)
-      The free-text query the user entered to filter results
-    list_type (ApiListType)
-      The type of list being requested
-    privacy (PrivacyFilter)
-      The privacy filter to apply
-    owner_type (OwnerType)
-      The owner type filter to apply
-    document_types (DocumentType)
-      The document type filter to apply
-    competition_filters (ApiSearchCompetitionsFilters)
-      The set of Competition filters to filter the documents
-    dataset_filters (ApiSearchDatasetsFilters)
-      The set of Dataset filters to filter the documents
-    discussion_filters (ApiSearchDiscussionsFilters)
-      The set of Discussion filters to filter the documents
-    kernel_filters (ApiSearchKernelsFilters)
-      The set of Kernel filters to filter the documents
-    model_filters (ApiSearchModelsFilters)
-      The set of Model filters to filter the documents
-    user_filters (ApiSearchUsersFilters)
-      The set of User filters to filter the documents
-  """
-
-  def __init__(self):
-    self._query = ""
-    self._list_type = ApiListType.API_LIST_TYPE_UNSPECIFIED
-    self._privacy = PrivacyFilter.ALL
-    self._owner_type = OwnerType.OWNER_TYPE_UNSPECIFIED
-    self._document_types = []
-    self._competition_filters = None
-    self._dataset_filters = None
-    self._discussion_filters = None
-    self._kernel_filters = None
-    self._model_filters = None
-    self._user_filters = None
-    self._freeze()
-
-  @property
-  def query(self) -> str:
-    """The free-text query the user entered to filter results"""
-    return self._query
-
-  @query.setter
-  def query(self, query: str):
-    if query is None:
-      del self.query
-      return
-    if not isinstance(query, str):
-      raise TypeError('query must be of type str')
-    self._query = query
-
-  @property
-  def list_type(self) -> 'ApiListType':
-    """The type of list being requested"""
-    return self._list_type
-
-  @list_type.setter
-  def list_type(self, list_type: 'ApiListType'):
-    if list_type is None:
-      del self.list_type
-      return
-    if not isinstance(list_type, ApiListType):
-      raise TypeError('list_type must be of type ApiListType')
-    self._list_type = list_type
-
-  @property
-  def privacy(self) -> 'PrivacyFilter':
-    """The privacy filter to apply"""
-    return self._privacy
-
-  @privacy.setter
-  def privacy(self, privacy: 'PrivacyFilter'):
-    if privacy is None:
-      del self.privacy
-      return
-    if not isinstance(privacy, PrivacyFilter):
-      raise TypeError('privacy must be of type PrivacyFilter')
-    self._privacy = privacy
-
-  @property
-  def owner_type(self) -> 'OwnerType':
-    """The owner type filter to apply"""
-    return self._owner_type
-
-  @owner_type.setter
-  def owner_type(self, owner_type: 'OwnerType'):
-    if owner_type is None:
-      del self.owner_type
-      return
-    if not isinstance(owner_type, OwnerType):
-      raise TypeError('owner_type must be of type OwnerType')
-    self._owner_type = owner_type
-
-  @property
-  def document_types(self) -> Optional[List['DocumentType']]:
-    """The document type filter to apply"""
-    return self._document_types
-
-  @document_types.setter
-  def document_types(self, document_types: Optional[List['DocumentType']]):
-    if document_types is None:
-      del self.document_types
-      return
-    if not isinstance(document_types, list):
-      raise TypeError('document_types must be of type list')
-    if not all([isinstance(t, DocumentType) for t in document_types]):
-      raise TypeError('document_types must contain only items of type DocumentType')
-    self._document_types = document_types
-
-  @property
-  def competition_filters(self) -> Optional['ApiSearchCompetitionsFilters']:
-    """The set of Competition filters to filter the documents"""
-    return self._competition_filters
-
-  @competition_filters.setter
-  def competition_filters(self, competition_filters: Optional['ApiSearchCompetitionsFilters']):
-    if competition_filters is None:
-      del self.competition_filters
-      return
-    if not isinstance(competition_filters, ApiSearchCompetitionsFilters):
-      raise TypeError('competition_filters must be of type ApiSearchCompetitionsFilters')
-    self._competition_filters = competition_filters
-
-  @property
-  def dataset_filters(self) -> Optional['ApiSearchDatasetsFilters']:
-    """The set of Dataset filters to filter the documents"""
-    return self._dataset_filters
-
-  @dataset_filters.setter
-  def dataset_filters(self, dataset_filters: Optional['ApiSearchDatasetsFilters']):
-    if dataset_filters is None:
-      del self.dataset_filters
-      return
-    if not isinstance(dataset_filters, ApiSearchDatasetsFilters):
-      raise TypeError('dataset_filters must be of type ApiSearchDatasetsFilters')
-    self._dataset_filters = dataset_filters
-
-  @property
-  def discussion_filters(self) -> Optional['ApiSearchDiscussionsFilters']:
-    """The set of Discussion filters to filter the documents"""
-    return self._discussion_filters
-
-  @discussion_filters.setter
-  def discussion_filters(self, discussion_filters: Optional['ApiSearchDiscussionsFilters']):
-    if discussion_filters is None:
-      del self.discussion_filters
-      return
-    if not isinstance(discussion_filters, ApiSearchDiscussionsFilters):
-      raise TypeError('discussion_filters must be of type ApiSearchDiscussionsFilters')
-    self._discussion_filters = discussion_filters
-
-  @property
-  def kernel_filters(self) -> Optional['ApiSearchKernelsFilters']:
-    """The set of Kernel filters to filter the documents"""
-    return self._kernel_filters
-
-  @kernel_filters.setter
-  def kernel_filters(self, kernel_filters: Optional['ApiSearchKernelsFilters']):
-    if kernel_filters is None:
-      del self.kernel_filters
-      return
-    if not isinstance(kernel_filters, ApiSearchKernelsFilters):
-      raise TypeError('kernel_filters must be of type ApiSearchKernelsFilters')
-    self._kernel_filters = kernel_filters
-
-  @property
-  def model_filters(self) -> Optional['ApiSearchModelsFilters']:
-    """The set of Model filters to filter the documents"""
-    return self._model_filters
-
-  @model_filters.setter
-  def model_filters(self, model_filters: Optional['ApiSearchModelsFilters']):
-    if model_filters is None:
-      del self.model_filters
-      return
-    if not isinstance(model_filters, ApiSearchModelsFilters):
-      raise TypeError('model_filters must be of type ApiSearchModelsFilters')
-    self._model_filters = model_filters
-
-  @property
-  def user_filters(self) -> Optional['ApiSearchUsersFilters']:
-    """The set of User filters to filter the documents"""
-    return self._user_filters
-
-  @user_filters.setter
-  def user_filters(self, user_filters: Optional['ApiSearchUsersFilters']):
-    if user_filters is None:
-      del self.user_filters
-      return
-    if not isinstance(user_filters, ApiSearchUsersFilters):
-      raise TypeError('user_filters must be of type ApiSearchUsersFilters')
-    self._user_filters = user_filters
-
-
 class ApiOrganizationCard(KaggleObject):
   r"""
   Based on kaggle.users.OrganizationCard
@@ -2265,59 +1429,841 @@ class ApiUserAvatar(KaggleObject):
     self._tier = tier
 
 
-ListEntitiesRequest._fields = [
-  FieldMetadata("filters", "filters", "_filters", ListEntitiesFilters, None, KaggleObjectSerializer()),
-  FieldMetadata("canonicalOrderBy", "canonical_order_by", "_canonical_order_by", ListSearchContentOrderBy, None, EnumSerializer(), optional=True),
-  FieldMetadata("competitionsOrderBy", "competitions_order_by", "_competitions_order_by", SearchCompetitionsOrderBy, None, EnumSerializer(), optional=True),
-  FieldMetadata("datasetsOrderBy", "datasets_order_by", "_datasets_order_by", SearchDatasetsOrderBy, None, EnumSerializer(), optional=True),
-  FieldMetadata("kernelsOrderBy", "kernels_order_by", "_kernels_order_by", SearchKernelsOrderBy, None, EnumSerializer(), optional=True),
-  FieldMetadata("modelsOrderBy", "models_order_by", "_models_order_by", SearchModelsOrderBy, None, EnumSerializer(), optional=True),
-  FieldMetadata("discussionsOrderBy", "discussions_order_by", "_discussions_order_by", SearchDiscussionsOrderBy, None, EnumSerializer(), optional=True),
-  FieldMetadata("usersOrderBy", "users_order_by", "_users_order_by", SearchUsersOrderBy, None, EnumSerializer(), optional=True),
-  FieldMetadata("pageToken", "page_token", "_page_token", str, "", PredefinedSerializer()),
-  FieldMetadata("pageSize", "page_size", "_page_size", int, 0, PredefinedSerializer()),
-  FieldMetadata("skip", "skip", "_skip", int, 0, PredefinedSerializer()),
-]
+class ListEntitiesDocument(KaggleObject):
+  r"""
+  Based on kaggle.search.ListSearchContentDocument
 
-ListEntitiesResponse._fields = [
-  FieldMetadata("documents", "documents", "_documents", ListEntitiesDocument, [], ListSerializer(KaggleObjectSerializer())),
-  FieldMetadata("totalDocuments", "total_documents", "_total_documents", int, 0, PredefinedSerializer()),
-  FieldMetadata("nextPageToken", "next_page_token", "_next_page_token", str, "", PredefinedSerializer()),
-]
+  Attributes:
+    id (int)
+      The DB ID (i.e. the PK from the table) of the document
+    document_type (DocumentType)
+      The type of content of the document
+    title (str)
+      The canonical title of the document
+    image_url (str)
+      The thumbnail URL of the document
+    create_time (datetime)
+      The canonical creation time of the document; May mean different things
+      between content types
+    update_time (datetime)
+      The canonical update time of the document; May be different between content
+      types
+    is_private (bool)
+      Whether the content is marked as private
+    votes (int)
+      The total votes (or score, if downvotes are supported) for the document
+    owner_user (ApiUserAvatar)
+    owner_organization (ApiOrganizationCard)
+    competition_document (ApiSearchCompetitionsDocument)
+    dataset_document (ApiSearchDatasetsDocument)
+    kernel_document (ApiSearchKernelsDocument)
+    model_document (ApiSearchModelsDocument)
+    discussion_document (ApiSearchDiscussionsDocument)
+    user_document (ApiSearchUsersDocument)
+    slug (str)
+      The slug of the document (which may be close to the url)
+  """
 
-ListEntitiesDocument._fields = [
-  FieldMetadata("id", "id", "_id", int, 0, PredefinedSerializer()),
-  FieldMetadata("documentType", "document_type", "_document_type", DocumentType, DocumentType.DOCUMENT_TYPE_UNSPECIFIED, EnumSerializer()),
-  FieldMetadata("title", "title", "_title", str, "", PredefinedSerializer()),
-  FieldMetadata("imageUrl", "image_url", "_image_url", str, "", PredefinedSerializer()),
-  FieldMetadata("createTime", "create_time", "_create_time", datetime, None, DateTimeSerializer()),
-  FieldMetadata("updateTime", "update_time", "_update_time", datetime, None, DateTimeSerializer(), optional=True),
-  FieldMetadata("isPrivate", "is_private", "_is_private", bool, None, PredefinedSerializer(), optional=True),
-  FieldMetadata("votes", "votes", "_votes", int, None, PredefinedSerializer(), optional=True),
-  FieldMetadata("ownerUser", "owner_user", "_owner_user", ApiUserAvatar, None, KaggleObjectSerializer(), optional=True),
-  FieldMetadata("ownerOrganization", "owner_organization", "_owner_organization", ApiOrganizationCard, None, KaggleObjectSerializer(), optional=True),
-  FieldMetadata("competitionDocument", "competition_document", "_competition_document", ApiSearchCompetitionsDocument, None, KaggleObjectSerializer(), optional=True),
-  FieldMetadata("datasetDocument", "dataset_document", "_dataset_document", ApiSearchDatasetsDocument, None, KaggleObjectSerializer(), optional=True),
-  FieldMetadata("kernelDocument", "kernel_document", "_kernel_document", ApiSearchKernelsDocument, None, KaggleObjectSerializer(), optional=True),
-  FieldMetadata("modelDocument", "model_document", "_model_document", ApiSearchModelsDocument, None, KaggleObjectSerializer(), optional=True),
-  FieldMetadata("discussionDocument", "discussion_document", "_discussion_document", ApiSearchDiscussionsDocument, None, KaggleObjectSerializer(), optional=True),
-  FieldMetadata("userDocument", "user_document", "_user_document", ApiSearchUsersDocument, None, KaggleObjectSerializer(), optional=True),
-  FieldMetadata("slug", "slug", "_slug", str, None, PredefinedSerializer(), optional=True),
-]
+  def __init__(self):
+    self._id = 0
+    self._document_type = DocumentType.DOCUMENT_TYPE_UNSPECIFIED
+    self._title = ""
+    self._image_url = ""
+    self._create_time = None
+    self._update_time = None
+    self._is_private = None
+    self._votes = None
+    self._owner_user = None
+    self._owner_organization = None
+    self._competition_document = None
+    self._dataset_document = None
+    self._kernel_document = None
+    self._model_document = None
+    self._discussion_document = None
+    self._user_document = None
+    self._slug = None
+    self._freeze()
 
-ListEntitiesFilters._fields = [
-  FieldMetadata("query", "query", "_query", str, "", PredefinedSerializer()),
-  FieldMetadata("listType", "list_type", "_list_type", ApiListType, ApiListType.API_LIST_TYPE_UNSPECIFIED, EnumSerializer()),
-  FieldMetadata("privacy", "privacy", "_privacy", PrivacyFilter, PrivacyFilter.ALL, EnumSerializer()),
-  FieldMetadata("ownerType", "owner_type", "_owner_type", OwnerType, OwnerType.OWNER_TYPE_UNSPECIFIED, EnumSerializer()),
-  FieldMetadata("documentTypes", "document_types", "_document_types", DocumentType, [], ListSerializer(EnumSerializer())),
-  FieldMetadata("competitionFilters", "competition_filters", "_competition_filters", ApiSearchCompetitionsFilters, None, KaggleObjectSerializer()),
-  FieldMetadata("datasetFilters", "dataset_filters", "_dataset_filters", ApiSearchDatasetsFilters, None, KaggleObjectSerializer()),
-  FieldMetadata("discussionFilters", "discussion_filters", "_discussion_filters", ApiSearchDiscussionsFilters, None, KaggleObjectSerializer()),
-  FieldMetadata("kernelFilters", "kernel_filters", "_kernel_filters", ApiSearchKernelsFilters, None, KaggleObjectSerializer()),
-  FieldMetadata("modelFilters", "model_filters", "_model_filters", ApiSearchModelsFilters, None, KaggleObjectSerializer()),
-  FieldMetadata("userFilters", "user_filters", "_user_filters", ApiSearchUsersFilters, None, KaggleObjectSerializer()),
-]
+  @property
+  def id(self) -> int:
+    """The DB ID (i.e. the PK from the table) of the document"""
+    return self._id
+
+  @id.setter
+  def id(self, id: int):
+    if id is None:
+      del self.id
+      return
+    if not isinstance(id, int):
+      raise TypeError('id must be of type int')
+    self._id = id
+
+  @property
+  def document_type(self) -> 'DocumentType':
+    """The type of content of the document"""
+    return self._document_type
+
+  @document_type.setter
+  def document_type(self, document_type: 'DocumentType'):
+    if document_type is None:
+      del self.document_type
+      return
+    if not isinstance(document_type, DocumentType):
+      raise TypeError('document_type must be of type DocumentType')
+    self._document_type = document_type
+
+  @property
+  def title(self) -> str:
+    """The canonical title of the document"""
+    return self._title
+
+  @title.setter
+  def title(self, title: str):
+    if title is None:
+      del self.title
+      return
+    if not isinstance(title, str):
+      raise TypeError('title must be of type str')
+    self._title = title
+
+  @property
+  def image_url(self) -> str:
+    """The thumbnail URL of the document"""
+    return self._image_url
+
+  @image_url.setter
+  def image_url(self, image_url: str):
+    if image_url is None:
+      del self.image_url
+      return
+    if not isinstance(image_url, str):
+      raise TypeError('image_url must be of type str')
+    self._image_url = image_url
+
+  @property
+  def create_time(self) -> datetime:
+    r"""
+    The canonical creation time of the document; May mean different things
+    between content types
+    """
+    return self._create_time
+
+  @create_time.setter
+  def create_time(self, create_time: datetime):
+    if create_time is None:
+      del self.create_time
+      return
+    if not isinstance(create_time, datetime):
+      raise TypeError('create_time must be of type datetime')
+    self._create_time = create_time
+
+  @property
+  def update_time(self) -> datetime:
+    r"""
+    The canonical update time of the document; May be different between content
+    types
+    """
+    return self._update_time or None
+
+  @update_time.setter
+  def update_time(self, update_time: Optional[datetime]):
+    if update_time is None:
+      del self.update_time
+      return
+    if not isinstance(update_time, datetime):
+      raise TypeError('update_time must be of type datetime')
+    self._update_time = update_time
+
+  @property
+  def is_private(self) -> bool:
+    """Whether the content is marked as private"""
+    return self._is_private or False
+
+  @is_private.setter
+  def is_private(self, is_private: Optional[bool]):
+    if is_private is None:
+      del self.is_private
+      return
+    if not isinstance(is_private, bool):
+      raise TypeError('is_private must be of type bool')
+    self._is_private = is_private
+
+  @property
+  def votes(self) -> int:
+    """The total votes (or score, if downvotes are supported) for the document"""
+    return self._votes or 0
+
+  @votes.setter
+  def votes(self, votes: Optional[int]):
+    if votes is None:
+      del self.votes
+      return
+    if not isinstance(votes, int):
+      raise TypeError('votes must be of type int')
+    self._votes = votes
+
+  @property
+  def owner_user(self) -> Optional['ApiUserAvatar']:
+    return self._owner_user or None
+
+  @owner_user.setter
+  def owner_user(self, owner_user: Optional['ApiUserAvatar']):
+    if owner_user is None:
+      del self.owner_user
+      return
+    if not isinstance(owner_user, ApiUserAvatar):
+      raise TypeError('owner_user must be of type ApiUserAvatar')
+    del self.owner_organization
+    self._owner_user = owner_user
+
+  @property
+  def owner_organization(self) -> Optional['ApiOrganizationCard']:
+    return self._owner_organization or None
+
+  @owner_organization.setter
+  def owner_organization(self, owner_organization: Optional['ApiOrganizationCard']):
+    if owner_organization is None:
+      del self.owner_organization
+      return
+    if not isinstance(owner_organization, ApiOrganizationCard):
+      raise TypeError('owner_organization must be of type ApiOrganizationCard')
+    del self.owner_user
+    self._owner_organization = owner_organization
+
+  @property
+  def competition_document(self) -> Optional['ApiSearchCompetitionsDocument']:
+    return self._competition_document or None
+
+  @competition_document.setter
+  def competition_document(self, competition_document: Optional['ApiSearchCompetitionsDocument']):
+    if competition_document is None:
+      del self.competition_document
+      return
+    if not isinstance(competition_document, ApiSearchCompetitionsDocument):
+      raise TypeError('competition_document must be of type ApiSearchCompetitionsDocument')
+    del self.dataset_document
+    del self.kernel_document
+    del self.model_document
+    del self.discussion_document
+    del self.user_document
+    self._competition_document = competition_document
+
+  @property
+  def dataset_document(self) -> Optional['ApiSearchDatasetsDocument']:
+    return self._dataset_document or None
+
+  @dataset_document.setter
+  def dataset_document(self, dataset_document: Optional['ApiSearchDatasetsDocument']):
+    if dataset_document is None:
+      del self.dataset_document
+      return
+    if not isinstance(dataset_document, ApiSearchDatasetsDocument):
+      raise TypeError('dataset_document must be of type ApiSearchDatasetsDocument')
+    del self.competition_document
+    del self.kernel_document
+    del self.model_document
+    del self.discussion_document
+    del self.user_document
+    self._dataset_document = dataset_document
+
+  @property
+  def kernel_document(self) -> Optional['ApiSearchKernelsDocument']:
+    return self._kernel_document or None
+
+  @kernel_document.setter
+  def kernel_document(self, kernel_document: Optional['ApiSearchKernelsDocument']):
+    if kernel_document is None:
+      del self.kernel_document
+      return
+    if not isinstance(kernel_document, ApiSearchKernelsDocument):
+      raise TypeError('kernel_document must be of type ApiSearchKernelsDocument')
+    del self.competition_document
+    del self.dataset_document
+    del self.model_document
+    del self.discussion_document
+    del self.user_document
+    self._kernel_document = kernel_document
+
+  @property
+  def model_document(self) -> Optional['ApiSearchModelsDocument']:
+    return self._model_document or None
+
+  @model_document.setter
+  def model_document(self, model_document: Optional['ApiSearchModelsDocument']):
+    if model_document is None:
+      del self.model_document
+      return
+    if not isinstance(model_document, ApiSearchModelsDocument):
+      raise TypeError('model_document must be of type ApiSearchModelsDocument')
+    del self.competition_document
+    del self.dataset_document
+    del self.kernel_document
+    del self.discussion_document
+    del self.user_document
+    self._model_document = model_document
+
+  @property
+  def discussion_document(self) -> Optional['ApiSearchDiscussionsDocument']:
+    return self._discussion_document or None
+
+  @discussion_document.setter
+  def discussion_document(self, discussion_document: Optional['ApiSearchDiscussionsDocument']):
+    if discussion_document is None:
+      del self.discussion_document
+      return
+    if not isinstance(discussion_document, ApiSearchDiscussionsDocument):
+      raise TypeError('discussion_document must be of type ApiSearchDiscussionsDocument')
+    del self.competition_document
+    del self.dataset_document
+    del self.kernel_document
+    del self.model_document
+    del self.user_document
+    self._discussion_document = discussion_document
+
+  @property
+  def user_document(self) -> Optional['ApiSearchUsersDocument']:
+    return self._user_document or None
+
+  @user_document.setter
+  def user_document(self, user_document: Optional['ApiSearchUsersDocument']):
+    if user_document is None:
+      del self.user_document
+      return
+    if not isinstance(user_document, ApiSearchUsersDocument):
+      raise TypeError('user_document must be of type ApiSearchUsersDocument')
+    del self.competition_document
+    del self.dataset_document
+    del self.kernel_document
+    del self.model_document
+    del self.discussion_document
+    self._user_document = user_document
+
+  @property
+  def slug(self) -> str:
+    """The slug of the document (which may be close to the url)"""
+    return self._slug or ""
+
+  @slug.setter
+  def slug(self, slug: Optional[str]):
+    if slug is None:
+      del self.slug
+      return
+    if not isinstance(slug, str):
+      raise TypeError('slug must be of type str')
+    self._slug = slug
+
+
+class ListEntitiesFilters(KaggleObject):
+  r"""
+   Based on kaggle.search.ListSearchContentFilters
+
+  Attributes:
+    query (str)
+      The free-text query the user entered to filter results
+    list_type (ApiListType)
+      The type of list being requested
+    privacy (PrivacyFilter)
+      The privacy filter to apply
+    owner_type (OwnerType)
+      The owner type filter to apply
+    document_types (DocumentType)
+      The document type filter to apply
+    competition_filters (ApiSearchCompetitionsFilters)
+      The set of Competition filters to filter the documents
+    dataset_filters (ApiSearchDatasetsFilters)
+      The set of Dataset filters to filter the documents
+    discussion_filters (ApiSearchDiscussionsFilters)
+      The set of Discussion filters to filter the documents
+    kernel_filters (ApiSearchKernelsFilters)
+      The set of Kernel filters to filter the documents
+    model_filters (ApiSearchModelsFilters)
+      The set of Model filters to filter the documents
+    user_filters (ApiSearchUsersFilters)
+      The set of User filters to filter the documents
+  """
+
+  def __init__(self):
+    self._query = ""
+    self._list_type = ApiListType.API_LIST_TYPE_UNSPECIFIED
+    self._privacy = PrivacyFilter.ALL
+    self._owner_type = OwnerType.OWNER_TYPE_UNSPECIFIED
+    self._document_types = []
+    self._competition_filters = None
+    self._dataset_filters = None
+    self._discussion_filters = None
+    self._kernel_filters = None
+    self._model_filters = None
+    self._user_filters = None
+    self._freeze()
+
+  @property
+  def query(self) -> str:
+    """The free-text query the user entered to filter results"""
+    return self._query
+
+  @query.setter
+  def query(self, query: str):
+    if query is None:
+      del self.query
+      return
+    if not isinstance(query, str):
+      raise TypeError('query must be of type str')
+    self._query = query
+
+  @property
+  def list_type(self) -> 'ApiListType':
+    """The type of list being requested"""
+    return self._list_type
+
+  @list_type.setter
+  def list_type(self, list_type: 'ApiListType'):
+    if list_type is None:
+      del self.list_type
+      return
+    if not isinstance(list_type, ApiListType):
+      raise TypeError('list_type must be of type ApiListType')
+    self._list_type = list_type
+
+  @property
+  def privacy(self) -> 'PrivacyFilter':
+    """The privacy filter to apply"""
+    return self._privacy
+
+  @privacy.setter
+  def privacy(self, privacy: 'PrivacyFilter'):
+    if privacy is None:
+      del self.privacy
+      return
+    if not isinstance(privacy, PrivacyFilter):
+      raise TypeError('privacy must be of type PrivacyFilter')
+    self._privacy = privacy
+
+  @property
+  def owner_type(self) -> 'OwnerType':
+    """The owner type filter to apply"""
+    return self._owner_type
+
+  @owner_type.setter
+  def owner_type(self, owner_type: 'OwnerType'):
+    if owner_type is None:
+      del self.owner_type
+      return
+    if not isinstance(owner_type, OwnerType):
+      raise TypeError('owner_type must be of type OwnerType')
+    self._owner_type = owner_type
+
+  @property
+  def document_types(self) -> Optional[List['DocumentType']]:
+    """The document type filter to apply"""
+    return self._document_types
+
+  @document_types.setter
+  def document_types(self, document_types: Optional[List['DocumentType']]):
+    if document_types is None:
+      del self.document_types
+      return
+    if not isinstance(document_types, list):
+      raise TypeError('document_types must be of type list')
+    if not all([isinstance(t, DocumentType) for t in document_types]):
+      raise TypeError('document_types must contain only items of type DocumentType')
+    self._document_types = document_types
+
+  @property
+  def competition_filters(self) -> Optional['ApiSearchCompetitionsFilters']:
+    """The set of Competition filters to filter the documents"""
+    return self._competition_filters
+
+  @competition_filters.setter
+  def competition_filters(self, competition_filters: Optional['ApiSearchCompetitionsFilters']):
+    if competition_filters is None:
+      del self.competition_filters
+      return
+    if not isinstance(competition_filters, ApiSearchCompetitionsFilters):
+      raise TypeError('competition_filters must be of type ApiSearchCompetitionsFilters')
+    self._competition_filters = competition_filters
+
+  @property
+  def dataset_filters(self) -> Optional['ApiSearchDatasetsFilters']:
+    """The set of Dataset filters to filter the documents"""
+    return self._dataset_filters
+
+  @dataset_filters.setter
+  def dataset_filters(self, dataset_filters: Optional['ApiSearchDatasetsFilters']):
+    if dataset_filters is None:
+      del self.dataset_filters
+      return
+    if not isinstance(dataset_filters, ApiSearchDatasetsFilters):
+      raise TypeError('dataset_filters must be of type ApiSearchDatasetsFilters')
+    self._dataset_filters = dataset_filters
+
+  @property
+  def discussion_filters(self) -> Optional['ApiSearchDiscussionsFilters']:
+    """The set of Discussion filters to filter the documents"""
+    return self._discussion_filters
+
+  @discussion_filters.setter
+  def discussion_filters(self, discussion_filters: Optional['ApiSearchDiscussionsFilters']):
+    if discussion_filters is None:
+      del self.discussion_filters
+      return
+    if not isinstance(discussion_filters, ApiSearchDiscussionsFilters):
+      raise TypeError('discussion_filters must be of type ApiSearchDiscussionsFilters')
+    self._discussion_filters = discussion_filters
+
+  @property
+  def kernel_filters(self) -> Optional['ApiSearchKernelsFilters']:
+    """The set of Kernel filters to filter the documents"""
+    return self._kernel_filters
+
+  @kernel_filters.setter
+  def kernel_filters(self, kernel_filters: Optional['ApiSearchKernelsFilters']):
+    if kernel_filters is None:
+      del self.kernel_filters
+      return
+    if not isinstance(kernel_filters, ApiSearchKernelsFilters):
+      raise TypeError('kernel_filters must be of type ApiSearchKernelsFilters')
+    self._kernel_filters = kernel_filters
+
+  @property
+  def model_filters(self) -> Optional['ApiSearchModelsFilters']:
+    """The set of Model filters to filter the documents"""
+    return self._model_filters
+
+  @model_filters.setter
+  def model_filters(self, model_filters: Optional['ApiSearchModelsFilters']):
+    if model_filters is None:
+      del self.model_filters
+      return
+    if not isinstance(model_filters, ApiSearchModelsFilters):
+      raise TypeError('model_filters must be of type ApiSearchModelsFilters')
+    self._model_filters = model_filters
+
+  @property
+  def user_filters(self) -> Optional['ApiSearchUsersFilters']:
+    """The set of User filters to filter the documents"""
+    return self._user_filters
+
+  @user_filters.setter
+  def user_filters(self, user_filters: Optional['ApiSearchUsersFilters']):
+    if user_filters is None:
+      del self.user_filters
+      return
+    if not isinstance(user_filters, ApiSearchUsersFilters):
+      raise TypeError('user_filters must be of type ApiSearchUsersFilters')
+    self._user_filters = user_filters
+
+
+class ListEntitiesRequest(KaggleObject):
+  r"""
+  Attributes:
+    filters (ListEntitiesFilters)
+      Canonical filters to apply to the search
+    canonical_order_by (ListSearchContentOrderBy)
+      Canonical order to apply to the results
+    competitions_order_by (SearchCompetitionsOrderBy)
+      Competitions order to apply to the results
+    datasets_order_by (SearchDatasetsOrderBy)
+      Datasets order to apply to the results
+    kernels_order_by (SearchKernelsOrderBy)
+      Kernels order to apply to the results
+    models_order_by (SearchModelsOrderBy)
+      Models order to apply to the results
+    discussions_order_by (SearchDiscussionsOrderBy)
+      Discussions order to apply to the results
+    users_order_by (SearchUsersOrderBy)
+      Users order to apply to the results
+    page_token (str)
+      Page token for paging (see aip.dev/158)
+    page_size (int)
+      Number of documents per page to return
+    skip (int)
+      How many results to skip
+  """
+
+  def __init__(self):
+    self._filters = None
+    self._canonical_order_by = None
+    self._competitions_order_by = None
+    self._datasets_order_by = None
+    self._kernels_order_by = None
+    self._models_order_by = None
+    self._discussions_order_by = None
+    self._users_order_by = None
+    self._page_token = ""
+    self._page_size = 0
+    self._skip = 0
+    self._freeze()
+
+  @property
+  def filters(self) -> Optional['ListEntitiesFilters']:
+    """Canonical filters to apply to the search"""
+    return self._filters
+
+  @filters.setter
+  def filters(self, filters: Optional['ListEntitiesFilters']):
+    if filters is None:
+      del self.filters
+      return
+    if not isinstance(filters, ListEntitiesFilters):
+      raise TypeError('filters must be of type ListEntitiesFilters')
+    self._filters = filters
+
+  @property
+  def canonical_order_by(self) -> 'ListSearchContentOrderBy':
+    """Canonical order to apply to the results"""
+    return self._canonical_order_by or ListSearchContentOrderBy.LIST_SEARCH_CONTENT_ORDER_BY_UNSPECIFIED
+
+  @canonical_order_by.setter
+  def canonical_order_by(self, canonical_order_by: 'ListSearchContentOrderBy'):
+    if canonical_order_by is None:
+      del self.canonical_order_by
+      return
+    if not isinstance(canonical_order_by, ListSearchContentOrderBy):
+      raise TypeError('canonical_order_by must be of type ListSearchContentOrderBy')
+    del self.competitions_order_by
+    del self.datasets_order_by
+    del self.kernels_order_by
+    del self.models_order_by
+    del self.discussions_order_by
+    del self.users_order_by
+    self._canonical_order_by = canonical_order_by
+
+  @property
+  def competitions_order_by(self) -> 'SearchCompetitionsOrderBy':
+    """Competitions order to apply to the results"""
+    return self._competitions_order_by or SearchCompetitionsOrderBy.SEARCH_COMPETITIONS_ORDER_BY_UNSPECIFIED
+
+  @competitions_order_by.setter
+  def competitions_order_by(self, competitions_order_by: 'SearchCompetitionsOrderBy'):
+    if competitions_order_by is None:
+      del self.competitions_order_by
+      return
+    if not isinstance(competitions_order_by, SearchCompetitionsOrderBy):
+      raise TypeError('competitions_order_by must be of type SearchCompetitionsOrderBy')
+    del self.canonical_order_by
+    del self.datasets_order_by
+    del self.kernels_order_by
+    del self.models_order_by
+    del self.discussions_order_by
+    del self.users_order_by
+    self._competitions_order_by = competitions_order_by
+
+  @property
+  def datasets_order_by(self) -> 'SearchDatasetsOrderBy':
+    """Datasets order to apply to the results"""
+    return self._datasets_order_by or SearchDatasetsOrderBy.SEARCH_DATASETS_ORDER_BY_UNSPECIFIED
+
+  @datasets_order_by.setter
+  def datasets_order_by(self, datasets_order_by: 'SearchDatasetsOrderBy'):
+    if datasets_order_by is None:
+      del self.datasets_order_by
+      return
+    if not isinstance(datasets_order_by, SearchDatasetsOrderBy):
+      raise TypeError('datasets_order_by must be of type SearchDatasetsOrderBy')
+    del self.canonical_order_by
+    del self.competitions_order_by
+    del self.kernels_order_by
+    del self.models_order_by
+    del self.discussions_order_by
+    del self.users_order_by
+    self._datasets_order_by = datasets_order_by
+
+  @property
+  def kernels_order_by(self) -> 'SearchKernelsOrderBy':
+    """Kernels order to apply to the results"""
+    return self._kernels_order_by or SearchKernelsOrderBy.SEARCH_KERNELS_ORDER_BY_UNSPECIFIED
+
+  @kernels_order_by.setter
+  def kernels_order_by(self, kernels_order_by: 'SearchKernelsOrderBy'):
+    if kernels_order_by is None:
+      del self.kernels_order_by
+      return
+    if not isinstance(kernels_order_by, SearchKernelsOrderBy):
+      raise TypeError('kernels_order_by must be of type SearchKernelsOrderBy')
+    del self.canonical_order_by
+    del self.competitions_order_by
+    del self.datasets_order_by
+    del self.models_order_by
+    del self.discussions_order_by
+    del self.users_order_by
+    self._kernels_order_by = kernels_order_by
+
+  @property
+  def models_order_by(self) -> 'SearchModelsOrderBy':
+    """Models order to apply to the results"""
+    return self._models_order_by or SearchModelsOrderBy.MODELS_SEARCH_ORDER_BY_UNSPECIFIED
+
+  @models_order_by.setter
+  def models_order_by(self, models_order_by: 'SearchModelsOrderBy'):
+    if models_order_by is None:
+      del self.models_order_by
+      return
+    if not isinstance(models_order_by, SearchModelsOrderBy):
+      raise TypeError('models_order_by must be of type SearchModelsOrderBy')
+    del self.canonical_order_by
+    del self.competitions_order_by
+    del self.datasets_order_by
+    del self.kernels_order_by
+    del self.discussions_order_by
+    del self.users_order_by
+    self._models_order_by = models_order_by
+
+  @property
+  def discussions_order_by(self) -> 'SearchDiscussionsOrderBy':
+    """Discussions order to apply to the results"""
+    return self._discussions_order_by or SearchDiscussionsOrderBy.SEARCH_DISCUSSIONS_ORDER_BY_UNSPECIFIED
+
+  @discussions_order_by.setter
+  def discussions_order_by(self, discussions_order_by: 'SearchDiscussionsOrderBy'):
+    if discussions_order_by is None:
+      del self.discussions_order_by
+      return
+    if not isinstance(discussions_order_by, SearchDiscussionsOrderBy):
+      raise TypeError('discussions_order_by must be of type SearchDiscussionsOrderBy')
+    del self.canonical_order_by
+    del self.competitions_order_by
+    del self.datasets_order_by
+    del self.kernels_order_by
+    del self.models_order_by
+    del self.users_order_by
+    self._discussions_order_by = discussions_order_by
+
+  @property
+  def users_order_by(self) -> 'SearchUsersOrderBy':
+    """Users order to apply to the results"""
+    return self._users_order_by or SearchUsersOrderBy.SEARCH_USERS_ORDER_BY_UNSPECIFIED
+
+  @users_order_by.setter
+  def users_order_by(self, users_order_by: 'SearchUsersOrderBy'):
+    if users_order_by is None:
+      del self.users_order_by
+      return
+    if not isinstance(users_order_by, SearchUsersOrderBy):
+      raise TypeError('users_order_by must be of type SearchUsersOrderBy')
+    del self.canonical_order_by
+    del self.competitions_order_by
+    del self.datasets_order_by
+    del self.kernels_order_by
+    del self.models_order_by
+    del self.discussions_order_by
+    self._users_order_by = users_order_by
+
+  @property
+  def page_token(self) -> str:
+    """Page token for paging (see aip.dev/158)"""
+    return self._page_token
+
+  @page_token.setter
+  def page_token(self, page_token: str):
+    if page_token is None:
+      del self.page_token
+      return
+    if not isinstance(page_token, str):
+      raise TypeError('page_token must be of type str')
+    self._page_token = page_token
+
+  @property
+  def page_size(self) -> int:
+    """Number of documents per page to return"""
+    return self._page_size
+
+  @page_size.setter
+  def page_size(self, page_size: int):
+    if page_size is None:
+      del self.page_size
+      return
+    if not isinstance(page_size, int):
+      raise TypeError('page_size must be of type int')
+    self._page_size = page_size
+
+  @property
+  def skip(self) -> int:
+    """How many results to skip"""
+    return self._skip
+
+  @skip.setter
+  def skip(self, skip: int):
+    if skip is None:
+      del self.skip
+      return
+    if not isinstance(skip, int):
+      raise TypeError('skip must be of type int')
+    self._skip = skip
+
+  def endpoint(self):
+    path = '/api/v1/search/list-entities'
+    return path.format_map(self.to_field_map(self))
+
+
+class ListEntitiesResponse(KaggleObject):
+  r"""
+  Attributes:
+    documents (ListEntitiesDocument)
+      The list of documents returned after filtering
+    total_documents (int)
+      The total number of documents matching any filters
+    next_page_token (str)
+      The token to request the next page
+  """
+
+  def __init__(self):
+    self._documents = []
+    self._total_documents = 0
+    self._next_page_token = ""
+    self._freeze()
+
+  @property
+  def documents(self) -> Optional[List[Optional['ListEntitiesDocument']]]:
+    """The list of documents returned after filtering"""
+    return self._documents
+
+  @documents.setter
+  def documents(self, documents: Optional[List[Optional['ListEntitiesDocument']]]):
+    if documents is None:
+      del self.documents
+      return
+    if not isinstance(documents, list):
+      raise TypeError('documents must be of type list')
+    if not all([isinstance(t, ListEntitiesDocument) for t in documents]):
+      raise TypeError('documents must contain only items of type ListEntitiesDocument')
+    self._documents = documents
+
+  @property
+  def total_documents(self) -> int:
+    """The total number of documents matching any filters"""
+    return self._total_documents
+
+  @total_documents.setter
+  def total_documents(self, total_documents: int):
+    if total_documents is None:
+      del self.total_documents
+      return
+    if not isinstance(total_documents, int):
+      raise TypeError('total_documents must be of type int')
+    self._total_documents = total_documents
+
+  @property
+  def next_page_token(self) -> str:
+    """The token to request the next page"""
+    return self._next_page_token
+
+  @next_page_token.setter
+  def next_page_token(self, next_page_token: str):
+    if next_page_token is None:
+      del self.next_page_token
+      return
+    if not isinstance(next_page_token, str):
+      raise TypeError('next_page_token must be of type str')
+    self._next_page_token = next_page_token
+
+  @property
+  def totalDocuments(self):
+    return self.total_documents
+
+  @property
+  def nextPageToken(self):
+    return self.next_page_token
+
 
 ApiOrganizationCard._fields = [
   FieldMetadata("name", "name", "_name", str, "", PredefinedSerializer()),
@@ -2431,5 +2377,59 @@ ApiUserAvatar._fields = [
   FieldMetadata("userName", "user_name", "_user_name", str, None, PredefinedSerializer(), optional=True),
   FieldMetadata("progressionOptOut", "progression_opt_out", "_progression_opt_out", bool, None, PredefinedSerializer(), optional=True),
   FieldMetadata("tier", "tier", "_tier", UserAchievementTier, UserAchievementTier.NOVICE, EnumSerializer()),
+]
+
+ListEntitiesDocument._fields = [
+  FieldMetadata("id", "id", "_id", int, 0, PredefinedSerializer()),
+  FieldMetadata("documentType", "document_type", "_document_type", DocumentType, DocumentType.DOCUMENT_TYPE_UNSPECIFIED, EnumSerializer()),
+  FieldMetadata("title", "title", "_title", str, "", PredefinedSerializer()),
+  FieldMetadata("imageUrl", "image_url", "_image_url", str, "", PredefinedSerializer()),
+  FieldMetadata("createTime", "create_time", "_create_time", datetime, None, DateTimeSerializer()),
+  FieldMetadata("updateTime", "update_time", "_update_time", datetime, None, DateTimeSerializer(), optional=True),
+  FieldMetadata("isPrivate", "is_private", "_is_private", bool, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("votes", "votes", "_votes", int, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("ownerUser", "owner_user", "_owner_user", ApiUserAvatar, None, KaggleObjectSerializer(), optional=True),
+  FieldMetadata("ownerOrganization", "owner_organization", "_owner_organization", ApiOrganizationCard, None, KaggleObjectSerializer(), optional=True),
+  FieldMetadata("competitionDocument", "competition_document", "_competition_document", ApiSearchCompetitionsDocument, None, KaggleObjectSerializer(), optional=True),
+  FieldMetadata("datasetDocument", "dataset_document", "_dataset_document", ApiSearchDatasetsDocument, None, KaggleObjectSerializer(), optional=True),
+  FieldMetadata("kernelDocument", "kernel_document", "_kernel_document", ApiSearchKernelsDocument, None, KaggleObjectSerializer(), optional=True),
+  FieldMetadata("modelDocument", "model_document", "_model_document", ApiSearchModelsDocument, None, KaggleObjectSerializer(), optional=True),
+  FieldMetadata("discussionDocument", "discussion_document", "_discussion_document", ApiSearchDiscussionsDocument, None, KaggleObjectSerializer(), optional=True),
+  FieldMetadata("userDocument", "user_document", "_user_document", ApiSearchUsersDocument, None, KaggleObjectSerializer(), optional=True),
+  FieldMetadata("slug", "slug", "_slug", str, None, PredefinedSerializer(), optional=True),
+]
+
+ListEntitiesFilters._fields = [
+  FieldMetadata("query", "query", "_query", str, "", PredefinedSerializer()),
+  FieldMetadata("listType", "list_type", "_list_type", ApiListType, ApiListType.API_LIST_TYPE_UNSPECIFIED, EnumSerializer()),
+  FieldMetadata("privacy", "privacy", "_privacy", PrivacyFilter, PrivacyFilter.ALL, EnumSerializer()),
+  FieldMetadata("ownerType", "owner_type", "_owner_type", OwnerType, OwnerType.OWNER_TYPE_UNSPECIFIED, EnumSerializer()),
+  FieldMetadata("documentTypes", "document_types", "_document_types", DocumentType, [], ListSerializer(EnumSerializer())),
+  FieldMetadata("competitionFilters", "competition_filters", "_competition_filters", ApiSearchCompetitionsFilters, None, KaggleObjectSerializer()),
+  FieldMetadata("datasetFilters", "dataset_filters", "_dataset_filters", ApiSearchDatasetsFilters, None, KaggleObjectSerializer()),
+  FieldMetadata("discussionFilters", "discussion_filters", "_discussion_filters", ApiSearchDiscussionsFilters, None, KaggleObjectSerializer()),
+  FieldMetadata("kernelFilters", "kernel_filters", "_kernel_filters", ApiSearchKernelsFilters, None, KaggleObjectSerializer()),
+  FieldMetadata("modelFilters", "model_filters", "_model_filters", ApiSearchModelsFilters, None, KaggleObjectSerializer()),
+  FieldMetadata("userFilters", "user_filters", "_user_filters", ApiSearchUsersFilters, None, KaggleObjectSerializer()),
+]
+
+ListEntitiesRequest._fields = [
+  FieldMetadata("filters", "filters", "_filters", ListEntitiesFilters, None, KaggleObjectSerializer()),
+  FieldMetadata("canonicalOrderBy", "canonical_order_by", "_canonical_order_by", ListSearchContentOrderBy, None, EnumSerializer(), optional=True),
+  FieldMetadata("competitionsOrderBy", "competitions_order_by", "_competitions_order_by", SearchCompetitionsOrderBy, None, EnumSerializer(), optional=True),
+  FieldMetadata("datasetsOrderBy", "datasets_order_by", "_datasets_order_by", SearchDatasetsOrderBy, None, EnumSerializer(), optional=True),
+  FieldMetadata("kernelsOrderBy", "kernels_order_by", "_kernels_order_by", SearchKernelsOrderBy, None, EnumSerializer(), optional=True),
+  FieldMetadata("modelsOrderBy", "models_order_by", "_models_order_by", SearchModelsOrderBy, None, EnumSerializer(), optional=True),
+  FieldMetadata("discussionsOrderBy", "discussions_order_by", "_discussions_order_by", SearchDiscussionsOrderBy, None, EnumSerializer(), optional=True),
+  FieldMetadata("usersOrderBy", "users_order_by", "_users_order_by", SearchUsersOrderBy, None, EnumSerializer(), optional=True),
+  FieldMetadata("pageToken", "page_token", "_page_token", str, "", PredefinedSerializer()),
+  FieldMetadata("pageSize", "page_size", "_page_size", int, 0, PredefinedSerializer()),
+  FieldMetadata("skip", "skip", "_skip", int, 0, PredefinedSerializer()),
+]
+
+ListEntitiesResponse._fields = [
+  FieldMetadata("documents", "documents", "_documents", ListEntitiesDocument, [], ListSerializer(KaggleObjectSerializer())),
+  FieldMetadata("totalDocuments", "total_documents", "_total_documents", int, 0, PredefinedSerializer()),
+  FieldMetadata("nextPageToken", "next_page_token", "_next_page_token", str, "", PredefinedSerializer()),
 ]
 

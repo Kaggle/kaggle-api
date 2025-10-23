@@ -2,298 +2,12 @@ from datetime import datetime
 from kagglesdk.kaggle_object import *
 from typing import Optional, List
 
-class BenchmarkVersionIdentifier(KaggleObject):
-  r"""
-  Identifier for selecting a specific benchmark version.
-
-  Attributes:
-    version_id_selector (VersionIdSelector)
-    published_latest_selector (PublishedLatestSelector)
-    published_number_selector (PublishedNumberSelector)
-    draft_selector (DraftSelector)
-    benchmark_slug_selector (BenchmarkSlugSelector)
-  """
-
-  def __init__(self):
-    self._version_id_selector = None
-    self._published_latest_selector = None
-    self._published_number_selector = None
-    self._draft_selector = None
-    self._benchmark_slug_selector = None
-    self._freeze()
-
-  @property
-  def version_id_selector(self) -> Optional['VersionIdSelector']:
-    return self._version_id_selector or None
-
-  @version_id_selector.setter
-  def version_id_selector(self, version_id_selector: Optional['VersionIdSelector']):
-    if version_id_selector is None:
-      del self.version_id_selector
-      return
-    if not isinstance(version_id_selector, VersionIdSelector):
-      raise TypeError('version_id_selector must be of type VersionIdSelector')
-    del self.published_latest_selector
-    del self.published_number_selector
-    del self.draft_selector
-    del self.benchmark_slug_selector
-    self._version_id_selector = version_id_selector
-
-  @property
-  def published_latest_selector(self) -> Optional['PublishedLatestSelector']:
-    return self._published_latest_selector or None
-
-  @published_latest_selector.setter
-  def published_latest_selector(self, published_latest_selector: Optional['PublishedLatestSelector']):
-    if published_latest_selector is None:
-      del self.published_latest_selector
-      return
-    if not isinstance(published_latest_selector, PublishedLatestSelector):
-      raise TypeError('published_latest_selector must be of type PublishedLatestSelector')
-    del self.version_id_selector
-    del self.published_number_selector
-    del self.draft_selector
-    del self.benchmark_slug_selector
-    self._published_latest_selector = published_latest_selector
-
-  @property
-  def published_number_selector(self) -> Optional['PublishedNumberSelector']:
-    return self._published_number_selector or None
-
-  @published_number_selector.setter
-  def published_number_selector(self, published_number_selector: Optional['PublishedNumberSelector']):
-    if published_number_selector is None:
-      del self.published_number_selector
-      return
-    if not isinstance(published_number_selector, PublishedNumberSelector):
-      raise TypeError('published_number_selector must be of type PublishedNumberSelector')
-    del self.version_id_selector
-    del self.published_latest_selector
-    del self.draft_selector
-    del self.benchmark_slug_selector
-    self._published_number_selector = published_number_selector
-
-  @property
-  def draft_selector(self) -> Optional['DraftSelector']:
-    return self._draft_selector or None
-
-  @draft_selector.setter
-  def draft_selector(self, draft_selector: Optional['DraftSelector']):
-    if draft_selector is None:
-      del self.draft_selector
-      return
-    if not isinstance(draft_selector, DraftSelector):
-      raise TypeError('draft_selector must be of type DraftSelector')
-    del self.version_id_selector
-    del self.published_latest_selector
-    del self.published_number_selector
-    del self.benchmark_slug_selector
-    self._draft_selector = draft_selector
-
-  @property
-  def benchmark_slug_selector(self) -> Optional['BenchmarkSlugSelector']:
-    return self._benchmark_slug_selector or None
-
-  @benchmark_slug_selector.setter
-  def benchmark_slug_selector(self, benchmark_slug_selector: Optional['BenchmarkSlugSelector']):
-    if benchmark_slug_selector is None:
-      del self.benchmark_slug_selector
-      return
-    if not isinstance(benchmark_slug_selector, BenchmarkSlugSelector):
-      raise TypeError('benchmark_slug_selector must be of type BenchmarkSlugSelector')
-    del self.version_id_selector
-    del self.published_latest_selector
-    del self.published_number_selector
-    del self.draft_selector
-    self._benchmark_slug_selector = benchmark_slug_selector
-
-
-class DraftSelector(KaggleObject):
-  r"""
-  Select by the parent benchmark's single draft version (always exists).
-
-  Attributes:
-    parent_benchmark_identifier (BenchmarkIdentifier)
-  """
-
-  def __init__(self):
-    self._parent_benchmark_identifier = None
-    self._freeze()
-
-  @property
-  def parent_benchmark_identifier(self) -> Optional['BenchmarkIdentifier']:
-    return self._parent_benchmark_identifier
-
-  @parent_benchmark_identifier.setter
-  def parent_benchmark_identifier(self, parent_benchmark_identifier: Optional['BenchmarkIdentifier']):
-    if parent_benchmark_identifier is None:
-      del self.parent_benchmark_identifier
-      return
-    if not isinstance(parent_benchmark_identifier, BenchmarkIdentifier):
-      raise TypeError('parent_benchmark_identifier must be of type BenchmarkIdentifier')
-    self._parent_benchmark_identifier = parent_benchmark_identifier
-
-
-class PublishedLatestSelector(KaggleObject):
-  r"""
-  Select by the parent benchmark's latest published version, defaults to NULL.
-
-  Attributes:
-    parent_benchmark_identifier (BenchmarkIdentifier)
-  """
-
-  def __init__(self):
-    self._parent_benchmark_identifier = None
-    self._freeze()
-
-  @property
-  def parent_benchmark_identifier(self) -> Optional['BenchmarkIdentifier']:
-    return self._parent_benchmark_identifier
-
-  @parent_benchmark_identifier.setter
-  def parent_benchmark_identifier(self, parent_benchmark_identifier: Optional['BenchmarkIdentifier']):
-    if parent_benchmark_identifier is None:
-      del self.parent_benchmark_identifier
-      return
-    if not isinstance(parent_benchmark_identifier, BenchmarkIdentifier):
-      raise TypeError('parent_benchmark_identifier must be of type BenchmarkIdentifier')
-    self._parent_benchmark_identifier = parent_benchmark_identifier
-
-
-class PublishedNumberSelector(KaggleObject):
-  r"""
-  Select by the parent benchmark's published version at a particular version
-  number. Defaults to NULL.
-
-  Attributes:
-    parent_benchmark_identifier (BenchmarkIdentifier)
-    version_number (int)
-  """
-
-  def __init__(self):
-    self._parent_benchmark_identifier = None
-    self._version_number = 0
-    self._freeze()
-
-  @property
-  def parent_benchmark_identifier(self) -> Optional['BenchmarkIdentifier']:
-    return self._parent_benchmark_identifier
-
-  @parent_benchmark_identifier.setter
-  def parent_benchmark_identifier(self, parent_benchmark_identifier: Optional['BenchmarkIdentifier']):
-    if parent_benchmark_identifier is None:
-      del self.parent_benchmark_identifier
-      return
-    if not isinstance(parent_benchmark_identifier, BenchmarkIdentifier):
-      raise TypeError('parent_benchmark_identifier must be of type BenchmarkIdentifier')
-    self._parent_benchmark_identifier = parent_benchmark_identifier
-
-  @property
-  def version_number(self) -> int:
-    return self._version_number
-
-  @version_number.setter
-  def version_number(self, version_number: int):
-    if version_number is None:
-      del self.version_number
-      return
-    if not isinstance(version_number, int):
-      raise TypeError('version_number must be of type int')
-    self._version_number = version_number
-
-
-class VersionIdSelector(KaggleObject):
-  r"""
-  Select by the benchmark version id. Optional parent benchmark id.
-
-  Attributes:
-    parent_benchmark_identifier (BenchmarkIdentifier)
-    id (int)
-  """
-
-  def __init__(self):
-    self._parent_benchmark_identifier = None
-    self._id = 0
-    self._freeze()
-
-  @property
-  def parent_benchmark_identifier(self) -> Optional['BenchmarkIdentifier']:
-    return self._parent_benchmark_identifier or None
-
-  @parent_benchmark_identifier.setter
-  def parent_benchmark_identifier(self, parent_benchmark_identifier: Optional[Optional['BenchmarkIdentifier']]):
-    if parent_benchmark_identifier is None:
-      del self.parent_benchmark_identifier
-      return
-    if not isinstance(parent_benchmark_identifier, BenchmarkIdentifier):
-      raise TypeError('parent_benchmark_identifier must be of type BenchmarkIdentifier')
-    self._parent_benchmark_identifier = parent_benchmark_identifier
-
-  @property
-  def id(self) -> int:
-    return self._id
-
-  @id.setter
-  def id(self, id: int):
-    if id is None:
-      del self.id
-      return
-    if not isinstance(id, int):
-      raise TypeError('id must be of type int')
-    self._id = id
-
-
-class BenchmarkIdentifier(KaggleObject):
-  r"""
-  Identifier for selecting a specific benchmark.
-
-  Attributes:
-    id (int)
-    slug (str)
-  """
-
-  def __init__(self):
-    self._id = None
-    self._slug = None
-    self._freeze()
-
-  @property
-  def id(self) -> int:
-    return self._id or 0
-
-  @id.setter
-  def id(self, id: int):
-    if id is None:
-      del self.id
-      return
-    if not isinstance(id, int):
-      raise TypeError('id must be of type int')
-    del self.slug
-    self._id = id
-
-  @property
-  def slug(self) -> str:
-    return self._slug or ""
-
-  @slug.setter
-  def slug(self, slug: str):
-    if slug is None:
-      del self.slug
-      return
-    if not isinstance(slug, str):
-      raise TypeError('slug must be of type str')
-    del self.id
-    self._slug = slug
-
-
 class BenchmarkResult(KaggleObject):
   r"""
   TODO(bml): Integrate this proto with personal benchmarks trials.
   Represents the outcome of a benchmark run. All fields are immutable.
 
   Attributes:
-    task_version_id (int)
-      Convenience fields for this result (for the frontend):
     numeric_result (NumericResult)
     boolean_result (bool)
     custom_additional_results (CustomResult)
@@ -304,16 +18,18 @@ class BenchmarkResult(KaggleObject):
       Numeric result on the public set of the benchmark version.
     evaluation_date (datetime)
       The date on which evaluation was performed.
+    task_version_id (int)
+      Convenience fields for this result (for the frontend):
   """
 
   def __init__(self):
-    self._task_version_id = None
     self._numeric_result = None
     self._boolean_result = None
     self._custom_additional_results = []
     self._numeric_result_private = None
     self._numeric_result_public = None
     self._evaluation_date = None
+    self._task_version_id = None
     self._freeze()
 
   @property
@@ -415,60 +131,6 @@ class BenchmarkResult(KaggleObject):
     if not isinstance(evaluation_date, datetime):
       raise TypeError('evaluation_date must be of type datetime')
     self._evaluation_date = evaluation_date
-
-
-class BenchmarkSlugSelector(KaggleObject):
-  r"""
-  Attributes:
-    owner_slug (str)
-    benchmark_slug (str)
-    version_number (int)
-  """
-
-  def __init__(self):
-    self._owner_slug = ""
-    self._benchmark_slug = ""
-    self._version_number = None
-    self._freeze()
-
-  @property
-  def owner_slug(self) -> str:
-    return self._owner_slug
-
-  @owner_slug.setter
-  def owner_slug(self, owner_slug: str):
-    if owner_slug is None:
-      del self.owner_slug
-      return
-    if not isinstance(owner_slug, str):
-      raise TypeError('owner_slug must be of type str')
-    self._owner_slug = owner_slug
-
-  @property
-  def benchmark_slug(self) -> str:
-    return self._benchmark_slug
-
-  @benchmark_slug.setter
-  def benchmark_slug(self, benchmark_slug: str):
-    if benchmark_slug is None:
-      del self.benchmark_slug
-      return
-    if not isinstance(benchmark_slug, str):
-      raise TypeError('benchmark_slug must be of type str')
-    self._benchmark_slug = benchmark_slug
-
-  @property
-  def version_number(self) -> int:
-    return self._version_number or 0
-
-  @version_number.setter
-  def version_number(self, version_number: Optional[int]):
-    if version_number is None:
-      del self.version_number
-      return
-    if not isinstance(version_number, int):
-      raise TypeError('version_number must be of type int')
-    self._version_number = version_number
 
 
 class CustomResult(KaggleObject):
@@ -617,51 +279,14 @@ class UnevenConfidenceInterval(KaggleObject):
     self._minus = minus
 
 
-BenchmarkVersionIdentifier._fields = [
-  FieldMetadata("versionIdSelector", "version_id_selector", "_version_id_selector", VersionIdSelector, None, KaggleObjectSerializer(), optional=True),
-  FieldMetadata("publishedLatestSelector", "published_latest_selector", "_published_latest_selector", PublishedLatestSelector, None, KaggleObjectSerializer(), optional=True),
-  FieldMetadata("publishedNumberSelector", "published_number_selector", "_published_number_selector", PublishedNumberSelector, None, KaggleObjectSerializer(), optional=True),
-  FieldMetadata("draftSelector", "draft_selector", "_draft_selector", DraftSelector, None, KaggleObjectSerializer(), optional=True),
-  FieldMetadata("benchmarkSlugSelector", "benchmark_slug_selector", "_benchmark_slug_selector", BenchmarkSlugSelector, None, KaggleObjectSerializer(), optional=True),
-]
-
-DraftSelector._fields = [
-  FieldMetadata("parentBenchmarkIdentifier", "parent_benchmark_identifier", "_parent_benchmark_identifier", BenchmarkIdentifier, None, KaggleObjectSerializer()),
-]
-
-PublishedLatestSelector._fields = [
-  FieldMetadata("parentBenchmarkIdentifier", "parent_benchmark_identifier", "_parent_benchmark_identifier", BenchmarkIdentifier, None, KaggleObjectSerializer()),
-]
-
-PublishedNumberSelector._fields = [
-  FieldMetadata("parentBenchmarkIdentifier", "parent_benchmark_identifier", "_parent_benchmark_identifier", BenchmarkIdentifier, None, KaggleObjectSerializer()),
-  FieldMetadata("versionNumber", "version_number", "_version_number", int, 0, PredefinedSerializer()),
-]
-
-VersionIdSelector._fields = [
-  FieldMetadata("parentBenchmarkIdentifier", "parent_benchmark_identifier", "_parent_benchmark_identifier", BenchmarkIdentifier, None, KaggleObjectSerializer(), optional=True),
-  FieldMetadata("id", "id", "_id", int, 0, PredefinedSerializer()),
-]
-
-BenchmarkIdentifier._fields = [
-  FieldMetadata("id", "id", "_id", int, None, PredefinedSerializer(), optional=True),
-  FieldMetadata("slug", "slug", "_slug", str, None, PredefinedSerializer(), optional=True),
-]
-
 BenchmarkResult._fields = [
-  FieldMetadata("taskVersionId", "task_version_id", "_task_version_id", int, None, PredefinedSerializer(), optional=True),
   FieldMetadata("numericResult", "numeric_result", "_numeric_result", NumericResult, None, KaggleObjectSerializer(), optional=True),
   FieldMetadata("booleanResult", "boolean_result", "_boolean_result", bool, None, PredefinedSerializer(), optional=True),
   FieldMetadata("customAdditionalResults", "custom_additional_results", "_custom_additional_results", CustomResult, [], ListSerializer(KaggleObjectSerializer())),
   FieldMetadata("numericResultPrivate", "numeric_result_private", "_numeric_result_private", NumericResult, None, KaggleObjectSerializer(), optional=True),
   FieldMetadata("numericResultPublic", "numeric_result_public", "_numeric_result_public", NumericResult, None, KaggleObjectSerializer(), optional=True),
   FieldMetadata("evaluationDate", "evaluation_date", "_evaluation_date", datetime, None, DateTimeSerializer(), optional=True),
-]
-
-BenchmarkSlugSelector._fields = [
-  FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "", PredefinedSerializer()),
-  FieldMetadata("benchmarkSlug", "benchmark_slug", "_benchmark_slug", str, "", PredefinedSerializer()),
-  FieldMetadata("versionNumber", "version_number", "_version_number", int, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("taskVersionId", "task_version_id", "_task_version_id", int, None, PredefinedSerializer(), optional=True),
 ]
 
 CustomResult._fields = [

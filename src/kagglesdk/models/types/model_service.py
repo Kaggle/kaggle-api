@@ -93,6 +93,75 @@ class GetModelMetricsResponse(KaggleObject):
     self._metrics = metrics
 
 
+class ModelInstanceMetric(KaggleObject):
+  r"""
+  Attributes:
+    variation (str)
+    framework (ModelFramework)
+    downloads (int)
+    notebooks (int)
+  """
+
+  def __init__(self):
+    self._variation = ""
+    self._framework = ModelFramework.MODEL_FRAMEWORK_UNSPECIFIED
+    self._downloads = 0
+    self._notebooks = 0
+    self._freeze()
+
+  @property
+  def variation(self) -> str:
+    return self._variation
+
+  @variation.setter
+  def variation(self, variation: str):
+    if variation is None:
+      del self.variation
+      return
+    if not isinstance(variation, str):
+      raise TypeError('variation must be of type str')
+    self._variation = variation
+
+  @property
+  def framework(self) -> 'ModelFramework':
+    return self._framework
+
+  @framework.setter
+  def framework(self, framework: 'ModelFramework'):
+    if framework is None:
+      del self.framework
+      return
+    if not isinstance(framework, ModelFramework):
+      raise TypeError('framework must be of type ModelFramework')
+    self._framework = framework
+
+  @property
+  def downloads(self) -> int:
+    return self._downloads
+
+  @downloads.setter
+  def downloads(self, downloads: int):
+    if downloads is None:
+      del self.downloads
+      return
+    if not isinstance(downloads, int):
+      raise TypeError('downloads must be of type int')
+    self._downloads = downloads
+
+  @property
+  def notebooks(self) -> int:
+    return self._notebooks
+
+  @notebooks.setter
+  def notebooks(self, notebooks: int):
+    if notebooks is None:
+      del self.notebooks
+      return
+    if not isinstance(notebooks, int):
+      raise TypeError('notebooks must be of type int')
+    self._notebooks = notebooks
+
+
 class ModelMetric(KaggleObject):
   r"""
   Attributes:
@@ -179,75 +248,6 @@ class ModelMetric(KaggleObject):
     self._instances = instances
 
 
-class ModelInstanceMetric(KaggleObject):
-  r"""
-  Attributes:
-    variation (str)
-    framework (ModelFramework)
-    downloads (int)
-    notebooks (int)
-  """
-
-  def __init__(self):
-    self._variation = ""
-    self._framework = ModelFramework.MODEL_FRAMEWORK_UNSPECIFIED
-    self._downloads = 0
-    self._notebooks = 0
-    self._freeze()
-
-  @property
-  def variation(self) -> str:
-    return self._variation
-
-  @variation.setter
-  def variation(self, variation: str):
-    if variation is None:
-      del self.variation
-      return
-    if not isinstance(variation, str):
-      raise TypeError('variation must be of type str')
-    self._variation = variation
-
-  @property
-  def framework(self) -> 'ModelFramework':
-    return self._framework
-
-  @framework.setter
-  def framework(self, framework: 'ModelFramework'):
-    if framework is None:
-      del self.framework
-      return
-    if not isinstance(framework, ModelFramework):
-      raise TypeError('framework must be of type ModelFramework')
-    self._framework = framework
-
-  @property
-  def downloads(self) -> int:
-    return self._downloads
-
-  @downloads.setter
-  def downloads(self, downloads: int):
-    if downloads is None:
-      del self.downloads
-      return
-    if not isinstance(downloads, int):
-      raise TypeError('downloads must be of type int')
-    self._downloads = downloads
-
-  @property
-  def notebooks(self) -> int:
-    return self._notebooks
-
-  @notebooks.setter
-  def notebooks(self, notebooks: int):
-    if notebooks is None:
-      del self.notebooks
-      return
-    if not isinstance(notebooks, int):
-      raise TypeError('notebooks must be of type int')
-    self._notebooks = notebooks
-
-
 GetModelMetricsRequest._fields = [
   FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "", PredefinedSerializer()),
   FieldMetadata("modelSlug", "model_slug", "_model_slug", str, "", PredefinedSerializer()),
@@ -258,18 +258,18 @@ GetModelMetricsResponse._fields = [
   FieldMetadata("metrics", "metrics", "_metrics", ModelMetric, [], ListSerializer(KaggleObjectSerializer())),
 ]
 
+ModelInstanceMetric._fields = [
+  FieldMetadata("variation", "variation", "_variation", str, "", PredefinedSerializer()),
+  FieldMetadata("framework", "framework", "_framework", ModelFramework, ModelFramework.MODEL_FRAMEWORK_UNSPECIFIED, EnumSerializer()),
+  FieldMetadata("downloads", "downloads", "_downloads", int, 0, PredefinedSerializer()),
+  FieldMetadata("notebooks", "notebooks", "_notebooks", int, 0, PredefinedSerializer()),
+]
+
 ModelMetric._fields = [
   FieldMetadata("date", "date", "_date", str, "", PredefinedSerializer()),
   FieldMetadata("views", "views", "_views", int, 0, PredefinedSerializer()),
   FieldMetadata("downloads", "downloads", "_downloads", int, 0, PredefinedSerializer()),
   FieldMetadata("notebooks", "notebooks", "_notebooks", int, 0, PredefinedSerializer()),
   FieldMetadata("instances", "instances", "_instances", ModelInstanceMetric, [], ListSerializer(KaggleObjectSerializer())),
-]
-
-ModelInstanceMetric._fields = [
-  FieldMetadata("variation", "variation", "_variation", str, "", PredefinedSerializer()),
-  FieldMetadata("framework", "framework", "_framework", ModelFramework, ModelFramework.MODEL_FRAMEWORK_UNSPECIFIED, EnumSerializer()),
-  FieldMetadata("downloads", "downloads", "_downloads", int, 0, PredefinedSerializer()),
-  FieldMetadata("notebooks", "notebooks", "_notebooks", int, 0, PredefinedSerializer()),
 ]
 

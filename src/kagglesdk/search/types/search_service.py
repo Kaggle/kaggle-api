@@ -5,136 +5,6 @@ from kagglesdk.kaggle_object import *
 from kagglesdk.users.types.user_avatar import UserAvatar
 from typing import Optional, List
 
-class WriteUpItemInfo(KaggleObject):
-  r"""
-  Attributes:
-    type (WriteUpType)
-      Type of WriteUp
-    subtitle (str)
-      Subtitle of WriteUp
-    collaborators (UserAvatar)
-      List of WriteUp collaborators
-    competition_info (WriteUpCompetitionInfo)
-      Competition metadata associated with WriteUp
-    content_state (ContentState)
-      Content State of WriteUp
-    team_name (str)
-      Name of the team that owns the WriteUp
-    id (int)
-      Id of the WriteUp
-  """
-
-  def __init__(self):
-    self._type = WriteUpType.WRITE_UP_TYPE_UNSPECIFIED
-    self._subtitle = None
-    self._collaborators = []
-    self._competition_info = None
-    self._content_state = ContentState.CONTENT_STATE_UNSPECIFIED
-    self._team_name = None
-    self._id = 0
-    self._freeze()
-
-  @property
-  def type(self) -> 'WriteUpType':
-    """Type of WriteUp"""
-    return self._type
-
-  @type.setter
-  def type(self, type: 'WriteUpType'):
-    if type is None:
-      del self.type
-      return
-    if not isinstance(type, WriteUpType):
-      raise TypeError('type must be of type WriteUpType')
-    self._type = type
-
-  @property
-  def subtitle(self) -> str:
-    """Subtitle of WriteUp"""
-    return self._subtitle or ""
-
-  @subtitle.setter
-  def subtitle(self, subtitle: Optional[str]):
-    if subtitle is None:
-      del self.subtitle
-      return
-    if not isinstance(subtitle, str):
-      raise TypeError('subtitle must be of type str')
-    self._subtitle = subtitle
-
-  @property
-  def collaborators(self) -> Optional[List[Optional['UserAvatar']]]:
-    """List of WriteUp collaborators"""
-    return self._collaborators
-
-  @collaborators.setter
-  def collaborators(self, collaborators: Optional[List[Optional['UserAvatar']]]):
-    if collaborators is None:
-      del self.collaborators
-      return
-    if not isinstance(collaborators, list):
-      raise TypeError('collaborators must be of type list')
-    if not all([isinstance(t, UserAvatar) for t in collaborators]):
-      raise TypeError('collaborators must contain only items of type UserAvatar')
-    self._collaborators = collaborators
-
-  @property
-  def competition_info(self) -> Optional['WriteUpCompetitionInfo']:
-    """Competition metadata associated with WriteUp"""
-    return self._competition_info or None
-
-  @competition_info.setter
-  def competition_info(self, competition_info: Optional[Optional['WriteUpCompetitionInfo']]):
-    if competition_info is None:
-      del self.competition_info
-      return
-    if not isinstance(competition_info, WriteUpCompetitionInfo):
-      raise TypeError('competition_info must be of type WriteUpCompetitionInfo')
-    self._competition_info = competition_info
-
-  @property
-  def content_state(self) -> 'ContentState':
-    """Content State of WriteUp"""
-    return self._content_state
-
-  @content_state.setter
-  def content_state(self, content_state: 'ContentState'):
-    if content_state is None:
-      del self.content_state
-      return
-    if not isinstance(content_state, ContentState):
-      raise TypeError('content_state must be of type ContentState')
-    self._content_state = content_state
-
-  @property
-  def team_name(self) -> str:
-    """Name of the team that owns the WriteUp"""
-    return self._team_name or ""
-
-  @team_name.setter
-  def team_name(self, team_name: Optional[str]):
-    if team_name is None:
-      del self.team_name
-      return
-    if not isinstance(team_name, str):
-      raise TypeError('team_name must be of type str')
-    self._team_name = team_name
-
-  @property
-  def id(self) -> int:
-    """Id of the WriteUp"""
-    return self._id
-
-  @id.setter
-  def id(self, id: int):
-    if id is None:
-      del self.id
-      return
-    if not isinstance(id, int):
-      raise TypeError('id must be of type int')
-    self._id = id
-
-
 class WriteUpCompetitionInfo(KaggleObject):
   r"""
   Attributes:
@@ -280,15 +150,135 @@ class WriteUpCompetitionInfo(KaggleObject):
     self._competition_id = competition_id
 
 
-WriteUpItemInfo._fields = [
-  FieldMetadata("type", "type", "_type", WriteUpType, WriteUpType.WRITE_UP_TYPE_UNSPECIFIED, EnumSerializer()),
-  FieldMetadata("subtitle", "subtitle", "_subtitle", str, None, PredefinedSerializer(), optional=True),
-  FieldMetadata("collaborators", "collaborators", "_collaborators", UserAvatar, [], ListSerializer(KaggleObjectSerializer())),
-  FieldMetadata("competitionInfo", "competition_info", "_competition_info", WriteUpCompetitionInfo, None, KaggleObjectSerializer(), optional=True),
-  FieldMetadata("contentState", "content_state", "_content_state", ContentState, ContentState.CONTENT_STATE_UNSPECIFIED, EnumSerializer()),
-  FieldMetadata("teamName", "team_name", "_team_name", str, None, PredefinedSerializer(), optional=True),
-  FieldMetadata("id", "id", "_id", int, 0, PredefinedSerializer()),
-]
+class WriteUpItemInfo(KaggleObject):
+  r"""
+  Attributes:
+    type (WriteUpType)
+      Type of WriteUp
+    subtitle (str)
+      Subtitle of WriteUp
+    collaborators (UserAvatar)
+      List of WriteUp collaborators
+    competition_info (WriteUpCompetitionInfo)
+      Competition metadata associated with WriteUp
+    content_state (ContentState)
+      Content State of WriteUp
+    team_name (str)
+      Name of the team that owns the WriteUp
+    id (int)
+      Id of the WriteUp
+  """
+
+  def __init__(self):
+    self._type = WriteUpType.WRITE_UP_TYPE_UNSPECIFIED
+    self._subtitle = None
+    self._collaborators = []
+    self._competition_info = None
+    self._content_state = ContentState.CONTENT_STATE_UNSPECIFIED
+    self._team_name = None
+    self._id = 0
+    self._freeze()
+
+  @property
+  def type(self) -> 'WriteUpType':
+    """Type of WriteUp"""
+    return self._type
+
+  @type.setter
+  def type(self, type: 'WriteUpType'):
+    if type is None:
+      del self.type
+      return
+    if not isinstance(type, WriteUpType):
+      raise TypeError('type must be of type WriteUpType')
+    self._type = type
+
+  @property
+  def subtitle(self) -> str:
+    """Subtitle of WriteUp"""
+    return self._subtitle or ""
+
+  @subtitle.setter
+  def subtitle(self, subtitle: Optional[str]):
+    if subtitle is None:
+      del self.subtitle
+      return
+    if not isinstance(subtitle, str):
+      raise TypeError('subtitle must be of type str')
+    self._subtitle = subtitle
+
+  @property
+  def collaborators(self) -> Optional[List[Optional['UserAvatar']]]:
+    """List of WriteUp collaborators"""
+    return self._collaborators
+
+  @collaborators.setter
+  def collaborators(self, collaborators: Optional[List[Optional['UserAvatar']]]):
+    if collaborators is None:
+      del self.collaborators
+      return
+    if not isinstance(collaborators, list):
+      raise TypeError('collaborators must be of type list')
+    if not all([isinstance(t, UserAvatar) for t in collaborators]):
+      raise TypeError('collaborators must contain only items of type UserAvatar')
+    self._collaborators = collaborators
+
+  @property
+  def competition_info(self) -> Optional['WriteUpCompetitionInfo']:
+    """Competition metadata associated with WriteUp"""
+    return self._competition_info or None
+
+  @competition_info.setter
+  def competition_info(self, competition_info: Optional[Optional['WriteUpCompetitionInfo']]):
+    if competition_info is None:
+      del self.competition_info
+      return
+    if not isinstance(competition_info, WriteUpCompetitionInfo):
+      raise TypeError('competition_info must be of type WriteUpCompetitionInfo')
+    self._competition_info = competition_info
+
+  @property
+  def content_state(self) -> 'ContentState':
+    """Content State of WriteUp"""
+    return self._content_state
+
+  @content_state.setter
+  def content_state(self, content_state: 'ContentState'):
+    if content_state is None:
+      del self.content_state
+      return
+    if not isinstance(content_state, ContentState):
+      raise TypeError('content_state must be of type ContentState')
+    self._content_state = content_state
+
+  @property
+  def team_name(self) -> str:
+    """Name of the team that owns the WriteUp"""
+    return self._team_name or ""
+
+  @team_name.setter
+  def team_name(self, team_name: Optional[str]):
+    if team_name is None:
+      del self.team_name
+      return
+    if not isinstance(team_name, str):
+      raise TypeError('team_name must be of type str')
+    self._team_name = team_name
+
+  @property
+  def id(self) -> int:
+    """Id of the WriteUp"""
+    return self._id
+
+  @id.setter
+  def id(self, id: int):
+    if id is None:
+      del self.id
+      return
+    if not isinstance(id, int):
+      raise TypeError('id must be of type int')
+    self._id = id
+
 
 WriteUpCompetitionInfo._fields = [
   FieldMetadata("competitionTitle", "competition_title", "_competition_title", str, "", PredefinedSerializer()),
@@ -299,5 +289,15 @@ WriteUpCompetitionInfo._fields = [
   FieldMetadata("winnersUrl", "winners_url", "_winners_url", str, None, PredefinedSerializer(), optional=True),
   FieldMetadata("isHackathonWinner", "is_hackathon_winner", "_is_hackathon_winner", bool, None, PredefinedSerializer(), optional=True),
   FieldMetadata("competitionId", "competition_id", "_competition_id", int, 0, PredefinedSerializer()),
+]
+
+WriteUpItemInfo._fields = [
+  FieldMetadata("type", "type", "_type", WriteUpType, WriteUpType.WRITE_UP_TYPE_UNSPECIFIED, EnumSerializer()),
+  FieldMetadata("subtitle", "subtitle", "_subtitle", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("collaborators", "collaborators", "_collaborators", UserAvatar, [], ListSerializer(KaggleObjectSerializer())),
+  FieldMetadata("competitionInfo", "competition_info", "_competition_info", WriteUpCompetitionInfo, None, KaggleObjectSerializer(), optional=True),
+  FieldMetadata("contentState", "content_state", "_content_state", ContentState, ContentState.CONTENT_STATE_UNSPECIFIED, EnumSerializer()),
+  FieldMetadata("teamName", "team_name", "_team_name", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("id", "id", "_id", int, 0, PredefinedSerializer()),
 ]
 

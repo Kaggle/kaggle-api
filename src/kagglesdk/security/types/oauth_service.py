@@ -97,7 +97,9 @@ class ExchangeOAuthTokenResponse(KaggleObject):
     expires_in (int)
       Lifetime of the access token in seconds.
     username (str)
-      Username of the user who authorized this token.
+      Username of the user who authorized/owns this token.
+    user_id (int)
+      Id the of user who authorized/owns this token.
   """
 
   def __init__(self):
@@ -106,6 +108,7 @@ class ExchangeOAuthTokenResponse(KaggleObject):
     self._token_type = ""
     self._expires_in = 0
     self._username = ""
+    self._user_id = 0
     self._freeze()
 
   @property
@@ -169,7 +172,7 @@ class ExchangeOAuthTokenResponse(KaggleObject):
 
   @property
   def username(self) -> str:
-    """Username of the user who authorized this token."""
+    """Username of the user who authorized/owns this token."""
     return self._username
 
   @username.setter
@@ -180,6 +183,20 @@ class ExchangeOAuthTokenResponse(KaggleObject):
     if not isinstance(username, str):
       raise TypeError('username must be of type str')
     self._username = username
+
+  @property
+  def user_id(self) -> int:
+    """Id the of user who authorized/owns this token."""
+    return self._user_id
+
+  @user_id.setter
+  def user_id(self, user_id: int):
+    if user_id is None:
+      del self.user_id
+      return
+    if not isinstance(user_id, int):
+      raise TypeError('user_id must be of type int')
+    self._user_id = user_id
 
   @property
   def accessToken(self):
@@ -196,6 +213,10 @@ class ExchangeOAuthTokenResponse(KaggleObject):
   @property
   def expiresIn(self):
     return self.expires_in
+
+  @property
+  def userId(self):
+    return self.user_id
 
 
 class IntrospectTokenRequest(KaggleObject):
@@ -563,6 +584,7 @@ ExchangeOAuthTokenResponse._fields = [
   FieldMetadata("tokenType", "token_type", "_token_type", str, "", PredefinedSerializer()),
   FieldMetadata("expiresIn", "expires_in", "_expires_in", int, 0, PredefinedSerializer()),
   FieldMetadata("username", "username", "_username", str, "", PredefinedSerializer()),
+  FieldMetadata("userId", "user_id", "_user_id", int, 0, PredefinedSerializer()),
 ]
 
 IntrospectTokenRequest._fields = [

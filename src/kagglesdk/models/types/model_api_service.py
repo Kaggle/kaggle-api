@@ -83,11 +83,11 @@ class ApiCreateModelInstanceRequestBody(KaggleObject):
     fine_tunable (bool)
     training_data (str)
     files (ApiDatasetNewFile)
-    directories (ApiUploadDirectoryInfo)
     license_name (str)
     model_instance_type (ModelInstanceType)
     base_model_instance (str)
     external_base_model_url (str)
+    directories (ApiUploadDirectoryInfo)
     sigstore (bool)
   """
 
@@ -99,11 +99,11 @@ class ApiCreateModelInstanceRequestBody(KaggleObject):
     self._fine_tunable = None
     self._training_data = []
     self._files = []
-    self._directories = []
     self._license_name = None
     self._model_instance_type = None
     self._base_model_instance = None
     self._external_base_model_url = None
+    self._directories = []
     self._sigstore = None
     self._freeze()
 
@@ -601,16 +601,16 @@ class ApiCreateModelResponse(KaggleObject):
     id (int)
     ref (str)
     error (str)
-    error_code (int)
     url (str)
+    error_code (int)
   """
 
   def __init__(self):
     self._id = None
     self._ref = None
     self._error = None
-    self._error_code = None
     self._url = None
+    self._error_code = None
     self._freeze()
 
   @property
@@ -1036,6 +1036,168 @@ class ApiDownloadModelInstanceVersionRequest(KaggleObject):
   @staticmethod
   def endpoint_path():
     return '/api/v1/models/{owner_slug}/{model_slug}/{framework}/{instance_slug}/{version_number}/download'
+
+
+class ApiGatingUserConsent(KaggleObject):
+  r"""
+  ApiGatingUserConsent presents GatingUserConsent data for publisher access,
+  omitting or modifying certain fields as needed such as user_id.
+
+  Attributes:
+    id (int)
+    agreement_id (int)
+    user_name (str)
+    request_data (str)
+    request_time (datetime)
+    review_time (datetime)
+    review_status (GatingAgreementRequestsReviewStatus)
+    expiry_status (GatingAgreementRequestsExpiryStatus)
+    expiry_time (datetime)
+    publisher_notes (str)
+  """
+
+  def __init__(self):
+    self._id = 0
+    self._agreement_id = 0
+    self._user_name = ""
+    self._request_data = None
+    self._request_time = None
+    self._review_time = None
+    self._review_status = GatingAgreementRequestsReviewStatus.GATING_AGREEMENT_REQUESTS_REVIEW_STATUS_UNSPECIFIED
+    self._expiry_status = GatingAgreementRequestsExpiryStatus.GATING_AGREEMENT_REQUESTS_EXPIRY_STATUS_UNSPECIFIED
+    self._expiry_time = None
+    self._publisher_notes = None
+    self._freeze()
+
+  @property
+  def id(self) -> int:
+    return self._id
+
+  @id.setter
+  def id(self, id: int):
+    if id is None:
+      del self.id
+      return
+    if not isinstance(id, int):
+      raise TypeError('id must be of type int')
+    self._id = id
+
+  @property
+  def agreement_id(self) -> int:
+    return self._agreement_id
+
+  @agreement_id.setter
+  def agreement_id(self, agreement_id: int):
+    if agreement_id is None:
+      del self.agreement_id
+      return
+    if not isinstance(agreement_id, int):
+      raise TypeError('agreement_id must be of type int')
+    self._agreement_id = agreement_id
+
+  @property
+  def user_name(self) -> str:
+    return self._user_name
+
+  @user_name.setter
+  def user_name(self, user_name: str):
+    if user_name is None:
+      del self.user_name
+      return
+    if not isinstance(user_name, str):
+      raise TypeError('user_name must be of type str')
+    self._user_name = user_name
+
+  @property
+  def request_data(self) -> str:
+    return self._request_data or ""
+
+  @request_data.setter
+  def request_data(self, request_data: Optional[str]):
+    if request_data is None:
+      del self.request_data
+      return
+    if not isinstance(request_data, str):
+      raise TypeError('request_data must be of type str')
+    self._request_data = request_data
+
+  @property
+  def request_time(self) -> datetime:
+    return self._request_time
+
+  @request_time.setter
+  def request_time(self, request_time: datetime):
+    if request_time is None:
+      del self.request_time
+      return
+    if not isinstance(request_time, datetime):
+      raise TypeError('request_time must be of type datetime')
+    self._request_time = request_time
+
+  @property
+  def review_time(self) -> datetime:
+    return self._review_time or None
+
+  @review_time.setter
+  def review_time(self, review_time: Optional[datetime]):
+    if review_time is None:
+      del self.review_time
+      return
+    if not isinstance(review_time, datetime):
+      raise TypeError('review_time must be of type datetime')
+    self._review_time = review_time
+
+  @property
+  def review_status(self) -> 'GatingAgreementRequestsReviewStatus':
+    return self._review_status
+
+  @review_status.setter
+  def review_status(self, review_status: 'GatingAgreementRequestsReviewStatus'):
+    if review_status is None:
+      del self.review_status
+      return
+    if not isinstance(review_status, GatingAgreementRequestsReviewStatus):
+      raise TypeError('review_status must be of type GatingAgreementRequestsReviewStatus')
+    self._review_status = review_status
+
+  @property
+  def expiry_status(self) -> 'GatingAgreementRequestsExpiryStatus':
+    return self._expiry_status
+
+  @expiry_status.setter
+  def expiry_status(self, expiry_status: 'GatingAgreementRequestsExpiryStatus'):
+    if expiry_status is None:
+      del self.expiry_status
+      return
+    if not isinstance(expiry_status, GatingAgreementRequestsExpiryStatus):
+      raise TypeError('expiry_status must be of type GatingAgreementRequestsExpiryStatus')
+    self._expiry_status = expiry_status
+
+  @property
+  def expiry_time(self) -> datetime:
+    return self._expiry_time or None
+
+  @expiry_time.setter
+  def expiry_time(self, expiry_time: Optional[datetime]):
+    if expiry_time is None:
+      del self.expiry_time
+      return
+    if not isinstance(expiry_time, datetime):
+      raise TypeError('expiry_time must be of type datetime')
+    self._expiry_time = expiry_time
+
+  @property
+  def publisher_notes(self) -> str:
+    return self._publisher_notes or ""
+
+  @publisher_notes.setter
+  def publisher_notes(self, publisher_notes: Optional[str]):
+    if publisher_notes is None:
+      del self.publisher_notes
+      return
+    if not isinstance(publisher_notes, str):
+      raise TypeError('publisher_notes must be of type str')
+    self._publisher_notes = publisher_notes
 
 
 class ApiGetModelInstanceRequest(KaggleObject):
@@ -3279,6 +3441,109 @@ class CreateModelSigningTokenResponse(KaggleObject):
     return self.id_token
 
 
+class JWK(KaggleObject):
+  r"""
+  Attributes:
+    kty (str)
+    alg (str)
+    use (str)
+    kid (str)
+    n (str)
+      modulus
+    e (str)
+      public exponent
+  """
+
+  def __init__(self):
+    self._kty = ""
+    self._alg = ""
+    self._use = ""
+    self._kid = ""
+    self._n = ""
+    self._e = ""
+    self._freeze()
+
+  @property
+  def kty(self) -> str:
+    return self._kty
+
+  @kty.setter
+  def kty(self, kty: str):
+    if kty is None:
+      del self.kty
+      return
+    if not isinstance(kty, str):
+      raise TypeError('kty must be of type str')
+    self._kty = kty
+
+  @property
+  def alg(self) -> str:
+    return self._alg
+
+  @alg.setter
+  def alg(self, alg: str):
+    if alg is None:
+      del self.alg
+      return
+    if not isinstance(alg, str):
+      raise TypeError('alg must be of type str')
+    self._alg = alg
+
+  @property
+  def use(self) -> str:
+    return self._use
+
+  @use.setter
+  def use(self, use: str):
+    if use is None:
+      del self.use
+      return
+    if not isinstance(use, str):
+      raise TypeError('use must be of type str')
+    self._use = use
+
+  @property
+  def kid(self) -> str:
+    return self._kid
+
+  @kid.setter
+  def kid(self, kid: str):
+    if kid is None:
+      del self.kid
+      return
+    if not isinstance(kid, str):
+      raise TypeError('kid must be of type str')
+    self._kid = kid
+
+  @property
+  def n(self) -> str:
+    """modulus"""
+    return self._n
+
+  @n.setter
+  def n(self, n: str):
+    if n is None:
+      del self.n
+      return
+    if not isinstance(n, str):
+      raise TypeError('n must be of type str')
+    self._n = n
+
+  @property
+  def e(self) -> str:
+    """public exponent"""
+    return self._e
+
+  @e.setter
+  def e(self, e: str):
+    if e is None:
+      del self.e
+      return
+    if not isinstance(e, str):
+      raise TypeError('e must be of type str')
+    self._e = e
+
+
 class KeysRequest(KaggleObject):
   r"""
   """
@@ -3482,271 +3747,6 @@ class WellKnowEndpointResponse(KaggleObject):
     return self.subject_types_supported
 
 
-class ApiGatingUserConsent(KaggleObject):
-  r"""
-  ApiGatingUserConsent presents GatingUserConsent data for publisher access,
-  omitting or modifying certain fields as needed such as user_id.
-
-  Attributes:
-    id (int)
-    agreement_id (int)
-    user_name (str)
-    request_data (str)
-    request_time (datetime)
-    review_time (datetime)
-    review_status (GatingAgreementRequestsReviewStatus)
-    expiry_status (GatingAgreementRequestsExpiryStatus)
-    expiry_time (datetime)
-    publisher_notes (str)
-  """
-
-  def __init__(self):
-    self._id = 0
-    self._agreement_id = 0
-    self._user_name = ""
-    self._request_data = None
-    self._request_time = None
-    self._review_time = None
-    self._review_status = GatingAgreementRequestsReviewStatus.GATING_AGREEMENT_REQUESTS_REVIEW_STATUS_UNSPECIFIED
-    self._expiry_status = GatingAgreementRequestsExpiryStatus.GATING_AGREEMENT_REQUESTS_EXPIRY_STATUS_UNSPECIFIED
-    self._expiry_time = None
-    self._publisher_notes = None
-    self._freeze()
-
-  @property
-  def id(self) -> int:
-    return self._id
-
-  @id.setter
-  def id(self, id: int):
-    if id is None:
-      del self.id
-      return
-    if not isinstance(id, int):
-      raise TypeError('id must be of type int')
-    self._id = id
-
-  @property
-  def agreement_id(self) -> int:
-    return self._agreement_id
-
-  @agreement_id.setter
-  def agreement_id(self, agreement_id: int):
-    if agreement_id is None:
-      del self.agreement_id
-      return
-    if not isinstance(agreement_id, int):
-      raise TypeError('agreement_id must be of type int')
-    self._agreement_id = agreement_id
-
-  @property
-  def user_name(self) -> str:
-    return self._user_name
-
-  @user_name.setter
-  def user_name(self, user_name: str):
-    if user_name is None:
-      del self.user_name
-      return
-    if not isinstance(user_name, str):
-      raise TypeError('user_name must be of type str')
-    self._user_name = user_name
-
-  @property
-  def request_data(self) -> str:
-    return self._request_data or ""
-
-  @request_data.setter
-  def request_data(self, request_data: Optional[str]):
-    if request_data is None:
-      del self.request_data
-      return
-    if not isinstance(request_data, str):
-      raise TypeError('request_data must be of type str')
-    self._request_data = request_data
-
-  @property
-  def request_time(self) -> datetime:
-    return self._request_time
-
-  @request_time.setter
-  def request_time(self, request_time: datetime):
-    if request_time is None:
-      del self.request_time
-      return
-    if not isinstance(request_time, datetime):
-      raise TypeError('request_time must be of type datetime')
-    self._request_time = request_time
-
-  @property
-  def review_time(self) -> datetime:
-    return self._review_time or None
-
-  @review_time.setter
-  def review_time(self, review_time: Optional[datetime]):
-    if review_time is None:
-      del self.review_time
-      return
-    if not isinstance(review_time, datetime):
-      raise TypeError('review_time must be of type datetime')
-    self._review_time = review_time
-
-  @property
-  def review_status(self) -> 'GatingAgreementRequestsReviewStatus':
-    return self._review_status
-
-  @review_status.setter
-  def review_status(self, review_status: 'GatingAgreementRequestsReviewStatus'):
-    if review_status is None:
-      del self.review_status
-      return
-    if not isinstance(review_status, GatingAgreementRequestsReviewStatus):
-      raise TypeError('review_status must be of type GatingAgreementRequestsReviewStatus')
-    self._review_status = review_status
-
-  @property
-  def expiry_status(self) -> 'GatingAgreementRequestsExpiryStatus':
-    return self._expiry_status
-
-  @expiry_status.setter
-  def expiry_status(self, expiry_status: 'GatingAgreementRequestsExpiryStatus'):
-    if expiry_status is None:
-      del self.expiry_status
-      return
-    if not isinstance(expiry_status, GatingAgreementRequestsExpiryStatus):
-      raise TypeError('expiry_status must be of type GatingAgreementRequestsExpiryStatus')
-    self._expiry_status = expiry_status
-
-  @property
-  def expiry_time(self) -> datetime:
-    return self._expiry_time or None
-
-  @expiry_time.setter
-  def expiry_time(self, expiry_time: Optional[datetime]):
-    if expiry_time is None:
-      del self.expiry_time
-      return
-    if not isinstance(expiry_time, datetime):
-      raise TypeError('expiry_time must be of type datetime')
-    self._expiry_time = expiry_time
-
-  @property
-  def publisher_notes(self) -> str:
-    return self._publisher_notes or ""
-
-  @publisher_notes.setter
-  def publisher_notes(self, publisher_notes: Optional[str]):
-    if publisher_notes is None:
-      del self.publisher_notes
-      return
-    if not isinstance(publisher_notes, str):
-      raise TypeError('publisher_notes must be of type str')
-    self._publisher_notes = publisher_notes
-
-
-class JWK(KaggleObject):
-  r"""
-  Attributes:
-    kty (str)
-    alg (str)
-    use (str)
-    kid (str)
-    n (str)
-      modulus
-    e (str)
-      public exponent
-  """
-
-  def __init__(self):
-    self._kty = ""
-    self._alg = ""
-    self._use = ""
-    self._kid = ""
-    self._n = ""
-    self._e = ""
-    self._freeze()
-
-  @property
-  def kty(self) -> str:
-    return self._kty
-
-  @kty.setter
-  def kty(self, kty: str):
-    if kty is None:
-      del self.kty
-      return
-    if not isinstance(kty, str):
-      raise TypeError('kty must be of type str')
-    self._kty = kty
-
-  @property
-  def alg(self) -> str:
-    return self._alg
-
-  @alg.setter
-  def alg(self, alg: str):
-    if alg is None:
-      del self.alg
-      return
-    if not isinstance(alg, str):
-      raise TypeError('alg must be of type str')
-    self._alg = alg
-
-  @property
-  def use(self) -> str:
-    return self._use
-
-  @use.setter
-  def use(self, use: str):
-    if use is None:
-      del self.use
-      return
-    if not isinstance(use, str):
-      raise TypeError('use must be of type str')
-    self._use = use
-
-  @property
-  def kid(self) -> str:
-    return self._kid
-
-  @kid.setter
-  def kid(self, kid: str):
-    if kid is None:
-      del self.kid
-      return
-    if not isinstance(kid, str):
-      raise TypeError('kid must be of type str')
-    self._kid = kid
-
-  @property
-  def n(self) -> str:
-    """modulus"""
-    return self._n
-
-  @n.setter
-  def n(self, n: str):
-    if n is None:
-      del self.n
-      return
-    if not isinstance(n, str):
-      raise TypeError('n must be of type str')
-    self._n = n
-
-  @property
-  def e(self) -> str:
-    """public exponent"""
-    return self._e
-
-  @e.setter
-  def e(self, e: str):
-    if e is None:
-      del self.e
-      return
-    if not isinstance(e, str):
-      raise TypeError('e must be of type str')
-    self._e = e
-
-
 ApiCreateModelInstanceRequest._fields = [
   FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "", PredefinedSerializer()),
   FieldMetadata("modelSlug", "model_slug", "_model_slug", str, "", PredefinedSerializer()),
@@ -3761,11 +3761,11 @@ ApiCreateModelInstanceRequestBody._fields = [
   FieldMetadata("fineTunable", "fine_tunable", "_fine_tunable", bool, None, PredefinedSerializer(), optional=True),
   FieldMetadata("trainingData", "training_data", "_training_data", str, [], ListSerializer(PredefinedSerializer())),
   FieldMetadata("files", "files", "_files", ApiDatasetNewFile, [], ListSerializer(KaggleObjectSerializer())),
-  FieldMetadata("directories", "directories", "_directories", ApiUploadDirectoryInfo, [], ListSerializer(KaggleObjectSerializer())),
   FieldMetadata("licenseName", "license_name", "_license_name", str, None, PredefinedSerializer(), optional=True),
   FieldMetadata("modelInstanceType", "model_instance_type", "_model_instance_type", ModelInstanceType, None, EnumSerializer(), optional=True),
   FieldMetadata("baseModelInstance", "base_model_instance", "_base_model_instance", str, None, PredefinedSerializer(), optional=True),
   FieldMetadata("externalBaseModelUrl", "external_base_model_url", "_external_base_model_url", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("directories", "directories", "_directories", ApiUploadDirectoryInfo, [], ListSerializer(KaggleObjectSerializer())),
   FieldMetadata("sigstore", "sigstore", "_sigstore", bool, None, PredefinedSerializer(), optional=True),
 ]
 
@@ -3799,8 +3799,8 @@ ApiCreateModelResponse._fields = [
   FieldMetadata("id", "id", "_id", int, None, PredefinedSerializer(), optional=True),
   FieldMetadata("ref", "ref", "_ref", str, None, PredefinedSerializer(), optional=True),
   FieldMetadata("error", "error", "_error", str, None, PredefinedSerializer(), optional=True),
-  FieldMetadata("errorCode", "error_code", "_error_code", int, None, PredefinedSerializer(), optional=True),
   FieldMetadata("url", "url", "_url", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("errorCode", "error_code", "_error_code", int, None, PredefinedSerializer(), optional=True),
 ]
 
 ApiDeleteModelInstanceRequest._fields = [
@@ -3834,6 +3834,19 @@ ApiDownloadModelInstanceVersionRequest._fields = [
   FieldMetadata("instanceSlug", "instance_slug", "_instance_slug", str, "", PredefinedSerializer()),
   FieldMetadata("versionNumber", "version_number", "_version_number", int, 0, PredefinedSerializer()),
   FieldMetadata("path", "path", "_path", str, None, PredefinedSerializer(), optional=True),
+]
+
+ApiGatingUserConsent._fields = [
+  FieldMetadata("id", "id", "_id", int, 0, PredefinedSerializer()),
+  FieldMetadata("agreementId", "agreement_id", "_agreement_id", int, 0, PredefinedSerializer()),
+  FieldMetadata("userName", "user_name", "_user_name", str, "", PredefinedSerializer()),
+  FieldMetadata("requestData", "request_data", "_request_data", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("requestTime", "request_time", "_request_time", datetime, None, DateTimeSerializer()),
+  FieldMetadata("reviewTime", "review_time", "_review_time", datetime, None, DateTimeSerializer(), optional=True),
+  FieldMetadata("reviewStatus", "review_status", "_review_status", GatingAgreementRequestsReviewStatus, GatingAgreementRequestsReviewStatus.GATING_AGREEMENT_REQUESTS_REVIEW_STATUS_UNSPECIFIED, EnumSerializer()),
+  FieldMetadata("expiryStatus", "expiry_status", "_expiry_status", GatingAgreementRequestsExpiryStatus, GatingAgreementRequestsExpiryStatus.GATING_AGREEMENT_REQUESTS_EXPIRY_STATUS_UNSPECIFIED, EnumSerializer()),
+  FieldMetadata("expiryTime", "expiry_time", "_expiry_time", datetime, None, DateTimeSerializer(), optional=True),
+  FieldMetadata("publisherNotes", "publisher_notes", "_publisher_notes", str, None, PredefinedSerializer(), optional=True),
 ]
 
 ApiGetModelInstanceRequest._fields = [
@@ -4027,6 +4040,15 @@ CreateModelSigningTokenResponse._fields = [
   FieldMetadata("id_token", "id_token", "_id_token", str, "", PredefinedSerializer()),
 ]
 
+JWK._fields = [
+  FieldMetadata("kty", "kty", "_kty", str, "", PredefinedSerializer()),
+  FieldMetadata("alg", "alg", "_alg", str, "", PredefinedSerializer()),
+  FieldMetadata("use", "use", "_use", str, "", PredefinedSerializer()),
+  FieldMetadata("kid", "kid", "_kid", str, "", PredefinedSerializer()),
+  FieldMetadata("n", "n", "_n", str, "", PredefinedSerializer()),
+  FieldMetadata("e", "e", "_e", str, "", PredefinedSerializer()),
+]
+
 KeysRequest._fields = []
 
 KeysResponse._fields = [
@@ -4043,27 +4065,5 @@ WellKnowEndpointResponse._fields = [
   FieldMetadata("claims_supported", "claims_supported", "_claims_supported", str, [], ListSerializer(PredefinedSerializer())),
   FieldMetadata("response_types_supported", "response_types_supported", "_response_types_supported", str, [], ListSerializer(PredefinedSerializer())),
   FieldMetadata("subject_types_supported", "subject_types_supported", "_subject_types_supported", str, [], ListSerializer(PredefinedSerializer())),
-]
-
-ApiGatingUserConsent._fields = [
-  FieldMetadata("id", "id", "_id", int, 0, PredefinedSerializer()),
-  FieldMetadata("agreementId", "agreement_id", "_agreement_id", int, 0, PredefinedSerializer()),
-  FieldMetadata("userName", "user_name", "_user_name", str, "", PredefinedSerializer()),
-  FieldMetadata("requestData", "request_data", "_request_data", str, None, PredefinedSerializer(), optional=True),
-  FieldMetadata("requestTime", "request_time", "_request_time", datetime, None, DateTimeSerializer()),
-  FieldMetadata("reviewTime", "review_time", "_review_time", datetime, None, DateTimeSerializer(), optional=True),
-  FieldMetadata("reviewStatus", "review_status", "_review_status", GatingAgreementRequestsReviewStatus, GatingAgreementRequestsReviewStatus.GATING_AGREEMENT_REQUESTS_REVIEW_STATUS_UNSPECIFIED, EnumSerializer()),
-  FieldMetadata("expiryStatus", "expiry_status", "_expiry_status", GatingAgreementRequestsExpiryStatus, GatingAgreementRequestsExpiryStatus.GATING_AGREEMENT_REQUESTS_EXPIRY_STATUS_UNSPECIFIED, EnumSerializer()),
-  FieldMetadata("expiryTime", "expiry_time", "_expiry_time", datetime, None, DateTimeSerializer(), optional=True),
-  FieldMetadata("publisherNotes", "publisher_notes", "_publisher_notes", str, None, PredefinedSerializer(), optional=True),
-]
-
-JWK._fields = [
-  FieldMetadata("kty", "kty", "_kty", str, "", PredefinedSerializer()),
-  FieldMetadata("alg", "alg", "_alg", str, "", PredefinedSerializer()),
-  FieldMetadata("use", "use", "_use", str, "", PredefinedSerializer()),
-  FieldMetadata("kid", "kid", "_kid", str, "", PredefinedSerializer()),
-  FieldMetadata("n", "n", "_n", str, "", PredefinedSerializer()),
-  FieldMetadata("e", "e", "_e", str, "", PredefinedSerializer()),
 ]
 

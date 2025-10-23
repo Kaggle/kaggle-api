@@ -1,0 +1,11 @@
+import enum
+
+class WriteUpType(enum.Enum):
+  WRITE_UP_TYPE_UNSPECIFIED = 0
+  HACKATHON_PROJECT = 1
+  COMPETITION_SOLUTION = 2
+  PERSONAL_PROJECT = 3
+  KNOWLEDGE = 4
+  FORUM_TOPIC = 5
+  BLOG = 6
+

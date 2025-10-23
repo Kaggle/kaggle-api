@@ -91,19 +91,95 @@ class BaseModelInstanceInformation(KaggleObject):
     self._framework = framework
 
 
+class LicensePost(KaggleObject):
+  r"""
+  Attributes:
+    id (int)
+    content (str)
+  """
+
+  def __init__(self):
+    self._id = 0
+    self._content = ""
+    self._freeze()
+
+  @property
+  def id(self) -> int:
+    return self._id
+
+  @id.setter
+  def id(self, id: int):
+    if id is None:
+      del self.id
+      return
+    if not isinstance(id, int):
+      raise TypeError('id must be of type int')
+    self._id = id
+
+  @property
+  def content(self) -> str:
+    return self._content
+
+  @content.setter
+  def content(self, content: str):
+    if content is None:
+      del self.content
+      return
+    if not isinstance(content, str):
+      raise TypeError('content must be of type str')
+    self._content = content
+
+
+class ModelActivityTimeSeriesPoint(KaggleObject):
+  r"""
+  Attributes:
+    date (datetime)
+    count (int)
+  """
+
+  def __init__(self):
+    self._date = None
+    self._count = 0
+    self._freeze()
+
+  @property
+  def date(self) -> datetime:
+    return self._date
+
+  @date.setter
+  def date(self, date: datetime):
+    if date is None:
+      del self.date
+      return
+    if not isinstance(date, datetime):
+      raise TypeError('date must be of type datetime')
+    self._date = date
+
+  @property
+  def count(self) -> int:
+    return self._count
+
+  @count.setter
+  def count(self, count: int):
+    if count is None:
+      del self.count
+      return
+    if not isinstance(count, int):
+      raise TypeError('count must be of type int')
+    self._count = count
+
+
 class ModelInstance(KaggleObject):
   r"""
   Attributes:
     id (int)
     owner_slug (str)
     model_slug (str)
-    model_id (int)
     slug (str)
     version_id (int)
     fine_tunable (bool)
     overview (str)
     usage (str)
-    rendered_usage (str)
     text_representation (str)
     source_url (str)
     version_number (int)
@@ -112,26 +188,28 @@ class ModelInstance(KaggleObject):
       finished taking shape
     version_notes (str)
     download_url (str)
-    databundle_id (int)
     databundle_version_id (int)
-    databundle_version_type (DatabundleVersionType)
-    firestore_path (str)
-    status (DatabundleVersionStatus)
-    creation_status (DatabundleVersionCreationStatus)
-    error_message (str)
     last_version_id (int)
       Version ID associated with the most up-to-date version of the ModelInstance
     source_organization (Owner)
     training_data (str)
     metrics (str)
     license_post (LicensePost)
+    rendered_usage (str)
     license (License)
+    databundle_id (int)
+    firestore_path (str)
+    status (DatabundleVersionStatus)
+    error_message (str)
+    databundle_version_type (DatabundleVersionType)
     can_use (bool)
+    creation_status (DatabundleVersionCreationStatus)
     uncompressed_storage_uri (str)
     model_instance_type (ModelInstanceType)
     base_model_instance_id (int)
     base_model_instance_information (BaseModelInstanceInformation)
     external_base_model_url (str)
+    model_id (int)
     download_summary (ModelInstanceDownloadSummary)
     total_uncompressed_bytes (int)
     sigstore_state (SigstoreState)
@@ -144,38 +222,38 @@ class ModelInstance(KaggleObject):
     self._id = 0
     self._owner_slug = ""
     self._model_slug = ""
-    self._model_id = 0
     self._slug = ""
     self._version_id = 0
     self._fine_tunable = None
     self._overview = ""
     self._usage = ""
-    self._rendered_usage = ""
     self._text_representation = None
     self._source_url = None
     self._version_number = 0
     self._framework = ModelFramework.MODEL_FRAMEWORK_UNSPECIFIED
     self._version_notes = ""
     self._download_url = None
-    self._databundle_id = 0
     self._databundle_version_id = 0
-    self._databundle_version_type = DatabundleVersionType.DATABUNDLE_VERSION_TYPE_UNSPECIFIED
-    self._firestore_path = ""
-    self._status = DatabundleVersionStatus.NOT_YET_PERSISTED
-    self._creation_status = None
-    self._error_message = None
     self._last_version_id = None
     self._source_organization = None
     self._training_data = []
     self._metrics = None
     self._license_post = None
+    self._rendered_usage = ""
     self._license = None
+    self._databundle_id = 0
+    self._firestore_path = ""
+    self._status = DatabundleVersionStatus.NOT_YET_PERSISTED
+    self._error_message = None
+    self._databundle_version_type = DatabundleVersionType.DATABUNDLE_VERSION_TYPE_UNSPECIFIED
     self._can_use = None
+    self._creation_status = None
     self._uncompressed_storage_uri = None
     self._model_instance_type = None
     self._base_model_instance_id = None
     self._base_model_instance_information = None
     self._external_base_model_url = None
+    self._model_id = 0
     self._download_summary = None
     self._total_uncompressed_bytes = None
     self._sigstore_state = None
@@ -781,300 +859,6 @@ class ModelInstanceDownloadSummary(KaggleObject):
     self._model_instance_id = model_instance_id
 
 
-class ModelInstanceVersionList(KaggleObject):
-  r"""
-  Attributes:
-    versions (ModelInstanceVersion)
-  """
-
-  def __init__(self):
-    self._versions = []
-    self._freeze()
-
-  @property
-  def versions(self) -> Optional[List[Optional['ModelInstanceVersion']]]:
-    return self._versions
-
-  @versions.setter
-  def versions(self, versions: Optional[List[Optional['ModelInstanceVersion']]]):
-    if versions is None:
-      del self.versions
-      return
-    if not isinstance(versions, list):
-      raise TypeError('versions must be of type list')
-    if not all([isinstance(t, ModelInstanceVersion) for t in versions]):
-      raise TypeError('versions must contain only items of type ModelInstanceVersion')
-    self._versions = versions
-
-
-class ModelLink(KaggleObject):
-  r"""
-  Attributes:
-    type (ModelVersionLinkType)
-    url (str)
-  """
-
-  def __init__(self):
-    self._type = ModelVersionLinkType.MODEL_VERSION_LINK_TYPE_UNSPECIFIED
-    self._url = ""
-    self._freeze()
-
-  @property
-  def type(self) -> 'ModelVersionLinkType':
-    return self._type
-
-  @type.setter
-  def type(self, type: 'ModelVersionLinkType'):
-    if type is None:
-      del self.type
-      return
-    if not isinstance(type, ModelVersionLinkType):
-      raise TypeError('type must be of type ModelVersionLinkType')
-    self._type = type
-
-  @property
-  def url(self) -> str:
-    return self._url
-
-  @url.setter
-  def url(self, url: str):
-    if url is None:
-      del self.url
-      return
-    if not isinstance(url, str):
-      raise TypeError('url must be of type str')
-    self._url = url
-
-
-class Owner(KaggleObject):
-  r"""
-  Based off Datasets OwnerDto as the permission model is the same
-  Separate message since Models don't have max_file_size_bytes.
-  Consider renaming more generically to apply to Users/Orgs
-  interchangeably without a strict concept of ownership
-
-  Attributes:
-    id (int)
-    image_url (str)
-    is_organization (bool)
-    name (str)
-    profile_url (str)
-    slug (str)
-    user_tier (UserAchievementTier)
-    user_progression_opt_out (bool)
-      Whether or not the owner is progression opted-out (only for user owners).
-    allow_model_gating (bool)
-  """
-
-  def __init__(self):
-    self._id = 0
-    self._image_url = None
-    self._is_organization = False
-    self._name = ""
-    self._profile_url = None
-    self._slug = ""
-    self._user_tier = UserAchievementTier.NOVICE
-    self._user_progression_opt_out = None
-    self._allow_model_gating = None
-    self._freeze()
-
-  @property
-  def id(self) -> int:
-    return self._id
-
-  @id.setter
-  def id(self, id: int):
-    if id is None:
-      del self.id
-      return
-    if not isinstance(id, int):
-      raise TypeError('id must be of type int')
-    self._id = id
-
-  @property
-  def image_url(self) -> str:
-    return self._image_url or ""
-
-  @image_url.setter
-  def image_url(self, image_url: Optional[str]):
-    if image_url is None:
-      del self.image_url
-      return
-    if not isinstance(image_url, str):
-      raise TypeError('image_url must be of type str')
-    self._image_url = image_url
-
-  @property
-  def is_organization(self) -> bool:
-    return self._is_organization
-
-  @is_organization.setter
-  def is_organization(self, is_organization: bool):
-    if is_organization is None:
-      del self.is_organization
-      return
-    if not isinstance(is_organization, bool):
-      raise TypeError('is_organization must be of type bool')
-    self._is_organization = is_organization
-
-  @property
-  def name(self) -> str:
-    return self._name
-
-  @name.setter
-  def name(self, name: str):
-    if name is None:
-      del self.name
-      return
-    if not isinstance(name, str):
-      raise TypeError('name must be of type str')
-    self._name = name
-
-  @property
-  def profile_url(self) -> str:
-    return self._profile_url or ""
-
-  @profile_url.setter
-  def profile_url(self, profile_url: Optional[str]):
-    if profile_url is None:
-      del self.profile_url
-      return
-    if not isinstance(profile_url, str):
-      raise TypeError('profile_url must be of type str')
-    self._profile_url = profile_url
-
-  @property
-  def slug(self) -> str:
-    return self._slug
-
-  @slug.setter
-  def slug(self, slug: str):
-    if slug is None:
-      del self.slug
-      return
-    if not isinstance(slug, str):
-      raise TypeError('slug must be of type str')
-    self._slug = slug
-
-  @property
-  def user_tier(self) -> 'UserAchievementTier':
-    return self._user_tier
-
-  @user_tier.setter
-  def user_tier(self, user_tier: 'UserAchievementTier'):
-    if user_tier is None:
-      del self.user_tier
-      return
-    if not isinstance(user_tier, UserAchievementTier):
-      raise TypeError('user_tier must be of type UserAchievementTier')
-    self._user_tier = user_tier
-
-  @property
-  def user_progression_opt_out(self) -> bool:
-    """Whether or not the owner is progression opted-out (only for user owners)."""
-    return self._user_progression_opt_out or False
-
-  @user_progression_opt_out.setter
-  def user_progression_opt_out(self, user_progression_opt_out: Optional[bool]):
-    if user_progression_opt_out is None:
-      del self.user_progression_opt_out
-      return
-    if not isinstance(user_progression_opt_out, bool):
-      raise TypeError('user_progression_opt_out must be of type bool')
-    self._user_progression_opt_out = user_progression_opt_out
-
-  @property
-  def allow_model_gating(self) -> bool:
-    return self._allow_model_gating or False
-
-  @allow_model_gating.setter
-  def allow_model_gating(self, allow_model_gating: Optional[bool]):
-    if allow_model_gating is None:
-      del self.allow_model_gating
-      return
-    if not isinstance(allow_model_gating, bool):
-      raise TypeError('allow_model_gating must be of type bool')
-    self._allow_model_gating = allow_model_gating
-
-
-class LicensePost(KaggleObject):
-  r"""
-  Attributes:
-    id (int)
-    content (str)
-  """
-
-  def __init__(self):
-    self._id = 0
-    self._content = ""
-    self._freeze()
-
-  @property
-  def id(self) -> int:
-    return self._id
-
-  @id.setter
-  def id(self, id: int):
-    if id is None:
-      del self.id
-      return
-    if not isinstance(id, int):
-      raise TypeError('id must be of type int')
-    self._id = id
-
-  @property
-  def content(self) -> str:
-    return self._content
-
-  @content.setter
-  def content(self, content: str):
-    if content is None:
-      del self.content
-      return
-    if not isinstance(content, str):
-      raise TypeError('content must be of type str')
-    self._content = content
-
-
-class ModelActivityTimeSeriesPoint(KaggleObject):
-  r"""
-  Attributes:
-    date (datetime)
-    count (int)
-  """
-
-  def __init__(self):
-    self._date = None
-    self._count = 0
-    self._freeze()
-
-  @property
-  def date(self) -> datetime:
-    return self._date
-
-  @date.setter
-  def date(self, date: datetime):
-    if date is None:
-      del self.date
-      return
-    if not isinstance(date, datetime):
-      raise TypeError('date must be of type datetime')
-    self._date = date
-
-  @property
-  def count(self) -> int:
-    return self._count
-
-  @count.setter
-  def count(self, count: int):
-    if count is None:
-      del self.count
-      return
-    if not isinstance(count, int):
-      raise TypeError('count must be of type int')
-    self._count = count
-
-
 class ModelInstanceVersion(KaggleObject):
   r"""
   Attributes:
@@ -1234,6 +1018,222 @@ class ModelInstanceVersion(KaggleObject):
     self._sigstore_state = sigstore_state
 
 
+class ModelInstanceVersionList(KaggleObject):
+  r"""
+  Attributes:
+    versions (ModelInstanceVersion)
+  """
+
+  def __init__(self):
+    self._versions = []
+    self._freeze()
+
+  @property
+  def versions(self) -> Optional[List[Optional['ModelInstanceVersion']]]:
+    return self._versions
+
+  @versions.setter
+  def versions(self, versions: Optional[List[Optional['ModelInstanceVersion']]]):
+    if versions is None:
+      del self.versions
+      return
+    if not isinstance(versions, list):
+      raise TypeError('versions must be of type list')
+    if not all([isinstance(t, ModelInstanceVersion) for t in versions]):
+      raise TypeError('versions must contain only items of type ModelInstanceVersion')
+    self._versions = versions
+
+
+class ModelLink(KaggleObject):
+  r"""
+  Attributes:
+    type (ModelVersionLinkType)
+    url (str)
+  """
+
+  def __init__(self):
+    self._type = ModelVersionLinkType.MODEL_VERSION_LINK_TYPE_UNSPECIFIED
+    self._url = ""
+    self._freeze()
+
+  @property
+  def type(self) -> 'ModelVersionLinkType':
+    return self._type
+
+  @type.setter
+  def type(self, type: 'ModelVersionLinkType'):
+    if type is None:
+      del self.type
+      return
+    if not isinstance(type, ModelVersionLinkType):
+      raise TypeError('type must be of type ModelVersionLinkType')
+    self._type = type
+
+  @property
+  def url(self) -> str:
+    return self._url
+
+  @url.setter
+  def url(self, url: str):
+    if url is None:
+      del self.url
+      return
+    if not isinstance(url, str):
+      raise TypeError('url must be of type str')
+    self._url = url
+
+
+class Owner(KaggleObject):
+  r"""
+  Based off Datasets OwnerDto as the permission model is the same
+  Separate message since Models don't have max_file_size_bytes.
+  Consider renaming more generically to apply to Users/Orgs
+  interchangeably without a strict concept of ownership
+
+  Attributes:
+    id (int)
+    image_url (str)
+    is_organization (bool)
+    name (str)
+    profile_url (str)
+    slug (str)
+    user_tier (UserAchievementTier)
+    allow_model_gating (bool)
+    user_progression_opt_out (bool)
+      Whether or not the owner is progression opted-out (only for user owners).
+  """
+
+  def __init__(self):
+    self._id = 0
+    self._image_url = None
+    self._is_organization = False
+    self._name = ""
+    self._profile_url = None
+    self._slug = ""
+    self._user_tier = UserAchievementTier.NOVICE
+    self._allow_model_gating = None
+    self._user_progression_opt_out = None
+    self._freeze()
+
+  @property
+  def id(self) -> int:
+    return self._id
+
+  @id.setter
+  def id(self, id: int):
+    if id is None:
+      del self.id
+      return
+    if not isinstance(id, int):
+      raise TypeError('id must be of type int')
+    self._id = id
+
+  @property
+  def image_url(self) -> str:
+    return self._image_url or ""
+
+  @image_url.setter
+  def image_url(self, image_url: Optional[str]):
+    if image_url is None:
+      del self.image_url
+      return
+    if not isinstance(image_url, str):
+      raise TypeError('image_url must be of type str')
+    self._image_url = image_url
+
+  @property
+  def is_organization(self) -> bool:
+    return self._is_organization
+
+  @is_organization.setter
+  def is_organization(self, is_organization: bool):
+    if is_organization is None:
+      del self.is_organization
+      return
+    if not isinstance(is_organization, bool):
+      raise TypeError('is_organization must be of type bool')
+    self._is_organization = is_organization
+
+  @property
+  def name(self) -> str:
+    return self._name
+
+  @name.setter
+  def name(self, name: str):
+    if name is None:
+      del self.name
+      return
+    if not isinstance(name, str):
+      raise TypeError('name must be of type str')
+    self._name = name
+
+  @property
+  def profile_url(self) -> str:
+    return self._profile_url or ""
+
+  @profile_url.setter
+  def profile_url(self, profile_url: Optional[str]):
+    if profile_url is None:
+      del self.profile_url
+      return
+    if not isinstance(profile_url, str):
+      raise TypeError('profile_url must be of type str')
+    self._profile_url = profile_url
+
+  @property
+  def slug(self) -> str:
+    return self._slug
+
+  @slug.setter
+  def slug(self, slug: str):
+    if slug is None:
+      del self.slug
+      return
+    if not isinstance(slug, str):
+      raise TypeError('slug must be of type str')
+    self._slug = slug
+
+  @property
+  def user_tier(self) -> 'UserAchievementTier':
+    return self._user_tier
+
+  @user_tier.setter
+  def user_tier(self, user_tier: 'UserAchievementTier'):
+    if user_tier is None:
+      del self.user_tier
+      return
+    if not isinstance(user_tier, UserAchievementTier):
+      raise TypeError('user_tier must be of type UserAchievementTier')
+    self._user_tier = user_tier
+
+  @property
+  def user_progression_opt_out(self) -> bool:
+    """Whether or not the owner is progression opted-out (only for user owners)."""
+    return self._user_progression_opt_out or False
+
+  @user_progression_opt_out.setter
+  def user_progression_opt_out(self, user_progression_opt_out: Optional[bool]):
+    if user_progression_opt_out is None:
+      del self.user_progression_opt_out
+      return
+    if not isinstance(user_progression_opt_out, bool):
+      raise TypeError('user_progression_opt_out must be of type bool')
+    self._user_progression_opt_out = user_progression_opt_out
+
+  @property
+  def allow_model_gating(self) -> bool:
+    return self._allow_model_gating or False
+
+  @allow_model_gating.setter
+  def allow_model_gating(self, allow_model_gating: Optional[bool]):
+    if allow_model_gating is None:
+      del self.allow_model_gating
+      return
+    if not isinstance(allow_model_gating, bool):
+      raise TypeError('allow_model_gating must be of type bool')
+    self._allow_model_gating = allow_model_gating
+
+
 BaseModelInstanceInformation._fields = [
   FieldMetadata("id", "id", "_id", int, 0, PredefinedSerializer()),
   FieldMetadata("owner", "owner", "_owner", Owner, None, KaggleObjectSerializer()),
@@ -1242,42 +1242,52 @@ BaseModelInstanceInformation._fields = [
   FieldMetadata("framework", "framework", "_framework", ModelFramework, ModelFramework.MODEL_FRAMEWORK_UNSPECIFIED, EnumSerializer()),
 ]
 
+LicensePost._fields = [
+  FieldMetadata("id", "id", "_id", int, 0, PredefinedSerializer()),
+  FieldMetadata("content", "content", "_content", str, "", PredefinedSerializer()),
+]
+
+ModelActivityTimeSeriesPoint._fields = [
+  FieldMetadata("date", "date", "_date", datetime, None, DateTimeSerializer()),
+  FieldMetadata("count", "count", "_count", int, 0, PredefinedSerializer()),
+]
+
 ModelInstance._fields = [
   FieldMetadata("id", "id", "_id", int, 0, PredefinedSerializer()),
   FieldMetadata("ownerSlug", "owner_slug", "_owner_slug", str, "", PredefinedSerializer()),
   FieldMetadata("modelSlug", "model_slug", "_model_slug", str, "", PredefinedSerializer()),
-  FieldMetadata("modelId", "model_id", "_model_id", int, 0, PredefinedSerializer()),
   FieldMetadata("slug", "slug", "_slug", str, "", PredefinedSerializer()),
   FieldMetadata("versionId", "version_id", "_version_id", int, 0, PredefinedSerializer()),
   FieldMetadata("fineTunable", "fine_tunable", "_fine_tunable", bool, None, PredefinedSerializer(), optional=True),
   FieldMetadata("overview", "overview", "_overview", str, "", PredefinedSerializer()),
   FieldMetadata("usage", "usage", "_usage", str, "", PredefinedSerializer()),
-  FieldMetadata("renderedUsage", "rendered_usage", "_rendered_usage", str, "", PredefinedSerializer()),
   FieldMetadata("textRepresentation", "text_representation", "_text_representation", str, None, PredefinedSerializer(), optional=True),
   FieldMetadata("sourceUrl", "source_url", "_source_url", str, None, PredefinedSerializer(), optional=True),
   FieldMetadata("versionNumber", "version_number", "_version_number", int, 0, PredefinedSerializer()),
   FieldMetadata("framework", "framework", "_framework", ModelFramework, ModelFramework.MODEL_FRAMEWORK_UNSPECIFIED, EnumSerializer()),
   FieldMetadata("versionNotes", "version_notes", "_version_notes", str, "", PredefinedSerializer()),
   FieldMetadata("downloadUrl", "download_url", "_download_url", str, None, PredefinedSerializer(), optional=True),
-  FieldMetadata("databundleId", "databundle_id", "_databundle_id", int, 0, PredefinedSerializer()),
   FieldMetadata("databundleVersionId", "databundle_version_id", "_databundle_version_id", int, 0, PredefinedSerializer()),
-  FieldMetadata("databundleVersionType", "databundle_version_type", "_databundle_version_type", DatabundleVersionType, DatabundleVersionType.DATABUNDLE_VERSION_TYPE_UNSPECIFIED, EnumSerializer()),
-  FieldMetadata("firestorePath", "firestore_path", "_firestore_path", str, "", PredefinedSerializer()),
-  FieldMetadata("status", "status", "_status", DatabundleVersionStatus, DatabundleVersionStatus.NOT_YET_PERSISTED, EnumSerializer()),
-  FieldMetadata("creationStatus", "creation_status", "_creation_status", DatabundleVersionCreationStatus, None, KaggleObjectSerializer(), optional=True),
-  FieldMetadata("errorMessage", "error_message", "_error_message", str, None, PredefinedSerializer(), optional=True),
   FieldMetadata("lastVersionId", "last_version_id", "_last_version_id", int, None, PredefinedSerializer(), optional=True),
   FieldMetadata("sourceOrganization", "source_organization", "_source_organization", Owner, None, KaggleObjectSerializer(), optional=True),
   FieldMetadata("trainingData", "training_data", "_training_data", str, [], ListSerializer(PredefinedSerializer())),
   FieldMetadata("metrics", "metrics", "_metrics", str, None, PredefinedSerializer(), optional=True),
   FieldMetadata("licensePost", "license_post", "_license_post", LicensePost, None, KaggleObjectSerializer(), optional=True),
+  FieldMetadata("renderedUsage", "rendered_usage", "_rendered_usage", str, "", PredefinedSerializer()),
   FieldMetadata("license", "license", "_license", License, None, KaggleObjectSerializer(), optional=True),
+  FieldMetadata("databundleId", "databundle_id", "_databundle_id", int, 0, PredefinedSerializer()),
+  FieldMetadata("firestorePath", "firestore_path", "_firestore_path", str, "", PredefinedSerializer()),
+  FieldMetadata("status", "status", "_status", DatabundleVersionStatus, DatabundleVersionStatus.NOT_YET_PERSISTED, EnumSerializer()),
+  FieldMetadata("errorMessage", "error_message", "_error_message", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("databundleVersionType", "databundle_version_type", "_databundle_version_type", DatabundleVersionType, DatabundleVersionType.DATABUNDLE_VERSION_TYPE_UNSPECIFIED, EnumSerializer()),
   FieldMetadata("canUse", "can_use", "_can_use", bool, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("creationStatus", "creation_status", "_creation_status", DatabundleVersionCreationStatus, None, KaggleObjectSerializer(), optional=True),
   FieldMetadata("uncompressedStorageUri", "uncompressed_storage_uri", "_uncompressed_storage_uri", str, None, PredefinedSerializer(), optional=True),
   FieldMetadata("modelInstanceType", "model_instance_type", "_model_instance_type", ModelInstanceType, None, EnumSerializer(), optional=True),
   FieldMetadata("baseModelInstanceId", "base_model_instance_id", "_base_model_instance_id", int, None, PredefinedSerializer(), optional=True),
   FieldMetadata("baseModelInstanceInformation", "base_model_instance_information", "_base_model_instance_information", BaseModelInstanceInformation, None, KaggleObjectSerializer(), optional=True),
   FieldMetadata("externalBaseModelUrl", "external_base_model_url", "_external_base_model_url", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("modelId", "model_id", "_model_id", int, 0, PredefinedSerializer()),
   FieldMetadata("downloadSummary", "download_summary", "_download_summary", ModelInstanceDownloadSummary, None, KaggleObjectSerializer(), optional=True),
   FieldMetadata("totalUncompressedBytes", "total_uncompressed_bytes", "_total_uncompressed_bytes", int, None, PredefinedSerializer(), optional=True),
   FieldMetadata("sigstoreState", "sigstore_state", "_sigstore_state", SigstoreState, None, EnumSerializer(), optional=True),
@@ -1290,6 +1300,19 @@ ModelInstanceDownloadSummary._fields = [
   FieldMetadata("totalDownloads", "total_downloads", "_total_downloads", float, 0.0, PredefinedSerializer()),
   FieldMetadata("downloadSeriesPoints", "download_series_points", "_download_series_points", ModelActivityTimeSeriesPoint, [], ListSerializer(KaggleObjectSerializer())),
   FieldMetadata("modelInstanceId", "model_instance_id", "_model_instance_id", int, 0, PredefinedSerializer()),
+]
+
+ModelInstanceVersion._fields = [
+  FieldMetadata("id", "id", "_id", int, 0, PredefinedSerializer()),
+  FieldMetadata("framework", "framework", "_framework", ModelFramework, ModelFramework.MODEL_FRAMEWORK_UNSPECIFIED, EnumSerializer()),
+  FieldMetadata("isTfhubModel", "is_tfhub_model", "_is_tfhub_model", bool, False, PredefinedSerializer()),
+  FieldMetadata("url", "url", "_url", str, "", PredefinedSerializer()),
+  FieldMetadata("variationSlug", "variation_slug", "_variation_slug", str, "", PredefinedSerializer()),
+  FieldMetadata("versionNumber", "version_number", "_version_number", int, 0, PredefinedSerializer()),
+  FieldMetadata("modelTitle", "model_title", "_model_title", str, "", PredefinedSerializer()),
+  FieldMetadata("thumbnailUrl", "thumbnail_url", "_thumbnail_url", str, "", PredefinedSerializer()),
+  FieldMetadata("isPrivate", "is_private", "_is_private", bool, False, PredefinedSerializer()),
+  FieldMetadata("sigstoreState", "sigstore_state", "_sigstore_state", SigstoreState, SigstoreState.SIGSTORE_STATE_UNSPECIFIED, EnumSerializer()),
 ]
 
 ModelInstanceVersionList._fields = [
@@ -1309,30 +1332,7 @@ Owner._fields = [
   FieldMetadata("profileUrl", "profile_url", "_profile_url", str, None, PredefinedSerializer(), optional=True),
   FieldMetadata("slug", "slug", "_slug", str, "", PredefinedSerializer()),
   FieldMetadata("userTier", "user_tier", "_user_tier", UserAchievementTier, UserAchievementTier.NOVICE, EnumSerializer()),
-  FieldMetadata("userProgressionOptOut", "user_progression_opt_out", "_user_progression_opt_out", bool, None, PredefinedSerializer(), optional=True),
   FieldMetadata("allowModelGating", "allow_model_gating", "_allow_model_gating", bool, None, PredefinedSerializer(), optional=True),
-]
-
-LicensePost._fields = [
-  FieldMetadata("id", "id", "_id", int, 0, PredefinedSerializer()),
-  FieldMetadata("content", "content", "_content", str, "", PredefinedSerializer()),
-]
-
-ModelActivityTimeSeriesPoint._fields = [
-  FieldMetadata("date", "date", "_date", datetime, None, DateTimeSerializer()),
-  FieldMetadata("count", "count", "_count", int, 0, PredefinedSerializer()),
-]
-
-ModelInstanceVersion._fields = [
-  FieldMetadata("id", "id", "_id", int, 0, PredefinedSerializer()),
-  FieldMetadata("framework", "framework", "_framework", ModelFramework, ModelFramework.MODEL_FRAMEWORK_UNSPECIFIED, EnumSerializer()),
-  FieldMetadata("isTfhubModel", "is_tfhub_model", "_is_tfhub_model", bool, False, PredefinedSerializer()),
-  FieldMetadata("url", "url", "_url", str, "", PredefinedSerializer()),
-  FieldMetadata("variationSlug", "variation_slug", "_variation_slug", str, "", PredefinedSerializer()),
-  FieldMetadata("versionNumber", "version_number", "_version_number", int, 0, PredefinedSerializer()),
-  FieldMetadata("modelTitle", "model_title", "_model_title", str, "", PredefinedSerializer()),
-  FieldMetadata("thumbnailUrl", "thumbnail_url", "_thumbnail_url", str, "", PredefinedSerializer()),
-  FieldMetadata("isPrivate", "is_private", "_is_private", bool, False, PredefinedSerializer()),
-  FieldMetadata("sigstoreState", "sigstore_state", "_sigstore_state", SigstoreState, SigstoreState.SIGSTORE_STATE_UNSPECIFIED, EnumSerializer()),
+  FieldMetadata("userProgressionOptOut", "user_progression_opt_out", "_user_progression_opt_out", bool, None, PredefinedSerializer(), optional=True),
 ]
 

@@ -8,11 +8,7 @@ import time
 
 from requests import HTTPError
 
-# from kaggle.rest import ApiException
-from kagglesdk.datasets.types.dataset_api_service import ApiDownloadDatasetRequest
-
-sys.path.insert(0, "..")
-
+# noinspection PyTypeChecker
 sys.path.insert(0, "..")
 
 from kaggle import api
@@ -187,6 +183,7 @@ def print_fields(instance, fields):  # For debugging.
             print(f"Missing field: {f} named: {api.camel_to_snake(f)}")
 
 
+# noinspection PyTypeChecker
 class TestKaggleApi(unittest.TestCase):
 
     version_number, meta_file = initialize_dataset_metadata_file(dataset_directory)
@@ -435,7 +432,6 @@ class TestKaggleApi(unittest.TestCase):
     def test_dataset_b_metadata(self):
         if self.dataset == "":
             self.test_dataset_a_list()
-        m = ""
         try:
             m = api.dataset_metadata(self.dataset, dataset_directory)
             self.assertTrue(os.path.exists(m))

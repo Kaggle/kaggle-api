@@ -56,8 +56,8 @@ Explore these tutorials to learn how to perform common tasks:
     *   [Create a Dataset](./tutorials.md#tutorial-create-a-dataset)
     *   [Download a Dataset and Prepare for Analysis](./tutorials.md#tutorial-download-a-dataset-and-prepare-for-analysis)
     *   [Create a Model](./tutorials.md#tutorial-create-a-model)
-    *   [Create a Model Instance](./tutorials.md#tutorial-create-a-model-instance)
-    *   [Create a Model Instance Version](./tutorials.md#tutorial-create-a-model-instance-version)
+    *   [Create a Model Variation](./tutorials.md#tutorial-create-a-model-instance)
+    *   [Create a Model Variation Version](./tutorials.md#tutorial-create-a-model-instance-version)
     *   [How to Submit to a Competition](./tutorials.md#tutorial-how-to-submit-to-a-competition)
     *   [How to Submit to a Code Competition](./tutorials.md#tutorial-how-to-submit-to-a-code-competition)
 
@@ -69,8 +69,8 @@ The Kaggle CLI is organized into several command groups:
 *   [Datasets](./datasets.md): Search, download, and manage Kaggle datasets.
 *   [Kernels](./kernels.md): Interact with Kaggle Kernels (notebooks and scripts).
 *   [Models](./models.md): Manage your Kaggle Models.
-*   [Model Instances](./model_instances.md): Manage instances of your Kaggle Models.
-*   [Model Instance Versions](./model_instance_versions.md): Manage variations of your Kaggle Model Instances.
+*   [Model Variations](./model_instances.md): Manage variations of your Kaggle Models.
+*   [Model Variation Versions](./model_instances_versions.md): Manage versions of your Kaggle Model Variations.
 *   [Configuration](./configuration.md): Configure the Kaggle CLI.
 
 ## Python API Reference

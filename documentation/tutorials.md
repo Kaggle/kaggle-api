@@ -1,4 +1,4 @@
-eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee# Kaggle CLI Tutorials
+# Kaggle CLI Tutorials
 
 These tutorials illustrate how to use a sequence of Kaggle CLI commands to accomplish common tasks.
 

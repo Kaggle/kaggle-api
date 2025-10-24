@@ -78,7 +78,7 @@ kaggle models create -p <FOLDER_PATH>
 
 **Options:**
 
-*   `-p, --path <FOLDER_PATH>`: Path to the folder containing the `model-metadata.json` file (defaults to the current directory). This folder should also contain your model files that you intend to upload as part of the first model instance.
+*   `-p, --path <FOLDER_PATH>`: Path to the folder containing the `model-metadata.json` file (defaults to the current directory). This folder should also contain your model files that you intend to upload as part of the first model variation.
 
 **Example:**
 
@@ -95,7 +95,7 @@ kaggle models create -p tmp
 
 **Purpose:**
 
-This command registers a new model on Kaggle using the provided metadata. After this, you will typically create model instances and versions.
+This command registers a new model on Kaggle using the provided metadata. After this, you will typically create model variations and versions.
 
 ## `kaggle models get`
 
@@ -181,4 +181,4 @@ kaggle models delete $KAGGLE_DEVELOPER/test-model -y
 
 **Purpose:**
 
-This command permanently removes one of your models (and all its instances and versions) from Kaggle. Use with caution.
+This command permanently removes one of your models (and all its variations and versions) from Kaggle. Use with caution.

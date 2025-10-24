@@ -139,7 +139,7 @@ This tutorial guides you through creating a new model on Kaggle.
     cd my-new-model
     ```
 
-2.  **Copy your model definition files (optional for this step).** If you have files that define your model (e.g., Python scripts, model weights), copy them into this directory. For the `kaggle models create` step, only the metadata is strictly required, but you'll need files when you create a model instance.
+2.  **Copy your model definition files (optional for this step).** If you have files that define your model (e.g., Python scripts, model weights), copy them into this directory. For the `kaggle models create` step, only the metadata is strictly required, but you'll need files when you create a model variation.
 
 3.  **Initialize model metadata.** This creates a `model-metadata.json` file.
 
@@ -161,48 +161,48 @@ This tutorial guides you through creating a new model on Kaggle.
 
 6.  **Verify on Kaggle.com.** Refresh the [`Models` tab in `Your Work`](https://www.kaggle.com/work/models). You should see "My Awesome AI Model".
 
-## Tutorial: Create a Model Instance
+## Tutorial: Create a Model Variation
 
-This tutorial shows how to create an instance under an existing model. A model instance usually represents the model implemented in a specific framework (like TensorFlow, PyTorch, JAX, etc.) and includes the actual model files.
+This tutorial shows how to create a variation under an existing model. A model variation usually represents the model implemented in a specific framework (like TensorFlow, PyTorch, JAX, etc.) and includes the actual model files.
 
 1.  **Ensure you have a parent model.** Follow the "Create a Model" tutorial if you haven't already. Let's assume your model slug is `my-awesome-ai-model` and your username is `YOUR_USERNAME`.
 
-2.  **Prepare your model instance files.** In your model directory (e.g., `my-new-model`), create or place the files for this specific instance. For example, a JAX model might have a `flax_model.params` file.
+2.  **Prepare your model variation files.** In your model directory (e.g., `my-new-model`), create or place the files for this specific variation. For example, a JAX model might have a `flax_model.params` file.
 
     ```bash
     # In the my-new-model directory
     echo "This is a placeholder for JAX model parameters" > flax_model.params
     ```
 
-3.  **Initialize model instance metadata.** This creates `model-instance-metadata.json`.
+3.  **Initialize model variation metadata.** This creates `model-instance-metadata.json`.
 
     ```bash
     # Still in the my-new-model directory
-    kaggle models instances init
+    kaggle models variations init
     ```
 
-4.  **Edit the instance metadata file.** Open `model-instance-metadata.json` and make changes:
+4.  **Edit the variation metadata file.** Open `model-instance-metadata.json` and make changes:
     *   Replace `"INSERT_OWNER_SLUG_HERE"` with your Kaggle username (e.g., `"YOUR_USERNAME"`).
     *   Replace `"INSERT_EXISTING_MODEL_SLUG_HERE"` with your parent model's slug (e.g., `"my-awesome-ai-model"`).
-    *   Replace `"INSERT_INSTANCE_SLUG_HERE"` with a slug for this instance (e.g., `"jax-implementation"`).
+    *   Replace `"INSERT_INSTANCE_SLUG_HERE"` with a slug for this variation (e.g., `"jax-implementation"`).
     *   Replace `"INSERT_FRAMEWORK_HERE"` with the model framework (e.g., `"jax"`, `"tensorflow"`, `"pytorch"`, `"sklearn"`).
     *   Update the `"instance_size_bytes"` if known, and add a `"description"`.
 
-5.  **Create the model instance.** This uploads the files in the current directory (e.g., `flax_model.params`) along with the instance metadata.
+5.  **Create the model variation.** This uploads the files in the current directory (e.g., `flax_model.params`) along with the variation metadata.
 
     ```bash
-    kaggle models instances create -p .
+    kaggle models variations create -p .
     ```
 
-6.  **Verify on Kaggle.com.** Go to your model's page on Kaggle by clicking on the model under in the [`Models` tab on `Your Work`](https://www.kaggle.com/work/models). You should see a new "jax-implementation" instance listed, and it will have one version containing `flax_model.params`.
+6.  **Verify on Kaggle.com.** Go to your model's page on Kaggle by clicking on the model under in the [`Models` tab on `Your Work`](https://www.kaggle.com/work/models). You should see a new "jax-implementation" variation listed, and it will have one version containing `flax_model.params`.
 
-## Tutorial: Create a Model Instance Version
+## Tutorial: Create a Model Variation Version
 
-This tutorial explains how to add a new version to an existing model instance, for example, when you have updated model weights or files.
+This tutorial explains how to add a new version to an existing model variation, for example, when you have updated model weights or files.
 
-1.  **Ensure you have a model instance.** Follow the "Create a Model Instance" tutorial. Let's assume your instance is `YOUR_USERNAME/my-awesome-ai-model/jax/jax-implementation`.
+1.  **Ensure you have a model variation.** Follow the "Create a Model Variation" tutorial. Let's assume your variation is `YOUR_USERNAME/my-awesome-ai-model/jax/jax-implementation`.
 
-2.  **Prepare your updated files.** In your model instance directory (e.g., `my-new-model`), update or add new files for this version. For example, create `flax_model_v2.params`.
+2.  **Prepare your updated files.** In your model variation directory (e.g., `my-new-model`), update or add new files for this version. For example, create `flax_model_v2.params`.
 
     ```bash
     # In the my-new-model directory
@@ -210,15 +210,15 @@ This tutorial explains how to add a new version to an existing model instance, f
     # You might also remove or update flax_model.params if it's being replaced
     ```
 
-3.  **Create the new model instance version.** You need to specify the parent model instance and provide version notes. The files from the `-p` path will form the contents of this new version.
+3.  **Create the new model variation version.** You need to specify the parent model variation and provide version notes. The files from the `-p` path will form the contents of this new version.
 
     ```bash
-    # Replace YOUR_USERNAME and model/instance slugs accordingly
-    kaggle models instances versions create YOUR_USERNAME/my-awesome-ai-model/jax/jax-implementation -p . -n "Second version with updated parameters"
+    # Replace YOUR_USERNAME and the slugs for model and variation accordingly
+    kaggle models variations versions create YOUR_USERNAME/my-awesome-ai-model/jax/jax-implementation -p . -n "Second version with updated parameters"
     ```
     *Note: The `-p .` means all files in the current directory will be uploaded as part of this new version. If you only want to upload `flax_model_v2.params`, ensure only it (and any other V2 files) are in a directory and point `-p` to that directory, or manage your files carefully.*
 
-4.  **Verify on Kaggle.com.** Go to your model instance page on Kaggle (e.g., `YOUR_USERNAME/my-awesome-ai-model/jax/jax-implementation`) by clicking on the [`Models` tab on `Your Work`](https://www.kaggle.com/work/models). You should see a new version (e.g., version 2) listed with your notes and the new files.
+4.  **Verify on Kaggle.com.** Go to your model variation page on Kaggle (e.g., `YOUR_USERNAME/my-awesome-ai-model/jax/jax-implementation`) by clicking on the [`Models` tab on `Your Work`](https://www.kaggle.com/work/models). You should see a new version (e.g., version 2) listed with your notes and the new files.
 
 ## Tutorial: How to Submit to a Competition
 

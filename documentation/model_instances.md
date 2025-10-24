@@ -4,7 +4,7 @@ Commands for interacting with variations of Kaggle Models. A model variation typ
 
 ## `kaggle models variations init`
 
-Initializes a metadata file (`model-instance-metadata.json`) for creating a new model instance.
+Initializes a metadata file (`model-instance-metadata.json`) for creating a new model variation.
 
 **Usage:**
 

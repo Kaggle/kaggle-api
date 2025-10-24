@@ -1,20 +1,20 @@
-# Model Instance Versions Commands
+# Model Variation Versions Commands
 
-Commands for managing versions of a specific Kaggle Model Instance. Each version represents a snapshot of the model instance files at a point in time.
+Commands for managing versions of a specific Kaggle Model Variation. Each version represents a snapshot of the model variation files at a point in time.
 
-## `kaggle models instances versions create`
+## `kaggle models variations versions create`
 
-Creates a new version of an existing model instance.
+Creates a new version of an existing model variation.
 
 **Usage:**
 
 ```bash
-kaggle models instances versions create <MODEL_INSTANCE> -p <FOLDER_PATH> [options]
+kaggle models variations versions create <MODEL_INSTANCE> -p <FOLDER_PATH> [options]
 ```
 
 **Arguments:**
 
-*   `<MODEL_INSTANCE>`: The target model instance URL suffix for the new version (format: `owner/model-slug/framework/instance-slug`, e.g., `$KAGGLE_DEVELOPER/test-model/jax/main`).
+*   `<MODEL_INSTANCE>`: The target model variation URL suffix for the new version (format: `owner/model-slug/framework/instance-slug`, e.g., `$KAGGLE_DEVELOPER/test-model/jax/main`).
 
 **Options:**
 
@@ -25,32 +25,32 @@ kaggle models instances versions create <MODEL_INSTANCE> -p <FOLDER_PATH> [optio
 
 **Example:**
 
-Create a new version for the model instance `$KAGGLE_DEVELOPER/test-model/jax/main` using files from the `tmp` folder, with version notes "Updated model files", quietly, and skipping subdirectories:
+Create a new version for the model variation `$KAGGLE_DEVELOPER/test-model/jax/main` using files from the `tmp` folder, with version notes "Updated model files", quietly, and skipping subdirectories:
 
 ```bash
 # Ensure tmp folder contains the new files for the version, e.g., data_v2.csv
 # echo "e,f,g,h" > tmp/data_v2.csv
 
-kaggle models instances versions create $KAGGLE_DEVELOPER/test-model/jax/main -p tmp -n "Updated model files" -q -r skip
+kaggle models variations versions create $KAGGLE_DEVELOPER/test-model/jax/main -p tmp -n "Updated model files" -q -r skip
 ```
 
 **Purpose:**
 
-This command uploads a new set of files to an existing model instance, creating a new, numbered version. This allows you to track changes and revert to previous versions of your model instance files.
+This command uploads a new set of files to an existing model variation, creating a new, numbered version. This allows you to track changes and revert to previous versions of your model variation files.
 
-## `kaggle models instances versions download`
+## `kaggle models variations versions download`
 
-Downloads files for a specific version of a model instance.
+Downloads files for a specific version of a model variation.
 
 **Usage:**
 
 ```bash
-kaggle models instances versions download <MODEL_INSTANCE_VERSION> [options]
+kaggle models variations versions download <MODEL_INSTANCE_VERSION> [options]
 ```
 
 **Arguments:**
 
-*   `<MODEL_INSTANCE_VERSION>`: Model instance version URL suffix in the format `owner/model-slug/framework/instance-slug/version-number` (e.g., `$KAGGLE_DEVELOPER/test-model/jax/main/1`).
+*   `<MODEL_INSTANCE_VERSION>`: Model variation version URL suffix in the format `owner/model-slug/framework/instance-slug/version-number` (e.g., `$KAGGLE_DEVELOPER/test-model/jax/main/1`).
 
 **Options:**
 
@@ -62,29 +62,29 @@ kaggle models instances versions download <MODEL_INSTANCE_VERSION> [options]
 
 **Example:**
 
-Download version 1 of the model instance `$KAGGLE_DEVELOPER/test-model/jax/main` into the `tmp` folder, untar if applicable, force overwrite, and do it quietly:
+Download version 1 of the model variation `$KAGGLE_DEVELOPER/test-model/jax/main` into the `tmp` folder, untar if applicable, force overwrite, and do it quietly:
 
 ```bash
-kaggle models instances versions download $KAGGLE_DEVELOPER/test-model/jax/main/1 -p tmp -q -f --untar
+kaggle models variations versions download $KAGGLE_DEVELOPER/test-model/jax/main/1 -p tmp -q -f --untar
 ```
 
 **Purpose:**
 
-This command allows you to retrieve the specific files associated with a particular version of a model instance.
+This command allows you to retrieve the specific files associated with a particular version of a model variation.
 
-## `kaggle models instances versions files`
+## `kaggle models variations versions files`
 
-Lists files for a specific version of a model instance.
+Lists files for a specific version of a model variation.
 
 **Usage:**
 
 ```bash
-kaggle models instances versions files <MODEL_INSTANCE_VERSION> [options]
+kaggle models variations versions files <MODEL_INSTANCE_VERSION> [options]
 ```
 
 **Arguments:**
 
-*   `<MODEL_INSTANCE_VERSION>`: Model instance version URL suffix (e.g., `google/gemma/pytorch/7b/2`).
+*   `<MODEL_INSTANCE_VERSION>`: Model variation version URL suffix (e.g., `google/gemma/pytorch/7b/2`).
 
 **Options:**
 
@@ -94,29 +94,29 @@ kaggle models instances versions files <MODEL_INSTANCE_VERSION> [options]
 
 **Example:**
 
-List the first 3 files for version 2 of the model instance `google/gemma/pytorch/7b` in CSV format:
+List the first 3 files for version 2 of the model variation `google/gemma/pytorch/7b` in CSV format:
 
 ```bash
-kaggle models instances versions files google/gemma/pytorch/7b/2 -v --page-size=3
+kaggle models variations versions files google/gemma/pytorch/7b/2 -v --page-size=3
 ```
 
 **Purpose:**
 
-Use this command to see the individual files that constitute a specific version of a model instance before downloading.
+Use this command to see the individual files that constitute a specific version of a model variation before downloading.
 
-## `kaggle models instances versions delete`
+## `kaggle models variations versions delete`
 
-Deletes a specific version of a model instance from Kaggle.
+Deletes a specific version of a model variation from Kaggle.
 
 **Usage:**
 
 ```bash
-kaggle models instances versions delete <MODEL_INSTANCE_VERSION> [options]
+kaggle models variations versions delete <MODEL_INSTANCE_VERSION> [options]
 ```
 
 **Arguments:**
 
-*   `<MODEL_INSTANCE_VERSION>`: Model instance version URL suffix in the format `owner/model-slug/framework/instance-slug/version-number` (e.g., `$KAGGLE_DEVELOPER/test-model/jax/main/1`).
+*   `<MODEL_INSTANCE_VERSION>`: Model variation version URL suffix in the format `owner/model-slug/framework/instance-slug/version-number` (e.g., `$KAGGLE_DEVELOPER/test-model/jax/main/1`).
 
 **Options:**
 
@@ -124,12 +124,12 @@ kaggle models instances versions delete <MODEL_INSTANCE_VERSION> [options]
 
 **Example:**
 
-Delete version 1 of the model instance `$KAGGLE_DEVELOPER/test-model/jax/main` and automatically confirm:
+Delete version 1 of the model variation `$KAGGLE_DEVELOPER/test-model/jax/main` and automatically confirm:
 
 ```bash
-kaggle models instances versions delete $KAGGLE_DEVELOPER/test-model/jax/main/1 -y
+kaggle models variations versions delete $KAGGLE_DEVELOPER/test-model/jax/main/1 -y
 ```
 
 **Purpose:**
 
-This command permanently removes a specific version of your model instance from Kaggle. Use with caution. If it's the only version, this may lead to the deletion of the model instance itself if no other versions exist.
+This command permanently removes a specific version of your model variation from Kaggle. Use with caution. If it's the only version, this may lead to the deletion of the model variation itself if no other versions exist.

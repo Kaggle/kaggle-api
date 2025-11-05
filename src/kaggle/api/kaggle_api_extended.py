@@ -3251,6 +3251,7 @@ class KaggleApi:
             data["competition_sources"] = server_metadata.competition_data_sources
             data["model_sources"] = server_metadata.model_data_sources
             data["docker_image"] = server_metadata.docker_image
+            data["machine_shape"] = server_metadata.machine_shape
             with open(metadata_path, "w") as f:
                 json.dump(data, f, indent=2)
 

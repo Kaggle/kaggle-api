@@ -255,4 +255,7 @@ class KaggleHttpClient(object):
         self._signed_in = False
 
     def _get_request_url(self, service_name: str, request_name: str):
-        return f"{self._endpoint}/v1/{service_name}/{request_name}"
+        # On prod, API endpoints are served under https://api.kaggle.com/v1,
+        # but on staging/admin/local, they are served under http://localhost/api/v1.
+        base_url = self._endpoint if self._env == KaggleEnv.PROD else f"{self._endpoint}/api"
+        return f"{base_url}/v1/{service_name}/{request_name}"

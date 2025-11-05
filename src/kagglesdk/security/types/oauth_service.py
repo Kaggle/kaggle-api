@@ -1,5 +1,5 @@
 from kagglesdk.kaggle_object import *
-from typing import Optional
+from typing import Optional, List
 
 class ExchangeOAuthTokenRequest(KaggleObject):
   r"""
@@ -13,13 +13,28 @@ class ExchangeOAuthTokenRequest(KaggleObject):
     code_verifier (str)
       Original code_verifier (hash of code_challenge) for PKCE protection.
     grant_type (str)
-      Must be set to 'authorization_code'.
+      Can be 'authorization_code' or 'refresh_token'.
+    client_id (str)
+      The client id of the OAuth client that initiated this flow.
+    redirect_uri (str)
+      The redirect URI that was used in the initial authorization request.
+    resource (str)
+      The 'resource' parameter is not part of the OAuth2 spec, but is sent by
+      some clients. We are capturing it here to avoid 'invalid field' errors.
+    refresh_token (str)
+      This field is used by MCP clients to refresh an access token. The client
+      sends a refresh_token to the standard /token endpoint, and this field
+      allows the server to correctly deserialize the request.
   """
 
   def __init__(self):
-    self._code = ""
+    self._code = None
     self._code_verifier = None
     self._grant_type = ""
+    self._client_id = None
+    self._redirect_uri = None
+    self._resource = None
+    self._refresh_token = None
     self._freeze()
 
   @property
@@ -31,10 +46,10 @@ class ExchangeOAuthTokenRequest(KaggleObject):
     initiator as a query string parameter to their redirect_uri
     (https://dataverse.org?code=808f9afcabb3489a8b30353a8ae4dc4b)
     """
-    return self._code
+    return self._code or ""
 
   @code.setter
-  def code(self, code: str):
+  def code(self, code: Optional[str]):
     if code is None:
       del self.code
       return
@@ -58,7 +73,7 @@ class ExchangeOAuthTokenRequest(KaggleObject):
 
   @property
   def grant_type(self) -> str:
-    """Must be set to 'authorization_code'."""
+    """Can be 'authorization_code' or 'refresh_token'."""
     return self._grant_type
 
   @grant_type.setter
@@ -69,6 +84,69 @@ class ExchangeOAuthTokenRequest(KaggleObject):
     if not isinstance(grant_type, str):
       raise TypeError('grant_type must be of type str')
     self._grant_type = grant_type
+
+  @property
+  def client_id(self) -> str:
+    """The client id of the OAuth client that initiated this flow."""
+    return self._client_id or ""
+
+  @client_id.setter
+  def client_id(self, client_id: Optional[str]):
+    if client_id is None:
+      del self.client_id
+      return
+    if not isinstance(client_id, str):
+      raise TypeError('client_id must be of type str')
+    self._client_id = client_id
+
+  @property
+  def redirect_uri(self) -> str:
+    """The redirect URI that was used in the initial authorization request."""
+    return self._redirect_uri or ""
+
+  @redirect_uri.setter
+  def redirect_uri(self, redirect_uri: Optional[str]):
+    if redirect_uri is None:
+      del self.redirect_uri
+      return
+    if not isinstance(redirect_uri, str):
+      raise TypeError('redirect_uri must be of type str')
+    self._redirect_uri = redirect_uri
+
+  @property
+  def resource(self) -> str:
+    r"""
+    The 'resource' parameter is not part of the OAuth2 spec, but is sent by
+    some clients. We are capturing it here to avoid 'invalid field' errors.
+    """
+    return self._resource or ""
+
+  @resource.setter
+  def resource(self, resource: Optional[str]):
+    if resource is None:
+      del self.resource
+      return
+    if not isinstance(resource, str):
+      raise TypeError('resource must be of type str')
+    self._resource = resource
+
+  @property
+  def refresh_token(self) -> str:
+    r"""
+    This field is used by MCP clients to refresh an access token. The client
+    sends a refresh_token to the standard /token endpoint, and this field
+    allows the server to correctly deserialize the request.
+    """
+    return self._refresh_token or ""
+
+  @refresh_token.setter
+  def refresh_token(self, refresh_token: Optional[str]):
+    if refresh_token is None:
+      del self.refresh_token
+      return
+    if not isinstance(refresh_token, str):
+      raise TypeError('refresh_token must be of type str')
+    self._refresh_token = refresh_token
 
   def endpoint(self):
     path = '/api/v1/oauth2/token'
@@ -100,6 +178,8 @@ class ExchangeOAuthTokenResponse(KaggleObject):
       Username of the user who authorized/owns this token.
     user_id (int)
       Id the of user who authorized/owns this token.
+    scope (str)
+      The scope of the access token as a space-delimited list of strings.
   """
 
   def __init__(self):
@@ -109,6 +189,7 @@ class ExchangeOAuthTokenResponse(KaggleObject):
     self._expires_in = 0
     self._username = ""
     self._user_id = 0
+    self._scope = None
     self._freeze()
 
   @property
@@ -197,6 +278,20 @@ class ExchangeOAuthTokenResponse(KaggleObject):
     if not isinstance(user_id, int):
       raise TypeError('user_id must be of type int')
     self._user_id = user_id
+
+  @property
+  def scope(self) -> str:
+    """The scope of the access token as a space-delimited list of strings."""
+    return self._scope or ""
+
+  @scope.setter
+  def scope(self, scope: Optional[str]):
+    if scope is None:
+      del self.scope
+      return
+    if not isinstance(scope, str):
+      raise TypeError('scope must be of type str')
+    self._scope = scope
 
   @property
   def accessToken(self):
@@ -385,6 +480,426 @@ class IntrospectTokenResponse(KaggleObject):
     return self.user_id
 
 
+class RegisterOAuthClientRequest(KaggleObject):
+  r"""
+  Attributes:
+    client_name (str)
+      Human-readable name for the client (e.g., 'Gemini CLI MCP Client')
+    redirect_uris (str)
+      Array of redirect URIs the client will use (e.g.,
+      'http://localhost:7777/oauth/callback')
+    grant_types (str)
+      Array of OAuth 2.0 grant types the client requests (expected:
+      authorization_code, refresh_token)
+    token_endpoint_auth_method (str)
+      Client Authentication method (expected: 'none')
+    scope (str)
+      Space-separated list of scopes the client would like to use
+    code_challenge_method (str)
+      Array of supported PKCE methods (expected: 'S256')
+  """
+
+  def __init__(self):
+    self._client_name = ""
+    self._redirect_uris = []
+    self._grant_types = []
+    self._token_endpoint_auth_method = ""
+    self._scope = None
+    self._code_challenge_method = []
+    self._freeze()
+
+  @property
+  def client_name(self) -> str:
+    """Human-readable name for the client (e.g., 'Gemini CLI MCP Client')"""
+    return self._client_name
+
+  @client_name.setter
+  def client_name(self, client_name: str):
+    if client_name is None:
+      del self.client_name
+      return
+    if not isinstance(client_name, str):
+      raise TypeError('client_name must be of type str')
+    self._client_name = client_name
+
+  @property
+  def redirect_uris(self) -> Optional[List[str]]:
+    r"""
+    Array of redirect URIs the client will use (e.g.,
+    'http://localhost:7777/oauth/callback')
+    """
+    return self._redirect_uris
+
+  @redirect_uris.setter
+  def redirect_uris(self, redirect_uris: Optional[List[str]]):
+    if redirect_uris is None:
+      del self.redirect_uris
+      return
+    if not isinstance(redirect_uris, list):
+      raise TypeError('redirect_uris must be of type list')
+    if not all([isinstance(t, str) for t in redirect_uris]):
+      raise TypeError('redirect_uris must contain only items of type str')
+    self._redirect_uris = redirect_uris
+
+  @property
+  def grant_types(self) -> Optional[List[str]]:
+    r"""
+    Array of OAuth 2.0 grant types the client requests (expected:
+    authorization_code, refresh_token)
+    """
+    return self._grant_types
+
+  @grant_types.setter
+  def grant_types(self, grant_types: Optional[List[str]]):
+    if grant_types is None:
+      del self.grant_types
+      return
+    if not isinstance(grant_types, list):
+      raise TypeError('grant_types must be of type list')
+    if not all([isinstance(t, str) for t in grant_types]):
+      raise TypeError('grant_types must contain only items of type str')
+    self._grant_types = grant_types
+
+  @property
+  def token_endpoint_auth_method(self) -> str:
+    """Client Authentication method (expected: 'none')"""
+    return self._token_endpoint_auth_method
+
+  @token_endpoint_auth_method.setter
+  def token_endpoint_auth_method(self, token_endpoint_auth_method: str):
+    if token_endpoint_auth_method is None:
+      del self.token_endpoint_auth_method
+      return
+    if not isinstance(token_endpoint_auth_method, str):
+      raise TypeError('token_endpoint_auth_method must be of type str')
+    self._token_endpoint_auth_method = token_endpoint_auth_method
+
+  @property
+  def scope(self) -> str:
+    """Space-separated list of scopes the client would like to use"""
+    return self._scope or ""
+
+  @scope.setter
+  def scope(self, scope: Optional[str]):
+    if scope is None:
+      del self.scope
+      return
+    if not isinstance(scope, str):
+      raise TypeError('scope must be of type str')
+    self._scope = scope
+
+  @property
+  def code_challenge_method(self) -> Optional[List[str]]:
+    """Array of supported PKCE methods (expected: 'S256')"""
+    return self._code_challenge_method
+
+  @code_challenge_method.setter
+  def code_challenge_method(self, code_challenge_method: Optional[List[str]]):
+    if code_challenge_method is None:
+      del self.code_challenge_method
+      return
+    if not isinstance(code_challenge_method, list):
+      raise TypeError('code_challenge_method must be of type list')
+    if not all([isinstance(t, str) for t in code_challenge_method]):
+      raise TypeError('code_challenge_method must contain only items of type str')
+    self._code_challenge_method = code_challenge_method
+
+  def endpoint(self):
+    path = '/api/v1/oauth2/register'
+    return path.format_map(self.to_field_map(self))
+
+
+  @staticmethod
+  def method():
+    return 'POST'
+
+  @staticmethod
+  def body_fields():
+    return '*'
+
+
+class RegisterOAuthClientResponse(KaggleObject):
+  r"""
+  According to RFC 7591 &&
+  https://github.com/google-gemini/gemini-cli/blob/56f394cefd04696a5192fef9bbff8ba0e5b0583f/packages/core/src/mcp/oauth-provider.ts#L69
+
+  Attributes:
+    client_id (str)
+    redirect_uris (str)
+    grant_types (str)
+    response_types (str)
+    token_endpoint_auth_method (str)
+    scope (str)
+    authorization_url (str)
+    token_url (str)
+    client_secret (str)
+    client_id_issued_at (int)
+    client_secret_expires_at (int)
+    revocation_url (str)
+    userinfo_url (str)
+    code_challenge_methods_supported (str)
+  """
+
+  def __init__(self):
+    self._client_id = ""
+    self._redirect_uris = []
+    self._grant_types = []
+    self._response_types = []
+    self._token_endpoint_auth_method = ""
+    self._scope = None
+    self._authorization_url = None
+    self._token_url = None
+    self._client_secret = None
+    self._client_id_issued_at = None
+    self._client_secret_expires_at = None
+    self._revocation_url = None
+    self._userinfo_url = None
+    self._code_challenge_methods_supported = []
+    self._freeze()
+
+  @property
+  def client_id(self) -> str:
+    return self._client_id
+
+  @client_id.setter
+  def client_id(self, client_id: str):
+    if client_id is None:
+      del self.client_id
+      return
+    if not isinstance(client_id, str):
+      raise TypeError('client_id must be of type str')
+    self._client_id = client_id
+
+  @property
+  def redirect_uris(self) -> Optional[List[str]]:
+    return self._redirect_uris
+
+  @redirect_uris.setter
+  def redirect_uris(self, redirect_uris: Optional[List[str]]):
+    if redirect_uris is None:
+      del self.redirect_uris
+      return
+    if not isinstance(redirect_uris, list):
+      raise TypeError('redirect_uris must be of type list')
+    if not all([isinstance(t, str) for t in redirect_uris]):
+      raise TypeError('redirect_uris must contain only items of type str')
+    self._redirect_uris = redirect_uris
+
+  @property
+  def grant_types(self) -> Optional[List[str]]:
+    return self._grant_types
+
+  @grant_types.setter
+  def grant_types(self, grant_types: Optional[List[str]]):
+    if grant_types is None:
+      del self.grant_types
+      return
+    if not isinstance(grant_types, list):
+      raise TypeError('grant_types must be of type list')
+    if not all([isinstance(t, str) for t in grant_types]):
+      raise TypeError('grant_types must contain only items of type str')
+    self._grant_types = grant_types
+
+  @property
+  def response_types(self) -> Optional[List[str]]:
+    return self._response_types
+
+  @response_types.setter
+  def response_types(self, response_types: Optional[List[str]]):
+    if response_types is None:
+      del self.response_types
+      return
+    if not isinstance(response_types, list):
+      raise TypeError('response_types must be of type list')
+    if not all([isinstance(t, str) for t in response_types]):
+      raise TypeError('response_types must contain only items of type str')
+    self._response_types = response_types
+
+  @property
+  def token_endpoint_auth_method(self) -> str:
+    return self._token_endpoint_auth_method
+
+  @token_endpoint_auth_method.setter
+  def token_endpoint_auth_method(self, token_endpoint_auth_method: str):
+    if token_endpoint_auth_method is None:
+      del self.token_endpoint_auth_method
+      return
+    if not isinstance(token_endpoint_auth_method, str):
+      raise TypeError('token_endpoint_auth_method must be of type str')
+    self._token_endpoint_auth_method = token_endpoint_auth_method
+
+  @property
+  def scope(self) -> str:
+    return self._scope or ""
+
+  @scope.setter
+  def scope(self, scope: Optional[str]):
+    if scope is None:
+      del self.scope
+      return
+    if not isinstance(scope, str):
+      raise TypeError('scope must be of type str')
+    self._scope = scope
+
+  @property
+  def authorization_url(self) -> str:
+    return self._authorization_url or ""
+
+  @authorization_url.setter
+  def authorization_url(self, authorization_url: Optional[str]):
+    if authorization_url is None:
+      del self.authorization_url
+      return
+    if not isinstance(authorization_url, str):
+      raise TypeError('authorization_url must be of type str')
+    self._authorization_url = authorization_url
+
+  @property
+  def token_url(self) -> str:
+    return self._token_url or ""
+
+  @token_url.setter
+  def token_url(self, token_url: Optional[str]):
+    if token_url is None:
+      del self.token_url
+      return
+    if not isinstance(token_url, str):
+      raise TypeError('token_url must be of type str')
+    self._token_url = token_url
+
+  @property
+  def revocation_url(self) -> str:
+    return self._revocation_url or ""
+
+  @revocation_url.setter
+  def revocation_url(self, revocation_url: Optional[str]):
+    if revocation_url is None:
+      del self.revocation_url
+      return
+    if not isinstance(revocation_url, str):
+      raise TypeError('revocation_url must be of type str')
+    self._revocation_url = revocation_url
+
+  @property
+  def userinfo_url(self) -> str:
+    return self._userinfo_url or ""
+
+  @userinfo_url.setter
+  def userinfo_url(self, userinfo_url: Optional[str]):
+    if userinfo_url is None:
+      del self.userinfo_url
+      return
+    if not isinstance(userinfo_url, str):
+      raise TypeError('userinfo_url must be of type str')
+    self._userinfo_url = userinfo_url
+
+  @property
+  def code_challenge_methods_supported(self) -> Optional[List[str]]:
+    return self._code_challenge_methods_supported
+
+  @code_challenge_methods_supported.setter
+  def code_challenge_methods_supported(self, code_challenge_methods_supported: Optional[List[str]]):
+    if code_challenge_methods_supported is None:
+      del self.code_challenge_methods_supported
+      return
+    if not isinstance(code_challenge_methods_supported, list):
+      raise TypeError('code_challenge_methods_supported must be of type list')
+    if not all([isinstance(t, str) for t in code_challenge_methods_supported]):
+      raise TypeError('code_challenge_methods_supported must contain only items of type str')
+    self._code_challenge_methods_supported = code_challenge_methods_supported
+
+  @property
+  def client_secret(self) -> str:
+    return self._client_secret or ""
+
+  @client_secret.setter
+  def client_secret(self, client_secret: Optional[str]):
+    if client_secret is None:
+      del self.client_secret
+      return
+    if not isinstance(client_secret, str):
+      raise TypeError('client_secret must be of type str')
+    self._client_secret = client_secret
+
+  @property
+  def client_id_issued_at(self) -> int:
+    return self._client_id_issued_at or 0
+
+  @client_id_issued_at.setter
+  def client_id_issued_at(self, client_id_issued_at: Optional[int]):
+    if client_id_issued_at is None:
+      del self.client_id_issued_at
+      return
+    if not isinstance(client_id_issued_at, int):
+      raise TypeError('client_id_issued_at must be of type int')
+    self._client_id_issued_at = client_id_issued_at
+
+  @property
+  def client_secret_expires_at(self) -> int:
+    return self._client_secret_expires_at or 0
+
+  @client_secret_expires_at.setter
+  def client_secret_expires_at(self, client_secret_expires_at: Optional[int]):
+    if client_secret_expires_at is None:
+      del self.client_secret_expires_at
+      return
+    if not isinstance(client_secret_expires_at, int):
+      raise TypeError('client_secret_expires_at must be of type int')
+    self._client_secret_expires_at = client_secret_expires_at
+
+  @property
+  def clientId(self):
+    return self.client_id
+
+  @property
+  def redirectUris(self):
+    return self.redirect_uris
+
+  @property
+  def grantTypes(self):
+    return self.grant_types
+
+  @property
+  def responseTypes(self):
+    return self.response_types
+
+  @property
+  def tokenEndpointAuthMethod(self):
+    return self.token_endpoint_auth_method
+
+  @property
+  def authorizationUrl(self):
+    return self.authorization_url
+
+  @property
+  def tokenUrl(self):
+    return self.token_url
+
+  @property
+  def revocationUrl(self):
+    return self.revocation_url
+
+  @property
+  def userinfoUrl(self):
+    return self.userinfo_url
+
+  @property
+  def codeChallengeMethodsSupported(self):
+    return self.code_challenge_methods_supported
+
+  @property
+  def clientSecret(self):
+    return self.client_secret
+
+  @property
+  def clientIdIssuedAt(self):
+    return self.client_id_issued_at
+
+  @property
+  def clientSecretExpiresAt(self):
+    return self.client_secret_expires_at
+
+
 class StartOAuthFlowRequest(KaggleObject):
   r"""
   Attributes:
@@ -417,6 +932,9 @@ class StartOAuthFlowRequest(KaggleObject):
     response_mode (str)
       Mode of the OAuth flow completed response. Must be set to 'query', which
       means response will be sent as query string parameters.
+    resource (str)
+      The 'resource' parameter is not part of the OAuth2 spec, but is sent by
+      some clients. We are capturing it here to avoid 'invalid field' errors.
   """
 
   def __init__(self):
@@ -428,6 +946,7 @@ class StartOAuthFlowRequest(KaggleObject):
     self._code_challenge_method = None
     self._response_type = ""
     self._response_mode = ""
+    self._resource = None
     self._freeze()
 
   @property
@@ -567,15 +1086,36 @@ class StartOAuthFlowRequest(KaggleObject):
       raise TypeError('response_mode must be of type str')
     self._response_mode = response_mode
 
+  @property
+  def resource(self) -> str:
+    r"""
+    The 'resource' parameter is not part of the OAuth2 spec, but is sent by
+    some clients. We are capturing it here to avoid 'invalid field' errors.
+    """
+    return self._resource or ""
+
+  @resource.setter
+  def resource(self, resource: Optional[str]):
+    if resource is None:
+      del self.resource
+      return
+    if not isinstance(resource, str):
+      raise TypeError('resource must be of type str')
+    self._resource = resource
+
   def endpoint(self):
     path = '/api/v1/oauth2/authorize'
     return path.format_map(self.to_field_map(self))
 
 
 ExchangeOAuthTokenRequest._fields = [
-  FieldMetadata("code", "code", "_code", str, "", PredefinedSerializer()),
+  FieldMetadata("code", "code", "_code", str, None, PredefinedSerializer(), optional=True),
   FieldMetadata("codeVerifier", "code_verifier", "_code_verifier", str, None, PredefinedSerializer(), optional=True),
   FieldMetadata("grantType", "grant_type", "_grant_type", str, "", PredefinedSerializer()),
+  FieldMetadata("clientId", "client_id", "_client_id", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("redirectUri", "redirect_uri", "_redirect_uri", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("resource", "resource", "_resource", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("refreshToken", "refresh_token", "_refresh_token", str, None, PredefinedSerializer(), optional=True),
 ]
 
 ExchangeOAuthTokenResponse._fields = [
@@ -585,6 +1125,7 @@ ExchangeOAuthTokenResponse._fields = [
   FieldMetadata("expiresIn", "expires_in", "_expires_in", int, 0, PredefinedSerializer()),
   FieldMetadata("username", "username", "_username", str, "", PredefinedSerializer()),
   FieldMetadata("userId", "user_id", "_user_id", int, 0, PredefinedSerializer()),
+  FieldMetadata("scope", "scope", "_scope", str, None, PredefinedSerializer(), optional=True),
 ]
 
 IntrospectTokenRequest._fields = [
@@ -600,6 +1141,32 @@ IntrospectTokenResponse._fields = [
   FieldMetadata("exp", "exp", "_exp", int, None, PredefinedSerializer(), optional=True),
 ]
 
+RegisterOAuthClientRequest._fields = [
+  FieldMetadata("clientName", "client_name", "_client_name", str, "", PredefinedSerializer()),
+  FieldMetadata("redirectUris", "redirect_uris", "_redirect_uris", str, [], ListSerializer(PredefinedSerializer())),
+  FieldMetadata("grantTypes", "grant_types", "_grant_types", str, [], ListSerializer(PredefinedSerializer())),
+  FieldMetadata("tokenEndpointAuthMethod", "token_endpoint_auth_method", "_token_endpoint_auth_method", str, "", PredefinedSerializer()),
+  FieldMetadata("scope", "scope", "_scope", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("codeChallengeMethod", "code_challenge_method", "_code_challenge_method", str, [], ListSerializer(PredefinedSerializer())),
+]
+
+RegisterOAuthClientResponse._fields = [
+  FieldMetadata("client_id", "client_id", "_client_id", str, "", PredefinedSerializer()),
+  FieldMetadata("redirect_uris", "redirect_uris", "_redirect_uris", str, [], ListSerializer(PredefinedSerializer())),
+  FieldMetadata("grant_types", "grant_types", "_grant_types", str, [], ListSerializer(PredefinedSerializer())),
+  FieldMetadata("response_types", "response_types", "_response_types", str, [], ListSerializer(PredefinedSerializer())),
+  FieldMetadata("token_endpoint_auth_method", "token_endpoint_auth_method", "_token_endpoint_auth_method", str, "", PredefinedSerializer()),
+  FieldMetadata("scope", "scope", "_scope", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("authorization_url", "authorization_url", "_authorization_url", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("token_url", "token_url", "_token_url", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("client_secret", "client_secret", "_client_secret", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("client_id_issued_at", "client_id_issued_at", "_client_id_issued_at", int, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("client_secret_expires_at", "client_secret_expires_at", "_client_secret_expires_at", int, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("revocation_url", "revocation_url", "_revocation_url", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("userinfo_url", "userinfo_url", "_userinfo_url", str, None, PredefinedSerializer(), optional=True),
+  FieldMetadata("code_challenge_methods_supported", "code_challenge_methods_supported", "_code_challenge_methods_supported", str, [], ListSerializer(PredefinedSerializer())),
+]
+
 StartOAuthFlowRequest._fields = [
   FieldMetadata("clientId", "client_id", "_client_id", str, "", PredefinedSerializer()),
   FieldMetadata("redirectUri", "redirect_uri", "_redirect_uri", str, "", PredefinedSerializer()),
@@ -609,5 +1176,6 @@ StartOAuthFlowRequest._fields = [
   FieldMetadata("codeChallengeMethod", "code_challenge_method", "_code_challenge_method", str, None, PredefinedSerializer(), optional=True),
   FieldMetadata("responseType", "response_type", "_response_type", str, "", PredefinedSerializer()),
   FieldMetadata("responseMode", "response_mode", "_response_mode", str, "", PredefinedSerializer()),
+  FieldMetadata("resource", "resource", "_resource", str, None, PredefinedSerializer(), optional=True),
 ]
 

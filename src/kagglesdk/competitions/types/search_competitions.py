@@ -18,6 +18,7 @@ class SearchCompetitionsRole(enum.Enum):
   SEARCH_COMPETITIONS_ROLE_PARTICIPANT = 2
   SEARCH_COMPETITIONS_ROLE_PARTICIPANT_ONLY = 3
   """Excludes competitions user hosted, even if they are also a participant"""
+  SEARCH_COMPETITIONS_ROLE_JUDGE = 4
 
 class SearchCompetitionsStatus(enum.Enum):
   SEARCH_COMPETITIONS_STATUS_ANY = 0

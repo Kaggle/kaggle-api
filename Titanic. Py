@@ -1,0 +1,13 @@
+import pandas as pd
+
+# Load data
+train = pd.read_csv("train.csv")
+test = pd.read_csv("test.csv")
+
+# Simple rule-based model:
+# Predict all females survive, all males do not.
+test["Survived"] = test["Sex"].apply(lambda x: 1 if x == "female" else 0)
+
+# Create submission file
+submission = test[["PassengerId", "Survived"]]
+submission.to_csv("submission.csv", index=False)

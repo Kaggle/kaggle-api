@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Kaggle CLI Tutorials &#8212; kaggle-api  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
+    <script src="_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Model Variation Versions Commands" href="model_instances_versions.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="kaggle-cli-tutorials">
+<h1>Kaggle CLI Tutorials<a class="headerlink" href="#kaggle-cli-tutorials" title="Link to this heading">¶</a></h1>
+<p>These tutorials illustrate how to use a sequence of Kaggle CLI commands to accomplish common tasks.</p>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">¶</a></h2>
+<p>Before starting these tutorials, please make sure you have:</p>
+<ol class="arabic simple">
+<li><p>Installed the Kaggle CLI, following the instructions <a class="reference external" href="https://github.com/Kaggle/kaggle-api/blob/main/documentation/intro.md#installation">here</a>.</p></li>
+<li><p>Set up your API credentials, following the instructions <a class="reference external" href="https://github.com/Kaggle/kaggle-api/blob/main/documentation/intro.md#api-credentials">here</a></p></li>
+<li><p>Logged in to Kaggle in a web browser. This will allow you to verify the results of the CLI commands in the <a class="reference external" href="https://www.kaggle.com/work"><code class="docutils literal notranslate"><span class="pre">Your</span> <span class="pre">Work</span></code></a> section of your Kaggle profile.</p></li>
+</ol>
+</section>
+<section id="tutorial-create-a-dataset">
+<h2>Tutorial: Create a Dataset<a class="headerlink" href="#tutorial-create-a-dataset" title="Link to this heading">¶</a></h2>
+<p>This tutorial walks you through creating a new dataset on Kaggle.</p>
+<ol class="arabic">
+<li><p><strong>Start from an empty directory.</strong> Create a new directory for your dataset files and navigate into it.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mkdir<span class="w"> </span>my-new-dataset
+<span class="nb">cd</span><span class="w"> </span>my-new-dataset
+</pre></div>
+</div>
+</li>
+<li><p><strong>Create a sample data file.</strong> For this example, create a CSV file named <code class="docutils literal notranslate"><span class="pre">sample_data.csv</span></code> with an index column and three random data columns, and a few rows of data.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;id,col_a,col_b,col_c&quot;</span><span class="w"> </span>&gt;<span class="w"> </span>sample_data.csv
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;1,0.5,0.2,0.8&quot;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>sample_data.csv
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;2,0.1,0.7,0.3&quot;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>sample_data.csv
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;3,0.9,0.4,0.6&quot;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>sample_data.csv
+</pre></div>
+</div>
+</li>
+<li><p><strong>Initialize dataset metadata.</strong> This creates a <code class="docutils literal notranslate"><span class="pre">dataset-metadata.json</span></code> file in your current directory.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>kaggle<span class="w"> </span>datasets<span class="w"> </span>init
+</pre></div>
+</div>
+</li>
+<li><p><strong>Edit the metadata file.</strong> Open <code class="docutils literal notranslate"><span class="pre">dataset-metadata.json</span></code> in a text editor and make the following changes:</p>
+<ul class="simple">
+<li><p>Replace <code class="docutils literal notranslate"><span class="pre">&quot;INSERT_TITLE_HERE&quot;</span></code> with your desired dataset title, e.g., <code class="docutils literal notranslate"><span class="pre">&quot;My</span> <span class="pre">Sample</span> <span class="pre">Dataset&quot;</span></code>.</p></li>
+<li><p>Replace <code class="docutils literal notranslate"><span class="pre">&quot;INSERT_SLUG_HERE&quot;</span></code> with a URL-friendly version of your title, e.g., <code class="docutils literal notranslate"><span class="pre">&quot;my-sample-dataset&quot;</span></code>. The URL-friendly version is made by converting the title to lower-case and changing spaces to dashes.</p></li>
+<li><p>You can also add licenses, descriptions, and other relevant information.</p></li>
+</ul>
+</li>
+<li><p><strong>Create the dataset.</strong> This command uploads your <code class="docutils literal notranslate"><span class="pre">sample_data.csv</span></code> and <code class="docutils literal notranslate"><span class="pre">dataset-metadata.json</span></code> to Kaggle.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>kaggle<span class="w"> </span>datasets<span class="w"> </span>create<span class="w"> </span>-p<span class="w"> </span>.
+</pre></div>
+</div>
+<p>You can add <code class="docutils literal notranslate"><span class="pre">--public</span></code> to make it public immediately.</p>
+</li>
+<li><p><strong>Verify on Kaggle.com.</strong> Refresh the <a class="reference external" href="https://www.kaggle.com/work/datasets"><code class="docutils literal notranslate"><span class="pre">Datasets</span></code> tab in <code class="docutils literal notranslate"><span class="pre">Your</span> <span class="pre">Work</span></code></a>. You should see “My Sample Dataset”.</p></li>
+</ol>
+</section>
+<section id="tutorial-find-and-download-a-dataset">
+<h2>Tutorial: Find and Download a Dataset<a class="headerlink" href="#tutorial-find-and-download-a-dataset" title="Link to this heading">¶</a></h2>
+<p>This tutorial explains how to find and download using the CLI.</p>
+<ol class="arabic">
+<li><p><strong>Search for a Dataset (Optional).</strong></p>
+<ul>
+<li><p>If you know the dataset you want, you can skip this step. Otherwise, you can search for datasets. For example, to search for datasets related to “iris”:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>kaggle<span class="w"> </span>datasets<span class="w"> </span>list<span class="w"> </span>-s<span class="w"> </span>iris
+</pre></div>
+</div>
+</li>
+<li><p>This command will list datasets matching your search query. Note the dataset’s “id” (e.g., <code class="docutils literal notranslate"><span class="pre">uciml/iris</span></code>) which you’ll use for downloading.</p></li>
+</ul>
+</li>
+<li><p><strong>Choose a Dataset and Create a Directory.</strong></p>
+<ul>
+<li><p>For this tutorial, we’ll use the classic “Iris” dataset, which has the id <code class="docutils literal notranslate"><span class="pre">uciml/iris</span></code>.</p></li>
+<li><p>Create a new directory for your dataset and navigate into it:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mkdir<span class="w"> </span>iris-dataset-analysis
+<span class="nb">cd</span><span class="w"> </span>iris-dataset-analysis
+</pre></div>
+</div>
+</li>
+</ul>
+</li>
+<li><p><strong>Download the Dataset.</strong></p>
+<ul>
+<li><p>Use the <code class="docutils literal notranslate"><span class="pre">kaggle</span> <span class="pre">datasets</span> <span class="pre">download</span></code> command with the dataset’s id.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>kaggle<span class="w"> </span>datasets<span class="w"> </span>download<span class="w"> </span>-d<span class="w"> </span>uciml/iris
+</pre></div>
+</div>
+</li>
+<li><p>This will download the dataset files, typically as a ZIP archive (e.g., <code class="docutils literal notranslate"><span class="pre">iris.zip</span></code>), into your current directory (<code class="docutils literal notranslate"><span class="pre">iris-dataset-analysis</span></code>).</p></li>
+</ul>
+</li>
+<li><p><strong>Unzip the Dataset.</strong></p>
+<ul>
+<li><p>Note: you could skip this step by using the <code class="docutils literal notranslate"><span class="pre">--unzip</span></code> flag on the previous command.</p></li>
+<li><p>Most datasets are downloaded as ZIP files. You’ll need to unzip the archive to access the data files (e.g., CSV files).</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Make sure you have unzip installed, or use your OS&#39;s GUI to extract</span>
+<span class="c1"># The actual zip file name might vary based on the dataset.</span>
+<span class="c1"># For uciml/iris, it&#39;s iris.zip</span>
+unzip<span class="w"> </span>iris.zip
+</pre></div>
+</div>
+</li>
+</ul>
+</li>
+<li><p><strong>Verify the results.</strong></p>
+<ul class="simple">
+<li><p>After unzipping, you should see the data files (e.g., <code class="docutils literal notranslate"><span class="pre">Iris.csv</span></code>, <code class="docutils literal notranslate"><span class="pre">database.sqlite</span></code>).</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="tutorial-update-a-kernel-notebook">
+<h2>Tutorial: Update a Kernel (Notebook)<a class="headerlink" href="#tutorial-update-a-kernel-notebook" title="Link to this heading">¶</a></h2>
+<p>This tutorial shows how to download an existing kernel, modify it, and push the changes back to Kaggle.</p>
+<ol class="arabic">
+<li><p><strong>Create or identify a kernel on Kaggle.com.</strong></p>
+<ul class="simple">
+<li><p>Log in to kaggle.com.</p></li>
+<li><p>Find an existing notebook you own (or create one). For this tutorial, let’s assume its title is “My CLI Test Kernel”.</p></li>
+<li><p>Note the kernel slug from the browser’s address bar. It will be something like <code class="docutils literal notranslate"><span class="pre">YOUR_USERNAME/my-cli-test-kernel</span></code>.</p></li>
+</ul>
+</li>
+<li><p><strong>Create a new local directory for your kernel.</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mkdir<span class="w"> </span>my-kernel-project
+<span class="nb">cd</span><span class="w"> </span>my-kernel-project
+</pre></div>
+</div>
+</li>
+<li><p><strong>Pull the kernel.</strong> Use the <code class="docutils literal notranslate"><span class="pre">kaggle</span> <span class="pre">kernels</span> <span class="pre">pull</span></code> command with your username and the kernel slug. The <code class="docutils literal notranslate"><span class="pre">-m</span></code> flag includes the <code class="docutils literal notranslate"><span class="pre">kernel-metadata.json</span></code> file, which is required for pushing updates.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Replace YOUR_USERNAME with your actual Kaggle username</span>
+kaggle<span class="w"> </span>kernels<span class="w"> </span>pull<span class="w"> </span>YOUR_USERNAME/my-cli-test-kernel<span class="w"> </span>-m
+</pre></div>
+</div>
+<p>This will download <code class="docutils literal notranslate"><span class="pre">my-cli-test-kernel.ipynb</span></code> (or <code class="docutils literal notranslate"><span class="pre">.py</span></code>/<code class="docutils literal notranslate"><span class="pre">.Rmd</span></code>) and <code class="docutils literal notranslate"><span class="pre">kernel-metadata.json</span></code>.</p>
+</li>
+<li><p><strong>Edit the kernel or metadata.</strong></p>
+<ul class="simple">
+<li><p>Open the downloaded notebook file (e.g., <code class="docutils literal notranslate"><span class="pre">my-cli-test-kernel.ipynb</span></code>) and make some changes to the code or content.</p></li>
+<li><p>Open <code class="docutils literal notranslate"><span class="pre">kernel-metadata.json</span></code>. Let’s add “benchmark” to the keywords. Find the <code class="docutils literal notranslate"><span class="pre">&quot;keywords&quot;:</span> <span class="pre">[]</span></code> line and change it to <code class="docutils literal notranslate"><span class="pre">&quot;keywords&quot;:</span> <span class="pre">[&quot;benchmark&quot;]</span></code>.</p></li>
+<li><p><em>Note: While you can edit keywords here, it’s often best to manage them on kaggle.com, as there is a restricted list of allowed keywords.</em></p></li>
+</ul>
+</li>
+<li><p><strong>Push the kernel.</strong> This uploads your changes and the updated metadata, then runs the kernel on Kaggle.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>kaggle<span class="w"> </span>kernels<span class="w"> </span>push<span class="w"> </span>-p<span class="w"> </span>.
+</pre></div>
+</div>
+</li>
+<li><p><strong>Verify on Kaggle.com.</strong> Refresh the <a class="reference external" href="https://www.kaggle.com/work/code"><code class="docutils literal notranslate"><span class="pre">Code</span></code> tab in <code class="docutils literal notranslate"><span class="pre">Your</span> <span class="pre">Work</span></code></a>. You should see your code changes and the “benchmark” tag added to the kernel settings.</p></li>
+</ol>
+</section>
+<section id="tutorial-create-a-model">
+<h2>Tutorial: Create a Model<a class="headerlink" href="#tutorial-create-a-model" title="Link to this heading">¶</a></h2>
+<p>This tutorial guides you through creating a new model on Kaggle.</p>
+<ol class="arabic">
+<li><p><strong>Start from an empty directory.</strong> Create a new directory for your model files and navigate into it.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mkdir<span class="w"> </span>my-new-model
+<span class="nb">cd</span><span class="w"> </span>my-new-model
+</pre></div>
+</div>
+</li>
+<li><p><strong>Copy your model definition files (optional for this step).</strong> If you have files that define your model (e.g., Python scripts, model weights), copy them into this directory. For the <code class="docutils literal notranslate"><span class="pre">kaggle</span> <span class="pre">models</span> <span class="pre">create</span></code> step, only the metadata is strictly required, but you’ll need files when you create a model variation.</p></li>
+<li><p><strong>Initialize model metadata.</strong> This creates a <code class="docutils literal notranslate"><span class="pre">model-metadata.json</span></code> file.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>kaggle<span class="w"> </span>models<span class="w"> </span>init
+</pre></div>
+</div>
+</li>
+<li><p><strong>Edit the metadata file.</strong> Open <code class="docutils literal notranslate"><span class="pre">model-metadata.json</span></code> and make the following changes:</p>
+<ul class="simple">
+<li><p>Replace <code class="docutils literal notranslate"><span class="pre">&quot;INSERT_OWNER_SLUG_HERE&quot;</span></code> with your Kaggle username (e.g., <code class="docutils literal notranslate"><span class="pre">&quot;YOUR_USERNAME&quot;</span></code>).</p></li>
+<li><p>Replace <code class="docutils literal notranslate"><span class="pre">&quot;INSERT_TITLE_HERE&quot;</span></code> with your model’s title (e.g., <code class="docutils literal notranslate"><span class="pre">&quot;My</span> <span class="pre">Awesome</span> <span class="pre">AI</span> <span class="pre">Model&quot;</span></code>).</p></li>
+<li><p>Replace <code class="docutils literal notranslate"><span class="pre">&quot;INSERT_SLUG_HERE&quot;</span></code> with a URL-friendly version of the title (e.g., <code class="docutils literal notranslate"><span class="pre">&quot;my-awesome-ai-model&quot;</span></code>).</p></li>
+<li><p>Fill out the <code class="docutils literal notranslate"><span class="pre">&quot;description&quot;</span></code> field and other relevant sections like <code class="docutils literal notranslate"><span class="pre">&quot;licenses&quot;</span></code>.</p></li>
+</ul>
+</li>
+<li><p><strong>Create the model.</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>kaggle<span class="w"> </span>models<span class="w"> </span>create<span class="w"> </span>-p<span class="w"> </span>.
+</pre></div>
+</div>
+</li>
+<li><p><strong>Verify on Kaggle.com.</strong> Refresh the <a class="reference external" href="https://www.kaggle.com/work/models"><code class="docutils literal notranslate"><span class="pre">Models</span></code> tab in <code class="docutils literal notranslate"><span class="pre">Your</span> <span class="pre">Work</span></code></a>. You should see “My Awesome AI Model”.</p></li>
+</ol>
+</section>
+<section id="tutorial-create-a-model-variation">
+<h2>Tutorial: Create a Model Variation<a class="headerlink" href="#tutorial-create-a-model-variation" title="Link to this heading">¶</a></h2>
+<p>This tutorial shows how to create a variation under an existing model. A model variation usually represents the model implemented in a specific framework (like TensorFlow, PyTorch, JAX, etc.) and includes the actual model files.</p>
+<ol class="arabic">
+<li><p><strong>Ensure you have a parent model.</strong> Follow the “Create a Model” tutorial if you haven’t already. Let’s assume your model slug is <code class="docutils literal notranslate"><span class="pre">my-awesome-ai-model</span></code> and your username is <code class="docutils literal notranslate"><span class="pre">YOUR_USERNAME</span></code>.</p></li>
+<li><p><strong>Prepare your model variation files.</strong> In your model directory (e.g., <code class="docutils literal notranslate"><span class="pre">my-new-model</span></code>), create or place the files for this specific variation. For example, a JAX model might have a <code class="docutils literal notranslate"><span class="pre">flax_model.params</span></code> file.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># In the my-new-model directory</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;This is a placeholder for JAX model parameters&quot;</span><span class="w"> </span>&gt;<span class="w"> </span>flax_model.params
+</pre></div>
+</div>
+</li>
+<li><p><strong>Initialize model variation metadata.</strong> This creates <code class="docutils literal notranslate"><span class="pre">model-instance-metadata.json</span></code>.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Still in the my-new-model directory</span>
+kaggle<span class="w"> </span>models<span class="w"> </span>variations<span class="w"> </span>init
+</pre></div>
+</div>
+</li>
+<li><p><strong>Edit the variation metadata file.</strong> Open <code class="docutils literal notranslate"><span class="pre">model-instance-metadata.json</span></code> and make changes:</p>
+<ul class="simple">
+<li><p>Replace <code class="docutils literal notranslate"><span class="pre">&quot;INSERT_OWNER_SLUG_HERE&quot;</span></code> with your Kaggle username (e.g., <code class="docutils literal notranslate"><span class="pre">&quot;YOUR_USERNAME&quot;</span></code>).</p></li>
+<li><p>Replace <code class="docutils literal notranslate"><span class="pre">&quot;INSERT_EXISTING_MODEL_SLUG_HERE&quot;</span></code> with your parent model’s slug (e.g., <code class="docutils literal notranslate"><span class="pre">&quot;my-awesome-ai-model&quot;</span></code>).</p></li>
+<li><p>Replace <code class="docutils literal notranslate"><span class="pre">&quot;INSERT_INSTANCE_SLUG_HERE&quot;</span></code> with a slug for this variation (e.g., <code class="docutils literal notranslate"><span class="pre">&quot;jax-implementation&quot;</span></code>).</p></li>
+<li><p>Replace <code class="docutils literal notranslate"><span class="pre">&quot;INSERT_FRAMEWORK_HERE&quot;</span></code> with the model framework (e.g., <code class="docutils literal notranslate"><span class="pre">&quot;jax&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;tensorflow&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;pytorch&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;sklearn&quot;</span></code>).</p></li>
+<li><p>Update the <code class="docutils literal notranslate"><span class="pre">&quot;instance_size_bytes&quot;</span></code> if known, and add a <code class="docutils literal notranslate"><span class="pre">&quot;description&quot;</span></code>.</p></li>
+</ul>
+</li>
+<li><p><strong>Create the model variation.</strong> This uploads the files in the current directory (e.g., <code class="docutils literal notranslate"><span class="pre">flax_model.params</span></code>) along with the variation metadata.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>kaggle<span class="w"> </span>models<span class="w"> </span>variations<span class="w"> </span>create<span class="w"> </span>-p<span class="w"> </span>.
+</pre></div>
+</div>
+</li>
+<li><p><strong>Verify on Kaggle.com.</strong> Go to your model’s page on Kaggle by clicking on the model under in the <a class="reference external" href="https://www.kaggle.com/work/models"><code class="docutils literal notranslate"><span class="pre">Models</span></code> tab on <code class="docutils literal notranslate"><span class="pre">Your</span> <span class="pre">Work</span></code></a>. You should see a new “jax-implementation” variation listed, and it will have one version containing <code class="docutils literal notranslate"><span class="pre">flax_model.params</span></code>.</p></li>
+</ol>
+</section>
+<section id="tutorial-create-a-model-variation-version">
+<h2>Tutorial: Create a Model Variation Version<a class="headerlink" href="#tutorial-create-a-model-variation-version" title="Link to this heading">¶</a></h2>
+<p>This tutorial explains how to add a new version to an existing model variation, for example, when you have updated model weights or files.</p>
+<ol class="arabic">
+<li><p><strong>Ensure you have a model variation.</strong> Follow the “Create a Model Variation” tutorial. Let’s assume your variation is <code class="docutils literal notranslate"><span class="pre">YOUR_USERNAME/my-awesome-ai-model/jax/jax-implementation</span></code>.</p></li>
+<li><p><strong>Prepare your updated files.</strong> In your model variation directory (e.g., <code class="docutils literal notranslate"><span class="pre">my-new-model</span></code>), update or add new files for this version. For example, create <code class="docutils literal notranslate"><span class="pre">flax_model_v2.params</span></code>.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># In the my-new-model directory</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Updated JAX model parameters for V2&quot;</span><span class="w"> </span>&gt;<span class="w"> </span>flax_model_v2.params
+<span class="c1"># You might also remove or update flax_model.params if it&#39;s being replaced</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Create the new model variation version.</strong> You need to specify the parent model variation and provide version notes. The files from the <code class="docutils literal notranslate"><span class="pre">-p</span></code> path will form the contents of this new version.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Replace YOUR_USERNAME and the slugs for model and variation accordingly</span>
+kaggle<span class="w"> </span>models<span class="w"> </span>variations<span class="w"> </span>versions<span class="w"> </span>create<span class="w"> </span>YOUR_USERNAME/my-awesome-ai-model/jax/jax-implementation<span class="w"> </span>-p<span class="w"> </span>.<span class="w"> </span>-n<span class="w"> </span><span class="s2">&quot;Second version with updated parameters&quot;</span>
+</pre></div>
+</div>
+<p><em>Note: The <code class="docutils literal notranslate"><span class="pre">-p</span> <span class="pre">.</span></code> means all files in the current directory will be uploaded as part of this new version. If you only want to upload <code class="docutils literal notranslate"><span class="pre">flax_model_v2.params</span></code>, ensure only it (and any other V2 files) are in a directory and point <code class="docutils literal notranslate"><span class="pre">-p</span></code> to that directory, or manage your files carefully.</em></p>
+</li>
+<li><p><strong>Verify on Kaggle.com.</strong> Go to your model variation page on Kaggle (e.g., <code class="docutils literal notranslate"><span class="pre">YOUR_USERNAME/my-awesome-ai-model/jax/jax-implementation</span></code>) by clicking on the <a class="reference external" href="https://www.kaggle.com/work/models"><code class="docutils literal notranslate"><span class="pre">Models</span></code> tab on <code class="docutils literal notranslate"><span class="pre">Your</span> <span class="pre">Work</span></code></a>. You should see a new version (e.g., version 2) listed with your notes and the new files.</p></li>
+</ol>
+</section>
+<section id="tutorial-how-to-submit-to-a-competition">
+<h2>Tutorial: How to Submit to a Competition<a class="headerlink" href="#tutorial-how-to-submit-to-a-competition" title="Link to this heading">¶</a></h2>
+<p>This tutorial walks you through the process of making a submission to a Kaggle competition using the CLI.</p>
+<ol class="arabic">
+<li><p><strong>Find a Competition and Accept Rules.</strong></p>
+<ul class="simple">
+<li><p>First, you need to find a competition. You can list active competitions using <code class="docutils literal notranslate"><span class="pre">kaggle</span> <span class="pre">competitions</span> <span class="pre">list</span></code>.</p></li>
+<li><p>For this tutorial, we’ll use the “titanic” competition, which is a common starting point. You can find it at <a class="reference external" href="https://www.kaggle.com/c/titanic"><code class="docutils literal notranslate"><span class="pre">https://www.kaggle.com/c/titanic</span></code></a>.</p></li>
+<li><p><strong>Important</strong>: Before you can download data or submit, you <em>must</em> join the competition and accept the competition’s rules on the Kaggle website. Navigate to the competition on kaggle.com to do this.</p></li>
+</ul>
+</li>
+<li><p><strong>Create a Directory and Download Competition Files.</strong></p>
+<ul>
+<li><p>Create a new directory for your competition files and navigate into it.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mkdir<span class="w"> </span>titanic-competition
+<span class="nb">cd</span><span class="w"> </span>titanic-competition
+</pre></div>
+</div>
+</li>
+<li><p>Download the competition files. This usually includes training data, test data, and a sample submission file.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>kaggle<span class="w"> </span>competitions<span class="w"> </span>download<span class="w"> </span>-c<span class="w"> </span>titanic
+</pre></div>
+</div>
+</li>
+<li><p>This will download <code class="docutils literal notranslate"><span class="pre">titanic.zip</span></code>. You’ll need to unzip it to see the files (e.g., <code class="docutils literal notranslate"><span class="pre">train.csv</span></code>, <code class="docutils literal notranslate"><span class="pre">test.csv</span></code>, <code class="docutils literal notranslate"><span class="pre">gender_submission.csv</span></code>).</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Make sure you have unzip installed, or use your OS&#39;s GUI to extract</span>
+<span class="c1"># The actual zip file name might vary based on the competition.</span>
+unzip<span class="w"> </span>titanic.zip
+</pre></div>
+</div>
+</li>
+</ul>
+</li>
+<li><p><strong>Create Your Submission File.</strong></p>
+<ul>
+<li><p>The required format for the submission file is specific to each competition. You can find this information on the competition’s “Evaluation” page or by examining the sample submission file (e.g., <code class="docutils literal notranslate"><span class="pre">gender_submission.csv</span></code> for the Titanic competition).</p></li>
+<li><p>For the Titanic competition, the submission file needs two columns: <code class="docutils literal notranslate"><span class="pre">PassengerId</span></code> and <code class="docutils literal notranslate"><span class="pre">Survived</span></code>. The <code class="docutils literal notranslate"><span class="pre">Survived</span></code> column should contain your predictions (0 for deceased, 1 for survived).</p></li>
+<li><p>Let’s create a very simple submission file based on the <code class="docutils literal notranslate"><span class="pre">gender_submission.csv</span></code> (which predicts survival based on gender). For this tutorial, we’ll just copy it and use it as our submission. In a real scenario, you would generate this file from your model’s predictions on the <code class="docutils literal notranslate"><span class="pre">test.csv</span></code> data.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cp<span class="w"> </span>gender_submission.csv<span class="w"> </span>my_submission.csv
+</pre></div>
+</div>
+</li>
+<li><p>Your <code class="docutils literal notranslate"><span class="pre">my_submission.csv</span></code> should look something like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">PassengerId</span><span class="p">,</span><span class="n">Survived</span>
+<span class="mi">892</span><span class="p">,</span><span class="mi">0</span>
+<span class="mi">893</span><span class="p">,</span><span class="mi">1</span>
+<span class="mi">894</span><span class="p">,</span><span class="mi">0</span>
+<span class="o">...</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</li>
+<li><p><strong>Submit to the Competition.</strong></p>
+<ul>
+<li><p>Use the <code class="docutils literal notranslate"><span class="pre">kaggle</span> <span class="pre">competitions</span> <span class="pre">submit</span></code> command. You need to specify:</p>
+<ul class="simple">
+<li><p>The competition ID (<code class="docutils literal notranslate"><span class="pre">-c</span> <span class="pre">titanic</span></code>).</p></li>
+<li><p>The path to your submission file (<code class="docutils literal notranslate"><span class="pre">-f</span> <span class="pre">my_submission.csv</span></code>).</p></li>
+<li><p>A message describing your submission (<code class="docutils literal notranslate"><span class="pre">-m</span> <span class="pre">&quot;My</span> <span class="pre">first</span> <span class="pre">submission</span> <span class="pre">via</span> <span class="pre">CLI&quot;</span></code>).</p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>kaggle<span class="w"> </span>competitions<span class="w"> </span>submit<span class="w"> </span>-c<span class="w"> </span>titanic<span class="w"> </span>-f<span class="w"> </span>my_submission.csv<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;My first submission via CLI&quot;</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</li>
+<li><p><strong>Check Your Submission Status.</strong></p>
+<ul>
+<li><p>After submitting, you’ll get a message indicating success or failure.</p></li>
+<li><p>You can check your submission’s score and status on the “My Submissions” tab of the competition page on Kaggle.com (e.g., <a class="reference external" href="https://www.kaggle.com/c/titanic/submissions"><code class="docutils literal notranslate"><span class="pre">https://www.kaggle.com/c/titanic/submissions</span></code></a>).</p></li>
+<li><p>You can also list your recent submissions and their scores via the CLI:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>kaggle<span class="w"> </span>competitions<span class="w"> </span>submissions<span class="w"> </span>-c<span class="w"> </span>titanic
+</pre></div>
+</div>
+</li>
+<li><p>This command will show your submission, its status (e.g., <code class="docutils literal notranslate"><span class="pre">complete</span></code>, <code class="docutils literal notranslate"><span class="pre">error</span></code>), and your public/private scores if available.</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="tutorial-how-to-submit-to-a-code-competition">
+<h2>Tutorial: How to Submit to a Code Competition<a class="headerlink" href="#tutorial-how-to-submit-to-a-code-competition" title="Link to this heading">¶</a></h2>
+<p>This tutorial walks you through the process of submitting to a code competition on Kaggle.</p>
+<ol class="arabic">
+<li><p><strong>Find a Code Competition.</strong></p>
+<ul class="simple">
+<li><p>First, you need to find a code competition to participate in. You can browse the available competitions on the <a class="reference external" href="https://www.kaggle.com/competitions">Kaggle competitions page</a>. Many Featured Competitions are code competitions.</p></li>
+</ul>
+</li>
+<li><p><strong>Download the Dataset.</strong></p>
+<ul class="simple">
+<li><p>Once you have chosen a competition, you need to download the dataset. You can do this using the <code class="docutils literal notranslate"><span class="pre">kaggle</span> <span class="pre">competitions</span> <span class="pre">download</span></code> command:</p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>kaggle<span class="w"> </span>competitions<span class="w"> </span>download<span class="w"> </span>-c<span class="w"> </span>&lt;competition-name&gt;
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Replace <code class="docutils literal notranslate"><span class="pre">&lt;competition-name&gt;</span></code> with the name of the competition you want to participate in.</p></li>
+</ul>
+</li>
+<li><p><strong>Create a Notebook.</strong></p>
+<ul class="simple">
+<li><p>Next, you need to create a Kaggle Notebook to work on your submission. A Kaggle Notebook contains the code and environment settings for Kaggle to run and evaluate your submission.  Follow the tutorial on <a class="reference external" href="https://github.com/Kaggle/kaggle-api/blob/main/documentation/tutorials.md#tutorial-update-a-kernel-notebook">Creating / Updating Notebooks</a> if you’re not sure how to do this.</p></li>
+</ul>
+</li>
+<li><p><strong>Write Your Code.</strong></p>
+<ul class="simple">
+<li><p>Now it’s time to write your code! You can use any programming language or framework that is supported by Kaggle. The goal is to create a model that can make predictions on the test set.</p></li>
+</ul>
+</li>
+<li><p><strong>Submit Your Prediction.</strong></p>
+<ul class="simple">
+<li><p>Once you are happy with your model, you can submit your prediction to the competition. You can do this using the <code class="docutils literal notranslate"><span class="pre">kaggle</span> <span class="pre">competitions</span> <span class="pre">submit</span></code> command:</p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>kaggle<span class="w"> </span>competitions<span class="w"> </span>submit<span class="w"> </span>-c<span class="w"> </span>&lt;competition-name&gt;<span class="w"> </span>-k<span class="w"> </span>&lt;username&gt;/&lt;notebook-slug&gt;<span class="w"> </span>-m<span class="w"> </span>&lt;message&gt;
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Replace <code class="docutils literal notranslate"><span class="pre">&lt;competition-name&gt;</span></code> with the name of the competition, <code class="docutils literal notranslate"><span class="pre">&lt;username&gt;/&lt;notebook-slug&gt;</span></code> with the identifier of your notebook, and <code class="docutils literal notranslate"><span class="pre">&lt;message&gt;</span></code> with a brief description of your submission.</p></li>
+</ul>
+</li>
+<li><p><strong>Check Your Score.</strong></p>
+<ul class="simple">
+<li><p>After you have submitted your prediction, you can check your score on the competition leaderboard. The leaderboard shows the scores of all the participants in the competition.  You can download the leaderboard using the <code class="docutils literal notranslate"><span class="pre">kaggle</span> <span class="pre">competitions</span> <span class="pre">leaderboard</span></code> command:</p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>kaggle<span class="w"> </span>competitions<span class="w"> </span>leaderboard<span class="w"> </span>&lt;competition-name&gt;
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">kaggle-api</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Kaggle CLI Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Kaggle CLI Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="competitions.html">Competitions Commands</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datasets.html">Datasets Commands</a></li>
+<li class="toctree-l1"><a class="reference internal" href="kernels.html">Kernels Commands</a></li>
+<li class="toctree-l1"><a class="reference internal" href="models.html">Models Commands</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model_instances.html">Model Variation Commands</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model_instances_versions.html">Model Variation Versions Commands</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Kaggle CLI Tutorials</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tutorial-create-a-dataset">Tutorial: Create a Dataset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tutorial-find-and-download-a-dataset">Tutorial: Find and Download a Dataset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tutorial-update-a-kernel-notebook">Tutorial: Update a Kernel (Notebook)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tutorial-create-a-model">Tutorial: Create a Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tutorial-create-a-model-variation">Tutorial: Create a Model Variation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tutorial-create-a-model-variation-version">Tutorial: Create a Model Variation Version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tutorial-how-to-submit-to-a-competition">Tutorial: How to Submit to a Competition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tutorial-how-to-submit-to-a-code-competition">Tutorial: How to Submit to a Code Competition</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="model_instances_versions.html" title="previous chapter">Model Variation Versions Commands</a></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, Kaggle.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="_sources/tutorials.md.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -8,7 +8,7 @@
 import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path("..", "src").resolve()))
+sys.path.insert(0, str(Path("..").resolve()))
 
 
 def autodoc_skip_member(app, what, name, obj, skip, options):
@@ -48,7 +48,7 @@ extensions = [
 ]
 
 templates_path = ["_templates"]
-exclude_patterns = ["_build", "Thumbs.db", ".DS_Store", "**/kaggle_api.py", "**/kaggle/models/*.py"]
+exclude_patterns = ["_build", "Thumbs.db", ".DS_Store", "**/kaggle/models/*.py"]
 
 source_suffix = {
     ".rst": "restructuredtext",
@@ -61,7 +61,13 @@ source_suffix = {
 
 html_theme = "alabaster"
 
-apidoc_modules = [
-    {"path": "../src/kaggle", "destination": "source/"},
-]
 autoclass_content = "both"
+autosectionlabel_prefix_document = True  # ??
+myst_heading_anchors = 2  # ??
+suppress_warnings = ["ref.unknown"]
+
+# -- Options for sphinx.ext.apidoc -------------------------------------------
+apidoc_module_dir = "../src/kaggle"
+apidoc_output_dir = "source"
+apidoc_excluded_paths = ["api/kaggle_api.py"]
+apidoc_separate_modules = True

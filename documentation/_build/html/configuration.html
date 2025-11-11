@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Kaggle CLI Configuration &#8212; kaggle-api  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
+    <script src="_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Competitions Commands" href="competitions.html" />
+    <link rel="prev" title="Kaggle CLI Documentation" href="intro.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="kaggle-cli-configuration">
+<h1>Kaggle CLI Configuration<a class="headerlink" href="#kaggle-cli-configuration" title="Link to this heading">¶</a></h1>
+<p>The Kaggle CLI uses a configuration file to store settings such as your API credentials and default values for commands.</p>
+<section id="configuration-commands">
+<h2>Configuration Commands<a class="headerlink" href="#configuration-commands" title="Link to this heading">¶</a></h2>
+<section id="config-view">
+<h3><code class="docutils literal notranslate"><span class="pre">config</span> <span class="pre">view</span></code><a class="headerlink" href="#config-view" title="Link to this heading">¶</a></h3>
+<p>Displays the current configuration values.</p>
+<p><strong>Usage:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>kaggle<span class="w"> </span>config<span class="w"> </span>view
+</pre></div>
+</div>
+<p><strong>Purpose:</strong></p>
+<p>This command allows you to inspect the current settings of your Kaggle CLI, such as the configured API endpoint, proxy settings, and default competition.</p>
+</section>
+<section id="config-set">
+<h3><code class="docutils literal notranslate"><span class="pre">config</span> <span class="pre">set</span></code><a class="headerlink" href="#config-set" title="Link to this heading">¶</a></h3>
+<p>Sets a specific configuration value.</p>
+<p><strong>Usage:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>kaggle<span class="w"> </span>config<span class="w"> </span><span class="nb">set</span><span class="w"> </span>-n<span class="w"> </span>&lt;NAME&gt;<span class="w"> </span>-v<span class="w"> </span>&lt;VALUE&gt;
+</pre></div>
+</div>
+<p><strong>Arguments:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">-n,</span> <span class="pre">--name</span> <span class="pre">&lt;NAME&gt;</span></code>: The name of the configuration parameter to set. Valid options are <code class="docutils literal notranslate"><span class="pre">competition</span></code>, <code class="docutils literal notranslate"><span class="pre">path</span></code>, and <code class="docutils literal notranslate"><span class="pre">proxy</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-v,</span> <span class="pre">--value</span> <span class="pre">&lt;VALUE&gt;</span></code>: The value to set for the configuration parameter.</p>
+<ul>
+<li><p>For <code class="docutils literal notranslate"><span class="pre">competition</span></code>: The competition URL suffix (e.g., <code class="docutils literal notranslate"><span class="pre">titanic</span></code>).</p></li>
+<li><p>For <code class="docutils literal notranslate"><span class="pre">path</span></code>: The default folder where files will be downloaded.</p></li>
+<li><p>For <code class="docutils literal notranslate"><span class="pre">proxy</span></code>: The proxy server URL.</p></li>
+</ul>
+</li>
+</ul>
+<p><strong>Example:</strong></p>
+<p>Set the default competition to “titanic”:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>kaggle<span class="w"> </span>config<span class="w"> </span><span class="nb">set</span><span class="w"> </span>-n<span class="w"> </span>competition<span class="w"> </span>-v<span class="w"> </span>titanic
+</pre></div>
+</div>
+<p><strong>Purpose:</strong></p>
+<p>Use this command to customize the behavior of the Kaggle CLI, such as setting a default competition to avoid specifying it in every command, defining a default download path, or configuring a proxy server.</p>
+</section>
+<section id="config-unset">
+<h3><code class="docutils literal notranslate"><span class="pre">config</span> <span class="pre">unset</span></code><a class="headerlink" href="#config-unset" title="Link to this heading">¶</a></h3>
+<p>Clears a specific configuration value, reverting it to its default.</p>
+<p><strong>Usage:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>kaggle<span class="w"> </span>config<span class="w"> </span><span class="nb">unset</span><span class="w"> </span>-n<span class="w"> </span>&lt;NAME&gt;
+</pre></div>
+</div>
+<p><strong>Arguments:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">-n,</span> <span class="pre">--name</span> <span class="pre">&lt;NAME&gt;</span></code>: The name of the configuration parameter to clear. Valid options are <code class="docutils literal notranslate"><span class="pre">competition</span></code>, <code class="docutils literal notranslate"><span class="pre">path</span></code>, and <code class="docutils literal notranslate"><span class="pre">proxy</span></code>.</p></li>
+</ul>
+<p><strong>Example:</strong></p>
+<p>Clear the default competition:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>kaggle<span class="w"> </span>config<span class="w"> </span><span class="nb">unset</span><span class="w"> </span>-n<span class="w"> </span>competition
+</pre></div>
+</div>
+<p><strong>Purpose:</strong></p>
+<p>This command removes a previously set configuration value, allowing the CLI to use its default behavior or prompt for the value if required.</p>
+</section>
+</section>
+<section id="configuration-file-location">
+<h2>Configuration File Location<a class="headerlink" href="#configuration-file-location" title="Link to this heading">¶</a></h2>
+<p>The Kaggle CLI configuration is typically stored in a file named <code class="docutils literal notranslate"><span class="pre">kaggle.json</span></code> located in the <code class="docutils literal notranslate"><span class="pre">~/.kaggle/</span></code> directory on Linux and macOS, or <code class="docutils literal notranslate"><span class="pre">C:\Users\&lt;Windows-username&gt;\.kaggle\</span></code> on Windows.</p>
+<p>This file contains your API username and key:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">&quot;username&quot;</span><span class="p">:</span><span class="s2">&quot;YOUR_USERNAME&quot;</span><span class="p">,</span><span class="nt">&quot;key&quot;</span><span class="p">:</span><span class="s2">&quot;YOUR_API_KEY&quot;</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>You can download this file from your Kaggle account page (<code class="docutils literal notranslate"><span class="pre">https://www.kaggle.com/&lt;YOUR_USERNAME&gt;/account</span></code>) and place it in the correct directory.</p>
+<p>Alternatively, you can set the <code class="docutils literal notranslate"><span class="pre">KAGGLE_USERNAME</span></code> and <code class="docutils literal notranslate"><span class="pre">KAGGLE_KEY</span></code> environment variables.</p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">kaggle-api</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Kaggle CLI Documentation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Kaggle CLI Configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#configuration-commands">Configuration Commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#configuration-file-location">Configuration File Location</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="competitions.html">Competitions Commands</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datasets.html">Datasets Commands</a></li>
+<li class="toctree-l1"><a class="reference internal" href="kernels.html">Kernels Commands</a></li>
+<li class="toctree-l1"><a class="reference internal" href="models.html">Models Commands</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model_instances.html">Model Variation Commands</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model_instances_versions.html">Model Variation Versions Commands</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials.html">Kaggle CLI Tutorials</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="intro.html" title="previous chapter">Kaggle CLI Documentation</a></li>
+      <li>Next: <a href="competitions.html" title="next chapter">Competitions Commands</a></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, Kaggle.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="_sources/configuration.md.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -62,8 +62,7 @@ source_suffix = {
 html_theme = "alabaster"
 
 autoclass_content = "both"
-autosectionlabel_prefix_document = True  # ??
-myst_heading_anchors = 2  # ??
+myst_heading_anchors = 2
 suppress_warnings = ["ref.unknown"]
 
 # -- Options for sphinx.ext.apidoc -------------------------------------------

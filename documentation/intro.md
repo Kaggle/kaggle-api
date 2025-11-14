@@ -1,3 +1,5 @@
+.. _kaggle:
+
 # Kaggle CLI Documentation
 
 Welcome to the Kaggle CLI documentation. This guide provides detailed information on how to use the Kaggle command-line interface to interact with Kaggle's platform.
@@ -52,12 +54,12 @@ and it would be discovered by the client.
 
 Explore these tutorials to learn how to perform common tasks:
 
-*   [Tutorials](./tutorials.html)
+*   [Tutorials](./tutorials.md)
     *   [Create a Dataset](./tutorials.md#tutorial-create-a-dataset)
-    *   [Download a Dataset and Prepare for Analysis](./tutorials.md#tutorial-download-a-dataset-and-prepare-for-analysis)
+    *   [Find and Download a Dataset](./tutorials.md#tutorial-find-and-download-a-dataset)
     *   [Create a Model](./tutorials.md#tutorial-create-a-model)
-    *   [Create a Model Variation](./tutorials.md#tutorial-create-a-model-instance)
-    *   [Create a Model Variation Version](./tutorials.md#tutorial-create-a-model-instance-version)
+    *   [Create a Model Variation](./tutorials.md#tutorial-create-a-model-variation)
+    *   [Create a Model Variation Version](./tutorials.md#tutorial-create-a-model-variation-version)
     *   [How to Submit to a Competition](./tutorials.md#tutorial-how-to-submit-to-a-competition)
     *   [How to Submit to a Code Competition](./tutorials.md#tutorial-how-to-submit-to-a-code-competition)
 

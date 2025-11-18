@@ -1994,7 +1994,7 @@ class KaggleApi:
             request = ApiListDatasetFilesRequest()
             request.owner_slug = owner_slug
             request.dataset_slug = dataset_slug
-            request.dataset_version_number = dataset_version_number
+            request.dataset_version_number = int(dataset_version_number) if dataset_version_number else None
             request.page_token = page_token
             request.page_size = page_size
             response = kaggle.datasets.dataset_api_client.list_dataset_files(request)
@@ -2096,7 +2096,7 @@ class KaggleApi:
             request = ApiDownloadDatasetRequest()
             request.owner_slug = owner_slug
             request.dataset_slug = dataset_slug
-            request.dataset_version_number = dataset_version_number
+            request.dataset_version_number = int(dataset_version_number) if dataset_version_number else None
             request.file_name = file_name
             response = kaggle.datasets.dataset_api_client.download_dataset(request)
         url = response.request.url
@@ -2133,7 +2133,7 @@ class KaggleApi:
             request = ApiDownloadDatasetRequest()
             request.owner_slug = owner_slug
             request.dataset_slug = dataset_slug
-            request.dataset_version_number = dataset_version_number
+            request.dataset_version_number = int(dataset_version_number) if dataset_version_number else None
             response = kaggle.datasets.dataset_api_client.download_dataset(request)
 
         outfile = os.path.join(effective_path, dataset_slug + ".zip")

@@ -490,7 +490,7 @@ class TestKaggleApi(unittest.TestCase):
             self.test_dataset_a_list()
         ds = ["a", "b"]
         try:
-            api.dataset_download_files(self.dataset)
+            api.dataset_download_files(self.dataset + "/1")
             ds = self.dataset.split("/")
             self.assertTrue(os.path.exists(f"{ds[1]}.zip"))
         except ApiException as e:

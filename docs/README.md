@@ -25,7 +25,10 @@ IMPORTANT: We do not offer Python 2 support.  Please ensure that you are using P
 
 ## API credentials
 
-To use the Kaggle API, sign up for a Kaggle account at https://www.kaggle.com. Then go to the 'Account' tab of your user profile (`https://www.kaggle.com/<username>/account`) and select 'Generate New Token'.
+To use the Kaggle API, sign up for a Kaggle account at https://www.kaggle.com. Then go to the 'Account' tab of your user profile (`https://www.kaggle.com/<username>/account`) and select 'Generate New Token'. Copy the generated token and save it in an environment
+variable.
+
+What's noteworthy is that now when generating new tokens you do not have to update existing token usage. The old tokens will continue to work; previously they expired when a new token was generated.
 
 You can export your Kaggle username and token to the environment:
 
@@ -33,6 +36,8 @@ You can export your Kaggle username and token to the environment:
 export KAGGLE_USERNAME=datadinosaur
 export KAGGLE_API_TOKEN=xxxxxxxxxxxxxx
 ```
+
+It is best to save the `export` commands to your shell init script so you don't have to re-run them for each new shell. Note that in some environments you need to log out and log back in for shell script updates to be fully propagated.
 
 ## Commands
 

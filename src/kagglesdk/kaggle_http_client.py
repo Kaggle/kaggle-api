@@ -147,7 +147,7 @@ class KaggleHttpClient(object):
             return self._session
 
         self._session = requests.Session()
-        self._session.headers.update({"User-Agent": "kaggle-api/v1.7.0", "Content-Type": "application/json"})  # Was: V2
+        self._session.headers.update({"User-Agent": "kaggle-api/v1.8.0", "Content-Type": "application/json"})  # Was: V2
 
         iap_token = self._get_iap_token_if_required()
         if iap_token is not None:

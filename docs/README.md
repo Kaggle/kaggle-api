@@ -28,7 +28,7 @@ IMPORTANT: We do not offer Python 2 support.  Please ensure that you are using P
 To use the Kaggle API, sign up for a Kaggle account at https://www.kaggle.com. Then go to the 'Account' tab of your user profile (`https://www.kaggle.com/<username>/account`) and select 'Generate New Token'. Copy the generated token and save it in an environment
 variable named `KAGGLE_API_TOKEN` or place the value in a file named `~/.kaggle/access_token`. (The file may optionally have a `.txt` extension.)
 
-Note: If you already have a `~/.kaggle/kaggle.json` file it will continue to work.
+Note: If you already have a `~/.kaggle/kaggle.json` file with legacy API credentials, it will continue to work.
 
 What's noteworthy is that now when generating new tokens you do not have to update existing token usage. The old tokens will continue to work; previously they expired when a new token was generated.
 

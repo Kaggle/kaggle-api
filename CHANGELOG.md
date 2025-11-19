@@ -3,6 +3,7 @@ Changelog
 
 ### 1.8.0
 
+* Fix resumable download error (#865)
 * Fix dataset version spec (#862)
 * Add machine_shape to the metadata of kaggle kernels pull (#856)
 * Add pagination options to models

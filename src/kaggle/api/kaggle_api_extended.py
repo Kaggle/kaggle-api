@@ -2676,7 +2676,7 @@ class KaggleApi:
                 request_history.request.method,
                 request_history.headers["location"],
                 headers={"Range": "bytes=%d-" % (size_read,)},
-                _preload_content=False,
+                stream=True,
             )
 
         with tqdm(total=size, initial=size_read, unit="B", unit_scale=True, unit_divisor=1024, disable=quiet) as pbar:

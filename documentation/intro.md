@@ -26,29 +26,12 @@ IMPORTANT: We do not offer Python 2 support.  Please ensure that you are using P
 
 ### API credentials
 
-To use the Kaggle API, sign up for a Kaggle account at https://www.kaggle.com. Then go to the 'Account' tab of your user profile (`https://www.kaggle.com/<username>/account`) and select 'Create API Token'. This will trigger the download of `kaggle.json`, a file containing your API credentials.
-Place this file in the location appropriate for your operating system:
-* Linux: `$XDG_CONFIG_HOME/kaggle/kaggle.json` (defaults to `~/.config/kaggle/kaggle.json`). The path `~/.kaggle/kaggle.json` which was used by older versions of the tool is also still supported.
-* Windows: `C:\Users\<Windows-username>\.kaggle\kaggle.json` - you can check the exact location, sans drive, with `echo %HOMEPATH%`.
-* Other: `~/.kaggle/kaggle.json`
+To use the Kaggle API, sign up for a Kaggle account at https://www.kaggle.com. Then go to the 'Account' tab of your user profile (`https://www.kaggle.com/<username>/account`) and select 'Generate New Token'. Copy the generated token and save it in an environment
+variable named `KAGGLE_API_TOKEN` or place the value in a file named `~/.kaggle/access_token`. (The file may optionally have a `.txt` extension.)
 
-You can define a shell environment variable `KAGGLE_CONFIG_DIR` to change this location to `$KAGGLE_CONFIG_DIR/kaggle.json` (on Windows it will be `%KAGGLE_CONFIG_DIR%\kaggle.json`).
+Note: If you already have a `~/.kaggle/kaggle.json` file with legacy API credentials, it will continue to work.
 
-
-For your security, ensure that other users of your computer do not have read access to your credentials. On Unix-based systems you can do this with the following command:
-
-`chmod 600 ~/.config/kaggle/kaggle.json`
-
-You can also choose to export your Kaggle username and token to the environment:
-
-```bash
-export KAGGLE_USERNAME=datadinosaur
-export KAGGLE_KEY=xxxxxxxxxxxxxx
-```
-In addition, you can export any other configuration value that normally would be in
-the `kaggle.json` in the format 'KAGGLE_<VARIABLE>' (note uppercase).  
-For example, if the file had the variable "proxy" you would export `KAGGLE_PROXY`
-and it would be discovered by the client.
+What's noteworthy is that now when generating new tokens you do not have to update existing token usage. The old tokens will continue to work; previously they expired when a new token was generated.
 
 ## Tutorials
 

@@ -1,7 +1,20 @@
 Changelog
 ====
 
-### 1.7.5.0.dev0
+### 1.8.0
+
+* Fix resumable download error (#865)
+* Fix dataset version spec (#862)
+* Add machine_shape to the metadata of kaggle kernels pull (#856)
+* Add pagination options to models
+* Add pagination options for submissions (#832)
+* Add pagination options to list commands (#815)
+* Add canonical aliases for push/pull (#787)
+* Add parquet as a filter option (#786)
+* Add variations as alt for instances (#784)
+* Enable (and rename) synonyms i and v (#782)
+
+### 1.7.5.0 (not released)
 
 * Require Python 3.11.
 * Add KernelExecutionType (#775)

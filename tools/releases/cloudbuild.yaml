@@ -30,8 +30,8 @@ steps:
     args:
       - "-c"
       - |
-        mkdir -p ~/.kaggle/dev # Directory expected by following script
-        ./tools/GeneratePythonLibrary.sh
+        cp -r src/kaggle .
+        cp -r src/kagglesdk .
         python3 -m pip install build --break-system-packages
         python3 -m build
         # Move the built CLI to a volume that will survive to next steps.

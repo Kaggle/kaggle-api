@@ -30,6 +30,7 @@ steps:
     args:
       - "-c"
       - |
+        rm -f kaggle kagglesdk
         cp -r src/kaggle .
         cp -r src/kagglesdk .
         python3 -m pip install build --break-system-packages

@@ -1,6 +1,11 @@
 Changelog
 ====
 
+### 1.8.0.3
+
+* Fix memory exhaustion when downloading large files (#869)
+* Add python-dateutil to pyproject.toml dependencies (#866)
+
 ### 1.8.0
 
 * Fix resumable download error (#865)

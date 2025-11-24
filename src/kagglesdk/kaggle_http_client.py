@@ -16,6 +16,8 @@ from kagglesdk.kaggle_env import (
     KaggleEnv,
 )
 from kagglesdk.kaggle_object import KaggleObject
+from kagglesdk.common.types.file_download import FileDownload
+from kagglesdk.common.types.http_redirect import HttpRedirect
 from typing import Type
 
 # TODO (http://b/354237483) Generate the client from the existing one.
@@ -81,6 +83,12 @@ class KaggleHttpClient(object):
 
         # Merge environment settings into session
         settings = self._session.merge_environment_settings(http_request.url, {}, None, None, None)
+        
+        # Use stream=True for file downloads to avoid loading entire file into memory
+        # See: https://github.com/Kaggle/kaggle-api/issues/754
+        if response_type is not None and (response_type == FileDownload or response_type == HttpRedirect):
+            settings['stream'] = True
+        
         http_response = self._session.send(http_request, **settings)
 
         response = self._prepare_response(response_type, http_response)

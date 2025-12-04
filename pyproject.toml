@@ -21,20 +21,20 @@ classifiers = [
     "Operating System :: OS Independent",
 ]
 keywords = ["Kaggle", "API"]
-requires-python = ">=3.11"
+requires-python = ">= 3.11"
 dependencies = [
     "bleach",
-    "kagglesdk",
+    "kagglesdk >= 0.1.13, < 1.0", # sync with kagglehub
     "python-slugify",
     "requests",
     "python-dateutil",
-    "setuptools>=21.0.0", # unused if setup.py is removed
+    "setuptools >= 21.0.0", # unused if setup.py is removed
     "six>=1.10", # should be unused but is still imported
     "tqdm",
-    "urllib3>=1.15.1",
+    "urllib3 >= 1.15.1",
     "protobuf",
-    "black>=24.10.0",
-    "mypy>=1.15.0",
+    "black >= 24.10.0",
+    "mypy >= 1.15.0",
     # Pre-install `types-*` packages to speed up lint:typing command.
     "types-requests",
     "types-tqdm",

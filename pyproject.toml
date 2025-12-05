@@ -28,7 +28,6 @@ dependencies = [
     "python-slugify",
     "requests",
     "python-dateutil",
-    "setuptools >= 21.0.0", # unused if setup.py is removed
     "six>=1.10", # should be unused but is still imported
     "tqdm",
     "urllib3 >= 1.15.1",

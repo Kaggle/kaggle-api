@@ -1,8 +1,0 @@
-import enum
-
-class CanonicalRole(enum.Enum):
-  CANONICAL_ROLE_UNSPECIFIED = 0
-  CANONICAL_ROLE_VIEWER = 1
-  CANONICAL_ROLE_EDITOR = 2
-  CANONICAL_ROLE_ADMIN = 3
-

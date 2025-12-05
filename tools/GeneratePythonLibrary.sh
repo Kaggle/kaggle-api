@@ -137,7 +137,6 @@ function run-tests {
 }
 
 function install-package {
-  pip3 install --break-system-packages --require-hashes -r requirements.txt 
   if [[ "$INSTALL_EDITABLE" == "yes" ]];  then
     pip3 install --break-system-packages --upgrade --editable .
   elif [[ "$INSTALL" == "yes" ]];  then

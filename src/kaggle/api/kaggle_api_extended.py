@@ -5212,9 +5212,11 @@ class KaggleApi:
             current_version = parse(kaggle.__version__)
             latest_version = parse(latest_version_str)
             if latest_version > current_version:
-                print(f'Warning: Looks like you\'re using an outdated `kaggle`` '
-                      'version (installed: {current_version}, please consider '
-                      'upgrading to the latest version ({latest_version_str})')
+                print(
+                    f"Warning: Looks like you're using an outdated `kaggle`` "
+                    "version (installed: {current_version}), please consider "
+                    "upgrading to the latest version ({latest_version_str})"
+                )
                 self.already_printed_version_warning = True
 
     def get_response_processor(self):

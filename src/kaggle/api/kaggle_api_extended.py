@@ -49,6 +49,7 @@ from slugify import slugify
 from tqdm import tqdm
 from urllib3.util.retry import Retry
 from google.protobuf import field_mask_pb2
+from packaging.version import parse
 
 import kaggle
 from kagglesdk import get_access_token_from_env, KaggleClient, KaggleCredentials, KaggleEnv, KaggleOAuth  # type: ignore[attr-defined]
@@ -1080,11 +1081,12 @@ class KaggleApi:
             username=self.config_values.get(self.CONFIG_NAME_USER),
             password=self.config_values.get(self.CONFIG_NAME_KEY),
             api_token=self.config_values.get(self.CONFIG_NAME_TOKEN),
+            response_processor=self.get_response_processor(),
         )
 
     @staticmethod
     def build_kaggle_client_with_params(
-        args: List[str], username: str = None, password: str = None, api_token: str = None
+        args: List[str], username: str = None, password: str = None, api_token: str = None, response_processor=None
     ) -> kagglesdk.kaggle_client.KaggleClient:
         """Builds a Kaggle client with the given parameters.
 
@@ -1093,6 +1095,7 @@ class KaggleApi:
             username (str): The username to use for authentication.
             password (str): The password to use for authentication.
             api_token (str): The API token to use for authentication.
+            response_processor: Callback used to process HTTP response.
 
         Returns:
             kagglesdk.kaggle_client.KaggleClient: A Kaggle client.
@@ -1109,6 +1112,7 @@ class KaggleApi:
             username=username,
             password=password,
             api_token=api_token,
+            response_processor=response_processor,
         )
 
     def camel_to_snake(self, name: str) -> str:
@@ -5199,6 +5203,20 @@ class KaggleApi:
             else:
                 sys.stdout.write("Please respond with 'yes' or 'no'.\n")
                 return False
+
+    def _check_response_version(self, response: Response):
+        latest_version_str = response.headers.get("X-Kaggle-APIVersion")
+        if latest_version_str:
+            current_version = parse(kaggle.__version__)
+            latest_version = parse(latest_version_str)
+            if latest_version > current_version:
+                print(
+                    f"Warning: Looks like you're using an outdated `kaggle` version (installed: {current_version}), "
+                    f"please consider upgrading to the latest version ({latest_version})."
+                )
+
+    def get_response_processor(self):
+        return self._check_response_version
 
 
 class TqdmBufferedReader(io.BufferedReader):

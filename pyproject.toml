@@ -31,6 +31,7 @@ dependencies = [
     "six>=1.10", # should be unused but is still imported
     "tqdm",
     "urllib3 >= 1.15.1",
+    "packaging",
     "protobuf",
     "black >= 24.10.0",
     "mypy >= 1.15.0",

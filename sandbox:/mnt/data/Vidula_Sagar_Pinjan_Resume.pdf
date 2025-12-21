@@ -1,0 +1,2 @@
+from IPython.display import FileLink
+FileLink('/mnt/data/Vidula_Sagar_Pinjan_Resume.pdf')

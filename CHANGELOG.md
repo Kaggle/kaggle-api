@@ -1,6 +1,18 @@
 Changelog
 ====
 
+### 1.8.3
+
+* Add packaging dep (#883)
+* Add version checking against server known-version (#880)
+* Fix edit error (#876)
+* Use kagglesdk from pypi (#875)
+* Fix Kaggle access token auth KeyError when KAGGLE_API_TOKEN is unset (#874)
+
+### 1.8.2
+
+* Changes to build script
+
 ### 1.8.1
 
 * Fix memory exhaustion when downloading large files (#869)

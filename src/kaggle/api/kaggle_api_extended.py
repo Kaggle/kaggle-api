@@ -1349,6 +1349,12 @@ class KaggleApi:
                     return resp
 
                 submit_request = ApiCreateSubmissionRequest()
+
+                # Admin-only feature to submit for a given model (b/475908216)
+                model_version_id = os.getenv("KAGGLE_COMPETITION_SUBMISSION_MODEL_VERSION_ID", None)
+                if model_version_id:
+                    submit_request.benchmark_model_version_id = int(model_version_id)
+
                 submit_request.competition_name = competition
                 submit_request.blob_file_tokens = response.token
                 if message:

@@ -1,18 +1,41 @@
 # Kaggle API
 
-Official API for https://www.kaggle.com, accessible using a command line tool implemented in Python 3.  
+The official CLI to interact with [Kaggle](https://www.kaggle.com).
 
-[User documentation](docs/README.md)
+---
+
+[User documentation](documentation/README.md)
+
+---
+
+## Key Features
+
+Some of the key features are:
+
+* List competitions, download competition data, submit to a competion.
+* List, create, update, download or delete datasets.
+* List, create, update, download or delete models & model variations.
+* List, update & run, download code & output or delete kernels (notebooks).
 
 ## Installation
 
-Ensure you have Python 3 and the package manager `pip` installed.
-
-Run the following command to access the Kaggle API using the command line:
+Install the `kaggle` package with [pip](https://pypi.org/project/pip/):
 
 ```sh
 pip install kaggle
 ```
+
+Additional installation instructions can be found [here](./documentation/README.md#installation).
+
+## Quick start
+
+Explore the available commands by running:
+
+```sh
+kaggle --help
+```
+
+See the [User documentation](documentation/README.md) more examples & tutorials.
 
 ## Development
 
@@ -76,6 +99,14 @@ After setting up your credentials by any of these methods, you can run the integ
 ```sh
 hatch run test:integration
 ```
+
+## Changelog
+
+See [CHANGELOG](./CHANGELOG).
+
+## Contributing
+
+See [CONTRIBUTING.md](./CONTRIBUTING.md).
 
 ## License
 

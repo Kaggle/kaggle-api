@@ -41,7 +41,7 @@ This command helps you find models on Kaggle, filtering by owner or searching by
 
 ## `kaggle models init`
 
-Initializes a metadata file (`model-metadata.json`) for creating a new model.
+Initializes a metadata file (`model-metadata.json`) for creating a new model. See [metadata file format](./models_metadata.md).
 
 **Usage:**
 

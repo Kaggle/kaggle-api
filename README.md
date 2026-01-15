@@ -10,7 +10,7 @@ The official CLI to interact with [Kaggle](https://www.kaggle.com).
 
 ## Key Features
 
-Some of the key feature includes:
+Some of the key features are:
 
 * List competitions, download competition data, submit to a competion.
 * List, create, update, download or delete datasets.

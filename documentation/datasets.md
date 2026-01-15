@@ -132,7 +132,7 @@ This command allows you to retrieve dataset files for local use.
 
 ## `kaggle datasets init`
 
-Initializes a metadata file (`dataset-metadata.json`) for creating a new dataset.
+Initializes a metadata file (`dataset-metadata.json`) for creating a new dataset. See [metadata file format](./datasets_metadata.md).
 
 **Usage:**
 

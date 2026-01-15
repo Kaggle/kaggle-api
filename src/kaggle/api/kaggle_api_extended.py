@@ -18,7 +18,7 @@
 from __future__ import print_function
 
 import csv
-from datetime import datetime, timedelta
+from datetime import datetime
 from enum import Enum
 import io
 
@@ -57,7 +57,6 @@ from kagglesdk.admin.types.inbox_file_service import CreateInboxFileRequest
 from kagglesdk.blobs.types.blob_api_service import ApiStartBlobUploadRequest, ApiStartBlobUploadResponse, ApiBlobType
 from kagglesdk.competitions.types.competition_api_service import (
     ApiListCompetitionsRequest,
-    ApiCompetition,
     ApiCreateCodeSubmissionRequest,
     ApiCreateSubmissionResponse,
     ApiStartSubmissionUploadRequest,

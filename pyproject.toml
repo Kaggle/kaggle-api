@@ -28,16 +28,10 @@ dependencies = [
     "python-slugify",
     "requests",
     "python-dateutil",
-    "six>=1.10", # should be unused but is still imported
     "tqdm",
     "urllib3 >= 1.15.1",
     "packaging",
     "protobuf",
-    "black >= 24.10.0",
-    "mypy >= 1.15.0",
-    # Pre-install `types-*` packages to speed up lint:typing command.
-    "types-requests",
-    "types-tqdm",
 ]
 
 [project.scripts]
@@ -50,29 +44,42 @@ Issues = "https://github.com/Kaggle/kaggle-api/issues"
 [tool.hatch.version]
 path = "src/kaggle/__init__.py"
 
-[tool.hatch.envs.default]
+[tool.hatch.build.targets.wheel]
+packages = ["src/kaggle"]
+
+[tool.hatch.envs.test]
 dependencies = [
-    "pytest",
+    "pytest"
 ]
 
-[tool.hatch.build.targets.wheel]
-packages = ["src/kaggle", "src/kagglesdk"]
+[tool.hatch.envs.test.scripts]
+local = "source tools/use-localhost.sh; cd tests; python unit_tests.py --failfast"
+prod = "source tools/use-prod.sh; cd tests; python unit_tests.py --failfast"
+integration = "pytest integration_tests"
 
-[tool.hatch.envs.default.scripts]
-install-unzip = """sudo apt-get install -y unzip || echo 'unzip could not be installed'"""
-# TODO: install in Mac/Windows
-install-black = """pip3 install black --break-system-packages || echo 'black could not be installed'"""
-install-toml = """sudo apt-get install -y python3-toml || echo 'toml could not be installed'"""
-install-sphinx = """pip3 install sphinx --break-system-packages || echo 'sphinx could not be installed'"""
-install-myst = """pip3 install myst-parser --break-system-packages || echo 'myst-parser could not be installed'"""
-install-deps = "hatch run install-unzip && hatch run install-black && hatch run install-toml && hatch run install-sphinx && hatch run install-myst"
+[tool.hatch.envs.lint]
+detached = true
+dependencies = [
+    "black >= 24.10.0",
+    "mypy >= 1.15.0",
+    # Pre-install `types-*` packages to speed up lint:typing command.
+    "types-requests",
+    "types-tqdm",
+]
 
-integration-test = "pytest {args:integration_tests}"
-
-compile = "./tools/GeneratePythonLibrary.sh"
-install = "./tools/GeneratePythonLibrary.sh --install"
-watch = "./tools/GeneratePythonLibrary.sh --watch"
-test = "./tools/GeneratePythonLibrary.sh --test local"
+[tool.hatch.envs.lint.scripts]
+typing = "mypy --install-types --non-interactive {args:src/kagglehub tests}"
+style = [
+  "black --check --diff {args:.}",
+]
+fmt = [
+  "black {args:.}",
+  "style",
+]
+all = [
+  "style",
+  "typing",
+]
 
 [tool.docformatter]
 recursive = true
@@ -80,7 +87,6 @@ recursive = true
 [tool.black]
 target-version = ["py311"]
 line-length = 120
-extend-exclude = 'kagglesdk'
 
 [tool.mypy]
 strict = false

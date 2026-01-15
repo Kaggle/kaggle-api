@@ -19,7 +19,7 @@ steps:
       export KAGGLE_USERNAME
       export KAGGLE_KEY
       source /root/secrets.sh
-      hatch run integration-test
+      hatch run test:integration
     volumes:
     - name: 'root'
       path: /root

@@ -1,6 +1,4 @@
-import os
 import unittest
-from typing import List
 
 from kaggle.api.kaggle_api_extended import KaggleApi
 

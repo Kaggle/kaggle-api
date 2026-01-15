@@ -116,7 +116,7 @@ class DatasetColumn(object):
 
         The type of all of the fields in the column. Please see the data
         types on
-        https://github.com/Kaggle/kaggle-api/wiki/Dataset-Metadata
+        https://github.com/Kaggle/kaggle-api/blob/main/docs/datasets_metadata.md
          # noqa: E501
 
         :return: The type of this DatasetColumn.  # noqa: E501
@@ -130,7 +130,7 @@ class DatasetColumn(object):
 
         The type of all of the fields in the column. Please see the data
         types on
-        https://github.com/Kaggle/kaggle-api/wiki/Dataset-Metadata
+        https://github.com/Kaggle/kaggle-api/blob/main/docs/datasets_metadata.md
          # noqa: E501
 
         :param type: The type of this DatasetColumn.  # noqa: E501

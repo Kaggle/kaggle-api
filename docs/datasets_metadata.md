@@ -72,7 +72,7 @@ The following metadata is currently supported:
       * `fields`: Array of fields in the dataset.  Please note that this needs to include ALL of the fields in the data in order or they will not be matched up correctly.  A later version of the API will fix this bug.
         * `name`: Field name
         * `title`: Field description
-        * `type`: Field type. A best-effort list of types will be kept at the bottom of this wiki page, but new types may be added that are not documented here.
+        * `type`: Field type. A best-effort list of types will be kept at the bottom of this page, but new types may be added that are not documented here.
   * `keywords`: Contains an array of strings that correspond to an existing tag on Kaggle.  If a specified tag doesn't exist, the upload will continue, but that specific tag won't be added.  
 * `kaggle datasets version` (create a new version for an existing Dataset):
   * `subtitle`: Subtitle of the dataset, must be between 20 and 80 characters in length.
@@ -86,7 +86,7 @@ The following metadata is currently supported:
       * `fields`: Array of fields in the dataset.  Please note that this needs to include ALL of the fields in the data in order or they will not be matched up correctly.  A later version of the API will fix this bug.
         * `name`: Field name
         * `title`: Field description
-        * `type`: Field type. A best-effort list of types will be kept at the bottom of this wiki page, but new types may be added that are not documented here.
+        * `type`: Field type. A best-effort list of types will be kept at the bottom of this page, but new types may be added that are not documented here.
   * `keywords`: Contains an array of strings that correspond to an existing tag on Kaggle.  If a specified tag doesn't exist, the upload will continue, but that specific tag won't be added.  
 
 We will add further metadata processing in upcoming versions of the API.

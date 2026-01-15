@@ -44,10 +44,6 @@ We currently support the following metadata fields for models.
 * `publishTime`: the original publishing time of the model
 * `provenanceSources`: the provenance of the model
 
-### Description
-
-You can find a template of the model card on this wiki page: https://github.com/Kaggle/kaggle-api/wiki/Model-Card
-
 ## Model Instance
 
 To create a model instance, a special `model-instance-metadata.json` file must be specified. 
@@ -117,8 +113,6 @@ Here is a list of the available licenses for models:
 - GPL 3
 
 ### Usage
-
-You can find a template of the Usage markdown on this wiki page: https://github.com/Kaggle/kaggle-api/wiki/ModelInstance-Usage
 
 The following template variables can be used in this markdown: 
 

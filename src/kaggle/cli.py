@@ -1226,7 +1226,7 @@ class Help(object):
     param_dataset_upfile = (
         "Folder for upload, containing data files and a "
         "special datasets-metadata.json file "
-        "(https://github.com/Kaggle/kaggle-api/wiki/Dataset-Metadata). "
+        "(https://github.com/Kaggle/kaggle-api/blob/main/docs/datasets_metadata.md). "
         "Defaults to current working directory"
     )
     param_dataset_sort_by = (
@@ -1258,7 +1258,7 @@ class Help(object):
     param_kernel_upfile = (
         "Folder for upload, containing data files and a "
         "special kernel-metadata.json file "
-        "(https://github.com/Kaggle/kaggle-api/wiki/Kernel-Metadata). "
+        "(https://github.com/Kaggle/kaggle-api/blob/main/docs/kernels_metadata.md). "
         "Defaults to current working directory"
     )
     param_kernel_parent = "Find children of the specified parent kernel"
@@ -1303,11 +1303,11 @@ class Help(object):
     param_model_owner = "Find public models owned by a specific user or organization"
     param_model_downfile = (
         "Folder containing the special model-metadata.json file "
-        "(https://github.com/Kaggle/kaggle-api/wiki/Model-Metadata)."
+        "(https://github.com/Kaggle/kaggle-api/blob/main/docs/models_metadata.md)."
     )
     param_model_upfile = (
         "Folder containing the special model-metadata.json file "
-        "(https://github.com/Kaggle/kaggle-api/wiki/Model-Metadata). "
+        "(https://github.com/Kaggle/kaggle-api/blob/main/docs/models_metadata.md). "
         "Defaults to current working directory"
     )
 
@@ -1320,12 +1320,12 @@ class Help(object):
     command_model_instances_new = "Create a new model instance"
     param_model_instance_downfile = (
         "Folder for downloading the special model-instance-metadata.json file "
-        "(https://github.com/Kaggle/kaggle-api/wiki/Model-Metadata#model-instance). "
+        "(https://github.com/Kaggle/kaggle-api/blob/main/docs/models_metadata.md#model-instance). "
     )
     param_model_instance_upfile = (
         "Folder for upload, containing data files and a "
         "special model-instance-metadata.json file "
-        "(https://github.com/Kaggle/kaggle-api/wiki/Model-Metadata#model-instance). "
+        "(https://github.com/Kaggle/kaggle-api/blob/main/docs/models_metadata.md#model-instance). "
         "Defaults to current working directory"
     )
     command_model_instances_delete = "Delete a model instance"

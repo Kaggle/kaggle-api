@@ -64,14 +64,3 @@ Explore these tutorials to learn how to perform common tasks:
     *   [Create a Model Variation Version](./tutorials.md#tutorial-create-a-model-variation-version)
     *   [How to Submit to a Competition](./tutorials.md#tutorial-how-to-submit-to-a-competition)
     *   [How to Submit to a Code Competition](./tutorials.md#tutorial-how-to-submit-to-a-code-competition)
-
-## Python API Reference
-
-The Kaggle CLI provides a Python API for interacting with Kaggle's platform. You can access the API using the `kaggle` module:
-
-```python
-import kaggle
-```
-
-For more information about the Python API, see the
-<a href="./source/kaggle.api.html" target="_blank" rel="alternate">Kaggle Python API documentation</a>.

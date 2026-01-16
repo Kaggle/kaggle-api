@@ -35,7 +35,7 @@ Explore the available commands by running:
 kaggle --help
 ```
 
-See the [User documentation](documentation/README.md) more examples & tutorials.
+See the [User documentation](documentation/README.md) for more examples & tutorials.
 
 ## Development
 
@@ -111,3 +111,4 @@ See [CONTRIBUTING.md](./CONTRIBUTING.md).
 ## License
 
 The Kaggle API is released under the [Apache 2.0 license](LICENSE).
+

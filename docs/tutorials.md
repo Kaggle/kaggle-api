@@ -6,8 +6,8 @@ These tutorials illustrate how to use a sequence of Kaggle CLI commands to accom
 
 Before starting these tutorials, please make sure you have:
 
-1.  Installed the Kaggle CLI, following the instructions [here](https://github.com/Kaggle/kaggle-api/blob/main/documentation/intro.md#installation).
-2.  Set up your API credentials, following the instructions [here](https://github.com/Kaggle/kaggle-api/blob/main/documentation/intro.md#api-credentials)
+1.  Installed the Kaggle CLI, following the instructions [here](./README.md#installation).
+2.  Set up your API credentials, following the instructions [here](./README.md#authentication)
 3.  Logged in to Kaggle in a web browser. This will allow you to verify the results of the CLI commands in the [`Your Work`](https://www.kaggle.com/work) section of your Kaggle profile.
 
 ## Tutorial: Create a Dataset
@@ -299,7 +299,7 @@ This tutorial walks you through the process of submitting to a code competition 
 
 3.  **Create a Notebook.**
 
-    *   Next, you need to create a Kaggle Notebook to work on your submission. A Kaggle Notebook contains the code and environment settings for Kaggle to run and evaluate your submission.  Follow the tutorial on [Creating / Updating Notebooks](https://github.com/Kaggle/kaggle-api/blob/main/documentation/tutorials.md#tutorial-update-a-kernel-notebook) if you're not sure how to do this.
+    *   Next, you need to create a Kaggle Notebook to work on your submission. A Kaggle Notebook contains the code and environment settings for Kaggle to run and evaluate your submission.  Follow the tutorial on [Creating / Updating Notebooks](#tutorial-update-a-kernel-notebook) if you're not sure how to do this.
 
 4.  **Write Your Code.**
 

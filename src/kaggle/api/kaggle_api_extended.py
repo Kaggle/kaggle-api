@@ -149,7 +149,6 @@ from kagglesdk.models.types.model_api_service import (
 from kagglesdk.models.types.model_enums import ListModelsOrderBy, ModelInstanceType, ModelFramework
 from kagglesdk.models.types.model_types import Owner
 from kagglesdk.security.types.oauth_service import IntrospectTokenRequest
-from ..models.dataset_column import DatasetColumn
 from ..models.upload_file import UploadFile
 import kagglesdk.kaggle_client
 from enum import EnumMeta
@@ -4818,11 +4817,12 @@ class KaggleApi:
             column: A list of values in a column to be processed.
 
         Returns:
-            A DatasetColumn object.
+            An ApiDatasetColumn object.
         """
-        processed_column = DatasetColumn(
-            name=self.get_or_fail(column, "name"), description=self.get_or_default(column, "description", "")
-        )
+        processed_column = ApiDatasetColumn()
+        processed_column.name = self.get_or_fail(column, "name")
+        processed_column.description = self.get_or_default(column, "description", "")
+
         if "type" in column:
             original_type = column["type"].lower()
             processed_column.original_type = original_type

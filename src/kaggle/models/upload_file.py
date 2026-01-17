@@ -21,7 +21,7 @@ import re  # noqa: F401
 
 import six
 
-from kaggle.models.dataset_column import DatasetColumn  # noqa: F401,E501
+from kagglesdk.datasets.types.dataset_api_service import ApiDatasetColumn
 
 
 class UploadFile(object):
@@ -33,7 +33,7 @@ class UploadFile(object):
                             and the value is json key in definition.
     """
 
-    column_types = {"token": "str", "description": "str", "columns": "list[DatasetColumn]"}
+    column_types = {"token": "str", "description": "str", "columns": "list[ApiDatasetColumn]"}
 
     attribute_map = {"token": "token", "description": "description", "columns": "columns"}
 
@@ -107,7 +107,7 @@ class UploadFile(object):
         A list of dataset column metadata  # noqa: E501
 
         :return: The columns of this UploadFile.  # noqa: E501
-        :rtype: list[DatasetColumn]
+        :rtype: list[ApiDatasetColumn]
         """
         return self._columns
 
@@ -118,7 +118,7 @@ class UploadFile(object):
         A list of dataset column metadata  # noqa: E501
 
         :param columns: The columns of this UploadFile.  # noqa: E501
-        :type: list[DatasetColumn]
+        :type: list[ApiDatasetColumn]
         """
 
         self._columns = columns

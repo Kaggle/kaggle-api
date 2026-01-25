@@ -592,6 +592,9 @@ def parse_kernels(subparsers) -> None:
     parser_kernels_output_optional.add_argument(
         "-q", "--quiet", dest="quiet", action="store_true", required=False, help=Help.param_quiet
     )
+    parser_kernels_output_optional.add_argument(
+        "--file-pattern", dest="file_pattern", required=False, help=Help.param_kernel_output_file_pattern
+    )
     parser_kernels_output._action_groups.append(parser_kernels_output_optional)
     parser_kernels_output.set_defaults(func=api.kernels_output_cli)
 
@@ -1293,6 +1296,9 @@ class Help(object):
         "is only applicable if a search term is specified."
     )
     param_kernel_pull_metadata = "Generate metadata when pulling kernel"
+    param_kernel_output_file_pattern = (
+        "Regex pattern to match against filenames. Only files matching the pattern will be downloaded."
+    )
 
     # Models params
     param_model = "Model URL suffix in format <owner>/<model-name>"

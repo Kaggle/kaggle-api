@@ -672,15 +672,11 @@ class KaggleApi:
         if self._authenticate_with_legacy_apikey():
             return
         if self.enable_oauth:
-            print("You must log in to Kaggle to use the Kaggle API.")
+            print("You must authenticate before you can call the Kaggle API.")
             print('Please run "kaggle auth login" to log in.')
         else:
-            print(
-                "Could not find {}. Make sure it's located in"
-                " {}. Or use the environment method. See setup"
-                " instructions at"
-                " https://github.com/Kaggle/kaggle-api/".format(self.config_file, self.config_dir)
-            )
+            print("You must authenticate before you can call the Kaggle API.")
+            print("Follow the instructions to authenticate at: https://github.com/Kaggle/kaggle-api/blob/main/docs/README.md#authentication")
         exit(1)
 
     def _authenticate_with_legacy_apikey(self) -> bool:

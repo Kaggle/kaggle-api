@@ -3039,7 +3039,7 @@ class KaggleApi:
         print("Kernel metadata template written to: " + meta_file)
 
     def kernels_push(
-        self, folder: str, timeout: Optional[str] = None, gpu: Optional[str] = None
+        self, folder: str, timeout: Optional[str] = None, acc: Optional[str] = None
     ) -> ApiSaveKernelResponse:
         """Pushes a kernel to Kaggle.
 
@@ -3049,8 +3049,8 @@ class KaggleApi:
         Args:
             folder (str): The path to the folder.
             timeout (Optional[str]): The maximum run time in seconds.
-            gpu (Optional[str]): The type of GPU to use for the kernel run. If set, this value overrides boolean
-                settings for GPU/TPU found int metadata.
+            acc (Optional[str]): The type of accelerator to use for the kernel run. If set, this value overrides boolean
+                settings for GPU/TPU found in the metadata file.
 
         Returns:
             ApiSaveKernelResponse: An ApiSaveKernelResponse object.
@@ -3170,7 +3170,7 @@ class KaggleApi:
             if timeout:
                 request.session_timeout_seconds = int(timeout)
             # The allowed names are in an enum that is not currently included in kagglesdk.
-            request.machine_shape = gpu if gpu else self.get_or_default(meta_data, "machine_shape", None)
+            request.machine_shape = acc if acc else self.get_or_default(meta_data, "machine_shape", None)
             # Without the type hint, mypy thinks save_kernel() has type Any when checking warn_return_any.
             response: ApiSaveKernelResponse = kaggle.kernels.kernels_api_client.save_kernel(request)
             return response

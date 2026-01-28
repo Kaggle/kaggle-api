@@ -129,15 +129,23 @@ kaggle competitions submit <COMPETITION> -f <FILE_NAME> -m <MESSAGE> [options]
 **Options:**
 
 *   `-k, --kernel <KERNEL>`: Name of the kernel (notebook) to submit (for code competitions).
-*   `-v, --version <VERSION>`: Version of the kernel to submit.
+*   `-v, --version <VERSION>`: Version of the kernel to submit (e.g. `2`).
 *   `-q, --quiet`: Suppress verbose output.
 
-**Example:**
+**Example: Standard (not code) competition:**
 
 Submit `sample_submission.csv` to the "house-prices-advanced-regression-techniques" competition with the message "Test message":
 
 ```bash
 kaggle competitions submit house-prices-advanced-regression-techniques -f sample_submission.csv -m "Test message"
+```
+
+**Example: Code competition:**
+
+Submit the `submission.csv` produced by version `3` of your `<YOUR_USERNAME>/rsna-submission` for the `rsna-2024-lumbar-spine-degenerative-classification` competition:
+
+```bash
+kaggle competitions submit rsna-2024-lumbar-spine-degenerative-classification -f submission.csv -k <YOUR_USERNAME>/rsna-submission -v 3 -m "Test message"
 ```
 
 **Purpose:**

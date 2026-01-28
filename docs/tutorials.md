@@ -264,11 +264,11 @@ This tutorial walks you through the process of making a submission to a Kaggle c
 
 4.  **Submit to the Competition.**
     *   Use the `kaggle competitions submit` command. You need to specify:
-        *   The competition ID (`-c titanic`).
+        *   The competition ID (`titanic`).
         *   The path to your submission file (`-f my_submission.csv`).
         *   A message describing your submission (`-m "My first submission via CLI"`).
         ```bash
-        kaggle competitions submit -c titanic -f my_submission.csv -m "My first submission via CLI"
+        kaggle competitions submit titanic -f my_submission.csv -m "My first submission via CLI"
         ```
 
 5.  **Check Your Submission Status.**
@@ -309,9 +309,14 @@ This tutorial walks you through the process of submitting to a code competition 
 
     *   Once you are happy with your model, you can submit your prediction to the competition. You can do this using the `kaggle competitions submit` command:
     ```bash
-    kaggle competitions submit -c <competition-name> -k <username>/<notebook-slug> -m <message>
+    kaggle competitions submit <competition-name> -k <username>/<notebook-slug> -f <output-filename> -v <notebook-version> -m <message>
     ```
-    *   Replace `<competition-name>` with the name of the competition, `<username>/<notebook-slug>` with the identifier of your notebook, and `<message>` with a brief description of your submission.
+    *   Replace:
+      * `<competition-name>` with the name of the competition
+      * `<username>/<notebook-slug>` with the identifier of your notebook
+      * `<output-filename>` with the name of the submission file produced by your notebook (e.g. `submission.csv`).
+      * `<notebook-version>` with the version to submit (e.g. `3` to submit the 3rd version of your notebook).
+      * `<message>` with a brief description of your submission.
 
 6.  **Check Your Score.**
 

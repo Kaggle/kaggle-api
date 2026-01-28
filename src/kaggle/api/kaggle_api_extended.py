@@ -676,7 +676,9 @@ class KaggleApi:
             print('Please run "kaggle auth login" to log in.')
         else:
             print("You must authenticate before you can call the Kaggle API.")
-            print("Follow the instructions to authenticate at: https://github.com/Kaggle/kaggle-api/blob/main/docs/README.md#authentication")
+            print(
+                "Follow the instructions to authenticate at: https://github.com/Kaggle/kaggle-api/blob/main/docs/README.md#authentication"
+            )
         exit(1)
 
     def _authenticate_with_legacy_apikey(self) -> bool:
@@ -2631,8 +2633,9 @@ class KaggleApi:
         else:
             print("Dataset creation error: " + result.error)
 
-    def download_file(self, response, outfile, http_client, quiet=True, resume=False, chunk_size=1048576,
-                      max_retries=5, timeout=300):
+    def download_file(
+        self, response, outfile, http_client, quiet=True, resume=False, chunk_size=1048576, max_retries=5, timeout=300
+    ):
         """Downloads a file to an output file, streaming in chunks with automatic retry on failure.
 
         Args:
@@ -2665,11 +2668,11 @@ class KaggleApi:
         # Retry loop for handling network errors
         retry_count = 0
         download_url = response.url
-        original_method = response.request.method if hasattr(response, 'request') else 'GET'
+        original_method = response.request.method if hasattr(response, "request") else "GET"
 
         # Preserve original request headers for authentication
         original_headers = {}
-        if hasattr(response, 'request') and hasattr(response.request, 'headers'):
+        if hasattr(response, "request") and hasattr(response.request, "headers"):
             original_headers = dict(response.request.headers)
 
         while retry_count <= max_retries:
@@ -2689,7 +2692,9 @@ class KaggleApi:
 
                     if not quiet:
                         if retry_count > 0:
-                            print(f"Retry {retry_count}/{max_retries}: Resuming from {size_read} bytes ({size - size_read} bytes left)...")
+                            print(
+                                f"Retry {retry_count}/{max_retries}: Resuming from {size_read} bytes ({size - size_read} bytes left)..."
+                            )
                         else:
                             print(f"Resuming from {size_read} bytes ({size - size_read} bytes left)...")
 
@@ -2711,8 +2716,9 @@ class KaggleApi:
                         print("Downloading " + os.path.basename(outfile) + " to " + outpath)
 
                 # Download with progress bar
-                with tqdm(total=size, initial=size_read, unit="B", unit_scale=True,
-                         unit_divisor=1024, disable=quiet) as pbar:
+                with tqdm(
+                    total=size, initial=size_read, unit="B", unit_scale=True, unit_divisor=1024, disable=quiet
+                ) as pbar:
                     with open(outfile, open_mode) as out:
                         # TODO: Delete this test after all API methods are converted.
                         if type(response).__name__ == "HTTPResponse":
@@ -2752,12 +2758,14 @@ class KaggleApi:
                 # Success - exit retry loop
                 break
 
-            except (requests.exceptions.ConnectionError,
-                    requests.exceptions.Timeout,
-                    requests.exceptions.ChunkedEncodingError,
-                    urllib3_exceptions.ProtocolError,
-                    urllib3_exceptions.ReadTimeoutError,
-                    OSError) as e:
+            except (
+                requests.exceptions.ConnectionError,
+                requests.exceptions.Timeout,
+                requests.exceptions.ChunkedEncodingError,
+                urllib3_exceptions.ProtocolError,
+                urllib3_exceptions.ReadTimeoutError,
+                OSError,
+            ) as e:
 
                 retry_count += 1
 
@@ -2770,7 +2778,7 @@ class KaggleApi:
                     raise
 
                 # Calculate backoff time (exponential with jitter)
-                backoff_time = min(2 ** retry_count + random(), 60)  # Cap at 60 seconds
+                backoff_time = min(2**retry_count + random(), 60)  # Cap at 60 seconds
 
                 if not quiet:
                     print(f"\nConnection error: {type(e).__name__}: {str(e)}")
@@ -2780,7 +2788,7 @@ class KaggleApi:
 
                 # Ensure file exists for resume
                 if not os.path.isfile(outfile):
-                    open(outfile, 'a').close()
+                    open(outfile, "a").close()
 
                 continue
 
@@ -3348,7 +3356,9 @@ class KaggleApi:
         else:
             print("Source code downloaded to " + effective_path)
 
-    def kernels_output(self, kernel: str, path: str, file_pattern: str = None, force: bool = False, quiet: bool = True) -> Tuple[List[str], str]:
+    def kernels_output(
+        self, kernel: str, path: str, file_pattern: str = None, force: bool = False, quiet: bool = True
+    ) -> Tuple[List[str], str]:
         """Retrieves the output for a specified kernel.
 
         Args:

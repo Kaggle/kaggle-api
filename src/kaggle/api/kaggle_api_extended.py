@@ -3169,9 +3169,8 @@ class KaggleApi:
             request.docker_image = self.get_or_default(meta_data, "docker_image", None)
             if timeout:
                 request.session_timeout_seconds = int(timeout)
-            if gpu:
-                # The allowed names are in an enum that is not currently included in kagglesdk.
-                request.machine_shape = gpu
+            # The allowed names are in an enum that is not currently included in kagglesdk.
+            request.machine_shape = gpu if gpu else self.get_or_default(meta_data, "machine_shape", None)
             # Without the type hint, mypy thinks save_kernel() has type Any when checking warn_return_any.
             response: ApiSaveKernelResponse = kaggle.kernels.kernels_api_client.save_kernel(request)
             return response

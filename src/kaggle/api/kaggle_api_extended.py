@@ -2631,8 +2631,9 @@ class KaggleApi:
         else:
             print("Dataset creation error: " + result.error)
 
-    def download_file(self, response, outfile, http_client, quiet=True, resume=False, chunk_size=1048576):
-        """Downloads a file to an output file, streaming in chunks.
+    def download_file(self, response, outfile, http_client, quiet=True, resume=False, chunk_size=1048576,
+                      max_retries=5, timeout=300):
+        """Downloads a file to an output file, streaming in chunks with automatic retry on failure.
 
         Args:
             response: The response object to download.
@@ -2641,14 +2642,16 @@ class KaggleApi:
             quiet: Suppress verbose output (default is True).
             chunk_size: The size of the chunk to stream.
             resume: Whether to resume an existing download.
+            max_retries: Maximum number of retry attempts on network errors (default is 5).
+            timeout: Timeout in seconds for each chunk read operation (default is 300).
         """
 
         outpath = os.path.dirname(outfile)
         if not os.path.exists(outpath):
             os.makedirs(outpath)
+
+        # Get file metadata
         size = int(response.headers["Content-Length"])
-        size_read = 0
-        open_mode = "wb"
         last_modified = response.headers.get("Last-Modified")
         if last_modified is None:
             remote_date = datetime.now()
@@ -2656,57 +2659,130 @@ class KaggleApi:
             remote_date = datetime.strptime(response.headers["Last-Modified"], "%a, %d %b %Y %H:%M:%S %Z")
         remote_date_timestamp = time.mktime(remote_date.timetuple())
 
-        if not quiet:
-            print("Downloading " + os.path.basename(outfile) + " to " + outpath)
-
-        file_exists = os.path.isfile(outfile)
+        # Check if file is resumable
         resumable = "Accept-Ranges" in response.headers and response.headers["Accept-Ranges"] == "bytes"
 
-        if resume and resumable and file_exists:
-            size_read = os.path.getsize(outfile)
-            open_mode = "ab"
+        # Retry loop for handling network errors
+        retry_count = 0
+        download_url = response.url
+        original_method = response.request.method if hasattr(response, 'request') else 'GET'
 
-            if not quiet:
-                print(
-                    "... resuming from %d bytes (%d bytes left) ..."
-                    % (
-                        size_read,
-                        size - size_read,
+        # Preserve original request headers for authentication
+        original_headers = {}
+        if hasattr(response, 'request') and hasattr(response.request, 'headers'):
+            original_headers = dict(response.request.headers)
+
+        while retry_count <= max_retries:
+            try:
+                # Check file existence inside loop (may be created during retry)
+                file_exists = os.path.isfile(outfile)
+
+                # Determine starting position
+                if retry_count > 0 or (resume and resumable and file_exists):
+                    size_read = os.path.getsize(outfile) if file_exists else 0
+                    open_mode = "ab"
+
+                    if size_read >= size:
+                        if not quiet:
+                            print("File already downloaded completely.")
+                        return
+
+                    if not quiet:
+                        if retry_count > 0:
+                            print(f"Retry {retry_count}/{max_retries}: Resuming from {size_read} bytes ({size - size_read} bytes left)...")
+                        else:
+                            print(f"Resuming from {size_read} bytes ({size - size_read} bytes left)...")
+
+                    # Request with Range header for resume, preserving authentication
+                    retry_headers = original_headers.copy()
+                    retry_headers["Range"] = f"bytes={size_read}-"
+                    response = requests.request(
+                        original_method,
+                        download_url,
+                        headers=retry_headers,
+                        stream=True,
+                        timeout=timeout,
                     )
-                )
-
-            request_history = response.history[0]
-            response = requests.request(
-                request_history.request.method,
-                response.url,
-                headers={"Range": "bytes=%d-" % (size_read,)},
-                stream=True,
-            )
-
-        with tqdm(total=size, initial=size_read, unit="B", unit_scale=True, unit_divisor=1024, disable=quiet) as pbar:
-            with open(outfile, open_mode) as out:
-                # TODO: Delete this test after all API methods are converted.
-                if type(response).__name__ == "HTTPResponse":
-                    while True:
-                        data = response.read(chunk_size)
-                        if not data:
-                            break
-                        out.write(data)
-                        os.utime(outfile, times=(remote_date_timestamp - 1, remote_date_timestamp - 1))
-                        size_read = min(size, size_read + chunk_size)
-                        pbar.update(len(data))
                 else:
-                    for data in response.iter_content(chunk_size):
-                        if not data:
-                            break
-                        out.write(data)
-                        os.utime(outfile, times=(remote_date_timestamp - 1, remote_date_timestamp - 1))
-                        size_read = min(size, size_read + chunk_size)
-                        pbar.update(len(data))
-            if not quiet:
-                print("\n", end="")
+                    size_read = 0
+                    open_mode = "wb"
 
-            os.utime(outfile, times=(remote_date_timestamp, remote_date_timestamp))
+                    if not quiet:
+                        print("Downloading " + os.path.basename(outfile) + " to " + outpath)
+
+                # Download with progress bar
+                with tqdm(total=size, initial=size_read, unit="B", unit_scale=True,
+                         unit_divisor=1024, disable=quiet) as pbar:
+                    with open(outfile, open_mode) as out:
+                        # TODO: Delete this test after all API methods are converted.
+                        if type(response).__name__ == "HTTPResponse":
+                            while True:
+                                data = response.read(chunk_size)
+                                if not data:
+                                    break
+                                out.write(data)
+                                out.flush()  # Ensure data is written to disk
+                                os.utime(outfile, times=(remote_date_timestamp - 1, remote_date_timestamp - 1))
+                                size_read += len(data)
+                                pbar.update(len(data))
+                        else:
+                            for data in response.iter_content(chunk_size):
+                                if not data:
+                                    break
+                                out.write(data)
+                                out.flush()  # Ensure data is written to disk
+                                os.utime(outfile, times=(remote_date_timestamp - 1, remote_date_timestamp - 1))
+                                size_read += len(data)
+                                pbar.update(len(data))
+
+                # Download completed successfully
+                if not quiet:
+                    print("\n", end="")
+
+                os.utime(outfile, times=(remote_date_timestamp, remote_date_timestamp))
+
+                # Verify file size
+                final_size = os.path.getsize(outfile)
+                if final_size != size:
+                    error_msg = f"Downloaded file size ({final_size}) does not match expected size ({size})"
+                    if not quiet:
+                        print(f"\n{error_msg}")
+                    raise ValueError(error_msg)
+
+                # Success - exit retry loop
+                break
+
+            except (requests.exceptions.ConnectionError,
+                    requests.exceptions.Timeout,
+                    requests.exceptions.ChunkedEncodingError,
+                    urllib3_exceptions.ProtocolError,
+                    urllib3_exceptions.ReadTimeoutError,
+                    OSError) as e:
+
+                retry_count += 1
+
+                if retry_count > max_retries:
+                    if not quiet:
+                        print(f"\nDownload failed after {max_retries} retries.")
+                        print(f"Error: {type(e).__name__}: {str(e)}")
+                        print(f"Partial file saved at: {outfile}")
+                        print(f"You can resume by running the same command again.")
+                    raise
+
+                # Calculate backoff time (exponential with jitter)
+                backoff_time = min(2 ** retry_count + random(), 60)  # Cap at 60 seconds
+
+                if not quiet:
+                    print(f"\nConnection error: {type(e).__name__}: {str(e)}")
+                    print(f"Retrying in {backoff_time:.1f} seconds... (attempt {retry_count}/{max_retries})")
+
+                time.sleep(backoff_time)
+
+                # Ensure file exists for resume
+                if not os.path.isfile(outfile):
+                    open(outfile, 'a').close()
+
+                continue
 
     def kernels_list(
         self,

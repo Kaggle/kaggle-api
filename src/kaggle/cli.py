@@ -550,6 +550,7 @@ def parse_kernels(subparsers) -> None:
     parser_kernels_push_optional.add_argument(
         "-t", "--timeout", type=int, dest="timeout", help=Help.param_kernel_timeout
     )
+    parser_kernels_push_optional.add_argument("--accelerator", dest="acc", help=Help.param_kernel_acc, alias=["acc"])
     parser_kernels_push._action_groups.append(parser_kernels_push_optional)
     parser_kernels_push.set_defaults(func=api.kernels_push_cli)
 
@@ -1299,6 +1300,7 @@ class Help(object):
     param_kernel_output_file_pattern = (
         "Regex pattern to match against filenames. Only files matching the pattern will be downloaded."
     )
+    param_kernel_acc = "Specify the type of accelerator to use for the kernel run"
 
     # Models params
     param_model = "Model URL suffix in format <owner>/<model-name>"

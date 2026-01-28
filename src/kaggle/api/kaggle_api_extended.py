@@ -3038,7 +3038,9 @@ class KaggleApi:
         meta_file = self.kernels_initialize(folder)
         print("Kernel metadata template written to: " + meta_file)
 
-    def kernels_push(self, folder: str, timeout: Optional[str] = None) -> ApiSaveKernelResponse:
+    def kernels_push(
+        self, folder: str, timeout: Optional[str] = None, acc: Optional[str] = None
+    ) -> ApiSaveKernelResponse:
         """Pushes a kernel to Kaggle.
 
         This method reads the metadata file and kernel files from a notebook,
@@ -3047,6 +3049,8 @@ class KaggleApi:
         Args:
             folder (str): The path to the folder.
             timeout (Optional[str]): The maximum run time in seconds.
+            acc (Optional[str]): The type of accelerator to use for the kernel run. If set, this value overrides boolean
+                settings for GPU/TPU found in the metadata file.
 
         Returns:
             ApiSaveKernelResponse: An ApiSaveKernelResponse object.
@@ -3165,6 +3169,8 @@ class KaggleApi:
             request.docker_image = self.get_or_default(meta_data, "docker_image", None)
             if timeout:
                 request.session_timeout_seconds = int(timeout)
+            # The allowed names are in an enum that is not currently included in kagglesdk.
+            request.machine_shape = acc if acc else self.get_or_default(meta_data, "machine_shape", None)
             # Without the type hint, mypy thinks save_kernel() has type Any when checking warn_return_any.
             response: ApiSaveKernelResponse = kaggle.kernels.kernels_api_client.save_kernel(request)
             return response

@@ -1386,7 +1386,7 @@ class KaggleApi:
             str:
         """
         if kernel and not version or version and not kernel:
-            raise ValueError("Code competition submissions require both the output file name and the version label")
+            raise ValueError("Code competition submissions require both the output file name and the version number")
         competition = competition or competition_opt
         try:
             if kernel:

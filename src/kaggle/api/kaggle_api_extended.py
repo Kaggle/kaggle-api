@@ -3175,15 +3175,16 @@ class KaggleApi:
             response: ApiSaveKernelResponse = kaggle.kernels.kernels_api_client.save_kernel(request)
             return response
 
-    def kernels_push_cli(self, folder, timeout):
+    def kernels_push_cli(self, folder, timeout, acc):
         """A client wrapper for kernels_push.
 
         Args:
             folder: The path to the folder.
             timeout: The maximum run time in seconds.
+            acc: The accelerator to use.
         """
         folder = folder or os.getcwd()
-        result = self.kernels_push(folder, timeout)
+        result = self.kernels_push(folder, timeout, acc)
 
         if result is None:
             print("Kernel push error: see previous output")

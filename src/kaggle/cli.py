@@ -550,7 +550,7 @@ def parse_kernels(subparsers) -> None:
     parser_kernels_push_optional.add_argument(
         "-t", "--timeout", type=int, dest="timeout", help=Help.param_kernel_timeout
     )
-    parser_kernels_push_optional.add_argument("--accelerator", dest="acc", help=Help.param_kernel_acc, aliases=["acc"])
+    parser_kernels_push_optional.add_argument("--accelerator", dest="acc", help=Help.param_kernel_acc)
     parser_kernels_push._action_groups.append(parser_kernels_push_optional)
     parser_kernels_push.set_defaults(func=api.kernels_push_cli)
 

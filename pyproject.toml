@@ -38,7 +38,7 @@ dependencies = [
 kaggle = "kaggle.cli:main"
 
 [project.urls]
-Homepage = "https://github.com/Kaggle/kaggle-api"
+Homepage = "https://github.com/Kaggle/kaggle-cli"
 Issues = "https://github.com/Kaggle/kaggle-api/issues"
 
 [tool.hatch.version]

@@ -677,7 +677,7 @@ class KaggleApi:
         else:
             print("You must authenticate before you can call the Kaggle API.")
             print(
-                "Follow the instructions to authenticate at: https://github.com/Kaggle/kaggle-api/blob/main/docs/README.md#authentication"
+                "Follow the instructions to authenticate at: https://github.com/Kaggle/kaggle-cli/blob/main/docs/README.md#authentication"
             )
         exit(1)
 
@@ -2158,17 +2158,17 @@ class KaggleApi:
                 except zipfile.BadZipFile as e:
                     raise ValueError(
                         f"The file {outfile} is corrupted or not a valid zip file. "
-                        "Please report this issue at https://www.github.com/kaggle/kaggle-api"
+                        "Please report this issue at https://www.github.com/kaggle/kaggle-cli/issues"
                     )
                 except FileNotFoundError:
                     raise FileNotFoundError(
                         f"The file {outfile} was not found. "
-                        "Please report this issue at https://www.github.com/kaggle/kaggle-api"
+                        "Please report this issue at https://www.github.com/kaggle/kaggle-cli"
                     )
                 except Exception as e:
                     raise RuntimeError(
                         f"An unexpected error occurred: {e}. "
-                        "Please report this issue at https://www.github.com/kaggle/kaggle-api"
+                        "Please report this issue at https://www.github.com/kaggle/kaggle-cli"
                     )
 
                 try:
@@ -3314,7 +3314,7 @@ class KaggleApi:
             if file_name is None:
                 print(
                     "Unknown language %s + kernel type %s - please report this "
-                    "on the kaggle-api github issues" % (language, kernel_type)
+                    "on the kaggle-cli github issues" % (language, kernel_type)
                 )
                 print("Saving as a python file, even though this may not be the " "correct language")
                 file_name = "script.py"
@@ -4394,7 +4394,7 @@ class KaggleApi:
                         t.extractall(effective_path)
                 except Exception as e:
                     raise ValueError(
-                        "Error extracting the tar.gz file, please report on " "www.github.com/kaggle/kaggle-api", e
+                        "Error extracting the tar.gz file, please report on " "www.github.com/kaggle/kaggle-cli", e
                     )
 
                 try:

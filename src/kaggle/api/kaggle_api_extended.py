@@ -2158,7 +2158,7 @@ class KaggleApi:
                 except zipfile.BadZipFile as e:
                     raise ValueError(
                         f"The file {outfile} is corrupted or not a valid zip file. "
-                        "Please report this issue at https://www.github.com/kaggle/kaggle-cli"
+                        "Please report this issue at https://www.github.com/kaggle/kaggle-cli/issues"
                     )
                 except FileNotFoundError:
                     raise FileNotFoundError(

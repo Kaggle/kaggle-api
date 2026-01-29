@@ -31,7 +31,7 @@ def setup(app):
     app.connect("autodoc-skip-member", autodoc_skip_member)
 
 
-project = "kaggle-api"
+project = "kaggle-cli"
 copyright = "2025, Kaggle"
 author = "Kaggle"
 

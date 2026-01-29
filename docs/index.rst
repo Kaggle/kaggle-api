@@ -1,11 +1,11 @@
 .. _kaggle:
 
-.. kaggle-api documentation master file, created by
+.. kaggle-cli documentation master file, created by
    sphinx-quickstart on Thu Jun 26 22:53:21 2025.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-kaggle-api documentation
+kaggle-cli documentation
 ========================
 
 .. toctree::

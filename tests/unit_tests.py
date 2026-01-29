@@ -22,7 +22,7 @@ ApiException = IOError
 
 # To run from Rider, create a Python tests>Unittests run config.
 # Give it the module: unit_tests.TestKaggleApi
-# Set the working directory to: kaggle-api/tests
+# Set the working directory to: kaggle-cli/tests
 # Define some envars:
 # KAGGLE_API_ENVIRONMENT=LOCALHOST
 # KAGGLE_CONFIG_DIR=/home/kaggle/.config/kaggle/dev
@@ -209,7 +209,7 @@ class TestKaggleApi(unittest.TestCase):
         with open(filename, "w") as f:
             f.write("test")
         try:
-            api.files_upload_cli([filename], "kaggle-api-test", False, False)
+            api.files_upload_cli([filename], "kaggle-cli-test", False, False)
         finally:
             if os.path.exists("tmp_file.test"):
                 os.remove("tmp_file.test")

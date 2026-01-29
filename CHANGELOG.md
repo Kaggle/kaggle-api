@@ -1,6 +1,14 @@
 Changelog
 ====
 
+### 1.8.4
+
+* Rename `kaggle-api` to `kaggle-cli`
+* Restore model validation check
+* Add --acc to set accelerator for: kaggle kernels push ... (#907)
+* Add automatic retry and resume to download_file (#905) Thanks katoue!
+* Add file pattern matching in output download (#901) Thanks piotr-ginal!
+
 ### 1.8.3
 
 * Add packaging dep (#883)

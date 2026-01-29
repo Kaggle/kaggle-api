@@ -154,6 +154,8 @@ Accelerators available as of Feb 2026:
 
 * NvidiaTeslaP100
 * TpuV38
+* NvidiaTeslaT4
+* NvidiaTeslaT4Highmem
 * Tpu1VmV38
 * NvidiaTeslaA100
 * NvidiaL4
@@ -162,6 +164,8 @@ Accelerators available as of Feb 2026:
 * TpuV6E8
 * NvidiaH100
 * NvidiaRtxPro6000
+
+Some of these are only available to participants of specific competitions, and some are only available to Kaggle admins.
 
 ## `kaggle kernels pull`
 

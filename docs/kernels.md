@@ -154,10 +154,7 @@ Accelerators available as of Feb 2026:
 
 * NvidiaTeslaP100
 * TpuV38
-* NvidiaTeslaT4
-* NvidiaTeslaT4Highmem
 * Tpu1VmV38
-* TpuvmV38
 * NvidiaTeslaA100
 * NvidiaL4
 * TpuV5E8

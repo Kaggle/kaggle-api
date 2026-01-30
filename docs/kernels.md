@@ -225,6 +225,7 @@ kaggle kernels output <KERNEL> [options]
 *   `-w, --wp`: Download files to the current working path.
 *   `-o, --force`: Force download, overwriting existing files.
 *   `-q, --quiet`: Suppress verbose output.
+*   `--file-pattern <REGEX>`: Regex pattern to match against filenames. Only files matching the pattern will be downloaded.
 
 **Example:**
 
@@ -232,6 +233,11 @@ Download the output of the kernel `kerneler/using-google-bird-vocalization-model
 
 ```bash
 kaggle kernels output kerneler/sqlite-global-default -o
+```
+Download PNG files only:
+
+```bash
+kaggle kernels output <kernel> --file-pattern ".*\.png$"  # Only PNG files
 ```
 
 **Purpose:**

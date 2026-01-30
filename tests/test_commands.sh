@@ -17,7 +17,7 @@ echo "kaggle competitions download"
 kaggle c download titanic -w -o -q
 kaggle c download titanic -f test.csv -p tost
 echo "kaggle competitions submit"
-kaggle c download house-prices-advanced-regression-techniques -f sample_submission.csv
+kaggle c download house-prices-advanced-regression-techniques -f sample_submission.csv --force
 kaggle c submit house-prices-advanced-regression-techniques -f sample_submission.csv -m "Test message"
 echo "kaggle competitions submissions"
 kaggle c submissions house-prices-advanced-regression-techniques -v -q

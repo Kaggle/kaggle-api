@@ -5098,7 +5098,7 @@ class KaggleApi:
     def validate_model_string(self, model: str) -> None:
         """Validates a model string.
 
-        A model string is valid if it is in the format {owner}/{model-slug}.
+        A model string is valid if it is in the format {owner}/{model-slug}/{framework}/{variation-slug}/{version-number}.
 
         Args:
             model (str): The model name to validate.
@@ -5107,8 +5107,11 @@ class KaggleApi:
             None:
         """
         if model:
-            if model.count("/") != 1:
-                raise ValueError("Model must be specified in the form of " "'{owner}/{model-slug}'")
+            if "/" not in model:
+                raise ValueError(
+                    "Model must be specified in the form of "
+                    "'{username}/{model-slug}/{framework}/{variation-slug}/{version-number}'"
+                )
 
             split = model.split("/")
             if not split[0] or not split[1]:

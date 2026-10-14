@@ -1,10 +1,15 @@
 # coding=utf-8
+import io
+import json
 import os
 import shutil
 import tempfile
 import unittest
+from contextlib import redirect_stderr, redirect_stdout
 from unittest.mock import MagicMock, patch
 import sys
+
+import requests
 
 sys.path.insert(0, "../..")
 
@@ -278,6 +283,133 @@ class TestCompetitionSubmitCli(unittest.TestCase):
                 version="1",
             )
         self.assertIn("No file specified", str(context.exception))
+
+
+def _http_error(status_code, url="https://api.kaggle.com/v1/competitions.CompetitionApiService/StartSubmissionUpload"):
+    """Returns the HTTPError that a real requests.Response raises for `status_code`.
+
+    A MagicMock response would hide the bug under test: a mock is always truthy, while a
+    real Response is falsy for every 4xx/5xx status.
+    """
+    response = requests.Response()
+    response.status_code = status_code
+    response.reason = "Not Found" if status_code == 404 else "Server Error"
+    response.url = url
+    try:
+        response.raise_for_status()
+    except requests.exceptions.HTTPError as e:
+        return e
+    raise AssertionError(f"{status_code} is not an error status")
+
+
+class TestCompetitionSubmitCli404(unittest.TestCase):
+    """A 404 from the submit calls must fail the CLI with a hint that names what may be missing.
+
+    Regression: the check was `if e.response and ...`, which never matched a 404, and its
+    branch printed to stdout and returned, which would have exited 0.
+    """
+
+    def setUp(self):
+        self.api = KaggleApi.__new__(KaggleApi)
+        self.api.config_values = {"username": "testuser"}
+        self.api.already_printed_version_warning = True
+
+    @patch.object(KaggleApi, "competition_submit")
+    def test_cli_404_on_file_submission_raises_competition_hint(self, mock_submit):
+        error = _http_error(404)
+        self.assertFalse(error.response)  # the falsy Response the old check tripped over
+        mock_submit.side_effect = error
+
+        with self.assertRaises(ValueError) as context:
+            self.api.competition_submit_cli(file_name="sub.csv", message="msg", competition="no-such-comp")
+
+        message = str(context.exception)
+        self.assertIn("Could not find competition - please verify", message)
+        self.assertNotIn("notebook", message)
+        self.assertIn("404 Client Error", message)  # the server's own error is kept
+        self.assertIs(context.exception.__cause__, error)
+
+    @patch.object(KaggleApi, "competition_submit_code")
+    def test_cli_404_on_code_submission_names_notebook_and_version(self, mock_submit_code):
+        mock_submit_code.side_effect = _http_error(
+            404, url="https://api.kaggle.com/v1/competitions.CompetitionApiService/CreateCodeSubmission"
+        )
+
+        with self.assertRaises(ValueError) as context:
+            self.api.competition_submit_cli(
+                file_name="submission.csv", message="msg", competition="comp", kernel="owner/notebook", version="3"
+            )
+
+        message = str(context.exception)
+        self.assertIn("Could not find competition or notebook", message)
+        self.assertIn("notebook and version", message)
+        self.assertIn("CreateCodeSubmission", message)
+
+    @patch.object(KaggleApi, "competition_submit")
+    def test_cli_non_404_http_error_propagates_unchanged(self, mock_submit):
+        error = _http_error(500)
+        mock_submit.side_effect = error
+
+        with self.assertRaises(requests.exceptions.HTTPError) as context:
+            self.api.competition_submit_cli(file_name="sub.csv", message="msg", competition="comp")
+
+        self.assertIs(context.exception, error)
+
+    @patch.object(KaggleApi, "competition_submit")
+    def test_cli_request_error_without_response_propagates_unchanged(self, mock_submit):
+        error = requests.exceptions.ConnectionError("connection refused")
+        mock_submit.side_effect = error
+
+        with self.assertRaises(requests.exceptions.ConnectionError) as context:
+            self.api.competition_submit_cli(file_name="sub.csv", message="msg", competition="comp")
+
+        self.assertIs(context.exception, error)
+
+    def test_main_exits_non_zero_and_reports_404_on_stderr(self):
+        # End to end: only the HTTP transport is faked, so the real SDK raises the 404 from
+        # the JSON error body Kaggle sends, and the real main() turns it into the exit code.
+        import kaggle.cli
+
+        def send(session, request, **kwargs):
+            response = requests.Response()
+            response.status_code = 404
+            response.headers["Content-Type"] = "application/json"
+            response._content = json.dumps({"code": 404, "message": "Competition not found"}).encode()
+            response.url = request.url
+            response.request = request
+            return response
+
+        temp_dir = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, temp_dir)
+        submission = os.path.join(temp_dir, "submission.csv")
+        with open(submission, "w") as f:
+            f.write("id,target\n1,0\n")
+
+        # A real API object of our own, so the test does not depend on whatever an earlier
+        # test may have left in kaggle.cli.api.
+        cli_api = KaggleApi()
+        cli_api.config_values = {"username": "testuser", "key": "testkey"}
+        cli_api._authenticated = True
+
+        argv = ["kaggle", "competitions", "submit", "no-such-comp", "-f", submission, "-m", "msg"]
+        out, err = io.StringIO(), io.StringIO()
+        exit_code = 0
+        with (
+            patch.object(sys, "argv", argv),
+            patch.object(kaggle.cli, "api", cli_api),
+            patch.object(requests.Session, "send", send),
+            redirect_stdout(out),
+            redirect_stderr(err),
+        ):
+            try:
+                kaggle.cli.main()
+            except SystemExit as e:
+                exit_code = e.code
+
+        self.assertEqual(exit_code, 1, f"stdout={out.getvalue()!r} stderr={err.getvalue()!r}")
+        self.assertIn("Could not find competition - please verify", err.getvalue())
+        self.assertIn("Competition not found", err.getvalue())
+        self.assertNotIn("Could not find competition", out.getvalue())
 
 
 class TestCompetitionSubmitCliLimits(unittest.TestCase):

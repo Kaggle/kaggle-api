@@ -2319,13 +2319,22 @@ class KaggleApi:
                     cast(str, file_name), cast(str, message), cast(str, competition), quiet, sandbox
                 )
         except RequestException as e:
-            if e.response and e.response.status_code == 404:
-                print(
-                    "Could not find competition - please verify that you "
-                    "entered the correct competition ID and that the "
-                    "competition is still accepting submissions."
-                )
-                return ""
+            # Compare with None: a Response is falsy for every 4xx/5xx status, 404 included.
+            if e.response is not None and e.response.status_code == 404:
+                # A code submission also names a notebook and a version, and either can be what is missing.
+                if kernel:
+                    hint = (
+                        "Could not find competition or notebook - please verify that you entered the correct "
+                        "competition ID, notebook and version, and that the competition is still "
+                        "accepting submissions."
+                    )
+                else:
+                    hint = (
+                        "Could not find competition - please verify that you entered the correct competition ID "
+                        "and that the competition is still accepting submissions."
+                    )
+                # Raise rather than print and return, so the CLI reports it on stderr and exits non-zero.
+                raise ValueError(f"{hint}\n  Error: {e}") from e
             else:
                 raise e
 

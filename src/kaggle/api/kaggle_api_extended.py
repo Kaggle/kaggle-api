@@ -2329,18 +2329,21 @@ class KaggleApi:
             else:
                 raise e
 
+        # competition_submit reports a failed upload through the message rather than
+        # raising, to stay backwards compatible. Raise here so the CLI exits non-zero
+        # instead of reporting a submission that was never made as a success.
+        if submit_result.message == self.COMPETITION_SUBMIT_UPLOAD_FAILED_MESSAGE:
+            raise ValueError(submit_result.message)
+
         # The backend returns the new submission's ref; surface it so users can
         # look the submission up later (e.g. `kaggle competitions submission <ref>`).
         submission_ref = getattr(submit_result, "ref", None)
         if submission_ref:
             print("Submission ref: %s" % submission_ref)
 
-        submit_succeeded = submit_result.message != self.COMPETITION_SUBMIT_UPLOAD_FAILED_MESSAGE
-        if submit_succeeded and not quiet and competition:
+        if not quiet and competition:
             # Bonus context: how many submissions are left today. Never fail
-            # the submit over a limits-endpoint blip. Skipped on failed
-            # submissions so we don't imply the submission counted when it
-            # didn't.
+            # the submit over a limits-endpoint blip.
             try:
                 limits = self.competition_get_submission_limits(competition)
                 print(f"{limits.num_allowed_now} submissions remaining today.")

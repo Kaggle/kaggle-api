@@ -475,11 +475,11 @@ class TestCompetitionSubmitCliLimits(unittest.TestCase):
 
     @patch.object(KaggleApi, "competition_get_submission_limits")
     @patch.object(KaggleApi, "competition_submit")
-    def test_cli_skips_limits_on_upload_failure(self, mock_submit, mock_limits):
+    def test_cli_raises_on_upload_failure(self, mock_submit, mock_limits):
         # competition_submit returns a synthetic response with this sentinel
-        # message when the file upload fails (no exception raised). We must
-        # NOT print the limits line in that case — it would imply the
-        # submission counted when it didn't.
+        # message when the file upload fails (no exception raised). The CLI
+        # must raise so `kaggle competitions submit` exits non-zero, and must
+        # NOT print the limits line, which would imply the submission counted.
         resp = ApiCreateSubmissionResponse()
         resp.message = KaggleApi.COMPETITION_SUBMIT_UPLOAD_FAILED_MESSAGE
         mock_submit.return_value = resp
@@ -489,11 +489,10 @@ class TestCompetitionSubmitCliLimits(unittest.TestCase):
 
         buf = io.StringIO()
         with redirect_stdout(buf):
-            result = self.api.competition_submit_cli(
-                file_name="sub.csv", message="msg", competition="my-comp", quiet=False
-            )
+            with self.assertRaises(ValueError) as context:
+                self.api.competition_submit_cli(file_name="sub.csv", message="msg", competition="my-comp", quiet=False)
 
-        self.assertEqual(result, KaggleApi.COMPETITION_SUBMIT_UPLOAD_FAILED_MESSAGE)
+        self.assertIn(KaggleApi.COMPETITION_SUBMIT_UPLOAD_FAILED_MESSAGE, str(context.exception))
         mock_limits.assert_not_called()
         self.assertNotIn("remaining today", buf.getvalue())
 

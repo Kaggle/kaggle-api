@@ -3,6 +3,7 @@ Changelog
 
 ### Next
 
+* Add `--public` to `kaggle competitions leaderboard`, which returns the public leaderboard from `--show`. Once a competition has concluded `--show` returns the final leaderboard and `--download` returns the public one, and neither said which
 * Report a 404 from `kaggle competitions submit` with a competition-specific hint on stderr, naming the notebook and version for code submissions. The check never matched a 404, so users got the generic `<owner>/<slug>` hint instead
 * Exit non-zero from `kaggle competitions submit` when the submission file upload fails. It printed "Could not submit to competition" and exited 0, so scripts treated the failed submission as a success
 * Stream `kaggle kernels output` files to disk through the same download path as datasets and competitions, with a read timeout, a size check, and resume after a dropped connection. Each file used to be read into memory whole, so a 512 MiB output took about 1.2 GB of RAM, and a dropped connection failed the command and left an empty file behind

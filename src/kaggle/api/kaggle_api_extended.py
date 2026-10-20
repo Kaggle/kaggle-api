@@ -2850,7 +2850,11 @@ class KaggleApi:
         self.download_file(response, outfile, kaggle.http_client(), quiet)
 
     def competition_leaderboard_view(
-        self, competition: str, page_size: Optional[int] = 20, page_token: Optional[str] = None
+        self,
+        competition: str,
+        page_size: Optional[int] = 20,
+        page_token: Optional[str] = None,
+        public: bool = False,
     ) -> list[ApiLeaderboardSubmission | None] | None:
         """View a leaderboard based on a competition name.
 
@@ -2858,6 +2862,8 @@ class KaggleApi:
             competition (str): the competition name to view leadboard for
             page_size (Optional[int]): the number of items to show on a page
             page_token (Optional[str]): the page token for pagination
+            public (bool): if True, return the public leaderboard instead of the
+                final one. Only differs once a competition has concluded.
 
         Returns:
             Union[listApiLeaderboardSubmission, None, None]:
@@ -2865,6 +2871,8 @@ class KaggleApi:
         with self.build_kaggle_client() as kaggle:
             request = ApiGetLeaderboardRequest()
             request.competition_name = competition
+            if public:
+                request.override_public = True
             self._set_paging(request, page_size, page_token)
             response = kaggle.competitions.competition_api_client.get_leaderboard(request)
         if response.next_page_token:
@@ -2884,6 +2892,7 @@ class KaggleApi:
         page_size: Optional[int] = 20,
         page_token: Optional[str] = None,
         output_format=None,
+        public=False,
     ):
         """A wrapper for competition_leaderbord_view that will print the results as a table or comma separated values.
 
@@ -2898,6 +2907,8 @@ class KaggleApi:
             page_size (Optional[int]): the number of items to show on a page
             page_token (Optional[str]): the page token for pagination
             output_format (Optional[str]): the output format to use
+            public (bool): if True, --show returns the public leaderboard instead of
+                the final one. --download always returns the public leaderboard.
         """
         competition = competition or competition_opt
         if not view and not download:
@@ -2915,7 +2926,7 @@ class KaggleApi:
             self.competition_leaderboard_download(competition, path, quiet)
 
         if view:
-            results = self.competition_leaderboard_view(competition, page_size, page_token)
+            results = self.competition_leaderboard_view(competition, page_size, page_token, public)
             if results:
                 self.print_results(
                     results,

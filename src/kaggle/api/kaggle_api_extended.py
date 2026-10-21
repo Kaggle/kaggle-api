@@ -2322,15 +2322,30 @@ class KaggleApi:
                     cast(str, file_name), cast(str, message), cast(str, competition), quiet, sandbox
                 )
         except RequestException as e:
-            if e.response and e.response.status_code == 404:
-                print(
-                    "Could not find competition - please verify that you "
-                    "entered the correct competition ID and that the "
-                    "competition is still accepting submissions."
-                )
-                return ""
+            # Compare with None: a Response is falsy for every 4xx/5xx status, 404 included.
+            if e.response is not None and e.response.status_code == 404:
+                # A code submission also names a notebook and a version, and either can be what is missing.
+                if kernel:
+                    hint = (
+                        "Could not find competition or notebook - please verify that you entered the correct "
+                        "competition ID, notebook and version, and that the competition is still "
+                        "accepting submissions."
+                    )
+                else:
+                    hint = (
+                        "Could not find competition - please verify that you entered the correct competition ID "
+                        "and that the competition is still accepting submissions."
+                    )
+                # Raise rather than print and return, so the CLI reports it on stderr and exits non-zero.
+                raise ValueError(f"{hint}\n  Error: {e}") from e
             else:
                 raise e
+
+        # competition_submit reports a failed upload through the message rather than
+        # raising, to stay backwards compatible. Raise here so the CLI exits non-zero
+        # instead of reporting a submission that was never made as a success.
+        if submit_result.message == self.COMPETITION_SUBMIT_UPLOAD_FAILED_MESSAGE:
+            raise ValueError(submit_result.message)
 
         # The backend returns the new submission's ref; surface it so users can
         # look the submission up later (e.g. `kaggle competitions submission <ref>`).
@@ -2338,12 +2353,9 @@ class KaggleApi:
         if submission_ref:
             print("Submission ref: %s" % submission_ref)
 
-        submit_succeeded = submit_result.message != self.COMPETITION_SUBMIT_UPLOAD_FAILED_MESSAGE
-        if submit_succeeded and not quiet and competition:
+        if not quiet and competition:
             # Bonus context: how many submissions are left today. Never fail
-            # the submit over a limits-endpoint blip. Skipped on failed
-            # submissions so we don't imply the submission counted when it
-            # didn't.
+            # the submit over a limits-endpoint blip.
             try:
                 limits = self.competition_get_submission_limits(competition)
                 print(f"{limits.num_allowed_now} submissions remaining today.")
@@ -5993,10 +6005,14 @@ class KaggleApi:
         """
         if kernel is None:
             raise ValueError("A kernel must be specified")
-        if "/" not in kernel:
-            raise ValueError("Kernel must be in format [owner]/[kernel-name]")
-
-        owner_slug, kernel_slug = kernel.split("/")
+        # Tolerate a trailing slash like datasets delete does ("owner/slug/" == "owner/slug").
+        kernel = kernel[:-1] if kernel.endswith("/") and len(kernel) > 1 else kernel
+        owner_slug, kernel_slug, kernel_version = self.parse_kernel_string(kernel)
+        if kernel_version is not None and kernel_version.strip() != "":
+            raise ValueError(
+                f"Deleting individual kernel versions is not supported (specified version: '{kernel_version}'). "
+                f"To delete the entire kernel, run: kaggle kernels delete {owner_slug}/{kernel_slug}"
+            )
 
         if not no_confirm:
             if not self.confirmation(f"delete the kernel: {kernel}"):

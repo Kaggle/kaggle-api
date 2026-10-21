@@ -1516,7 +1516,7 @@ def parse_kernels(subparsers) -> None:
         "delete", formatter_class=argparse.RawTextHelpFormatter, help=Help.command_kernels_delete
     )
     parser_kernels_delete_optional = parser_kernels_delete._action_groups.pop()
-    parser_kernels_delete_optional.add_argument("kernel", help=Help.param_kernel)
+    parser_kernels_delete_optional.add_argument("kernel", help=Help.param_kernel_name)
     parser_kernels_delete_optional.add_argument(
         "-y", "--yes", dest="no_confirm", action="store_true", help=Help.param_yes
     )
@@ -1547,7 +1547,7 @@ def parse_kernels(subparsers) -> None:
     )
     parser_kernels_topics_list_optional = parser_kernels_topics_list._action_groups.pop()
     parser_kernels_topics_list_optional.add_argument(
-        "entity_ref", metavar="kernel", nargs="?", default=None, help=Help.param_kernel
+        "entity_ref", metavar="kernel", nargs="?", default=None, help=Help.param_kernel_name
     )
     parser_kernels_topics_list_optional.add_argument(
         "--sort-by",
@@ -2984,6 +2984,8 @@ options a specific command accepts."""
         'Kernel URL suffix in format <owner>/<kernel-name> or <owner>/<kernel-name>/<version> (use "kaggle '
         'kernels list" to show options)'
     )
+
+    param_kernel_name = 'Kernel URL suffix in format <owner>/<kernel-name> (use "kaggle kernels list" to show options)'
 
     param_kernel_init = (
         "Create a metadata file for an existing kernel URL suffix in format "

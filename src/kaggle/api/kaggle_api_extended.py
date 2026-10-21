@@ -6005,14 +6005,14 @@ class KaggleApi:
         # Tolerate a trailing slash like datasets delete does ("owner/slug/" == "owner/slug").
         kernel = kernel[:-1] if kernel.endswith("/") and len(kernel) > 1 else kernel
         owner_slug, kernel_slug, kernel_version = self.parse_kernel_string(kernel)
-        if kernel_version is not None and kernel_version.strip() != "":
+        if kernel_version is not None:
             raise ValueError(
                 f"Deleting individual kernel versions is not supported (specified version: '{kernel_version}'). "
                 f"To delete the entire kernel, run: kaggle kernels delete {owner_slug}/{kernel_slug}"
             )
 
         if not no_confirm:
-            if not self.confirmation(f"delete the kernel: {kernel}"):
+            if not self.confirmation(f"delete the kernel: {owner_slug}/{kernel_slug}"):
                 print("Deletion cancelled")
                 return
 
@@ -6021,7 +6021,7 @@ class KaggleApi:
             request.user_name = owner_slug
             request.kernel_slug = kernel_slug
             kaggle.kernels.kernels_api_client.delete_kernel(request)
-            print(f"Kernel {kernel} deleted successfully")
+            print(f"Kernel {owner_slug}/{kernel_slug} deleted successfully")
 
     def kernels_delete_cli(self, kernel: str, no_confirm: bool = False) -> None:
         """A client wrapper for deleting a kernel.

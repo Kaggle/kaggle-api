@@ -11,7 +11,9 @@ attrs==26.1.0
 bleach==6.3.0
     # via kaggle (pyproject.toml)
 certifi==2026.10.19
-    # via requests
+    # via
+    #   kaggle (pyproject.toml)
+    #   requests
 charset-normalizer==3.4.6
     # via requests
 fastjsonschema==2.21.2

@@ -10,7 +10,7 @@ attrs==26.1.0
     #   referencing
 bleach==6.3.0
     # via kaggle (pyproject.toml)
-certifi==2026.2.25
+certifi==2026.10.19
     # via requests
 charset-normalizer==3.4.6
     # via requests

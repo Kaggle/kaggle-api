@@ -17,7 +17,6 @@ class TestKernelsPush(unittest.TestCase):
     def setUp(self):
         self.api = KaggleApi.__new__(KaggleApi)
         self.api.config_values = {"username": "testuser"}
-        self.api.valid_push_language_types = ["python"]
         self.api.valid_push_kernel_types = ["script", "notebook"]
         self.api.valid_push_pinning_types = ["original", "latest"]
         self.api.KERNEL_METADATA_FILE = "kernel-metadata.json"
@@ -168,14 +167,15 @@ class TestKernelsPush(unittest.TestCase):
             self.assertIn("cannot contain a version", str(context.exception))
 
     def test_kernels_push_invalid_language(self):
-        with tempfile.TemporaryDirectory() as tmpdir:
-            metadata = self._get_valid_metadata()
-            metadata["language"] = "invalid-lang"
-            self._write_metadata(tmpdir, metadata)
-            open(os.path.join(tmpdir, "script.py"), "w").close()
-            with self.assertRaises(ValueError) as context:
-                self.api.kernels_push(tmpdir)
-            self.assertIn("A valid language must be specified", str(context.exception))
+        for language in ["invalid-lang", "r", "rmarkdown", "julia"]:
+            with self.subTest(language=language), tempfile.TemporaryDirectory() as tmpdir:
+                metadata = self._get_valid_metadata()
+                metadata["language"] = language
+                self._write_metadata(tmpdir, metadata)
+                open(os.path.join(tmpdir, "script.py"), "w").close()
+                with self.assertRaises(ValueError) as context:
+                    self.api.kernels_push(tmpdir)
+                self.assertIn("A valid language must be specified", str(context.exception))
 
     def test_kernels_push_invalid_kernel_type(self):
         with tempfile.TemporaryDirectory() as tmpdir:

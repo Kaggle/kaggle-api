@@ -7112,7 +7112,7 @@ class KaggleApi:
             "id": username + "/INSERT_KERNEL_SLUG_HERE",
             "title": "INSERT_TITLE_HERE",
             "code_file": "INSERT_CODE_FILE_PATH_HERE",
-            "language": "Pick one of: {" + ",".join(x for x in self.valid_push_language_types) + "}",
+            "language": "python",
             "kernel_type": "Pick one of: {" + ",".join(x for x in self.valid_push_kernel_types) + "}",
             "is_private": "true",
             "enable_gpu": "false",

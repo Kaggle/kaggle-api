@@ -1183,7 +1183,7 @@ class KaggleApi:
 
     # Kernels valid types
     valid_push_kernel_types = ["script", "notebook"]
-    valid_push_language_types = ["python", "r", "rmarkdown"]
+    valid_push_language_types = ["python"]
     valid_push_pinning_types = ["original", "latest"]
     valid_list_languages = ["all", "python", "r", "sqlite", "julia"]
     valid_list_kernel_types = ["all", "script", "notebook"]
@@ -7112,7 +7112,7 @@ class KaggleApi:
             "id": username + "/INSERT_KERNEL_SLUG_HERE",
             "title": "INSERT_TITLE_HERE",
             "code_file": "INSERT_CODE_FILE_PATH_HERE",
-            "language": "Pick one of: {" + ",".join(x for x in self.valid_push_language_types) + "}",
+            "language": "python",
             "kernel_type": "Pick one of: {" + ",".join(x for x in self.valid_push_kernel_types) + "}",
             "is_private": "true",
             "enable_gpu": "false",
@@ -7217,9 +7217,6 @@ class KaggleApi:
                 "A valid kernel type must be specified in the metadata. Valid "
                 "options are " + str(self.valid_push_kernel_types)
             )
-
-        if kernel_type == "notebook" and language == "rmarkdown":
-            language = "r"
 
         dataset_sources = cast(List[str], self.get_or_default(meta_data, "dataset_sources", []))
         for source in dataset_sources:

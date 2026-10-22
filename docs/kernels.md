@@ -135,7 +135,7 @@ kaggle kernels push -p <FOLDER_PATH> [options]
 **Options:**
 
 *   `--accelerator <ACCELERATOR_ID>`: ID name of the accelerator to use during the run. E.g. "NvidiaTeslaT4" (GPU T4 ×2, default GPU), "NvidiaL4", "TpuV5E8" (TPU v5e-8), "TpuV6E8".
-*   `-p, --path <FOLDER_PATH>`: Path to the folder containing the kernel file (e.g., `.ipynb`, `.Rmd`, `.py`) and the `kernel-metadata.json` file (defaults to the current directory).
+*   `-p, --path <FOLDER_PATH>`: Path to the folder containing the kernel file (e.g., `.ipynb`, `.py`) and the `kernel-metadata.json` file (defaults to the current directory).
 *   `-t, --timeout <SECONDS>`: Maximum run time in seconds.
 *   `--no-run`: Save a new version without executing the notebook, the equivalent of Quick Save in the web UI. The version is created but no cell runs.
 

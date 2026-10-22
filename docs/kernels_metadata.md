@@ -30,7 +30,7 @@ We currently support the following metadata fields for kernels.
 * `title`: The title of the kernel. Required for new kernels - optional for existing ones. Please be aware that kernel titles and slugs are linked to each other. A kernel slug is always the title lowercased with dashes (`-`) replacing spaces. 
   * If you wish to rename your kernel, you may change the title within the metadata. However, you will need to update the `id` as well AFTER the rename is complete.
 * `code_file`: The path to your kernel source code. Required. If not an absolute path, it should be relative to the location of `kernel-metadata.json`.
-* `language`: The language your kernel is written in. Valid options are `python`, `r`, and `rmarkdown`. Required.
+* `language`: The language your kernel is written in. Valid options are `python`. Required.
 * `kernel_type`: The type of kernel. Valid options are `script` and `notebook`. Required.
 * `is_private`: Whether or not the kernel should be private. If not specified, will be `true`.
 * `enable_gpu`: Whether or not the kernel should run on a GPU. If not specified, will be `false`.

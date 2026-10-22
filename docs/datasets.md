@@ -63,7 +63,7 @@ kaggle datasets files <DATASET> [options]
 
 **Arguments:**
 
-*   `<DATASET>`: Dataset URL suffix in the format `owner/dataset-name` (e.g., `kerneler/brazilian-bird-observation-metadata-from-wikiaves`).
+*   `<DATASET>`: Dataset URL suffix in the format `owner/dataset-name` (e.g., `kerneler/brazilian-bird-observation-metadata-from-wikiaves`). Use `owner/dataset-name/version-number` to list the files of a specific version instead of the latest one.
 
 **Options:**
 
@@ -95,7 +95,7 @@ kaggle datasets download <DATASET> [options]
 
 **Arguments:**
 
-*   `<DATASET>`: Dataset URL suffix (e.g., `willianoliveiragibin/pixar-films`).
+*   `<DATASET>`: Dataset URL suffix in the format `owner/dataset-name` (e.g., `willianoliveiragibin/pixar-films`). Use `owner/dataset-name/version-number` to download a specific version instead of the latest one.
 
 **Options:**
 

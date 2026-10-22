@@ -1185,7 +1185,7 @@ class KaggleApi:
     valid_push_kernel_types = ["script", "notebook"]
     valid_push_language_types = ["python"]
     valid_push_pinning_types = ["original", "latest"]
-    valid_list_languages = ["all", "python", "sqlite", "julia"]
+    valid_list_languages = ["all", "python", "r", "sqlite", "julia"]
     valid_list_kernel_types = ["all", "script", "notebook"]
     valid_list_output_types = ["all", "visualization", "data"]
     valid_list_sort_by = [

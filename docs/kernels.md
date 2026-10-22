@@ -23,7 +23,7 @@ kaggle kernels list [options]
 *   `--competition <COMPETITION_SLUG>`: Filter by competition.
 *   `--dataset <DATASET_SLUG>`: Filter by dataset (format: `owner/dataset-slug`).
 *   `--user <USER>`: Filter by a specific user.
-*   `--language <LANGUAGE>`: Filter by language (`all`, `python`, `sqlite`, `julia`).
+*   `--language <LANGUAGE>`: Filter by language (`all`, `python`, `r`, `sqlite`, `julia`).
 *   `--kernel-type <TYPE>`: Filter by kernel type (`all`, `script`, `notebook`).
 *   `--output-type <TYPE>`: Filter by output type (`all`, `visualizations`, `data`).
 *   `--sort-by <SORT_BY>`: Sort results (`hotness`, `commentCount`, `dateCreated`, `dateRun`, `relevance`, `scoreAscending`, `scoreDescending`, `viewCount`, `voteCount`). Default: `hotness`.

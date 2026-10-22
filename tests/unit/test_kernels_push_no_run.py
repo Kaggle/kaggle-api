@@ -22,7 +22,7 @@ class _PushTestCase(unittest.TestCase):
     def setUp(self):
         self.api = KaggleApi.__new__(KaggleApi)
         self.api.config_values = {"username": "testuser"}
-        self.api.valid_push_language_types = ["python", "r", "julia", "rmarkdown"]
+        self.api.valid_push_language_types = ["python", "julia"]
         self.api.valid_push_kernel_types = ["script", "notebook"]
         self.api.valid_push_pinning_types = ["original", "latest"]
         self.api.KERNEL_METADATA_FILE = "kernel-metadata.json"

@@ -3007,7 +3007,7 @@ options a specific command accepts."""
     # TODO(b/129357583): Pull these from the same spot as the api impl
     param_kernel_language = (
         "Specify the language the kernel is written in. Default is 'all'. "
-        "Valid options are 'all', 'python', 'r', 'sqlite', and "
+        "Valid options are 'all', 'python', 'sqlite', and "
         "'julia'"
     )
     param_kernel_type = (

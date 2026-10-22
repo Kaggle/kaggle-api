@@ -48,7 +48,7 @@ kaggle kernels list [options]
 - `--competition <SLUG>`: Kernels for a competition.
 - `--dataset <OWNER/SLUG>`: Kernels for a dataset.
 - `--user <USER>`: Kernels by user.
-- `--language <LANG>`: `all`, `python`, `r`, `sqlite`, `julia`.
+- `--language <LANG>`: `all`, `python`, `sqlite`, `julia`.
 - `--kernel-type <TYPE>`: `all`, `script`, `notebook`.
 - `--output-type <TYPE>`: `all`, `visualization`, `data`.
 - `--sort-by <SORT>`: Sort order.

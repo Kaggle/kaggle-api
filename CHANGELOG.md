@@ -1,6 +1,8 @@
 Changelog
 ====
 
+### Next
+
 ### 2.2.5
 
 * Require `certifi >= 2026.10.19`, which drops the compromised emSign/eMudhra root CAs ([GHSA-6q48-6c7w-9gw2](https://github.com/certifi/python-certifi/security/advisories/GHSA-6q48-6c7w-9gw2)). `kaggle` only pulled in certifi through `requests`, which sets no minimum, so an existing install could keep a certifi that would accept a forged kaggle.com certificate and leak the user's API token to a man-in-the-middle
@@ -27,7 +29,7 @@ Changelog
 * Suggest a next step on 403/404/429/5xx API errors, report unexpected errors as bugs instead of a traceback (with a new `--debug` flag), and list common examples in `kaggle --help`
 * Guard tar extraction in `kaggle models instances versions download --untar` against path traversal
 * Store resumable upload state in a private per-user directory (`0700`) and verify directory ownership and permissions before use
-* Add `kaggle benchmarks quota` to show Model Proxy (AI inference) spend quota, and bump `kagglesdk` to `>= 0.1.37`
+* Add `kaggle benchmarks quota` to show Model Proxy (AI inference) spend quota, and bump `kagglesdk` to `>= 0.1.38`
 * Honor `--untar` in `kaggle models instances versions download` when the archive is already cached locally
 * Write kernel log files using UTF-8 in `kaggle kernels output` to avoid `UnicodeEncodeError` on Windows
 * Exclude omitted `overview` and `usage` fields from the update mask when updating a model instance

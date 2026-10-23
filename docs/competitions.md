@@ -319,11 +319,14 @@ kaggle competitions leaderboard <COMPETITION> [options]
 
 **Options:**
 
-*   `-s, --show`: Show the top of the leaderboard in the console.
-*   `-d, --download`: Download the entire leaderboard to a CSV file.
+*   `-s, --show`: Show the top of the leaderboard in the console. Once a competition has concluded this is the final leaderboard, which is what the competition page shows by default.
+*   `-d, --download`: Download the entire leaderboard to a CSV file. This is always the public leaderboard.
+*   `--public`: Return the public leaderboard rather than the final one. Only makes a difference once a competition has concluded.
 *   `-p, --path <PATH>`: Folder to download the leaderboard to (if `-d` is used).
 *   `-v, --csv`: Print results in CSV format (used with `-s`).
 *   `-q, --quiet`: Suppress verbose output.
+
+On a concluded competition `--show` and `--download` return different leaderboards, since one is the final standings and the other is the public scores. Pass `--public` to `--show` to compare like for like.
 
 **Examples:**
 
@@ -337,6 +340,12 @@ kaggle competitions leaderboard <COMPETITION> [options]
 
     ```bash
     kaggle competitions leaderboard titanic > leaderboard.txt
+    ```
+
+3.  Show the public leaderboard for a competition that has finished:
+
+    ```bash
+    kaggle competitions leaderboard playground-series-s6e8 --show --public
     ```
 
 **Purpose:**

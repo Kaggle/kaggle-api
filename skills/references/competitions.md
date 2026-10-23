@@ -227,8 +227,9 @@ kaggle competitions leaderboard [COMPETITION] [options]
 
 **Options:**
 
-- `-s, --show`: Show top leaderboard rows.
-- `-d, --download`: Download the full leaderboard.
+- `-s, --show`: Show top leaderboard rows. Final standings once a competition has concluded.
+- `-d, --download`: Download the full leaderboard. Always the public leaderboard.
+- `--public`: Return the public leaderboard rather than the final one.
 - `-p, --path <PATH>`: Download directory.
 - `--page-size <SIZE>`: Page size.
 - `--page-token <TOKEN>`: Page token.
@@ -240,6 +241,7 @@ kaggle competitions leaderboard [COMPETITION] [options]
 ```bash
 kaggle competitions leaderboard titanic --show
 kaggle c leaderboard titanic --download -p leaderboards
+kaggle competitions leaderboard playground-series-s6e8 --show --public
 ```
 
 **Purpose:** Inspect ranking data from the competition leaderboard.

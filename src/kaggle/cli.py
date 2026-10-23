@@ -355,6 +355,9 @@ def parse_competitions(subparsers) -> None:
     parser_competitions_leaderboard_optional.add_argument(
         "-d", "--download", dest="download", action="store_true", help=Help.param_competition_leaderboard_download
     )
+    parser_competitions_leaderboard_optional.add_argument(
+        "--public", dest="public", action="store_true", help=Help.param_competition_leaderboard_public
+    )
     parser_competitions_leaderboard_optional.add_argument("-p", "--path", dest="path", help=Help.param_downfolder)
     _add_output_format_args(parser_competitions_leaderboard_optional)
     parser_competitions_leaderboard_optional.add_argument(
@@ -2921,8 +2924,18 @@ options a specific command accepts."""
     )
     param_competitions_host_add_user = "Kaggle user name (URL slug, e.g. 'kerneler') of the user to add as a host"
     param_competition_nonempty = 'Competition URL suffix (use "kaggle competitions list" to show ' "options)"
-    param_competition_leaderboard_view = "Show the top of the leaderboard"
-    param_competition_leaderboard_download = "Download entire leaderboard"
+    param_competition_leaderboard_view = (
+        "Show the top of the leaderboard.\nOnce a competition has concluded this is the final leaderboard, "
+        "which is\nwhat the competition page shows by default. Pass --public for the\npublic one."
+    )
+    param_competition_leaderboard_download = (
+        "Download entire leaderboard.\nThis is always the public leaderboard, so on a concluded competition it\n"
+        "differs from --show unless --public is passed."
+    )
+    param_competition_leaderboard_public = (
+        "Return the public leaderboard rather than the final one.\nOnly makes a difference once a competition "
+        "has concluded."
+    )
     param_competition_file = (
         'File name, all files downloaded if not provided\n(use "kaggle '
         'competitions files -c <competition>" to show options)'

@@ -3,6 +3,8 @@ Changelog
 
 ### Next
 
+* Fix `kaggle datasets create/version` (and other uploads) failing on Windows with `[Errno 2] No such file or directory` when the path uses forward slashes, such as `C:/data` from Git Bash: the resumable-upload state file name kept the `/` separators and pointed into sub-directories that do not exist
+
 ### 2.2.5
 
 * Require `certifi >= 2026.10.19`, which drops the compromised emSign/eMudhra root CAs ([GHSA-6q48-6c7w-9gw2](https://github.com/certifi/python-certifi/security/advisories/GHSA-6q48-6c7w-9gw2)). `kaggle` only pulled in certifi through `requests`, which sets no minimum, so an existing install could keep a certifi that would accept a forged kaggle.com certificate and leak the user's API token to a man-in-the-middle

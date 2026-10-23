@@ -75,7 +75,8 @@ target/
 .gemini/
 
 # Claude Code
-.claude/
+.claude/*
+!.claude/settings.json
 .claude/settings.local.json
 
 # Kagent

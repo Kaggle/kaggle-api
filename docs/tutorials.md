@@ -113,7 +113,7 @@ This tutorial shows how to download an existing kernel, modify it, and push the 
     # Replace YOUR_USERNAME with your actual Kaggle username
     kaggle kernels pull YOUR_USERNAME/my-cli-test-kernel -m
     ```
-    This will download `my-cli-test-kernel.ipynb` (or `.py`/`.Rmd`) and `kernel-metadata.json`.
+    This will download `my-cli-test-kernel.ipynb` (or `.py`) and `kernel-metadata.json`.
 
 4.  **Edit the kernel or metadata.**
     *   Open the downloaded notebook file (e.g., `my-cli-test-kernel.ipynb`) and make some changes to the code or content.

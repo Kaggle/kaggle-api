@@ -4,24 +4,44 @@ Changelog
 ### Next
 
 * Fix `kaggle datasets create/version` (and other uploads) failing on Windows with `[Errno 2] No such file or directory` when the path uses forward slashes, such as `C:/data` from Git Bash: the resumable-upload state file name kept the `/` separators and pointed into sub-directories that do not exist
+
+### 2.2.5
+
+* Require `certifi >= 2026.10.19`, which drops the compromised emSign/eMudhra root CAs ([GHSA-6q48-6c7w-9gw2](https://github.com/certifi/python-certifi/security/advisories/GHSA-6q48-6c7w-9gw2)). `kaggle` only pulled in certifi through `requests`, which sets no minimum, so an existing install could keep a certifi that would accept a forged kaggle.com certificate and leak the user's API token to a man-in-the-middle
+* Reject kernel version numbers in `kaggle kernels delete` instead of failing with a `ValueError` when a version is included in `<owner>/<kernel>/<version>`
 * Report a 404 from `kaggle competitions submit` with a competition-specific hint on stderr, naming the notebook and version for code submissions. The check never matched a 404, so users got the generic `<owner>/<slug>` hint instead
 * Exit non-zero from `kaggle competitions submit` when the submission file upload fails. It printed "Could not submit to competition" and exited 0, so scripts treated the failed submission as a success
+* Include the UTC offset (`+00:00`) in `refreshAt` timestamps displayed by `kaggle quota`
+* Recommend installing with `pipx` or `uv` and add troubleshooting guidance for `externally-managed-environment` errors in the installation docs
 * Stream `kaggle kernels output` files to disk through the same download path as datasets and competitions, with a read timeout, a size check, and resume after a dropped connection. Each file used to be read into memory whole, so a 512 MiB output took about 1.2 GB of RAM, and a dropped connection failed the command and left an empty file behind
 * Honor the version in `<owner>/<kernel>/<version>` for `kaggle kernels pull`, `output`, `status`, `files` and `logs`, which previously returned 403 for `pull` and acted on the latest version for the others
+* Clarify in `--accelerator` help and kernels docs that `NvidiaTeslaT4` maps to GPU T4 x2 and `TpuV5E8` maps to TPU v5e-8
 * Reject dataset version numbers in `kaggle datasets delete` to prevent unintentionally deleting an entire dataset when targeting a single version
 * Show why a submission failed in `kaggle competitions submission <ref>`, which already comes back in the API response but was not displayed
 * Honor `-k/--kernel` in `kaggle kernels pull`, which was ignored when the positional kernel argument was omitted, causing the CLI to fall back to the local `kernel-metadata.json` and pull a different kernel
 * Refuse to write a `kaggle kernels output` file whose server-supplied name resolves outside the requested `--path` directory
 * Add `--no-run` to `kaggle kernels push` to save a new version without executing the notebook, the equivalent of Quick Save in the web UI
 * Honor `--unzip` when downloading a single file with `kaggle datasets download -f`, which extracts the file from the zip archive the server wraps large files in, and add `--unzip` to `kaggle competitions download`
+* Fix misleading validation error messages in `kaggle competitions submit` when `--kernel`, `--version`, or `--file` is missing for a code competition submission
 * Keep the requested folder when downloading a single file with `kaggle datasets download -f` or `kaggle competitions download -f`, instead of writing it to the download root
+* Report `slug` instead of `title` in the `kaggle datasets create` error message when the requested slug is already in use
+* Prevent HTTP errors during resumed `Range` downloads from overwriting existing partial download files
+* Check the HTTP status when downloading `kaggle kernels output` files so error responses are not saved as output files
 * Add `kaggle competitions host-add <comp> -u <user>` to grant host access on a competition to a Kaggle user
 * Suggest a next step on 403/404/429/5xx API errors, report unexpected errors as bugs instead of a traceback (with a new `--debug` flag), and list common examples in `kaggle --help`
-* Add `kaggle benchmarks quota` to show Model Proxy (AI inference) spend quota, and bump `kagglesdk` to `>= 0.1.37`
+* Guard tar extraction in `kaggle models instances versions download --untar` against path traversal
+* Store resumable upload state in a private per-user directory (`0700`) and verify directory ownership and permissions before use
+* Add `kaggle benchmarks quota` to show Model Proxy (AI inference) spend quota, and bump `kagglesdk` to `>= 0.1.38`
+* Honor `--untar` in `kaggle models instances versions download` when the archive is already cached locally
+* Write kernel log files using UTF-8 in `kaggle kernels output` to avoid `UnicodeEncodeError` on Windows
+* Exclude omitted `overview` and `usage` fields from the update mask when updating a model instance
 * Add `kaggle competitions submission-download <id>` to download the submitted file for a single submission (requires `kagglesdk >= 0.1.36`)
 * Add `deadline` (Competition Deadline) to the competition settings command and bump `kagglesdk` to `>= 0.1.36`
 * Warn when `kaggle kernels push` requests a retired accelerator (`NvidiaTeslaP100`, `TpuV38`, `Tpu1VmV38`, `TpuV232` or `TpuV2256`), since the server runs the session on a replacement instead. Drop the retired shapes from the docs
+* Abort dataset, model version, and competition data uploads when a file upload fails instead of skipping the failed file and creating a partial upload
+* Use GitHub alerts and fix the `LLMS_AVAILABLE` token reference in the benchmarks documentation
 * Add unified `kaggle search` command across competitions, datasets, notebooks, models, users, and discussions
+* Parse duration suffixes (`s`, `m`, `h`, `d`, `w`) in `kaggle auth print-access-token --expiration` instead of raising a `TypeError`
 * Add `--wait`/`--poll-interval` to `kaggle competitions submit` to wait for scoring, and add `kaggle competitions submission <ref>` to look up a single submission's status and score
 * Show `N/A` instead of `Fail` in `kaggle benchmarks leaderboard` for a task result the server returned without a pass/fail or numeric score, which was reported as a failed task
 

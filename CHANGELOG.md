@@ -15,6 +15,7 @@ Changelog
 * Honor the version in `<owner>/<kernel>/<version>` for `kaggle kernels pull`, `output`, `status`, `files` and `logs`, which previously returned 403 for `pull` and acted on the latest version for the others
 * Clarify in `--accelerator` help and kernels docs that `NvidiaTeslaT4` maps to GPU T4 x2 and `TpuV5E8` maps to TPU v5e-8
 * Reject dataset version numbers in `kaggle datasets delete` to prevent unintentionally deleting an entire dataset when targeting a single version
+* Reject kernel version numbers in `kaggle kernels delete`, including whitespace-only ones, to prevent unintentionally deleting an entire kernel when targeting a single version, and stop advertising a version in the `kernels delete` and `kernels topics list` help
 * Show why a submission failed in `kaggle competitions submission <ref>`, which already comes back in the API response but was not displayed
 * Honor `-k/--kernel` in `kaggle kernels pull`, which was ignored when the positional kernel argument was omitted, causing the CLI to fall back to the local `kernel-metadata.json` and pull a different kernel
 * Refuse to write a `kaggle kernels output` file whose server-supplied name resolves outside the requested `--path` directory

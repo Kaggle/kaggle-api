@@ -17,7 +17,6 @@ class TestKernelsPush(unittest.TestCase):
     def setUp(self):
         self.api = KaggleApi.__new__(KaggleApi)
         self.api.config_values = {"username": "testuser"}
-        self.api.valid_push_language_types = ["python", "r", "julia", "rmarkdown"]
         self.api.valid_push_kernel_types = ["script", "notebook"]
         self.api.valid_push_pinning_types = ["original", "latest"]
         self.api.KERNEL_METADATA_FILE = "kernel-metadata.json"
@@ -168,14 +167,15 @@ class TestKernelsPush(unittest.TestCase):
             self.assertIn("cannot contain a version", str(context.exception))
 
     def test_kernels_push_invalid_language(self):
-        with tempfile.TemporaryDirectory() as tmpdir:
-            metadata = self._get_valid_metadata()
-            metadata["language"] = "invalid-lang"
-            self._write_metadata(tmpdir, metadata)
-            open(os.path.join(tmpdir, "script.py"), "w").close()
-            with self.assertRaises(ValueError) as context:
-                self.api.kernels_push(tmpdir)
-            self.assertIn("A valid language must be specified", str(context.exception))
+        for language in ["invalid-lang", "r", "rmarkdown", "julia"]:
+            with self.subTest(language=language), tempfile.TemporaryDirectory() as tmpdir:
+                metadata = self._get_valid_metadata()
+                metadata["language"] = language
+                self._write_metadata(tmpdir, metadata)
+                open(os.path.join(tmpdir, "script.py"), "w").close()
+                with self.assertRaises(ValueError) as context:
+                    self.api.kernels_push(tmpdir)
+                self.assertIn("A valid language must be specified", str(context.exception))
 
     def test_kernels_push_invalid_kernel_type(self):
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -255,40 +255,6 @@ class TestKernelsPush(unittest.TestCase):
             # Wait, the code only joins if "source" is in cell and isinstance(source, list).
             # Yes, it should join for markdown too if it is a list.
             self.assertEqual(pushed_json["cells"][1]["source"], "# Heading")
-
-    @patch.object(KaggleApi, "build_kaggle_client")
-    def test_kernels_push_notebook_rmarkdown(self, mock_client):
-        # Setup mock client
-        mock_kaggle = MagicMock()
-        mock_response = MagicMock()
-        mock_response.error = None
-        mock_response.invalidTags = []
-        mock_response.invalidDatasetSources = []
-        mock_response.invalidCompetitionSources = []
-        mock_response.invalidKernelSources = []
-        mock_response.versionNumber = 1
-        mock_response.url = "https://www.kaggle.com/testuser/test-kernel"
-        mock_kaggle.kernels.kernels_api_client.save_kernel.return_value = mock_response
-        mock_client.return_value.__enter__ = MagicMock(return_value=mock_kaggle)
-        mock_client.return_value.__exit__ = MagicMock(return_value=False)
-
-        notebook_content: dict[str, list[Any]] = {"cells": []}
-        metadata_dict = self._get_valid_metadata()
-        metadata_dict["code_file"] = "notebook.ipynb"
-        metadata_dict["kernel_type"] = "notebook"
-        metadata_dict["language"] = "rmarkdown"
-
-        with tempfile.TemporaryDirectory() as tmpdir:
-            self._write_metadata(tmpdir, metadata_dict)
-            with open(os.path.join(tmpdir, "notebook.ipynb"), "w") as f:
-                json.dump(notebook_content, f)
-
-            self.api.kernels_push(tmpdir)
-
-            # Verify save_kernel call has language='r' (converted from rmarkdown for notebooks)
-            mock_kaggle.kernels.kernels_api_client.save_kernel.assert_called_once()
-            request = mock_kaggle.kernels.kernels_api_client.save_kernel.call_args[0][0]
-            self.assertEqual(request.language, "r")
 
     @patch.object(KaggleApi, "build_kaggle_client")
     def test_kernels_push_with_sources(self, mock_client):

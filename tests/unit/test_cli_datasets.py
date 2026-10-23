@@ -365,3 +365,16 @@ def test_datasets_topics_show_two_args_succeeds(parser):
     assert func.__name__ == "forums_topic_show_cli"
     assert kwargs["topic_ref"] == "owner/dataset-name"
     assert kwargs["topic_id_arg"] == 12345
+
+
+@pytest.mark.parametrize("command", ["files", "download"])
+def test_datasets_help_shows_version_form(parser, capsys, command):
+    with pytest.raises(SystemExit):
+        parser.dispatch(["datasets", command, "--help"])
+    assert "<owner>/<dataset-name>/<version-number>" in capsys.readouterr().out
+
+
+def test_datasets_delete_help_omits_version_form(parser, capsys):
+    with pytest.raises(SystemExit):
+        parser.dispatch(["datasets", "delete", "--help"])
+    assert "<version-number>" not in capsys.readouterr().out

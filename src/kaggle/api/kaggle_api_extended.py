@@ -7229,7 +7229,13 @@ class KaggleApi:
         with open(code_file, encoding="utf-8") as f:
             script_body = f.read()
 
-        enable_tpu = self.get_bool(meta_data, "enable_tpu", False)
+        machine_shape = acc if acc else self.get_or_default(meta_data, "machine_shape", None)
+        if acc:
+            enable_tpu = acc.lower().startswith("tpu")
+        else:
+            enable_tpu = self.get_bool(meta_data, "enable_tpu", False) or (
+                isinstance(machine_shape, str) and machine_shape.lower().startswith("tpu")
+            )
         if kernel_type == "notebook":
             json_body = json.loads(script_body)
             if "cells" in json_body:
@@ -7241,7 +7247,10 @@ class KaggleApi:
                     if "source" in cell and isinstance(cell["source"], list):
                         cell["source"] = "".join(cell["source"])
             if enable_tpu:
-                kaggle_metadata = json_body.get("metadata", {}).get("kaggle", {})
+                notebook_metadata = json_body.get("metadata")
+                kaggle_metadata = (
+                    notebook_metadata.get("kaggle") if isinstance(notebook_metadata, dict) else None
+                )
                 if isinstance(kaggle_metadata, dict):
                     kaggle_metadata.pop("dockerImageVersionId", None)
             script_body = json.dumps(json_body)
@@ -7270,7 +7279,7 @@ class KaggleApi:
             if timeout:
                 request.session_timeout_seconds = int(timeout)
             # The allowed names are in an enum that is not currently included in kagglesdk.
-            request.machine_shape = acc if acc else self.get_or_default(meta_data, "machine_shape", None)
+            request.machine_shape = machine_shape
             _warn_if_retired_accelerator(request.machine_shape)
             if no_run:
                 request.kernel_execution_type = KernelExecutionType.QUICK_SAVE

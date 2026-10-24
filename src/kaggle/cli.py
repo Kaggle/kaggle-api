@@ -355,6 +355,9 @@ def parse_competitions(subparsers) -> None:
     parser_competitions_leaderboard_optional.add_argument(
         "-d", "--download", dest="download", action="store_true", help=Help.param_competition_leaderboard_download
     )
+    parser_competitions_leaderboard_optional.add_argument(
+        "--public", dest="public", action="store_true", help=Help.param_competition_leaderboard_public
+    )
     parser_competitions_leaderboard_optional.add_argument("-p", "--path", dest="path", help=Help.param_downfolder)
     _add_output_format_args(parser_competitions_leaderboard_optional)
     parser_competitions_leaderboard_optional.add_argument(
@@ -1122,7 +1125,9 @@ def parse_datasets(subparsers) -> None:
         "files", formatter_class=argparse.RawTextHelpFormatter, help=Help.command_datasets_files
     )
     parser_datasets_files_optional = parser_datasets_files._action_groups.pop()
-    parser_datasets_files_optional.add_argument("dataset", nargs="?", default=None, help=Help.param_dataset)
+    parser_datasets_files_optional.add_argument(
+        "dataset", nargs="?", default=None, help=Help.param_dataset_with_version
+    )
     parser_datasets_files_optional.add_argument(
         "-d", "--dataset", dest="dataset_opt", required=False, help=argparse.SUPPRESS
     )
@@ -1141,7 +1146,9 @@ def parse_datasets(subparsers) -> None:
         "download", formatter_class=argparse.RawTextHelpFormatter, help=Help.command_datasets_download
     )
     parser_datasets_download_optional = parser_datasets_download._action_groups.pop()
-    parser_datasets_download_optional.add_argument("dataset", nargs="?", default=None, help=Help.param_dataset)
+    parser_datasets_download_optional.add_argument(
+        "dataset", nargs="?", default=None, help=Help.param_dataset_with_version
+    )
     parser_datasets_download_optional.add_argument(
         "-d", "--dataset", dest="dataset_opt", required=False, help=argparse.SUPPRESS
     )
@@ -2917,8 +2924,18 @@ options a specific command accepts."""
     )
     param_competitions_host_add_user = "Kaggle user name (URL slug, e.g. 'kerneler') of the user to add as a host"
     param_competition_nonempty = 'Competition URL suffix (use "kaggle competitions list" to show ' "options)"
-    param_competition_leaderboard_view = "Show the top of the leaderboard"
-    param_competition_leaderboard_download = "Download entire leaderboard"
+    param_competition_leaderboard_view = (
+        "Show the top of the leaderboard.\nOnce a competition has concluded this is the final leaderboard, "
+        "which is\nwhat the competition page shows by default. Pass --public for the\npublic one."
+    )
+    param_competition_leaderboard_download = (
+        "Download entire leaderboard.\nThis is always the public leaderboard, so on a concluded competition it\n"
+        "differs from --show unless --public is passed."
+    )
+    param_competition_leaderboard_public = (
+        "Return the public leaderboard rather than the final one.\nOnly makes a difference once a competition "
+        "has concluded."
+    )
     param_competition_file = (
         'File name, all files downloaded if not provided\n(use "kaggle '
         'competitions files -c <competition>" to show options)'
@@ -2942,6 +2959,10 @@ options a specific command accepts."""
     # Datasets params
     param_dataset = (
         "Dataset URL suffix in format <owner>/<dataset-name> (use " '"kaggle datasets list" to show options)'
+    )
+    param_dataset_with_version = (
+        "Dataset URL suffix in format <owner>/<dataset-name> or <owner>/<dataset-name>/<version-number> (use "
+        '"kaggle datasets list" to show options)'
     )
     param_dataset_file = (
         "File name, all files downloaded if not provided\n(use " '"kaggle datasets files -d <dataset>" to show options)'

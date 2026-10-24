@@ -190,6 +190,14 @@ def test_competitions_leaderboard_parser_with_flags_succeeds(parser):
     assert kwargs["view"] is True
     assert kwargs["download"] is True
     assert kwargs["path"] == "/tmp/lead"
+    assert kwargs["public"] is False
+
+
+def test_competitions_leaderboard_parser_with_public_succeeds(parser):
+    func, kwargs = parser.dispatch(["competitions", "leaderboard", "my-comp", "--show", "--public"])
+    assert func.__name__ == "competition_leaderboard_cli"
+    assert kwargs["view"] is True
+    assert kwargs["public"] is True
 
 
 def test_competitions_team_submissions_parser_missing_team_id_fails(parser):

@@ -725,7 +725,10 @@ class ResumableUploadContext(object):
         Returns:
             str: The path to the upload info file.
         """
-        return os.path.join(self._temp_dir, "%s.json" % path.replace(os.path.sep, "_").replace(":", "_"))
+        # Flatten the path into a single file name. Both separators have to go: on Windows,
+        # paths such as "C:/data/file.csv" use "/" (os.path.altsep), and leaving it in would
+        # point at sub-directories of the state dir that do not exist.
+        return os.path.join(self._temp_dir, "%s.json" % re.sub(r"[\\/:]", "_", path))
 
     def new_resumable_file_upload(
         self, path: str, start_blob_upload_request: ApiStartBlobUploadRequest
@@ -1183,7 +1186,7 @@ class KaggleApi:
 
     # Kernels valid types
     valid_push_kernel_types = ["script", "notebook"]
-    valid_push_language_types = ["python", "r", "rmarkdown"]
+    valid_push_language_types = ["python"]
     valid_push_pinning_types = ["original", "latest"]
     valid_list_languages = ["all", "python", "r", "sqlite", "julia"]
     valid_list_kernel_types = ["all", "script", "notebook"]
@@ -2319,13 +2322,22 @@ class KaggleApi:
                     cast(str, file_name), cast(str, message), cast(str, competition), quiet, sandbox
                 )
         except RequestException as e:
-            if e.response and e.response.status_code == 404:
-                print(
-                    "Could not find competition - please verify that you "
-                    "entered the correct competition ID and that the "
-                    "competition is still accepting submissions."
-                )
-                return ""
+            # Compare with None: a Response is falsy for every 4xx/5xx status, 404 included.
+            if e.response is not None and e.response.status_code == 404:
+                # A code submission also names a notebook and a version, and either can be what is missing.
+                if kernel:
+                    hint = (
+                        "Could not find competition or notebook - please verify that you entered the correct "
+                        "competition ID, notebook and version, and that the competition is still "
+                        "accepting submissions."
+                    )
+                else:
+                    hint = (
+                        "Could not find competition - please verify that you entered the correct competition ID "
+                        "and that the competition is still accepting submissions."
+                    )
+                # Raise rather than print and return, so the CLI reports it on stderr and exits non-zero.
+                raise ValueError(f"{hint}\n  Error: {e}") from e
             else:
                 raise e
 
@@ -2841,7 +2853,11 @@ class KaggleApi:
         self.download_file(response, outfile, kaggle.http_client(), quiet)
 
     def competition_leaderboard_view(
-        self, competition: str, page_size: Optional[int] = 20, page_token: Optional[str] = None
+        self,
+        competition: str,
+        page_size: Optional[int] = 20,
+        page_token: Optional[str] = None,
+        public: bool = False,
     ) -> list[ApiLeaderboardSubmission | None] | None:
         """View a leaderboard based on a competition name.
 
@@ -2849,6 +2865,8 @@ class KaggleApi:
             competition (str): the competition name to view leadboard for
             page_size (Optional[int]): the number of items to show on a page
             page_token (Optional[str]): the page token for pagination
+            public (bool): if True, return the public leaderboard instead of the
+                final one. Only differs once a competition has concluded.
 
         Returns:
             Union[listApiLeaderboardSubmission, None, None]:
@@ -2856,6 +2874,8 @@ class KaggleApi:
         with self.build_kaggle_client() as kaggle:
             request = ApiGetLeaderboardRequest()
             request.competition_name = competition
+            if public:
+                request.override_public = True
             self._set_paging(request, page_size, page_token)
             response = kaggle.competitions.competition_api_client.get_leaderboard(request)
         if response.next_page_token:
@@ -2875,6 +2895,7 @@ class KaggleApi:
         page_size: Optional[int] = 20,
         page_token: Optional[str] = None,
         output_format=None,
+        public=False,
     ):
         """A wrapper for competition_leaderbord_view that will print the results as a table or comma separated values.
 
@@ -2889,6 +2910,8 @@ class KaggleApi:
             page_size (Optional[int]): the number of items to show on a page
             page_token (Optional[str]): the page token for pagination
             output_format (Optional[str]): the output format to use
+            public (bool): if True, --show returns the public leaderboard instead of
+                the final one. --download always returns the public leaderboard.
         """
         competition = competition or competition_opt
         if not view and not download:
@@ -2906,7 +2929,7 @@ class KaggleApi:
             self.competition_leaderboard_download(competition, path, quiet)
 
         if view:
-            results = self.competition_leaderboard_view(competition, page_size, page_token)
+            results = self.competition_leaderboard_view(competition, page_size, page_token, public)
             if results:
                 self.print_results(
                     results,
@@ -5993,10 +6016,14 @@ class KaggleApi:
         """
         if kernel is None:
             raise ValueError("A kernel must be specified")
-        if "/" not in kernel:
-            raise ValueError("Kernel must be in format [owner]/[kernel-name]")
-
-        owner_slug, kernel_slug = kernel.split("/")
+        # Tolerate a trailing slash like datasets delete does ("owner/slug/" == "owner/slug").
+        kernel = kernel[:-1] if kernel.endswith("/") and len(kernel) > 1 else kernel
+        owner_slug, kernel_slug, kernel_version = self.parse_kernel_string(kernel)
+        if kernel_version is not None and kernel_version.strip() != "":
+            raise ValueError(
+                f"Deleting individual kernel versions is not supported (specified version: '{kernel_version}'). "
+                f"To delete the entire kernel, run: kaggle kernels delete {owner_slug}/{kernel_slug}"
+            )
 
         if not no_confirm:
             if not self.confirmation(f"delete the kernel: {kernel}"):
@@ -7099,7 +7126,7 @@ class KaggleApi:
             "id": username + "/INSERT_KERNEL_SLUG_HERE",
             "title": "INSERT_TITLE_HERE",
             "code_file": "INSERT_CODE_FILE_PATH_HERE",
-            "language": "Pick one of: {" + ",".join(x for x in self.valid_push_language_types) + "}",
+            "language": "python",
             "kernel_type": "Pick one of: {" + ",".join(x for x in self.valid_push_kernel_types) + "}",
             "is_private": "true",
             "enable_gpu": "false",
@@ -7204,9 +7231,6 @@ class KaggleApi:
                 "A valid kernel type must be specified in the metadata. Valid "
                 "options are " + str(self.valid_push_kernel_types)
             )
-
-        if kernel_type == "notebook" and language == "rmarkdown":
-            language = "r"
 
         dataset_sources = cast(List[str], self.get_or_default(meta_data, "dataset_sources", []))
         for source in dataset_sources:

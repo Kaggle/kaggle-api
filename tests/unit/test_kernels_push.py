@@ -257,6 +257,146 @@ class TestKernelsPush(unittest.TestCase):
             self.assertEqual(pushed_json["cells"][1]["source"], "# Heading")
 
     @patch.object(KaggleApi, "build_kaggle_client")
+    def test_kernels_push_tpu_clears_cpu_image_pins(self, mock_client):
+        mock_kaggle = MagicMock()
+        mock_response = MagicMock()
+        mock_response.error = None
+        mock_response.invalidTags = []
+        mock_response.invalidDatasetSources = []
+        mock_response.invalidCompetitionSources = []
+        mock_response.invalidKernelSources = []
+        mock_response.versionNumber = 1
+        mock_response.url = "https://www.kaggle.com/testuser/test-kernel"
+        mock_kaggle.kernels.kernels_api_client.save_kernel.return_value = mock_response
+        mock_client.return_value.__enter__ = MagicMock(return_value=mock_kaggle)
+        mock_client.return_value.__exit__ = MagicMock(return_value=False)
+
+        metadata = self._get_valid_metadata()
+        metadata.update(
+            {
+                "code_file": "notebook.ipynb",
+                "kernel_type": "notebook",
+                "enable_tpu": True,
+                "machine_shape": "TpuV5E8",
+                "docker_image": "gcr.io/kaggle-images/python@sha256:cpu-image",
+            }
+        )
+        notebook = {
+            "cells": [],
+            "metadata": {"kaggle": {"dockerImageVersionId": 123, "accelerator": "GPU"}},
+        }
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            self._write_metadata(tmpdir, metadata)
+            notebook_path = os.path.join(tmpdir, "notebook.ipynb")
+            with open(notebook_path, "w", encoding="utf-8") as notebook_file:
+                json.dump(notebook, notebook_file)
+
+            self.api.kernels_push(tmpdir)
+
+            request = mock_kaggle.kernels.kernels_api_client.save_kernel.call_args[0][0]
+            sent_notebook = json.loads(request.text)
+            self.assertTrue(request.enable_tpu)
+            self.assertEqual(request.machine_shape, "TpuV5E8")
+            self.assertFalse(request.docker_image)
+            self.assertNotIn("dockerImageVersionId", sent_notebook["metadata"]["kaggle"])
+            self.assertEqual(sent_notebook["metadata"]["kaggle"]["accelerator"], "GPU")
+
+            with open(notebook_path, encoding="utf-8") as notebook_file:
+                self.assertEqual(json.load(notebook_file), notebook)
+
+    @patch.object(KaggleApi, "build_kaggle_client")
+    def test_kernels_push_detects_tpu_from_effective_accelerator(self, mock_client):
+        mock_kaggle = MagicMock()
+        mock_response = MagicMock()
+        mock_response.error = None
+        mock_response.invalidTags = []
+        mock_response.invalidDatasetSources = []
+        mock_response.invalidCompetitionSources = []
+        mock_response.invalidKernelSources = []
+        mock_response.versionNumber = 1
+        mock_response.url = "https://www.kaggle.com/testuser/test-kernel"
+        mock_kaggle.kernels.kernels_api_client.save_kernel.return_value = mock_response
+        mock_client.return_value.__enter__ = MagicMock(return_value=mock_kaggle)
+        mock_client.return_value.__exit__ = MagicMock(return_value=False)
+
+        cases = [
+            ("--accelerator TPU", False, None, "TpuV5E8", True),
+            ("machine_shape TPU", False, "TpuV5E8", None, True),
+            ("non-TPU accelerator overrides TPU metadata", True, "TpuV5E8", "NvidiaTeslaT4", False),
+        ]
+        for name, enable_tpu, metadata_shape, accelerator, expected_tpu in cases:
+            with self.subTest(name=name), tempfile.TemporaryDirectory() as tmpdir:
+                metadata = self._get_valid_metadata()
+                metadata.update(
+                    {
+                        "code_file": "notebook.ipynb",
+                        "kernel_type": "notebook",
+                        "enable_tpu": enable_tpu,
+                        "machine_shape": metadata_shape,
+                        "docker_image": "gcr.io/kaggle-images/python@sha256:cpu-image",
+                    }
+                )
+                self._write_metadata(tmpdir, metadata)
+                notebook_path = os.path.join(tmpdir, "notebook.ipynb")
+                with open(notebook_path, "w", encoding="utf-8") as notebook_file:
+                    json.dump({"cells": [], "metadata": {"kaggle": {"dockerImageVersionId": 123}}}, notebook_file)
+
+                self.api.kernels_push(tmpdir, acc=accelerator)
+
+                request = mock_kaggle.kernels.kernels_api_client.save_kernel.call_args[0][0]
+                sent_notebook = json.loads(request.text)
+                self.assertEqual(request.enable_tpu, expected_tpu)
+                self.assertEqual(request.machine_shape, accelerator or metadata_shape)
+                if expected_tpu:
+                    self.assertFalse(request.docker_image)
+                else:
+                    self.assertEqual(
+                        request.docker_image,
+                        "gcr.io/kaggle-images/python@sha256:cpu-image",
+                    )
+                self.assertEqual(
+                    "dockerImageVersionId" in sent_notebook["metadata"]["kaggle"],
+                    not expected_tpu,
+                )
+
+    @patch.object(KaggleApi, "build_kaggle_client")
+    def test_kernels_push_tpu_handles_null_notebook_metadata(self, mock_client):
+        mock_kaggle = MagicMock()
+        mock_response = MagicMock()
+        mock_response.error = None
+        mock_response.invalidTags = []
+        mock_response.invalidDatasetSources = []
+        mock_response.invalidCompetitionSources = []
+        mock_response.invalidKernelSources = []
+        mock_response.versionNumber = 1
+        mock_response.url = "https://www.kaggle.com/testuser/test-kernel"
+        mock_kaggle.kernels.kernels_api_client.save_kernel.return_value = mock_response
+        mock_client.return_value.__enter__ = MagicMock(return_value=mock_kaggle)
+        mock_client.return_value.__exit__ = MagicMock(return_value=False)
+
+        metadata = self._get_valid_metadata()
+        metadata.update(
+            {
+                "code_file": "notebook.ipynb",
+                "kernel_type": "notebook",
+                "enable_tpu": True,
+                "machine_shape": "TpuV5E8",
+            }
+        )
+        with tempfile.TemporaryDirectory() as tmpdir:
+            self._write_metadata(tmpdir, metadata)
+            notebook_path = os.path.join(tmpdir, "notebook.ipynb")
+            with open(notebook_path, "w", encoding="utf-8") as notebook_file:
+                json.dump({"cells": [], "metadata": None}, notebook_file)
+
+            self.api.kernels_push(tmpdir)
+
+            request = mock_kaggle.kernels.kernels_api_client.save_kernel.call_args[0][0]
+            self.assertTrue(request.enable_tpu)
+            self.assertIsNone(json.loads(request.text)["metadata"])
+
+    @patch.object(KaggleApi, "build_kaggle_client")
     def test_kernels_push_with_sources(self, mock_client):
         # Setup mock client
         mock_kaggle = MagicMock()

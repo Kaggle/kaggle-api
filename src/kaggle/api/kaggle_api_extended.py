@@ -7272,9 +7272,7 @@ class KaggleApi:
                         cell["source"] = "".join(cell["source"])
             if enable_tpu:
                 notebook_metadata = json_body.get("metadata")
-                kaggle_metadata = (
-                    notebook_metadata.get("kaggle") if isinstance(notebook_metadata, dict) else None
-                )
+                kaggle_metadata = notebook_metadata.get("kaggle") if isinstance(notebook_metadata, dict) else None
                 if isinstance(kaggle_metadata, dict):
                     kaggle_metadata.pop("dockerImageVersionId", None)
             script_body = json.dumps(json_body)
@@ -7297,9 +7295,7 @@ class KaggleApi:
             request.model_data_sources = model_sources
             request.category_ids = self.get_or_default(meta_data, "keywords", [])
             request.docker_image_pinning_type = docker_pinning_type  # type: ignore[assignment]
-            request.docker_image = (
-                None if enable_tpu else self.get_or_default(meta_data, "docker_image", None)
-            )
+            request.docker_image = None if enable_tpu else self.get_or_default(meta_data, "docker_image", None)
             if timeout:
                 request.session_timeout_seconds = int(timeout)
             # The allowed names are in an enum that is not currently included in kagglesdk.
